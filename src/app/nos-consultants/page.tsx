@@ -46,17 +46,22 @@ type SecteurConfig = {
   accentClass: string; desc: string; photo: string;
 };
 
+// Photos choisies et vérifiées une par une (Unsplash / Pexels, usage commercial gratuit) : chaque image montre l'activité du secteur.
 const SECTEURS_CONFIG: SecteurConfig[] = [
-  { categorie: "Agriculture",       emoji: "🌾", illustration: "🌱🐟🌿", gradientClass: "from-emerald-50 to-green-100",  borderClass: "border-emerald-200", textClass: "text-emerald-800", accentClass: "bg-emerald-500", desc: "Pisciculture, élevage & cultures", photo: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&h=400&fit=crop&q=80" },
-  { categorie: "Commerce",          emoji: "🏪", illustration: "🛒💼📦", gradientClass: "from-amber-50 to-yellow-100",   borderClass: "border-amber-200",   textClass: "text-amber-800",   accentClass: "bg-amber-500",   desc: "Boutiques, quincaillerie & négoce", photo: "https://images.unsplash.com/photo-1556740758-90de374c12ad?w=600&h=400&fit=crop&q=80" },
-  { categorie: "Services",          emoji: "⚙️", illustration: "🧺👔✨", gradientClass: "from-blue-50 to-indigo-100",    borderClass: "border-blue-200",    textClass: "text-blue-800",    accentClass: "bg-blue-500",    desc: "Pressing, entretien & maintenance", photo: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&h=400&fit=crop&q=80" },
-  { categorie: "Restauration",      emoji: "🍽️", illustration: "👨‍🍳🥘🍴", gradientClass: "from-orange-50 to-red-100",  borderClass: "border-orange-200",  textClass: "text-orange-800",  accentClass: "bg-orange-500",  desc: "Restaurants, snacks & traiteurs", photo: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&h=400&fit=crop&q=80" },
-  { categorie: "Beauté",            emoji: "💆", illustration: "💇‍♀️✂️💅", gradientClass: "from-pink-50 to-rose-100",   borderClass: "border-pink-200",    textClass: "text-pink-800",    accentClass: "bg-pink-500",    desc: "Coiffure, esthétique & cosmétique", photo: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&h=400&fit=crop&q=80" },
-  { categorie: "Alimentaire",       emoji: "🥖", illustration: "🧁🥐🍞", gradientClass: "from-yellow-50 to-amber-100",  borderClass: "border-yellow-200",  textClass: "text-yellow-800",  accentClass: "bg-yellow-500",  desc: "Boulangerie, pâtisserie & épicerie", photo: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=400&fit=crop&q=80" },
-  { categorie: "Santé & Bien-être", emoji: "💊", illustration: "🏥💊🌿", gradientClass: "from-teal-50 to-cyan-100",     borderClass: "border-teal-200",    textClass: "text-teal-800",    accentClass: "bg-teal-500",    desc: "Parapharmacie, soins & bien-être", photo: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=400&fit=crop&q=80" },
-  { categorie: "Artisanat",         emoji: "🎨", illustration: "🪡🧵✂️", gradientClass: "from-violet-50 to-purple-100", borderClass: "border-violet-200",  textClass: "text-violet-800",  accentClass: "bg-violet-500",  desc: "Artisanat, création & savoir-faire", photo: "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=600&h=400&fit=crop&q=80" },
-  { categorie: "BTP",               emoji: "🏗️", illustration: "🧱🏠🔨", gradientClass: "from-slate-50 to-gray-100",   borderClass: "border-slate-200",   textClass: "text-slate-800",   accentClass: "bg-slate-500",   desc: "Construction, bâtiment & travaux", photo: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=400&fit=crop&q=80" },
-  { categorie: "Numérique",         emoji: "💻", illustration: "📱🌐💡", gradientClass: "from-indigo-50 to-blue-100",   borderClass: "border-indigo-200",  textClass: "text-indigo-800",  accentClass: "bg-indigo-500",  desc: "Tech, digital & innovation", photo: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop&q=80" },
+  { categorie: "Agriculture",       emoji: "🌾", illustration: "🌱🐟🌿", gradientClass: "from-emerald-50 to-green-100",  borderClass: "border-emerald-200", textClass: "text-emerald-800", accentClass: "bg-emerald-500", desc: "Cultures, maraîchage & pisciculture", photo: "https://images.unsplash.com/photo-1741874299706-2b8e16839aaa?w=600&h=400&fit=crop&q=80" },
+  { categorie: "Élevage",           emoji: "🐔", illustration: "🐓🐖🐄", gradientClass: "from-lime-50 to-green-100",     borderClass: "border-lime-200",    textClass: "text-lime-800",    accentClass: "bg-lime-600",    desc: "Volailles, porcs, bœufs & petits élevages", photo: "https://images.pexels.com/photos/16815564/pexels-photo-16815564.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" },
+  { categorie: "Commerce",          emoji: "🏪", illustration: "🛒💼📦", gradientClass: "from-amber-50 to-yellow-100",   borderClass: "border-amber-200",   textClass: "text-amber-800",   accentClass: "bg-amber-500",   desc: "Boutiques, dépôts & négoce", photo: "https://images.unsplash.com/photo-1687422808565-929533931584?w=600&h=400&fit=crop&q=80" },
+  { categorie: "Services",          emoji: "⚙️", illustration: "🧺👔✨", gradientClass: "from-blue-50 to-indigo-100",    borderClass: "border-blue-200",    textClass: "text-blue-800",    accentClass: "bg-blue-500",    desc: "Couture, pressing, sécurité & plus", photo: "https://images.unsplash.com/photo-1687422808289-e721259c9eb4?w=600&h=400&fit=crop&q=80" },
+  { categorie: "Restauration",      emoji: "🍽️", illustration: "👨‍🍳🥘🍴", gradientClass: "from-orange-50 to-red-100",  borderClass: "border-orange-200",  textClass: "text-orange-800",  accentClass: "bg-orange-500",  desc: "Restaurants, snacks & cafétérias", photo: "https://images.pexels.com/photos/14090826/pexels-photo-14090826.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" },
+  { categorie: "Beauté",            emoji: "💆", illustration: "💇‍♀️✂️💅", gradientClass: "from-pink-50 to-rose-100",   borderClass: "border-pink-200",    textClass: "text-pink-800",    accentClass: "bg-pink-500",    desc: "Coiffure, tresses & cosmétique", photo: "https://images.unsplash.com/photo-1702236242829-a34c39814f31?w=600&h=400&fit=crop&q=80" },
+  { categorie: "Alimentaire",       emoji: "🥖", illustration: "🧁🥐🍞", gradientClass: "from-yellow-50 to-amber-100",  borderClass: "border-yellow-200",  textClass: "text-yellow-800",  accentClass: "bg-yellow-500",  desc: "Alimentation générale & boulangerie", photo: "https://images.unsplash.com/photo-1687422808311-a776f467a468?w=600&h=400&fit=crop&q=80" },
+  { categorie: "Santé & Bien-être", emoji: "💊", illustration: "🏥💊🌿", gradientClass: "from-teal-50 to-cyan-100",     borderClass: "border-teal-200",    textClass: "text-teal-800",    accentClass: "bg-teal-500",    desc: "Parapharmacie, optique & santé", photo: "https://images.pexels.com/photos/4989190/pexels-photo-4989190.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" },
+  { categorie: "Artisanat",         emoji: "🧃", illustration: "🧼🧃🍫", gradientClass: "from-violet-50 to-purple-100", borderClass: "border-violet-200",  textClass: "text-violet-800",  accentClass: "bg-violet-500",  desc: "Fabrication artisanale & transformation", photo: "https://images.unsplash.com/photo-1603569283847-aa295f0d016a?w=600&h=400&fit=crop&q=80" },
+  { categorie: "BTP",               emoji: "🏗️", illustration: "🧱🏠🔨", gradientClass: "from-slate-50 to-gray-100",   borderClass: "border-slate-200",   textClass: "text-slate-800",   accentClass: "bg-slate-500",   desc: "Construction, parpaings & topographie", photo: "https://images.pexels.com/photos/9485447/pexels-photo-9485447.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" },
+  { categorie: "Numérique",         emoji: "💻", illustration: "📱🌐💡", gradientClass: "from-indigo-50 to-blue-100",   borderClass: "border-indigo-200",  textClass: "text-indigo-800",  accentClass: "bg-indigo-500",  desc: "Travail à distance & métiers du digital", photo: "https://images.unsplash.com/photo-1604933762021-54a5858c9832?w=600&h=400&fit=crop&q=80" },
+  { categorie: "Éducation",         emoji: "🎓", illustration: "📚✏️🏫", gradientClass: "from-sky-50 to-blue-100",      borderClass: "border-sky-200",     textClass: "text-sky-800",     accentClass: "bg-sky-500",     desc: "Écoles & librairies", photo: "https://images.unsplash.com/photo-1536337005238-94b997371b40?w=600&h=400&fit=crop&q=80" },
+  { categorie: "Transport",         emoji: "🚗", illustration: "🚦🛣️🚌", gradientClass: "from-zinc-50 to-stone-100",    borderClass: "border-zinc-200",    textClass: "text-zinc-800",    accentClass: "bg-zinc-600",    desc: "Code de la route & conduite", photo: "https://images.pexels.com/photos/4606336/pexels-photo-4606336.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop" },
+  { categorie: "Autre",             emoji: "🏦", illustration: "💰🤝📈", gradientClass: "from-emerald-50 to-teal-100",  borderClass: "border-teal-200",    textClass: "text-teal-800",    accentClass: "bg-teal-600",    desc: "Microfinance & autres activités", photo: "https://images.unsplash.com/photo-1638544253786-ab3078fe2f3f?w=600&h=400&fit=crop&q=80" },
 ];
 
 function getSecteurConfig(categorie: string): SecteurConfig {
@@ -65,7 +70,7 @@ function getSecteurConfig(categorie: string): SecteurConfig {
       categorie, emoji: "🏢", illustration: "📊💡🎯",
       gradientClass: "from-gray-50 to-slate-100", borderClass: "border-gray-200",
       textClass: "text-gray-800", accentClass: "bg-gray-500", desc: "Accompagnement professionnel",
-      photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop&q=80",
+      photo: "https://images.unsplash.com/photo-1573164574397-dd250bc8a598?w=600&h=400&fit=crop&q=80",
     }
   );
 }
@@ -765,7 +770,8 @@ function SecteurCard({
 
         {/* Contenu en bas */}
         <div className="absolute bottom-0 left-0 right-0 p-4">
-          <h3 className="font-black text-lg text-white leading-tight mb-1 drop-shadow-md">{secteur.categorie}</h3>
+          {/* text-[#FFFFFF] et non text-white : globals.css force .text-white en gris foncé sur tout le site */}
+          <h3 className="font-black text-lg text-[#FFFFFF] leading-tight mb-1 drop-shadow-md">{secteur.categorie}</h3>
           <p className="text-white/80 text-xs leading-relaxed">{secteur.desc}</p>
         </div>
       </div>

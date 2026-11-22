@@ -4,9 +4,8 @@ import { useState, useEffect } from "react";
 import { useParams, notFound } from "next/navigation";
 import Link from "next/link";
 import {
-  Star, BookOpen, ArrowLeft, ShieldCheck, Mail,
-  Download, CheckCircle, Clock, Tag, Zap,
-  ChevronDown, ChevronUp, Play, X, Lock, Copy, Check, Headphones, Share2,
+  Star, BookOpen, ArrowLeft, ShieldCheck, Download, FileText, Eye, ChevronRight,
+  ChevronDown, ChevronUp, Play, X, Lock, Copy, Check, Headphones, Share2, MessageCircle,
 } from "lucide-react";
 import DownloadModal from "@/components/DownloadModal";
 import { ebooks, type Ebook } from "@/lib/data";
@@ -200,26 +199,33 @@ function toPdfEmbed(url: string): string {
   return url;
 }
 
-function PdfPreviewBlock({ url, ctaLabel, price, onBuy, ctaAnimClass }: { url: string; ctaLabel: string; price: string; onBuy: () => void; ctaAnimClass: string }) {
-  const [open, setOpen] = useState(false);
+function FichierBlock({ url, titre, pages, ctaLabel, price, onBuy, ctaAnimClass, open, setOpen }: { url: string; titre: string; pages?: number; ctaLabel: string; price: string; onBuy: () => void; ctaAnimClass: string; open: boolean; setOpen: (v: boolean) => void }) {
   return (
-    <div className="mb-16">
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center justify-between px-6 py-4 bg-gray-50 hover:bg-yellow-50 border border-gray-200 hover:border-[#E8B800]/40 rounded-2xl transition-all"
-      >
+    <div id="fichiers" className="mb-10 scroll-mt-24">
+      <h2 className="text-xl font-bold text-gray-900 mb-4">Fichiers (1)</h2>
+      <div className="flex items-center gap-2 px-4 py-3 mb-3 bg-[#E8B800]/10 border border-[#E8B800]/30 rounded-xl text-[#9a7a00] text-xs font-medium">
+        <Eye size={14} className="flex-shrink-0" />
+        Prévisualisez gratuitement les premières pages avant l&apos;achat
+      </div>
+      <div className="border border-gray-200 rounded-2xl p-4 bg-white">
         <div className="flex items-center gap-3">
-          <BookOpen size={20} className="text-[#E8B800]" />
-          <div className="text-left">
-            <p className="font-bold text-gray-900 text-sm">Aperçu gratuit</p>
-            <p className="text-gray-500 text-xs">Lisez les 3 premières pages avant d&apos;acheter</p>
+          <div className="w-11 h-11 rounded-xl bg-gray-100 flex flex-col items-center justify-center flex-shrink-0">
+            <FileText size={18} className="text-gray-700" />
+            <span className="text-[9px] font-bold text-gray-700 leading-none mt-0.5">PDF</span>
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-gray-900 font-semibold text-sm truncate">{titre}</p>
+            <p className="text-gray-500 text-xs">PDF{pages ? ` • ${pages} pages` : ""}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 text-[#E8B800] text-sm font-semibold">
-          {open ? "Fermer" : "Voir l'aperçu"}
-          {open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </div>
-      </button>
+        <button
+          onClick={() => setOpen(!open)}
+          className="mt-4 w-full flex items-center justify-center gap-1.5 py-2.5 border border-gray-300 hover:border-[#27A827] hover:text-[#27A827] rounded-xl text-sm font-semibold text-gray-800 transition-colors"
+        >
+          {open ? "Fermer l'aperçu" : "Aperçu"}
+          {open ? <ChevronUp size={15} /> : <ChevronRight size={15} />}
+        </button>
+      </div>
 
       {open && (
         <div className="mt-3 rounded-2xl overflow-hidden border border-gray-200 shadow-md">
@@ -233,7 +239,7 @@ function PdfPreviewBlock({ url, ctaLabel, price, onBuy, ctaAnimClass }: { url: s
               <p className="text-gray-600 text-sm text-center font-medium">La suite du document est disponible après achat</p>
               <button
                 onClick={onBuy}
-                className={`px-8 py-3.5 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-black font-bold rounded-xl transition-all flex items-center gap-2 shadow-lg shadow-[#E8B800]/20 ${ctaAnimClass}`}
+                className={`px-8 py-3.5 bg-[#27A827] hover:bg-[#1f8f1f] text-white font-bold rounded-xl transition-all flex items-center gap-2 shadow-lg shadow-[#27A827]/25 ${ctaAnimClass}`}
               >
                 <Download size={16} /> {ctaLabel} — {price}
               </button>
@@ -319,13 +325,6 @@ type ServerEbookData = {
 const inputCls =
   "w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-[#E8B800] transition-colors";
 
-const BENEFITS = [
-  { icon: Download, label: "PDF téléchargeable", desc: "Lisez sur tous vos appareils" },
-  { icon: Mail, label: "Envoyé par email", desc: "Reçu immédiatement après paiement" },
-  { icon: Zap, label: "Accès instantané", desc: "Disponible dès la confirmation" },
-  { icon: ShieldCheck, label: "Paiement sécurisé", desc: "Mobile Money, Visa, PayPal" },
-];
-
 export default function EbookLandingPage() {
   const params = useParams();
   const { ebooks: storeEbooks, ebookOverrides, staticEbookActif } = useCatalogueStore();
@@ -338,6 +337,16 @@ export default function EbookLandingPage() {
   const [serverLoading, setServerLoading] = useState(true);
   const [whatsappMsg, setWhatsappMsg] = useState(false);
   const [copiedShare, setCopiedShare] = useState(false);
+  const [apercuOuvert, setApercuOuvert] = useState(false);
+  const [boutonVisible, setBoutonVisible] = useState(true);
+  const [boutonEl, setBoutonEl] = useState<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    if (!boutonEl) return;
+    const obs = new IntersectionObserver(([entree]) => setBoutonVisible(entree.isIntersecting));
+    obs.observe(boutonEl);
+    return () => obs.disconnect();
+  }, [boutonEl]);
 
   useEffect(() => {
     const s = (params?.slug as string) ?? "";
@@ -402,193 +411,126 @@ export default function EbookLandingPage() {
 
   const openCheckout = () => setCheckoutModalOpen(true);
 
+  const e = ebook as Ebook & {
+    priceColor?: string; ctaBgColor?: string; ctaTextColor?: string;
+    communityBgColor?: string; communityTextColor?: string; whatsappUrl?: string; audioUrl?: string;
+    commentAcheterUrl?: string; promoEndDate?: string; promoCyclique?: boolean; promoDureeHeures?: number;
+    placesRestantesBloquees?: number; vendusAffiche?: number;
+    avisClients?: { nom: string; note: number; texte: string }[]; reviewCardSize?: "small" | "medium" | "large";
+  };
+  const ctaLabel = ebook.ctaLabel || "Télécharger maintenant";
+  const ctaStyle = e.ctaBgColor ? { backgroundColor: e.ctaBgColor, color: e.ctaTextColor || "#ffffff" } : {};
+  const ctaCls = e.ctaBgColor ? "" : "bg-[#27A827] hover:bg-[#1f8f1f] text-white shadow-[#27A827]/25";
+  const shareUrl = `${SITE_EBOOK}/ebooks/${ebook.slug}`;
+  const shareText = encodeURIComponent(`Découvrez cet ebook : ${ebook.title} — ${shareUrl}`);
+  const dejaAchete = ebooksAchetes.includes(ebook.id);
+
+  const voirApercu = () => {
+    setApercuOuvert(true);
+    document.getElementById("fichiers")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const communauteCls = (actif: boolean) => e.communityBgColor
+    ? `border ${actif ? "" : "opacity-75"}`
+    : actif
+      ? "bg-[#25D366]/10 hover:bg-[#25D366]/20 border border-[#25D366]/40 text-[#25D366]"
+      : "bg-gray-100 hover:bg-gray-50 border border-gray-300 text-gray-500";
+  const communauteStyle = e.communityBgColor
+    ? { backgroundColor: e.communityBgColor, color: e.communityTextColor || "#ffffff", borderColor: e.communityBgColor }
+    : {};
+
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      {/* Top bar */}
-      <div className="border-b border-gray-200">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link
-            href="/ebooks"
-            className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors text-sm"
-          >
-            <ArrowLeft size={16} />
-            Tous les ebooks
+      {/* Bandeau titre (comme Chariow, en vert Smart au lieu du noir) */}
+      <div className="bg-gradient-to-br from-[#1b7a1b] via-[#27A827] to-[#1f8f1f] text-white">
+        <div className="max-w-6xl mx-auto px-4 pt-5 pb-10 lg:pb-24 lg:pr-[440px]">
+          <Link href="/ebooks" className="inline-flex items-center gap-1.5 text-white/80 hover:text-white text-xs font-medium mb-6">
+            <ArrowLeft size={14} /> Tous les ebooks
           </Link>
-          <span className="text-[#E8B800] font-bold text-sm tracking-widest uppercase">
-            SMART LIFE
-          </span>
+          <h1 className="text-xl sm:text-2xl lg:text-[1.7rem] font-extrabold uppercase leading-snug !text-white">
+            {ebook.title}
+          </h1>
+          <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-white/90">
+            <span className="inline-flex items-center gap-1.5"><FileText size={14} /> Fichier PDF</span>
+            {ebook.pages > 0 && <span className="inline-flex items-center gap-1.5"><BookOpen size={14} /> {ebook.pages} pages</span>}
+            {ebook.reviews > 0 && (
+              <span className="inline-flex items-center gap-1">
+                <Star size={13} className="fill-[#E8B800] text-[#E8B800]" />
+                <strong>{ebook.rating}</strong> ({ebook.reviews} avis)
+              </span>
+            )}
+            {ebook.category && <span className="px-2.5 py-0.5 rounded-full bg-white/15">{ebook.category}</span>}
+          </div>
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 py-12">
-        {/* Hero */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-start mb-10 md:mb-16">
-          {/* Cover */}
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-full rounded-2xl overflow-hidden relative shadow-2xl" style={{ aspectRatio: "720/260" }}>
-              {ebook.banner
-                ? /* eslint-disable-next-line @next/next/no-img-element */
-                  <img src={ebook.banner} alt={ebook.title} className="w-full h-full object-cover" />
-                : <CoverDisplay ebook={ebook} coverColor={coverColor} />
-              }
-              {discount && (
-                <div className="absolute top-4 right-4 z-10">
-                  <span className="px-3 py-1 bg-red-500/90 text-white text-xs font-bold rounded-full">-{discount}%</span>
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_400px] gap-8 lg:gap-10">
+          {/* ── Carte d'achat : en premier sur téléphone, fixée à droite sur ordinateur ── */}
+          <aside className="lg:col-start-2 lg:row-start-1 self-start lg:sticky lg:top-24 lg:-mt-48 -mt-5 relative z-10 w-full max-w-xl mx-auto lg:max-w-none">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-xl overflow-hidden">
+              <div className="relative w-full bg-gray-100" style={{ aspectRatio: ebook.banner ? "720/260" : "4/3" }}>
+                {ebook.banner
+                  ? /* eslint-disable-next-line @next/next/no-img-element */
+                    <img src={ebook.banner} alt={ebook.title} className="w-full h-full object-cover" />
+                  : <CoverDisplay ebook={ebook} coverColor={coverColor} />}
+                {discount && (
+                  <span className="absolute top-3 right-3 z-10 px-2.5 py-1 bg-red-600 text-white text-xs font-bold rounded-full">-{discount}%</span>
+                )}
+              </div>
+
+              <div className="p-5 flex flex-col gap-4">
+                <div className="flex items-baseline justify-center gap-3 flex-wrap">
+                  {ebook.originalPrice && (
+                    <span className="text-gray-400 line-through text-base">{convert(ebook.originalPrice)}</span>
+                  )}
+                  <span className="text-3xl font-extrabold" style={{ color: e.priceColor && e.priceColor.toLowerCase() !== "#ffffff" ? e.priceColor : "#dc2626" }}>
+                    {convert(ebook.price)}
+                  </span>
                 </div>
-              )}
-            </div>
 
-            {/* Stats under cover */}
-            <div className="flex items-center gap-6 text-sm">
-              <div className="flex items-center gap-1.5 text-gray-500">
-                <BookOpen size={14} />
-                <span>{ebook.pages} pages</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-yellow-400">
-                <Star size={14} className="fill-yellow-400" />
-                <span className="font-semibold">{ebook.rating}</span>
-                <span className="text-gray-500">({ebook.reviews} avis)</span>
-              </div>
-            </div>
-          </div>
+                <CountdownTimer endDate={e.promoEndDate} cyclique={e.promoCyclique} dureeHeures={e.promoDureeHeures} />
 
-          {/* Info + CTA */}
-          <div className="flex flex-col gap-6">
-            {/* Category */}
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#E8B800]/10 border border-[#E8B800]/30 rounded-full text-[#E8B800] text-xs font-medium">
-                <Tag size={11} />
-                {ebook.category}
-              </span>
-            </div>
+                {e.placesRestantesBloquees != null && (
+                  <RareteBlock vendus={e.vendusAffiche ?? 0} restantes={e.placesRestantesBloquees} />
+                )}
 
-            {/* Title */}
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight text-gray-900">
-              {ebook.title}
-            </h1>
-
-            {/* Rareté */}
-            {(ebook as Ebook & { placesRestantesBloquees?: number }).placesRestantesBloquees != null && (
-              <RareteBlock
-                vendus={(ebook as Ebook & { vendusAffiche?: number }).vendusAffiche ?? 0}
-                restantes={(ebook as Ebook & { placesRestantesBloquees?: number }).placesRestantesBloquees!}
-              />
-            )}
-
-            {/* Stars */}
-            <div className="flex items-center gap-2">
-              <div className="flex gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    size={16}
-                    className={
-                      i < Math.floor(ebook.rating)
-                        ? "fill-yellow-400 text-yellow-400"
-                        : "text-gray-700"
-                    }
-                  />
-                ))}
-              </div>
-              <span className="text-yellow-400 font-semibold">{ebook.rating}</span>
-              <span className="text-gray-500 text-sm">— {ebook.reviews} clients satisfaits</span>
-            </div>
-
-            {/* Price */}
-            <div className="flex items-baseline gap-3">
-              <span
-                className="text-3xl font-extrabold"
-                style={{ color: (ebook as Ebook & { priceColor?: string }).priceColor || "#ffffff" }}
-              >
-                {convert(ebook.price)}
-              </span>
-              {ebook.originalPrice && (
-                <>
-                  <span className="text-gray-500 text-lg line-through">
-                    {convert(ebook.originalPrice)}
-                  </span>
-                  <span className="px-2 py-0.5 bg-red-500/20 text-red-400 text-sm font-bold rounded-lg">
-                    -{discount}%
-                  </span>
-                </>
-              )}
-            </div>
-
-            {/* Décompte promo */}
-            <CountdownTimer
-              endDate={(ebook as Ebook & { promoEndDate?: string }).promoEndDate}
-              cyclique={(ebook as Ebook & { promoCyclique?: boolean }).promoCyclique}
-              dureeHeures={(ebook as Ebook & { promoDureeHeures?: number }).promoDureeHeures}
-            />
-
-            {/* CTA */}
-            <div className="flex flex-col gap-3">
                 <button
+                  ref={setBoutonEl}
                   onClick={openCheckout}
-                  className={`w-full py-4 font-bold rounded-xl transition-all text-base flex items-center justify-center gap-2 shadow-lg active:scale-95 ${!(ebook as Ebook & { ctaBgColor?: string }).ctaBgColor ? "bg-gradient-to-r from-[#E8B800] to-[#27A827] hover:from-[#27A827] hover:to-[#E8B800] text-black shadow-[#E8B800]/20" : ""} ${ctaAnimClass}`}
-                  style={(ebook as Ebook & { ctaBgColor?: string }).ctaBgColor ? { backgroundColor: (ebook as Ebook & { ctaBgColor?: string }).ctaBgColor, color: (ebook as Ebook & { ctaTextColor?: string }).ctaTextColor || "#ffffff" } : {}}
+                  className={`w-full py-4 font-bold rounded-xl transition-all text-base flex items-center justify-center gap-2 shadow-lg active:scale-95 ${ctaCls} ${ctaAnimClass}`}
+                  style={ctaStyle}
                 >
-                  <Download size={18} />
-                  {ebook.ctaLabel || "Acheter maintenant"} — {convert(ebook.price)}
+                  <Download size={18} /> {ctaLabel}
                 </button>
-                {/* Bloc partage */}
-                {(() => {
-                  const shareUrl = `${SITE_EBOOK}/ebooks/${ebook.slug}`;
-                  const shareText = encodeURIComponent(`Découvrez cet ebook : ${ebook.title} — ${shareUrl}`);
-                  return (
-                    <div className="border border-gray-200 rounded-2xl p-4 space-y-2.5">
-                      <p className="text-gray-700 font-bold text-xs flex items-center gap-1.5">
-                        <Share2 size={12} className="text-[#E8B800]" /> Partager cet ebook
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        <a href={`https://api.whatsapp.com/send?text=${shareText}`} target="_blank" rel="noopener noreferrer"
-                          className="flex items-center gap-1.5 px-3 py-2 bg-[#25D366] hover:bg-[#20b858] text-white text-xs font-bold rounded-xl transition-colors">
-                          {WA_SVG_EB} WhatsApp
-                        </a>
-                        <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer"
-                          className="flex items-center gap-1.5 px-3 py-2 bg-[#1877F2] hover:bg-[#1565d8] text-white text-xs font-bold rounded-xl transition-colors">
-                          {FB_SVG_EB} Facebook
-                        </a>
-                        <button onClick={() => { navigator.clipboard.writeText(shareUrl); setCopiedShare(true); setTimeout(() => setCopiedShare(false), 2000); }}
-                          className={`flex items-center gap-1.5 px-3 py-2 border text-xs font-bold rounded-xl transition-colors ${copiedShare ? "bg-emerald-50 border-emerald-300 text-emerald-700" : "bg-gray-50 border-gray-200 text-gray-700 hover:border-[#E8B800] hover:text-[#E8B800]"}`}>
-                          {copiedShare ? <Check size={12} /> : <Copy size={12} />}
-                          {copiedShare ? "Lien copié !" : "Copier"}
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })()}
-                <div className="flex justify-end">
-                  <PaymentBadges size="xs" />
+
+                <button onClick={voirApercu} className="text-[#27A827] font-semibold text-sm underline underline-offset-4 hover:text-[#1f8f1f]">
+                  Découvrir un aperçu (1)
+                </button>
+
+                <div className="pt-1">
+                  <p className="text-center text-gray-500 text-xs mb-2">Moyens de paiement disponibles</p>
+                  <PaymentBadges size="xs" className="justify-center" />
                 </div>
-                {(ebook as Ebook & { whatsappUrl?: string }).whatsappUrl && (
-                  ebooksAchetes.includes(ebook.id) ? (
-                    <a
-                      href={(ebook as Ebook & { whatsappUrl?: string }).whatsappUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`w-full py-3.5 font-bold rounded-xl transition-all flex items-center justify-center gap-2 text-sm ${!(ebook as Ebook & { communityBgColor?: string }).communityBgColor ? "bg-[#25D366]/10 hover:bg-[#25D366]/20 border border-[#25D366]/40 text-[#25D366]" : "border"}`}
-                      style={(ebook as Ebook & { communityBgColor?: string }).communityBgColor ? { backgroundColor: (ebook as Ebook & { communityBgColor?: string }).communityBgColor!, color: (ebook as Ebook & { communityTextColor?: string }).communityTextColor || "#ffffff", borderColor: (ebook as Ebook & { communityBgColor?: string }).communityBgColor! } : {}}
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                      Rejoindre la communauté WhatsApp
+
+                <CommentAcheterMini url={e.commentAcheterUrl} />
+
+                {e.whatsappUrl && (
+                  dejaAchete ? (
+                    <a href={e.whatsappUrl} target="_blank" rel="noopener noreferrer"
+                      className={`w-full py-3 font-bold rounded-xl transition-all flex items-center justify-center gap-2 text-sm ${communauteCls(true)}`}
+                      style={communauteStyle}>
+                      <MessageCircle size={16} /> Rejoindre la communauté WhatsApp
                     </a>
                   ) : (
                     <div className="flex flex-col gap-2">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setWhatsappMsg(true);
-                          setTimeout(() => setWhatsappMsg(false), 4000);
-                          openCheckout();
-                        }}
-                        className={`w-full py-3.5 font-bold rounded-xl transition-all flex items-center justify-center gap-2 text-sm ${!(ebook as Ebook & { communityBgColor?: string }).communityBgColor ? "bg-gray-100 hover:bg-gray-50 border border-gray-300 text-gray-500" : "border opacity-75"}`}
-                        style={(ebook as Ebook & { communityBgColor?: string }).communityBgColor ? { backgroundColor: (ebook as Ebook & { communityBgColor?: string }).communityBgColor!, color: (ebook as Ebook & { communityTextColor?: string }).communityTextColor || "#ffffff", borderColor: (ebook as Ebook & { communityBgColor?: string }).communityBgColor! } : {}}
-                      >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="opacity-40"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                        Rejoindre la communauté WhatsApp
+                      <button type="button"
+                        onClick={() => { setWhatsappMsg(true); setTimeout(() => setWhatsappMsg(false), 4000); openCheckout(); }}
+                        className={`w-full py-3 font-bold rounded-xl transition-all flex items-center justify-center gap-2 text-sm ${communauteCls(false)}`}
+                        style={communauteStyle}>
+                        <MessageCircle size={16} className="opacity-50" /> Communauté WhatsApp
                         <span className="ml-auto flex items-center gap-1 px-2 py-0.5 bg-gray-200 text-gray-500 text-xs rounded-full font-medium">
-                          <Lock size={10} /> Réservé aux clients
+                          <Lock size={10} /> Clients
                         </span>
                       </button>
                       {whatsappMsg && (
@@ -599,247 +541,143 @@ export default function EbookLandingPage() {
                     </div>
                   )
                 )}
-                {(ebook as Ebook & { audioUrl?: string }).audioUrl && (
-                  ebooksAchetes.includes(ebook.id) ? (
-                    <AudioPlayerBlock url={(ebook as Ebook & { audioUrl?: string }).audioUrl!} title={ebook.title} />
+
+                {e.audioUrl && (
+                  dejaAchete ? (
+                    <AudioPlayerBlock url={e.audioUrl} title={ebook.title} />
                   ) : (
-                    <div className="mt-2 space-y-2">
-                      <button disabled
-                        className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl border-2 border-gray-300 bg-white text-gray-400 text-sm font-semibold cursor-not-allowed opacity-75">
-                        <Headphones size={15} />
-                        Écouter la version audio
-                        <span className="ml-auto flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-500 text-xs rounded-full font-medium">
-                          <Lock size={10} /> Réservé aux clients
-                        </span>
-                      </button>
-                      <p className="text-xs text-center text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2.5">
-                        🔒 L&apos;audio complet est débloqué automatiquement après la validation de votre paiement.
-                      </p>
-                    </div>
+                    <button disabled className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl border-2 border-gray-200 bg-white text-gray-400 text-sm font-semibold cursor-not-allowed">
+                      <Headphones size={15} /> Version audio
+                      <span className="ml-auto flex items-center gap-1 px-2 py-0.5 bg-gray-100 text-gray-500 text-xs rounded-full font-medium">
+                        <Lock size={10} /> Clients
+                      </span>
+                    </button>
                   )
                 )}
-                <CommentAcheterMini url={(ebook as Ebook & { commentAcheterUrl?: string }).commentAcheterUrl} />
+
                 <p className="text-gray-500 text-xs text-center flex items-center justify-center gap-1.5">
-                  <ShieldCheck size={12} />
-                  Paiement 100% sécurisé · Reçu par email après paiement
+                  <ShieldCheck size={12} /> Paiement 100 % sécurisé · Reçu par email
                 </p>
               </div>
-
-          </div>
-        </div>
-
-        {/* Vidéo de présentation — juste après le hero, avant les avis */}
-        {ebook.videoUrl && (
-          <VideoPlayer
-            url={ebook.videoUrl}
-            title="Vidéo de présentation"
-            className="mb-10"
-          />
-        )}
-
-        {/* Avis clients — position 1 : juste après le bloc CTA / Comment acheter */}
-        <ReviewSection
-          productId={ebook.id}
-          productType="ebook"
-          userId={null}
-          userName=""
-          isPurchased={false}
-          staticReviews={(ebook as Ebook & { avisClients?: { nom: string; note: number; texte: string }[] }).avisClients ?? []}
-          cardSize={(ebook as Ebook & { reviewCardSize?: "small" | "medium" | "large" }).reviewCardSize}
-          wrapperClassName="py-10 border-t border-b border-gray-200 mb-10 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 bg-gray-50"
-        />
-
-        {/* Description pleine largeur — ebooks sans sections */}
-        {(!ebook.sections || ebook.sections.length === 0) && ebook.description && (
-          <div className="mb-12">
-            <DescriptionRenderer
-              html={ebook.description}
-              className="text-gray-700 leading-relaxed text-base
-                [&_img]:rounded-xl [&_img]:my-4
-                [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1
-                [&_b]:text-gray-900 [&_strong]:text-gray-900 [&_i]:italic [&_em]:italic
-                [&_h2]:text-gray-900 [&_h2]:font-bold [&_h2]:text-xl [&_h2]:mt-6 [&_h2]:mb-3
-                [&_h3]:text-[#ca8a04] [&_h3]:font-bold [&_h3]:text-lg [&_h3]:mt-4 [&_h3]:mb-2"
-            />
-          </div>
-        )}
-
-        {/* Sections/Onglets supplémentaires */}
-        {ebook.sections && ebook.sections.length > 0 && (
-          <div className="mb-16">
-            <div className="flex gap-1 overflow-x-auto border-b border-gray-200 mb-8">
-              <button
-                onClick={() => setActiveSection(-1)}
-                className={`px-5 py-3 text-sm font-medium whitespace-nowrap border-b-2 -mb-px transition-colors ${activeSection === -1 ? "border-[#E8B800] text-[#E8B800]" : "border-transparent text-gray-500 hover:text-gray-700"}`}
-              >
-                Description
-              </button>
-              {ebook.sections.map((s, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActiveSection(i)}
-                  className={`px-5 py-3 text-sm font-medium whitespace-nowrap border-b-2 -mb-px transition-colors ${activeSection === i ? "border-[#E8B800] text-[#E8B800]" : "border-transparent text-gray-500 hover:text-gray-700"}`}
-                >
-                  {s.titre || `Section ${i + 1}`}
-                </button>
-              ))}
             </div>
-            {/* CTA dans l'onglet Description */}
-            {activeSection === -1 && (
-              <div className="mb-8">
-                <button
-                  onClick={openCheckout}
-                  className={`w-full py-4 font-bold rounded-xl transition-all text-base flex items-center justify-center gap-2 shadow-lg active:scale-95 ${!(ebook as Ebook & { ctaBgColor?: string }).ctaBgColor ? "bg-gradient-to-r from-[#E8B800] to-[#27A827] hover:from-[#27A827] hover:to-[#E8B800] text-black shadow-[#E8B800]/20" : ""} ${ctaAnimClass}`}
-                  style={(ebook as Ebook & { ctaBgColor?: string }).ctaBgColor ? { backgroundColor: (ebook as Ebook & { ctaBgColor?: string }).ctaBgColor, color: (ebook as Ebook & { ctaTextColor?: string }).ctaTextColor || "#ffffff" } : {}}
-                >
-                  <Download size={18} />
-                  {ebook.ctaLabel || "Acheter maintenant"} — {convert(ebook.price)}
-                </button>
-                <PaymentBadges size="xs" className="justify-end mt-2" />
+          </aside>
+
+          {/* ── Colonne principale ── */}
+          <main className="lg:col-start-1 lg:row-start-1 min-w-0 w-full max-w-xl mx-auto lg:max-w-none pt-2 lg:pt-10 pb-6">
+            <FichierBlock
+              url={ebook.pdfPreviewUrl || `/api/pdf-preview/${ebook.id}`}
+              titre={ebook.title}
+              pages={ebook.pages}
+              ctaLabel={ctaLabel}
+              price={convert(ebook.price)}
+              onBuy={openCheckout}
+              ctaAnimClass={ctaAnimClass}
+              open={apercuOuvert}
+              setOpen={setApercuOuvert}
+            />
+
+            {ebook.videoUrl && (
+              <VideoPlayer url={ebook.videoUrl} title="Vidéo de présentation" className="mb-10" />
+            )}
+
+            {(!ebook.sections || ebook.sections.length === 0) && ebook.description && (
+              <div className="mb-10 border-t border-gray-100 pt-8">
+                <DescriptionRenderer
+                  html={ebook.description}
+                  className="text-gray-700 leading-relaxed text-base
+                    [&_img]:rounded-xl [&_img]:my-4
+                    [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1
+                    [&_b]:text-gray-900 [&_strong]:text-gray-900 [&_i]:italic [&_em]:italic
+                    [&_h2]:text-gray-900 [&_h2]:font-bold [&_h2]:text-xl [&_h2]:mt-6 [&_h2]:mb-3
+                    [&_h3]:text-[#ca8a04] [&_h3]:font-bold [&_h3]:text-lg [&_h3]:mt-4 [&_h3]:mb-2"
+                />
               </div>
             )}
 
-            <DescriptionRenderer
-              html={activeSection === -1 ? ebook.description : (ebook.sections[activeSection]?.contenu || "")}
-              className="text-gray-700 leading-relaxed text-base
-                [&_img]:rounded-xl [&_img]:my-4
-                [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1 [&_li]:mb-1
-                [&_b]:text-gray-900 [&_strong]:text-gray-900 [&_i]:italic
-                [&_h3]:text-[#ca8a04] [&_h3]:font-bold [&_h3]:text-lg [&_h3]:mt-4 [&_h3]:mb-2"
-            />
-          </div>
-        )}
-
-        {/* Avis clients — position 2 : juste après la description */}
-        <ReviewSection
-          productId={ebook.id}
-          productType="ebook"
-          userId={currentUser?.id ?? null}
-          userName={currentUser ? `${currentUser.firstName} ${currentUser.lastName}`.trim() : ""}
-          isPurchased={ebooksAchetes.includes(ebook.id)}
-          staticReviews={(ebook as Ebook & { avisClients?: { nom: string; note: number; texte: string }[] }).avisClients ?? []}
-          cardSize={(ebook as Ebook & { reviewCardSize?: "small" | "medium" | "large" }).reviewCardSize}
-          wrapperClassName="py-12 border-t border-b border-gray-200 mb-16 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 bg-gray-50"
-        />
-
-        {/* Aperçu PDF — affiché si pdfPreviewUrl défini, sinon fallback API locale */}
-        <PdfPreviewBlock
-          url={ebook.pdfPreviewUrl || `/api/pdf-preview/${ebook.id}`}
-          ctaLabel={ebook.ctaLabel || "Acheter maintenant"}
-          price={convert(ebook.price)}
-          onBuy={openCheckout}
-          ctaAnimClass={ctaAnimClass}
-        />
-
-        {/* FAQ */}
-        {ebook.faq && ebook.faq.length > 0 && (
-          <FAQAccordion faq={ebook.faq} />
-        )}
-
-        {/* Bottom prix + CTA */}
-        <div className="mt-16 p-8 bg-gray-50 border border-gray-200 rounded-2xl flex flex-col items-center gap-5">
-            {/* Prix */}
-            <div className="text-center">
-              <div className="flex items-baseline justify-center gap-3">
-                <span className="text-4xl font-extrabold text-gray-900">{convert(ebook.price)}</span>
-                {ebook.originalPrice && (
-                  <span className="text-gray-500 text-xl line-through">{convert(ebook.originalPrice)}</span>
-                )}
-              </div>
-              {discount && (
-                <span className="inline-block mt-2 px-3 py-1 bg-red-500/20 text-red-400 text-sm font-bold rounded-lg">
-                  Économisez {discount}%
-                </span>
-              )}
-            </div>
-
-            {/* Bouton */}
-            <button
-              onClick={openCheckout}
-              className={`px-10 py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] hover:from-[#27A827] hover:to-[#E8B800] text-black font-bold rounded-xl transition-all text-base inline-flex items-center gap-2 shadow-lg shadow-[#E8B800]/20 active:scale-95 ${ctaAnimClass}`}
-            >
-              <Download size={18} />
-              {ebook.ctaLabel || "Obtenir cet ebook"}
-            </button>
-
-            {(() => {
-              const shareUrl = `${SITE_EBOOK}/ebooks/${ebook.slug}`;
-              const shareText = encodeURIComponent(`Découvrez cet ebook : ${ebook.title} — ${shareUrl}`);
-              return (
-                <div className="border border-gray-200 rounded-2xl p-4 space-y-2.5">
-                  <p className="text-gray-700 font-bold text-xs flex items-center gap-1.5">
-                    <Share2 size={12} className="text-[#E8B800]" /> Partager cet ebook
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    <a href={`https://api.whatsapp.com/send?text=${shareText}`} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 px-3 py-2 bg-[#25D366] hover:bg-[#20b858] text-white text-xs font-bold rounded-xl transition-colors">
-                      {WA_SVG_EB} WhatsApp
-                    </a>
-                    <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 px-3 py-2 bg-[#1877F2] hover:bg-[#1565d8] text-white text-xs font-bold rounded-xl transition-colors">
-                      {FB_SVG_EB} Facebook
-                    </a>
-                    <button onClick={() => { navigator.clipboard.writeText(shareUrl); setCopiedShare(true); setTimeout(() => setCopiedShare(false), 2000); }}
-                      className={`flex items-center gap-1.5 px-3 py-2 border text-xs font-bold rounded-xl transition-colors ${copiedShare ? "bg-emerald-50 border-emerald-300 text-emerald-700" : "bg-gray-50 border-gray-200 text-gray-700 hover:border-[#E8B800] hover:text-[#E8B800]"}`}>
-                      {copiedShare ? <Check size={12} /> : <Copy size={12} />}
-                      {copiedShare ? "Lien copié !" : "Copier"}
+            {ebook.sections && ebook.sections.length > 0 && (
+              <div className="mb-10 border-t border-gray-100 pt-6">
+                <div className="flex gap-1 overflow-x-auto border-b border-gray-200 mb-8">
+                  {[{ titre: "Description" }, ...ebook.sections].map((s, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setActiveSection(i - 1)}
+                      className={`px-5 py-3 text-sm font-medium whitespace-nowrap border-b-2 -mb-px transition-colors ${activeSection === i - 1 ? "border-[#27A827] text-[#27A827]" : "border-transparent text-gray-500 hover:text-gray-700"}`}
+                    >
+                      {s.titre || `Section ${i}`}
                     </button>
-                  </div>
+                  ))}
                 </div>
-              );
-            })()}
-            <div className="flex justify-end">
-              <PaymentBadges size="xs" />
-            </div>
-            <div className="flex items-center gap-4 text-gray-600 text-xs">
-              <span className="flex items-center gap-1"><ShieldCheck size={12} /> Paiement sécurisé</span>
-              <span className="flex items-center gap-1"><Clock size={12} /> Livraison immédiate</span>
-              <span className="flex items-center gap-1"><Mail size={12} /> Reçu par email</span>
-            </div>
-          </div>
-      </div>
-      {ebook && <CrossSellWidget productId={ebook.id} productType="ebook" variant="light" />}
-
-      {/* Spacer so content isn't hidden behind the sticky bar */}
-      <div className="h-20" />
-
-      {/* ── Sticky CTA Bar ─────────────────────────────────────────────────── */}
-      {!checkoutModalOpen && (
-        <div
-          className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-[0_-4px_24px_rgba(0,0,0,0.10)]"
-          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
-        >
-          <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-            {/* Prix + titre */}
-            <div className="min-w-0">
-              <p className="text-xs text-gray-400 font-medium truncate leading-tight hidden sm:block">
-                {ebook.title}
-              </p>
-              <div className="flex items-baseline gap-2">
-                <span className="text-lg font-extrabold text-gray-900 leading-tight">
-                  {convert(ebook.price)}
-                </span>
-                {ebook.originalPrice && (
-                  <span className="text-sm text-gray-400 line-through leading-tight">
-                    {convert(ebook.originalPrice)}
-                  </span>
-                )}
-                {discount && (
-                  <span className="text-xs font-bold text-red-500 bg-red-50 px-1.5 py-0.5 rounded-md">
-                    -{discount}%
-                  </span>
-                )}
+                <DescriptionRenderer
+                  html={activeSection === -1 ? ebook.description : (ebook.sections[activeSection]?.contenu || "")}
+                  className="text-gray-700 leading-relaxed text-base
+                    [&_img]:rounded-xl [&_img]:my-4
+                    [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1 [&_li]:mb-1
+                    [&_b]:text-gray-900 [&_strong]:text-gray-900 [&_i]:italic
+                    [&_h3]:text-[#ca8a04] [&_h3]:font-bold [&_h3]:text-lg [&_h3]:mt-4 [&_h3]:mb-2"
+                />
               </div>
-            </div>
+            )}
 
-            {/* CTA */}
+            <ReviewSection
+              productId={ebook.id}
+              productType="ebook"
+              userId={currentUser?.id ?? null}
+              userName={currentUser ? `${currentUser.firstName} ${currentUser.lastName}`.trim() : ""}
+              isPurchased={dejaAchete}
+              staticReviews={e.avisClients ?? []}
+              cardSize={e.reviewCardSize}
+              wrapperClassName="py-10 border-t border-gray-100 mb-10"
+            />
+
+            {ebook.faq && ebook.faq.length > 0 && <FAQAccordion faq={ebook.faq} />}
+
+            {/* Partager (comme la ligne Partager / Contact de Chariow) */}
+            <div className="flex flex-wrap items-center gap-2 border-t border-gray-100 pt-6">
+              <span className="text-gray-700 font-semibold text-xs flex items-center gap-1.5 mr-1">
+                <Share2 size={13} className="text-[#27A827]" /> Partager
+              </span>
+              <a href={`https://api.whatsapp.com/send?text=${shareText}`} target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3 py-2 bg-[#25D366] hover:bg-[#20b858] text-white text-xs font-bold rounded-xl transition-colors">
+                {WA_SVG_EB} WhatsApp
+              </a>
+              <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3 py-2 bg-[#1877F2] hover:bg-[#1565d8] text-white text-xs font-bold rounded-xl transition-colors">
+                {FB_SVG_EB} Facebook
+              </a>
+              <button onClick={() => { navigator.clipboard.writeText(shareUrl); setCopiedShare(true); setTimeout(() => setCopiedShare(false), 2000); }}
+                className={`flex items-center gap-1.5 px-3 py-2 border text-xs font-bold rounded-xl transition-colors ${copiedShare ? "bg-emerald-50 border-emerald-300 text-emerald-700" : "bg-gray-50 border-gray-200 text-gray-700 hover:border-[#27A827] hover:text-[#27A827]"}`}>
+                {copiedShare ? <Check size={12} /> : <Copy size={12} />}
+                {copiedShare ? "Lien copié !" : "Copier le lien"}
+              </button>
+              <Link href="/contact" className="flex items-center gap-1.5 px-3 py-2 border border-gray-200 bg-gray-50 text-gray-700 text-xs font-bold rounded-xl hover:border-[#27A827] hover:text-[#27A827]">
+                Contact
+              </Link>
+            </div>
+          </main>
+        </div>
+      </div>
+
+      <CrossSellWidget productId={ebook.id} productType="ebook" variant="light" />
+
+      <div className="h-32 lg:h-10" />
+
+      {/* Barre fixe en bas sur téléphone : prix + bouton, comme Chariow */}
+      {!checkoutModalOpen && !boutonVisible && (
+        <div
+          className="lg:hidden fixed left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-[0_-4px_24px_rgba(0,0,0,0.10)]"
+          style={{ bottom: "calc(62px + env(safe-area-inset-bottom, 0px))" }}
+        >
+          <div className="px-4 pt-2 pb-3 flex flex-col gap-2">
+            <div className="flex items-baseline justify-center gap-2">
+              {ebook.originalPrice && <span className="text-sm text-gray-400 line-through">{convert(ebook.originalPrice)}</span>}
+              <span className="text-lg font-extrabold text-red-600">{convert(ebook.price)}</span>
+            </div>
             <button
               onClick={openCheckout}
-              className={`flex-shrink-0 flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-[#E8B800] to-[#27A827] hover:from-[#27A827] hover:to-[#E8B800] text-black font-bold rounded-xl text-sm transition-all active:scale-95 shadow-lg shadow-[#E8B800]/20 ${ctaAnimClass}`}
+              className={`w-full py-3 font-bold rounded-xl text-sm flex items-center justify-center gap-2 active:scale-95 ${ctaCls}`}
+              style={ctaStyle}
             >
-              <Download size={16} />
-              <span className="hidden xs:inline">{ebook.ctaLabel || "Télécharger maintenant"}</span>
-              <span className="xs:hidden">Acheter</span>
+              <Download size={16} /> {ctaLabel}
             </button>
           </div>
         </div>
