@@ -239,6 +239,23 @@ body {
 @keyframes barre-se-vide { from { width: 100%; } to { width: var(--cible); } }
 .barre-se-vide { animation: barre-se-vide 2.8s cubic-bezier(.3,.6,.2,1) 0.4s both; }
 
+/* ── Fluidité sur téléphone ──────────────────────────────────────────
+   Le flou d'arrière-plan et les grandes taches floues animées font ramer le défilement
+   sur les téléphones d'entrée de gamme : on les simplifie sous 1024 px. */
+@media (max-width: 1023px) {
+  [class*="backdrop-blur"] { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+  .accueil-bulle { animation: none !important; filter: blur(60px); }
+}
+.accueil-bulle, .accueil-flotte, .defile-gauche, .defile-droite, .animate-defilement-garanties,
+.animate-marquee-left, .animate-marquee-right, .notif-flotte, .garantie-boutique { will-change: transform; }
+html { scroll-behavior: auto; }
+
+/* Menu du bas */
+@keyframes menu-halo { 0% { transform: scale(1); opacity: 0.45; } 100% { transform: scale(1.55); opacity: 0; } }
+.menu-halo { animation: menu-halo 2s ease-out infinite; }
+.menu-touche { transition: transform 0.15s ease; -webkit-tap-highlight-color: transparent; }
+.menu-touche:active { transform: scale(0.9); }
+
 @keyframes garantie-flotte { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 .garantie-boutique { animation: garantie-flotte 3.2s ease-in-out infinite; }
 .garantie-boutique:hover { animation-play-state: paused; }
@@ -247,7 +264,7 @@ body {
 .guide-entre { animation: guide-entre .45s ease-out; }
 
 /* ── Animations de tout le site ─────────────────────────────────── */
-.anim-avant { opacity: 0; transform: translateY(28px) scale(0.98); transition: opacity 0.7s cubic-bezier(.2,.7,.2,1), transform 0.7s cubic-bezier(.2,.7,.2,1); }
+.anim-avant { opacity: 0; transform: translateY(14px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
 .anim-avant.anim-visible { opacity: 1; transform: none; }
 
 @keyframes titre-defile-v { 0%, 18% { transform: translateY(0); } 62%, 82% { transform: translateY(var(--decalage)); } 100% { transform: translateY(0); } }

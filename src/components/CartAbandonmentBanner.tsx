@@ -89,7 +89,7 @@ export default function CartAbandonmentBanner() {
   }
 
   return (
-    <div className="fixed bottom-20 left-0 right-0 lg:bottom-6 z-[60] flex justify-center px-4 pointer-events-none">
+    <div className="fixed bottom-24 left-0 right-0 lg:bottom-6 z-[60] flex justify-center px-4 pointer-events-none">
       <div className="pointer-events-auto w-full max-w-md bg-[#1a1a1a] border border-[#E8B800]/40 rounded-2xl shadow-2xl p-4 flex items-start gap-3 animate-in slide-in-from-bottom-4 duration-300">
         <div className="flex-shrink-0 w-9 h-9 rounded-full bg-[#E8B800]/15 flex items-center justify-center mt-0.5">
           <ShoppingCart size={16} className="text-[#E8B800]" />

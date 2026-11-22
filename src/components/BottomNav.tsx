@@ -46,10 +46,13 @@ export default function BottomNav() {
     <>
       {/* ── Barre fixe en bas — mobile/tablette uniquement ── */}
       <nav
-        className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-gray-100 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]"
-        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+        className="lg:hidden fixed left-2 right-2 z-50 rounded-[1.75rem] border border-white/70 shadow-[0_10px_35px_-8px_rgba(0,0,0,0.28)]"
+        style={{
+          bottom: "calc(8px + env(safe-area-inset-bottom, 0px))",
+          background: "linear-gradient(180deg, #ffffff 0%, #fafcf6 100%)",
+        }}
       >
-        <div className="flex items-end h-[62px] px-1">
+        <div className="flex items-end h-[66px] px-1.5">
 
           {NAV_ITEMS.map((item) => {
             const active = isActive(item.href);
@@ -58,22 +61,21 @@ export default function BottomNav() {
 
             if (item.center) {
               return (
-                <Link key={item.href} href={item.href} className="flex-[1.2] flex flex-col items-center justify-center -mt-4 pb-1">
-                  <span
-                    className="w-[52px] h-[52px] rounded-2xl flex items-center justify-center shadow-lg transition-all duration-300"
-                    style={{
-                      background: active
-                        ? "linear-gradient(135deg, #27A827 0%, #1a8c1a 100%)"
-                        : "linear-gradient(135deg, #E8B800 0%, #27A827 100%)",
-                      transform: active ? "scale(1.08)" : "scale(1)",
-                    }}
-                  >
-                    <Icon size={22} className="text-white" strokeWidth={2.2} />
+                <Link key={item.href} href={item.href} className="menu-touche flex-[1.25] flex flex-col items-center justify-center -mt-6 pb-1.5">
+                  <span className="relative flex items-center justify-center">
+                    {!active && <span className="menu-halo absolute inset-0 rounded-full" style={{ background: "#E8B800" }} />}
+                    <span
+                      className="relative w-[58px] h-[58px] rounded-full flex items-center justify-center border-4 border-white transition-transform duration-300"
+                      style={{
+                        background: active ? "linear-gradient(135deg, #27A827 0%, #1b7a1b 100%)" : "linear-gradient(135deg, #E8B800 0%, #27A827 100%)",
+                        boxShadow: "0 8px 20px -6px rgba(39,168,39,0.7)",
+                        transform: active ? "scale(1.06)" : "scale(1)",
+                      }}
+                    >
+                      <Icon size={24} style={{ color: "#fff" }} strokeWidth={2.3} />
+                    </span>
                   </span>
-                  <span
-                    className="text-[9px] font-bold mt-1 leading-tight text-center"
-                    style={{ color: active ? "#27A827" : "#6b7280" }}
-                  >
+                  <span className="text-[9.5px] font-extrabold mt-1 leading-tight text-center" style={{ color: active ? "#1b7a1b" : "#374151" }}>
                     Accompagnement
                   </span>
                 </Link>
@@ -84,34 +86,28 @@ export default function BottomNav() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex-1 flex flex-col items-center justify-center gap-[2px] pb-1 pt-2 transition-all duration-200"
+                className="menu-touche flex-1 flex flex-col items-center justify-center gap-[2px] pb-1.5 pt-2"
               >
                 <span
-                  className="w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-200"
+                  className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300"
                   style={{
-                    backgroundColor: active ? `${item.activeColor}15` : "transparent",
+                    background: active ? item.activeColor : `${item.color}1f`,
+                    boxShadow: active ? `0 6px 14px -6px ${item.activeColor}` : "none",
+                    transform: active ? "translateY(-3px)" : "none",
                   }}
                 >
-                  <Icon
-                    size={19}
-                    strokeWidth={active ? 2.4 : 1.8}
-                    style={{ color: active ? item.activeColor : "#9ca3af" }}
-                    className="transition-all duration-200"
-                  />
+                  <Icon size={18} strokeWidth={active ? 2.5 : 2.1} style={{ color: active ? "#fff" : item.color === "#E8B800" ? "#b38f00" : "#1e7a1e" }} />
                 </span>
                 {lines.map((line, i) => (
                   <span
                     key={i}
                     className="leading-[1.1] text-center transition-colors duration-200"
-                    style={{
-                      fontSize: "9px",
-                      fontWeight: active ? 700 : 600,
-                      color: active ? item.activeColor : "#6b7280",
-                    }}
+                    style={{ fontSize: "9.5px", fontWeight: active ? 800 : 600, color: active ? "#111827" : "#4b5563" }}
                   >
                     {line}
                   </span>
                 ))}
+                <span className="h-1 w-1 rounded-full transition-opacity duration-300" style={{ background: item.activeColor, opacity: active ? 1 : 0 }} />
               </Link>
             );
           })}
@@ -119,12 +115,13 @@ export default function BottomNav() {
           {/* Menu / Plus */}
           <button
             onClick={() => setDrawerOpen(true)}
-            className="flex-1 flex flex-col items-center justify-center gap-[2px] pb-1 pt-2 transition-colors"
+            className="menu-touche flex-1 flex flex-col items-center justify-center gap-[2px] pb-1.5 pt-2"
           >
-            <span className="w-8 h-8 rounded-xl flex items-center justify-center">
-              <MoreHorizontal size={19} strokeWidth={1.8} className="text-gray-400" />
+            <span className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: "#1118270f" }}>
+              <MoreHorizontal size={19} strokeWidth={2.3} style={{ color: "#374151" }} />
             </span>
-            <span className="text-[9px] font-semibold text-gray-500">Plus</span>
+            <span className="text-[9.5px] font-semibold" style={{ color: "#4b5563" }}>Plus</span>
+            <span className="h-1 w-1" />
           </button>
 
         </div>

@@ -77,7 +77,7 @@ export default function RootLayout({
         </MasquerSurPageProduit>
         <AnalyticsTracker />
         <CurrencyProvider />
-        <main className="flex-1 pb-16 lg:pb-0">{children}</main>
+        <main className="flex-1 pb-24 lg:pb-0">{children}</main>
         <MasquerSurPageProduit>
           <Footer />
           <BottomNav />

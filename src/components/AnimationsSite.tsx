@@ -54,10 +54,11 @@ export default function AnimationsSite() {
             continue;
           }
           el.classList.add("anim-visible");
-          setTimeout(() => el.classList.remove("anim-avant", "anim-visible"), 1200);
+          setTimeout(() => el.classList.remove("anim-avant", "anim-visible"), 700);
         }
       },
-      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
+      // Le bloc commence à apparaître un peu AVANT d'entrer dans l'écran : on ne voit jamais de vide en défilant.
+      { threshold: 0, rootMargin: "0px 0px 120px 0px" },
     );
 
     const preparer = () => {
@@ -67,7 +68,7 @@ export default function AnimationsSite() {
         el.dataset.animPrete = "1";
         if (el.getBoundingClientRect().top < hauteur) return;
         const rang = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
-        el.style.transitionDelay = `${Math.min(rang, 5) * 70}ms`;
+        el.style.transitionDelay = `${Math.min(rang, 3) * 40}ms`;
         el.classList.add("anim-avant");
         suivis.add(el);
         obs.observe(el);

@@ -200,7 +200,7 @@ export default function SocialProofToast() {
       className="notif-flotte"
       style={{
         position: "fixed",
-        bottom: isMobile ? "5.25rem" : "1.5rem",
+        bottom: isMobile ? "6.5rem" : "1.5rem",
         zIndex: 9999,
         maxWidth: "260px",
         width: "calc(100vw - 2rem)",
