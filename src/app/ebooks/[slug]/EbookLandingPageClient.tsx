@@ -452,7 +452,8 @@ export default function EbookLandingPage({ initial = null }: { initial?: Ebook |
         Plus que <span className="text-[16px] font-black">{restantsDuJour}</span> exemplaires à ce prix
       </p>
       <div className="mt-1.5 h-2 rounded-full bg-[#fee2e2] overflow-hidden">
-        <div className="h-full rounded-full" style={{ width: `${Math.min(92, 100 - restantsDuJour * 4)}%`, background: "linear-gradient(90deg, #f97316, #e30026)" }} />
+        <div className="barre-se-vide h-full rounded-full"
+          style={{ ["--cible" as string]: `${Math.max(8, restantsDuJour * 4)}%`, width: `${Math.max(8, restantsDuJour * 4)}%`, background: "linear-gradient(90deg, #f97316, #e30026)" }} />
       </div>
     </div>
   );

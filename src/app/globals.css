@@ -235,6 +235,10 @@ body {
   .accueil-bulle, .accueil-flotte, .accueil-entree, .defile-gauche, .defile-droite { animation: none; }
 }
 
+/* Barre « exemplaires restants » : part pleine et se vide jusqu'à son niveau */
+@keyframes barre-se-vide { from { width: 100%; } to { width: var(--cible); } }
+.barre-se-vide { animation: barre-se-vide 2.8s cubic-bezier(.3,.6,.2,1) 0.4s both; }
+
 @keyframes garantie-flotte { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 .garantie-boutique { animation: garantie-flotte 3.2s ease-in-out infinite; }
 .garantie-boutique:hover { animation-play-state: paused; }

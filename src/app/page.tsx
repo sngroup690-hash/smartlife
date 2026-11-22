@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { Star, ArrowRight, CheckCircle, Shield, Zap, Users, Clock } from "lucide-react";
-import { ebooks, testimonials } from "@/lib/data";
-import EbookCard from "@/components/EbookCard";
+import { testimonials } from "@/lib/data";
+import { PriceTag } from "@/components/PriceTag";
+import TitreDefilant from "@/components/TitreDefilant";
+import PhotosQuiDefilent from "@/components/PhotosQuiDefilent";
 import { readFile, readdir } from "fs/promises";
 import path from "path";
 
@@ -9,6 +11,7 @@ export const dynamic = "force-dynamic";
 
 type Photo = { src: string; titre: string };
 type EspaceBrut = { id: string; titre: string; actif?: boolean };
+type GuideBrut = { id: string; slug?: string; title: string; cover?: string; price: number; originalPrice?: number; ventes?: number; actif?: boolean; deletedAt?: string };
 
 const propre = (t: string) =>
   t.normalize("NFKC").replace(/\s*[:—–]\s*(le |la )?guide.*$/i, "").replace(/^[^\p{L}]+/u, "").trim();
@@ -19,30 +22,26 @@ async function lireDonnees() {
   const lire = async <T,>(f: string): Promise<T | null> => {
     try { return JSON.parse(await readFile(path.join(racine, "private", f), "utf-8")) as T; } catch { return null; }
   };
-  const [ebooksData, espacesData, consultantsData] = await Promise.all([
-    lire<{ ebooks?: Array<{ actif?: boolean; deletedAt?: string }>; actif?: Record<string, boolean> }>("ebooks-data.json"),
+  const [ebooksData, espacesData] = await Promise.all([
+    lire<{ ebooks?: GuideBrut[] }>("ebooks-data.json"),
     lire<EspaceBrut[]>("espaces.json"),
-    lire<Array<{ actif?: boolean }>>("consultants.json"),
   ]);
   let fichiers: string[] = [];
   try { fichiers = await readdir(path.join(racine, "public", "espaces")); } catch { /* pas encore de photos */ }
+  let photosConsultants: string[] = [];
+  try { photosConsultants = (await readdir(path.join(racine, "public", "consultants-terrain"))).filter((f) => f.endsWith(".webp")).map((f) => `/consultants-terrain/${f}`); } catch { /* pas encore créées */ }
+  const guidesActifs = (ebooksData?.ebooks || []).filter((e) => e.actif !== false && !e.deletedAt);
+  const populaires = [...guidesActifs].filter((g) => g.cover && g.slug).sort((a, b) => (b.ventes || 0) - (a.ventes || 0)).slice(0, 6);
   const espaces = Array.isArray(espacesData) ? espacesData.filter((e) => e.actif !== false) : [];
   const photos: Photo[] = espaces.flatMap((e) => {
     const nom = `${String(e.id).replace(/[^a-zA-Z0-9_-]/g, "_")}.webp`;
     return fichiers.includes(nom) ? [{ src: `/espaces/${nom}`, titre: propre(e.titre) }] : [];
   });
-  return {
-    photos,
-    nbGuides: (ebooksData?.ebooks || []).filter((e) => e.actif !== false && !e.deletedAt).length,
-    nbEspaces: espaces.length,
-    nbConsultants: Array.isArray(consultantsData) ? consultantsData.filter((c) => c.actif !== false).length : 0,
-    actif: ebooksData?.actif || {},
-  };
+  return { photos, nbGuides: guidesActifs.length, nbEspaces: espaces.length, populaires, photosConsultants };
 }
 
 export default async function HomePage() {
-  const { photos, nbGuides, nbEspaces, nbConsultants, actif } = await lireDonnees();
-  const featuredEbooks = ebooks.filter((e) => e.bestseller && actif[e.id] !== false).slice(0, 3);
+  const { photos, nbGuides, nbEspaces, populaires, photosConsultants } = await lireDonnees();
   const trouver = (mot: string, defaut = 0): Photo | undefined =>
     photos.find((p) => sansAccents(p.titre).includes(mot)) ?? photos[defaut];
   const mosaique = [trouver("palmier", 0), trouver("alimentation", 1), trouver("evenement", 2), trouver("coiffure", 3)].filter(Boolean) as Photo[];
@@ -135,20 +134,23 @@ export default async function HomePage() {
 
       {/* ══════ CHIFFRES CLÉS ══════ */}
       <section className="relative overflow-hidden" style={{ background: "linear-gradient(135deg, #1b7a1b 0%, #27A827 55%, #1f8f1f 100%)" }}>
-        <div className="max-w-6xl mx-auto px-4 py-9 sm:py-12 grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-8 text-center">
+        <span className="accueil-bulle" style={{ top: "-180px", left: "30%", background: "#E8B800", opacity: 0.25 }} />
+        <div className="relative max-w-6xl mx-auto px-4 py-10 sm:py-14 grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 text-center">
           {[
-            { n: 14960, s: "+", l: "clients en Afrique et dans la diaspora" },
-            { n: 33204, s: "+", l: "clients sur notre boutique Chariow" },
-            { n: 82, s: " %", l: "d'avis positifs · 248 avis au total" },
-            { n: nbGuides, s: "", l: "guides pratiques" },
-            { n: nbEspaces, s: "", l: "domaines d'accompagnement" },
-            { n: nbConsultants, s: "", l: "consultants du terrain" },
-          ].filter((c) => c.n > 0).map((c) => (
-            <div key={c.l}>
-              <p className="text-[34px] sm:text-[44px] font-black leading-none" style={{ color: "#fff" }}>
-                <span data-compteur={c.n} data-suffixe={c.s}>{c.n.toLocaleString("fr-FR")}{c.s}</span>
+            { icone: "🌍", n: 14960, s: "+", l: "clients en Afrique et dans la diaspora" },
+            { icone: "🛍️", n: 33204, s: "+", l: "clients sur notre boutique Chariow" },
+            { icone: "⭐", n: 82, s: " %", l: "d'avis positifs · 248 avis au total" },
+            { icone: "📚", n: nbGuides || 85, s: "", l: "guides pratiques" },
+            { icone: "🤝", n: nbEspaces || 77, s: "", l: "domaines d'accompagnement" },
+            { icone: "⚡", n: 0, s: "", l: "guide reçu en quelques secondes", texte: "Instantané" },
+          ].map((c, i) => (
+            <div key={c.l} className="garantie-boutique rounded-[1.75rem] px-3 py-5 sm:py-6"
+              style={{ background: "rgba(255,255,255,0.12)", border: "1.5px solid rgba(255,255,255,0.28)", backdropFilter: "blur(6px)", animationDelay: `${i * 0.3}s` }}>
+              <span className="mx-auto flex items-center justify-center w-11 h-11 rounded-full text-[22px] shadow-lg" style={{ background: i % 2 === 0 ? "#E8B800" : "#ffffff" }}>{c.icone}</span>
+              <p className="mt-3 text-[28px] sm:text-[40px] font-black leading-none" style={{ color: "#fff" }}>
+                {c.texte ?? <span data-compteur={c.n} data-suffixe={c.s}>{c.n.toLocaleString("fr-FR")}{c.s}</span>}
               </p>
-              <p className="mt-2 text-[13px] sm:text-[14px] font-semibold" style={{ color: "rgba(255,255,255,0.88)" }}>{c.l}</p>
+              <p className="mt-2 text-[12px] sm:text-[14px] font-semibold leading-snug" style={{ color: "rgba(255,255,255,0.9)" }}>{c.l}</p>
             </div>
           ))}
         </div>
@@ -189,19 +191,54 @@ export default async function HomePage() {
       </section>
 
       {/* ══════ GUIDES POPULAIRES ══════ */}
-      <section className="py-12 sm:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between gap-4 mb-8">
-            <div>
-              <p className="text-[12px] font-extrabold uppercase tracking-[0.2em] text-[#E8B800] flex items-center gap-2"><Zap size={14} /> Les plus vendus</p>
-              <h2 className="mt-2 text-[28px] sm:text-[38px] font-black text-[#111827] leading-tight">Guides populaires</h2>
-            </div>
-            <Link href="/ebooks" className="text-[#27A827] hover:gap-2 font-bold text-sm flex items-center gap-1 shrink-0 transition-all">
-              Tout voir <ArrowRight size={14} />
-            </Link>
+      <section className="relative py-12 sm:py-16 overflow-hidden" style={{ background: "linear-gradient(180deg, #ffffff 0%, #fffbea 100%)" }}>
+        <span className="accueil-bulle" style={{ top: "20%", right: "-160px", background: "#E8B800", opacity: 0.2 }} />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-9">
+            <p className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.15em] shadow-sm" style={{ background: "#E8B800", color: "#fff" }}>
+              <Zap size={14} /> Les plus vendus
+            </p>
+            <h2 className="mt-3 text-[28px] sm:text-[40px] font-black text-[#111827] leading-tight">
+              Les guides que tout le monde <span className="texte-brillant">s&apos;arrache</span>
+            </h2>
+            <p className="mt-2 text-[15px] text-[#5c5e62] max-w-xl mx-auto">Choisis par des milliers d&apos;entrepreneurs. Reçus en quelques secondes, à lire sur ton téléphone.</p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredEbooks.map((ebook) => <EbookCard key={ebook.id} ebook={ebook} />)}
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+            {populaires.map((g, i) => {
+              const remise = g.originalPrice && g.originalPrice > g.price ? Math.round((1 - g.price / g.originalPrice) * 100) : 0;
+              return (
+                <Link key={g.id} href={`/ebooks/${g.slug}`} className="group relative flex flex-col overflow-hidden rounded-3xl bg-white shadow-lg border border-[#f1f2f3]">
+                  <div className="relative overflow-hidden" style={{ aspectRatio: "4/3", background: "#f7f7f8" }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={g.cover} alt={g.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: "50% 20%", transformOrigin: "50% 100%" }} />
+                    {i < 3 && (
+                      <span className="absolute top-2 left-2 rounded-full px-2.5 py-1 text-[10.5px] sm:text-[11.5px] font-black shadow-md" style={{ background: "#111827", color: "#fff" }}>
+                        {["🥇 N°1", "🥈 N°2", "🥉 N°3"][i]} des ventes
+                      </span>
+                    )}
+                    {remise > 0 && (
+                      <span className="cta-clignote absolute top-2 right-2 rounded-full px-2.5 py-1 text-[11px] sm:text-[12px] font-black shadow-md" style={{ background: "#e30026", color: "#fff" }}>-{remise} %</span>
+                    )}
+                  </div>
+                  <div className="flex flex-1 flex-col p-3 sm:p-4">
+                    <TitreDefilant texte={g.title} className="text-[13px] sm:text-[15px] font-extrabold text-[#111827]" />
+                    {(g.ventes || 0) > 0 && (
+                      <p className="mt-1.5 text-[12px] sm:text-[13px] font-semibold text-[#b45309]">🔥 {(g.ventes || 0).toLocaleString("fr-FR")} ventes</p>
+                    )}
+                    <div className="mt-auto pt-2.5">
+                      <p className="flex items-baseline gap-2 flex-wrap">
+                        <span className="text-[17px] sm:text-[20px] font-black text-[#e30026]"><PriceTag amount={g.price} /></span>
+                        {remise > 0 && <span className="text-[12px] sm:text-[13px] text-[#a9aeb5] line-through"><PriceTag amount={g.originalPrice!} /></span>}
+                      </p>
+                      <span className="bouton-reflet relative overflow-hidden mt-2.5 flex items-center justify-center gap-1.5 h-10 sm:h-11 rounded-2xl text-[13px] sm:text-[14px] font-extrabold transition-transform group-hover:scale-[1.02]"
+                        style={{ background: "#27A827", color: "#fff" }}>
+                        ⚡ Je le veux <ArrowRight size={15} className="fleche-cta" />
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
           <div className="text-center mt-9">
             <Link href="/ebooks" className="bouton-reflet cta-respire relative overflow-hidden inline-flex items-center gap-2 h-14 px-8 rounded-2xl text-[16px] font-extrabold shadow-xl"
@@ -222,18 +259,33 @@ export default async function HomePage() {
           <p className="mt-3 text-[15px] text-[#5c5e62] max-w-2xl mx-auto">
             Un plan d&apos;affaires ne suffit pas. Profitez de l&apos;expérience de ceux qui sont passés avant vous.
           </p>
-          <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-3 text-left">
+          <div className="mt-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-left">
             {[
-              { icone: <Shield size={20} />, titre: "Un expert dédié", texte: "Il vous guide pas à pas" },
-              { icone: <Zap size={20} />, titre: "Du concret", texte: "Stratégie, fournisseurs, installation" },
-              { icone: <Users size={20} />, titre: "Un réseau", texte: "Des entrepreneurs qui avancent ensemble" },
-              { icone: <Clock size={20} />, titre: "Un suivi", texte: "On ne vous lâche pas après le lancement" },
+              { icone: <Shield size={18} />, titre: "Un expert qui connaît votre métier", texte: "Un consultant qui a déjà fait tourner ce type d'activité, sur le terrain africain.", photo: trouver("restaurant", 7) },
+              { icone: <Zap size={18} />, titre: "Un plan d'action concret", texte: "Budget, fournisseurs, emplacement, prix de vente : chaque étape est posée noir sur blanc.", photo: trouver("quincaillerie", 8) },
+              { icone: <Users size={18} />, titre: "Un réseau qui vous ouvre des portes", texte: "Fournisseurs, clients, autres entrepreneurs : vous n'avancez plus seul.", photo: trouver("alimentation", 9) },
+              { icone: <Clock size={18} />, titre: "Un suivi après le lancement", texte: "Votre consultant reste à vos côtés pour corriger et faire grandir l'activité.", photo: trouver("coiffure", 10) },
             ].map((b, i) => (
-              <div key={b.titre} className="rounded-2xl bg-white p-4 shadow-md border border-[#f1f2f3]">
-                <span className="flex items-center justify-center w-10 h-10 rounded-xl shadow" style={{ background: i % 2 === 0 ? "#E8B800" : "#27A827", color: "#fff" }}>{b.icone}</span>
-                <p className="mt-3 text-[14px] font-extrabold text-[#111827]">{b.titre}</p>
-                <p className="mt-0.5 text-[12.5px] text-[#5c5e62] leading-snug">{b.texte}</p>
+              <div key={b.titre} className="group overflow-hidden rounded-[1.75rem] bg-white shadow-lg border border-[#f1f2f3] transition-transform hover:-translate-y-1.5">
+                <div className="relative h-32 overflow-hidden">
+                  {b.photo && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={b.photo.src} alt="" loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" style={{ objectPosition: "50% 22%", transformOrigin: "50% 100%" }} />
+                  )}
+                  <span className="absolute inset-0" style={{ background: `linear-gradient(to top, ${i % 2 === 0 ? "rgba(232,184,0,0.75)" : "rgba(39,168,39,0.75)"}, transparent 70%)` }} />
+                  <span className="absolute bottom-2 left-3 text-[34px] font-black leading-none" style={{ color: "#fff", textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}>0{i + 1}</span>
+                  <span className="absolute bottom-2.5 right-3 flex items-center justify-center w-9 h-9 rounded-full shadow-lg" style={{ background: "#fff", color: i % 2 === 0 ? "#b38f00" : "#1e7a1e" }}>{b.icone}</span>
+                </div>
+                <div className="p-4">
+                  <p className="text-[15px] font-extrabold text-[#111827] leading-snug">{b.titre}</p>
+                  <p className="mt-1.5 text-[13px] text-[#5c5e62] leading-snug">{b.texte}</p>
+                </div>
               </div>
+            ))}
+          </div>
+          <div className="mt-6 flex flex-wrap justify-center gap-2.5">
+            {["✅ Candidature gratuite", "⏱️ Réponse sous 48 h", "🎯 Places limitées par domaine"].map((t) => (
+              <span key={t} className="rounded-full bg-white px-4 py-2 text-[13px] font-bold text-[#20252b] shadow-md border border-[#f1f2f3]">{t}</span>
             ))}
           </div>
         </div>
@@ -290,11 +342,12 @@ export default async function HomePage() {
                 Candidature gratuite <ArrowRight size={18} className="fleche-cta" />
               </Link>
             </div>
-            {photoConsultant && (
-              <div className="relative h-[300px] sm:h-[380px]">
+            {(photosConsultants.length > 0 || photoConsultant) && (
+              <div className="relative h-[300px] sm:h-[400px]">
                 <div className="accueil-flotte absolute inset-0 overflow-hidden rounded-3xl border-4 border-white shadow-2xl">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={photoConsultant.src} alt="Consultant Smart Life sur le terrain" className="w-full h-full object-cover" style={{ objectPosition: "50% 22%" }} />
+                  <PhotosQuiDefilent
+                    photos={photosConsultants.length > 0 ? photosConsultants : [photoConsultant!.src]}
+                    alt="Un consultant Smart Life accompagne un entrepreneur sur le terrain" />
                 </div>
                 <div className="accueil-flotte absolute -bottom-3 -left-2 rounded-2xl px-4 py-3 shadow-2xl" style={{ background: "#E8B800", animationDelay: "-2s" }}>
                   <p className="text-[22px] font-black leading-none" style={{ color: "#fff" }}>0 FCFA</p>

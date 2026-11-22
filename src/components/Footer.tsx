@@ -90,24 +90,29 @@ export default function Footer() {
 
       <div className="bg-[#fbfaf6] border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="grid grid-cols-2 lg:grid-cols-12 gap-x-6 gap-y-8">
-            {/* Marque */}
-            <div className="col-span-2 lg:col-span-4">
+          {/* Marque + carte « Pourquoi Smart Life » */}
+          <div className="grid md:grid-cols-2 gap-8 items-center pb-9 mb-9 border-b border-gray-200">
+            <div>
               <Link href="/" className="inline-flex items-center gap-3">
-                <Image src="/logo-smartlife.jpeg" alt="SMART LIFE" width={48} height={48} className="rounded-xl object-cover" />
-                <span className="text-lg font-extrabold text-[#111827]">Smart Life</span>
+                <Image src="/logo-smartlife.jpeg" alt="SMART LIFE" width={52} height={52} className="rounded-full object-cover shadow-md" />
+                <span className="text-xl font-extrabold text-[#111827]">Smart Life</span>
               </Link>
-              <p className="mt-3 text-[13px] leading-relaxed text-[#4b5563] max-w-sm">
-                L&apos;écosystème des visionnaires africains : des guides pratiques, un accompagnement par des experts du terrain et une communauté qui avance ensemble.
+              <p className="mt-4 text-[16px] sm:text-[17px] font-semibold leading-relaxed text-[#374151] max-w-md">
+                L&apos;<span className="font-extrabold text-[#c99a00]">écosystème</span> des{" "}
+                <span className="font-extrabold text-[#1e7a1e]">visionnaires africains</span> : des guides pratiques, un{" "}
+                <span className="font-extrabold text-[#c99a00]">accompagnement</span> par des{" "}
+                <span className="font-extrabold text-[#1e7a1e]">experts du terrain</span> et une{" "}
+                <span className="font-extrabold text-[#c99a00]">communauté</span>{" "}
+                <span className="font-extrabold text-[#1e7a1e]">qui avance ensemble</span>.
               </p>
-              <div className="mt-4 flex gap-2">
+              <div className="mt-5 flex gap-2.5">
                 {[
                   { href: "https://www.facebook.com/share/19dqUPc2zp/", label: "Facebook", icone: <FacebookIcon />, fond: "#1877F2" },
                   { href: "https://www.tiktok.com/@smartlife547", label: "TikTok", icone: <TikTokIcon />, fond: "#111827" },
                   { href: "https://wa.me/237694176642", label: "WhatsApp", icone: <WhatsAppIcon />, fond: "#25D366" },
                 ].map((r) => (
                   <a key={r.label} href={r.href} target="_blank" rel="noopener noreferrer" aria-label={r.label}
-                    className="w-10 h-10 rounded-xl flex items-center justify-center hover:scale-105 transition-transform"
+                    className="w-11 h-11 rounded-full flex items-center justify-center shadow-md hover:scale-110 transition-transform"
                     style={{ backgroundColor: r.fond, color: "#fff" }}>
                     {r.icone}
                   </a>
@@ -115,8 +120,35 @@ export default function Footer() {
               </div>
             </div>
 
+            <div className="relative overflow-hidden rounded-[2rem] p-6 shadow-xl" style={{ background: "linear-gradient(135deg, #1b7a1b 0%, #27A827 60%, #b8a000 100%)" }}>
+              <span className="accueil-bulle" style={{ top: "-180px", right: "-140px", background: "#E8B800", opacity: 0.35 }} />
+              <p className="relative text-[13px] font-extrabold uppercase tracking-[0.15em]" style={{ color: "rgba(255,255,255,0.85)" }}>Pourquoi Smart Life ?</p>
+              <div className="relative mt-4 grid grid-cols-3 gap-2.5 text-center">
+                {[
+                  { n: "14 960+", l: "clients" },
+                  { n: "82 %", l: "avis positifs" },
+                  { n: "248", l: "avis clients" },
+                ].map((c) => (
+                  <div key={c.l} className="rounded-2xl px-2 py-3" style={{ background: "rgba(255,255,255,0.14)", border: "1px solid rgba(255,255,255,0.25)" }}>
+                    <p className="text-[20px] sm:text-[24px] font-black leading-none" style={{ color: "#fff" }}>{c.n}</p>
+                    <p className="mt-1 text-[11.5px] font-semibold" style={{ color: "rgba(255,255,255,0.88)" }}>{c.l}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="relative mt-4 flex flex-wrap gap-2">
+                <Link href="/ebooks" className="bouton-reflet relative overflow-hidden inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[14px] font-extrabold shadow-lg" style={{ background: "#fff", color: "#1b7a1b" }}>
+                  📚 Voir la boutique
+                </Link>
+                <Link href="/accompagnement" className="cta-respire inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-[14px] font-extrabold shadow-lg" style={{ background: "#E8B800", color: "#fff" }}>
+                  🤝 Être accompagné
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-12 gap-x-6 gap-y-8">
             {/* Nos piliers */}
-            <div className="lg:col-span-3">
+            <div className="lg:col-span-4">
               <p className="text-[13px] font-extrabold uppercase tracking-wider text-[#27A827] mb-3">Nos piliers</p>
               <ul className="space-y-2.5">
                 {PILIERS.map((l) => (
@@ -126,7 +158,7 @@ export default function Footer() {
             </div>
 
             {/* Guides */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-4">
               <p className="text-[13px] font-extrabold uppercase tracking-wider text-[#27A827] mb-3">Guides</p>
               <ul className="space-y-2.5">
                 {RAYONS.map((l) => (
@@ -136,7 +168,7 @@ export default function Footer() {
             </div>
 
             {/* Contact */}
-            <div className="col-span-2 lg:col-span-3">
+            <div className="col-span-2 lg:col-span-4">
               <p className="text-[13px] font-extrabold uppercase tracking-wider text-[#27A827] mb-3">Contact</p>
               <ul className="space-y-3 text-[14px] text-[#374151]">
                 <li><a href="mailto:contact@smartlifecm.com" className="flex items-center gap-2.5 hover:text-[#27A827]"><Mail size={16} className="text-[#27A827]" /> contact@smartlifecm.com</a></li>
@@ -148,10 +180,13 @@ export default function Footer() {
 
           {/* Garanties */}
           <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-            {GARANTIES.map(({ icon: Icone, label }) => (
-              <div key={label} className="flex items-center gap-2.5 rounded-xl bg-white border border-gray-200 px-3 py-3">
-                <span className="w-8 h-8 rounded-lg bg-[#27A827]/10 flex items-center justify-center flex-shrink-0"><Icone size={16} className="text-[#27A827]" /></span>
-                <span className="text-[12px] font-bold text-[#111827] leading-tight">{label}</span>
+            {GARANTIES.map(({ icon: Icone, label }, i) => (
+              <div key={label} className="garantie-boutique flex items-center gap-2.5 rounded-full px-3 py-2.5 shadow-sm"
+                style={{ background: i % 2 === 0 ? "#fffbea" : "#f0fdf4", border: `1.5px solid ${i % 2 === 0 ? "#E8B800" : "#27A827"}`, animationDelay: `${i * 0.3}s` }}>
+                <span className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 shadow" style={{ background: i % 2 === 0 ? "#E8B800" : "#27A827" }}>
+                  <Icone size={17} style={{ color: "#fff" }} />
+                </span>
+                <span className="text-[12.5px] font-extrabold text-[#111827] leading-tight">{label}</span>
               </div>
             ))}
           </div>
