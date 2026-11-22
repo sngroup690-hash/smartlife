@@ -1,0 +1,113 @@
+{
+  "slug": "lancer-un-elevage-de-porcs-au-cameroun",
+  "guideId": "eb-admin-4",
+  "titre": "Comment lancer un élevage de porcs rentable au Cameroun quand on débute",
+  "description": "Démarrer un élevage de porcs au Cameroun : porcherie, choix des porcelets, alimentation, hygiène contre les maladies et vente, étape par étape pour débuter.",
+  "chapeau": "Vous voulez vous lancer dans l'élevage de porcs mais vous craignez les maladies, le coût de l'aliment ou de ne pas trouver d'acheteurs ? Ces inquiétudes sont normales, et elles ont des réponses. Voici comment démarrer avec méthode, même avec un petit nombre d'animaux.",
+  "sections": [
+    {
+      "titre": "Pourquoi l'élevage de porcs a du potentiel au Cameroun",
+      "paragraphes": [
+        "La viande de porc est très consommée dans de nombreuses régions du Cameroun, que ce soit au quotidien, dans les braiseries, les cabarets ou lors des fêtes, mariages et funérailles. Cette demande permet à un éleveur sérieux de trouver des débouchés tout au long de l'année.",
+        "Le porc a aussi l'avantage de valoriser une partie des sous-produits agricoles et alimentaires disponibles localement, ce qui en fait une activité adaptée aux zones rurales comme aux périphéries des villes."
+      ]
+    },
+    {
+      "titre": "Ce qu'il faut savoir avant de commencer",
+      "paragraphes": [
+        "L'élevage de porcs demande de la présence et de la rigueur : les animaux doivent être nourris, abreuvés et surveillés chaque jour. Si vous ne pouvez pas être sur place, il vous faut une personne de confiance, formée et motivée.",
+        "La santé est le point le plus sensible. La peste porcine africaine, une maladie grave sans traitement, circule en Afrique et peut décimer un élevage entier. La prévention et l'hygiène ne sont donc pas une option : elles conditionnent la survie de votre activité.",
+        "Pensez aussi au voisinage. Une porcherie mal placée ou mal entretenue crée des odeurs et des conflits. Choisissez un terrain à distance raisonnable des habitations et renseignez-vous auprès des autorités locales."
+      ]
+    },
+    {
+      "titre": "Les étapes concrètes pour démarrer",
+      "paragraphes": [
+        "Commencer petit permet d'apprendre sans tout risquer. Quelques animaux bien suivis valent mieux qu'un grand troupeau mal géré. Le guide Smart Life détaille le budget de départ et les quantités à prévoir."
+      ],
+      "liste": [
+        "Visiter plusieurs élevages en activité et poser des questions aux éleveurs expérimentés",
+        "Choisir entre l'engraissement, qui consiste à acheter des porcelets pour les revendre gros, et le naissage, qui consiste à garder des truies pour produire des porcelets",
+        "Construire ou aménager une porcherie avant l'arrivée des animaux",
+        "Trouver un vétérinaire ou un technicien d'élevage à proximité",
+        "Prévoir l'approvisionnement en aliment pour plusieurs semaines"
+      ]
+    },
+    {
+      "titre": "La porcherie et le choix des porcelets",
+      "paragraphes": [
+        "Une bonne porcherie protège du soleil, de la pluie et des courants d'air, tout en restant bien aérée. Le sol doit être facile à nettoyer et permettre l'écoulement de l'eau et des déjections. Prévoyez des loges séparées selon l'âge et le sexe des animaux, et un espace pour isoler un animal malade.",
+        "Achetez vos porcelets chez un éleveur connu et sérieux, dont l'élevage est sain. Un bon porcelet est vif, a l'œil clair, une peau propre, respire normalement et se déplace sans boiter. Évitez les animaux d'origine inconnue achetés au bord de la route : c'est souvent ainsi que les maladies entrent dans un élevage."
+      ]
+    },
+    {
+      "titre": "Bien nourrir ses porcs",
+      "paragraphes": [
+        "L'alimentation représente la plus grosse dépense d'un élevage de porcs. Bien la gérer fait toute la différence entre un élevage qui gagne de l'argent et un élevage qui en perd.",
+        "Les besoins changent selon le stade : un porcelet, un porc en croissance, un porc en finition et une truie n'ont pas les mêmes besoins. Certains éleveurs fabriquent leur propre aliment à partir de maïs, de tourteaux, de son et de compléments minéraux, ce qui demande de bien connaître les formules. Le guide Smart Life les présente en détail."
+      ],
+      "liste": [
+        "Donner une eau propre en permanence",
+        "Respecter des horaires fixes pour les repas",
+        "Stocker l'aliment au sec, à l'abri des rongeurs et de l'humidité",
+        "Ne jamais donner d'aliment moisi",
+        "Éviter les restes de cuisine contenant de la viande de porc non cuite, qui peuvent transmettre des maladies"
+      ]
+    },
+    {
+      "titre": "Hygiène et biosécurité",
+      "paragraphes": [
+        "La biosécurité désigne toutes les règles qui empêchent les maladies d'entrer dans votre élevage. Ce sont des gestes simples, mais il faut les appliquer tous les jours, sans exception."
+      ],
+      "liste": [
+        "Limiter les visites et faire changer de chaussures ou passer dans un pédiluve à l'entrée",
+        "Nettoyer les loges régulièrement et évacuer le fumier loin des animaux",
+        "Mettre les nouveaux animaux en quarantaine avant de les mélanger au troupeau",
+        "Signaler rapidement toute mortalité anormale à un vétérinaire",
+        "Ne pas emprunter le matériel d'autres éleveurs sans le désinfecter"
+      ]
+    },
+    {
+      "titre": "Trouver ses acheteurs et faire grandir l'élevage",
+      "paragraphes": [
+        "Cherchez vos clients avant même que vos porcs soient prêts : bouchers, braiseries, restaurants, revendeurs du marché, familles qui préparent une fête. Un carnet de contacts bien tenu vous évite de brader vos animaux au dernier moment.",
+        "Notez toutes vos dépenses et vos ventes. Ces chiffres vous montrent ce qui fonctionne et vous aident à décider quand agrandir. Le fumier peut aussi être valorisé auprès des agriculteurs voisins ou dans vos propres cultures."
+      ]
+    }
+  ],
+  "erreurs": [
+    "Acheter des porcelets d'origine inconnue sans vérifier l'état de l'élevage vendeur.",
+    "Construire la porcherie trop près des maisons et se mettre le voisinage à dos.",
+    "Nourrir les porcs avec n'importe quels restes sans tenir compte de leurs besoins.",
+    "Laisser entrer tout le monde dans l'élevage sans mesures d'hygiène.",
+    "Démarrer avec trop d'animaux avant d'avoir appris le métier.",
+    "Attendre que les porcs soient prêts pour chercher des acheteurs."
+  ],
+  "faq": [
+    {
+      "q": "Quelle race de porc choisir pour débuter au Cameroun ?",
+      "a": "Les éleveurs choisissent souvent des races améliorées ou des croisements avec des porcs locaux, plus rustiques. Le bon choix dépend de votre alimentation disponible et de votre niveau de suivi. Demandez conseil aux éleveurs et techniciens de votre région."
+    },
+    {
+      "q": "Comment protéger son élevage de la peste porcine africaine ?",
+      "a": "Il n'existe pas de traitement, la prévention est donc essentielle. Limitez les visites, mettez les nouveaux animaux en quarantaine, ne donnez pas de restes de viande de porc et désinfectez le matériel. En cas de mortalité anormale, alertez tout de suite les services vétérinaires."
+    },
+    {
+      "q": "Combien de temps faut-il pour engraisser un porc ?",
+      "a": "La durée dépend de la race, de la qualité de l'alimentation et du poids de vente visé. Une alimentation adaptée à chaque stade raccourcit nettement le cycle. Le guide Smart Life donne des repères précis par étape."
+    },
+    {
+      "q": "Peut-on faire un élevage de porcs en ville ?",
+      "a": "C'est possible en périphérie, mais il faut tenir compte des odeurs, de l'eau et des règles de votre commune. Une porcherie très propre et bien aménagée limite les nuisances. Renseignez-vous auprès de la mairie avant de construire."
+    }
+  ],
+  "motsCles": [
+    "élevage de porcs au Cameroun",
+    "comment démarrer un élevage de porcs",
+    "porcherie moderne Cameroun",
+    "alimentation des porcs",
+    "peste porcine africaine prévention",
+    "élevage porcin rentable Afrique",
+    "acheter des porcelets"
+  ]
+}

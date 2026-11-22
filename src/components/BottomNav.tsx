@@ -12,6 +12,7 @@ const DRAWER_LINKS = [
   { href: "/accompagnement",      label: "Accompagnement",      icon: "🤝", desc: "Profitez de l'expertise de professionnels du terrain" },
   { href: "/nos-consultants",     label: "Nos Consultants",     icon: "👥", desc: "Notre réseau d'experts à votre service" },
   { href: "/devenir-consultant",  label: "Devenir Consultant",  icon: "💼", desc: "Partagez votre savoir et contribuez au changement" },
+  { href: "/conseils",            label: "Conseils gratuits",   icon: "💡", desc: "Comment se lancer, métier par métier" },
   { href: "/temoignages",         label: "Avis & Témoignages",  icon: "⭐", desc: "Ce que disent nos clients" },
   { href: "/contact",             label: "Contact",             icon: "📞", desc: "Nous contacter" },
 ];

@@ -5,6 +5,7 @@ import { ebooks, type Ebook } from "@/lib/data";
 import EbookLandingPageClient from "./EbookLandingPageClient";
 import { stripHtml } from "@/lib/strip-html";
 import { titreGuide, descriptionGuide, jsonLd } from "@/lib/seo";
+import { conseilDuGuide } from "@/lib/conseils";
 
 const APP_URL = (process.env.NEXT_PUBLIC_APP_URL || "https://smartlifecm.com").replace(/\/$/, "");
 
@@ -148,7 +149,7 @@ export default async function EbookPage({
       {donneesGoogle && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(donneesGoogle) }} />
       )}
-      <EbookLandingPageClient initial={ebook} />
+      <EbookLandingPageClient initial={ebook} conseil={ebook ? await conseilDuGuide(ebook.id) : null} />
     </>
   );
 }

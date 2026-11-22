@@ -5,6 +5,7 @@ import { ebooks as STATIC_EBOOKS } from "@/lib/data";
 import { services as STATIC_SERVICES } from "@/lib/data";
 import { espaces as STATIC_ESPACES } from "@/lib/accompagnement-data";
 import type { Ebook } from "@/lib/data";
+import { tousLesConseils } from "@/lib/conseils";
 
 const BASE = "https://smartlifecm.com";
 
@@ -105,6 +106,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       if (!p.slug || p.statut === "inactif") continue;
       entries.push({ url: `${BASE}/packs/${p.slug}`, priority: 0.7, changeFrequency: "monthly" as const });
     }
+  }
+
+  // Conseils gratuits « comment se lancer »
+  entries.push({ url: `${BASE}/conseils`, priority: 0.85, changeFrequency: "weekly" as const });
+  for (const c of await tousLesConseils()) {
+    entries.push({ url: `${BASE}/conseils/${c.slug}`, priority: 0.8, changeFrequency: "monthly" as const });
   }
 
   // Formations

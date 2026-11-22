@@ -81,6 +81,27 @@ export default function AnimationsSite() {
       });
     };
 
+    // Sécurité : après un saut (sommaire, lien d'ancre, défilement très rapide), l'observateur peut ne rien signaler.
+    // On révèle alors tout bloc déjà passé ou sur le point d'apparaître.
+    let prevu = false;
+    const verifierDefilement = () => {
+      if (prevu) return;
+      prevu = true;
+      setTimeout(() => {
+        prevu = false;
+        const limite = window.innerHeight + 120;
+        suivis.forEach((el) => {
+          if (el.dataset.compteur || el.getBoundingClientRect().top >= limite) return;
+          suivis.delete(el);
+          obs.unobserve(el);
+          el.classList.add("anim-visible");
+          setTimeout(() => el.classList.remove("anim-avant", "anim-visible"), 700);
+        });
+      }, 120);
+    };
+    window.addEventListener("scroll", verifierDefilement, { passive: true });
+    window.addEventListener("hashchange", verifierDefilement);
+
     preparer();
     let attente: ReturnType<typeof setTimeout> | null = null;
     const mut = new MutationObserver(() => {
@@ -93,6 +114,8 @@ export default function AnimationsSite() {
     mut.observe(document.body, { childList: true, subtree: true });
 
     return () => {
+      window.removeEventListener("scroll", verifierDefilement);
+      window.removeEventListener("hashchange", verifierDefilement);
       obs.disconnect();
       mut.disconnect();
       if (attente) clearTimeout(attente);

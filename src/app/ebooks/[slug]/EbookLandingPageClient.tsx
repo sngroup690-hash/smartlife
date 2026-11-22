@@ -275,7 +275,7 @@ function FaqBoutique({ faq }: { faq: { q: string; a: string }[] }) {
   );
 }
 
-export default function EbookLandingPage({ initial = null }: { initial?: Ebook | null }) {
+export default function EbookLandingPage({ initial = null, conseil = null }: { initial?: Ebook | null; conseil?: { slug: string; titre: string } | null }) {
   const params = useParams();
   const { ebooks: storeEbooks, ebookOverrides, staticEbookActif } = useCatalogueStore();
   const { ebooksAchetes, currentUser } = useUserStore();
@@ -497,6 +497,14 @@ export default function EbookLandingPage({ initial = null }: { initial?: Ebook |
         )}
       </div>
       {offrePack}
+      {conseil && (
+        <Link href={`/conseils/${conseil.slug}`}
+          className="block rounded-xl border border-[#27A827]/40 bg-[#f0fdf4] p-3.5 active:scale-[0.99] transition-transform">
+          <p className="text-[12px] font-bold uppercase tracking-wide text-[#1e7a1e]">💡 Conseil gratuit</p>
+          <p className="mt-1 text-[14px] font-bold text-black leading-snug">{conseil.titre}</p>
+          <p className="mt-1.5 text-[13px] font-semibold text-[#1e7a1e]">Lire l&apos;article →</p>
+        </Link>
+      )}
       <div className="flex flex-col items-center gap-2">
         <p className="text-[13px] text-[#717882]">Moyens de paiement disponibles</p>
         <PaymentBadges size="xs" className="justify-center" />

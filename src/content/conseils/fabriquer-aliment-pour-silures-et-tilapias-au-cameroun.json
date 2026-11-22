@@ -1,0 +1,109 @@
+{
+  "slug": "fabriquer-aliment-pour-silures-et-tilapias-au-cameroun",
+  "guideId": "eb-admin-14",
+  "titre": "Comment fabriquer son propre aliment pour silures et tilapias au Cameroun",
+  "description": "Fabriquer l'aliment de vos silures et tilapias au Cameroun : ingrédients locaux, besoins selon l'âge, granulés, stockage et erreurs qui freinent la croissance.",
+  "chapeau": "Vous élevez des silures ou des tilapias et l'aliment acheté pèse lourd sur votre budget ? Vous vous demandez s'il est possible de le fabriquer vous-même avec des produits locaux ? Oui, à condition de comprendre ce dont vos poissons ont besoin et de travailler avec soin. Voici les bases pour bien commencer.",
+  "sections": [
+    {
+      "titre": "Pourquoi fabriquer son aliment est un enjeu majeur",
+      "paragraphes": [
+        "En pisciculture, l'aliment est en général la dépense la plus importante. Beaucoup d'éleveurs au Cameroun dépendent d'aliments importés ou achetés loin de chez eux, dont le prix et la disponibilité varient. Savoir produire une partie ou la totalité de son aliment donne plus d'autonomie et de contrôle.",
+        "C'est aussi une question de qualité. Un aliment mal équilibré ralentit la croissance, augmente les pertes et salit l'eau. Un aliment bien formulé permet des poissons plus homogènes, en meilleure santé, prêts à vendre au bon moment."
+      ]
+    },
+    {
+      "titre": "Silures et tilapias n'ont pas les mêmes besoins",
+      "paragraphes": [
+        "Le silure, ou poisson-chat africain, est un poisson qui a besoin d'un aliment riche en protéines, notamment d'origine animale. Il mange plutôt au fond et accepte bien les granulés coulants, même si beaucoup d'éleveurs préfèrent des granulés flottants pour contrôler la consommation.",
+        "Le tilapia est plus polyvalent : il valorise mieux les ingrédients d'origine végétale et se nourrit en partie de ce qui pousse naturellement dans l'étang. Il apprécie les granulés flottants, qui permettent de voir s'il mange bien.",
+        "Dans les deux cas, les besoins changent avec l'âge : les alevins demandent un aliment très fin et très riche, les poissons en grossissement un aliment plus grossier et adapté à leur taille. Le guide Smart Life donne les formules pour chaque stade."
+      ]
+    },
+    {
+      "titre": "Les ingrédients que l'on trouve localement",
+      "paragraphes": [
+        "Un aliment équilibré combine des sources de protéines, d'énergie, de minéraux et de vitamines. Beaucoup de ces ingrédients sont disponibles au Cameroun, sur les marchés, auprès des huileries, des meuniers ou des fabricants de provende.",
+        "La qualité des matières premières est décisive : un ingrédient moisi, rance ou mal séché peut rendre vos poissons malades, même si la formule est bonne."
+      ],
+      "liste": [
+        "Sources de protéines animales : farine de poisson, farine de sang, farine d'asticots ou d'insectes",
+        "Sources de protéines végétales : tourteaux de soja, de coton ou d'arachide",
+        "Sources d'énergie : maïs, son de blé, son de riz, farine de manioc",
+        "Liants pour tenir le granulé : farine de manioc ou d'amidon",
+        "Compléments : prémix de vitamines et minéraux, un peu d'huile"
+      ]
+    },
+    {
+      "titre": "Les étapes de fabrication",
+      "paragraphes": [
+        "On peut démarrer avec un équipement simple et améliorer ensuite. L'important est la régularité : le même aliment, fabriqué de la même façon, donne des résultats prévisibles."
+      ],
+      "liste": [
+        "Sécher et trier les matières premières, retirer tout ce qui est moisi",
+        "Broyer finement chaque ingrédient",
+        "Peser précisément chaque ingrédient selon la formule choisie",
+        "Mélanger soigneusement à sec, puis ajouter l'eau progressivement",
+        "Former les granulés avec une presse ou une machine à granuler",
+        "Sécher les granulés à l'abri de la poussière jusqu'à ce qu'ils soient bien secs",
+        "Ensacher et étiqueter chaque lot avec la date de fabrication"
+      ]
+    },
+    {
+      "titre": "Le matériel et le stockage",
+      "paragraphes": [
+        "Pour une petite production, un moulin, une balance, des récipients de mélange et une petite granuleuse suffisent souvent. Quand la quantité augmente, une granuleuse plus puissante ou une machine à aliment flottant fait gagner du temps et de la qualité.",
+        "Le stockage est souvent négligé. Sous notre climat humide, un aliment mal conservé moisit vite et peut contenir des toxines dangereuses pour les poissons. Stockez les sacs sur des palettes, dans un local sec, aéré, à l'abri des rongeurs, et utilisez d'abord les lots les plus anciens."
+      ]
+    },
+    {
+      "titre": "Bien distribuer l'aliment",
+      "paragraphes": [
+        "Un bon aliment mal distribué donne de mauvais résultats. Nourrissez à heures fixes, observez si les poissons mangent avec appétit et ajustez la quantité. L'aliment qui reste au fond de l'étang pourrit et dégrade la qualité de l'eau.",
+        "Pesez régulièrement un échantillon de poissons pour suivre leur croissance et adapter la ration. Ce suivi vous montre si votre formule fonctionne ou s'il faut la corriger."
+      ]
+    },
+    {
+      "titre": "Aller plus loin : vendre son aliment",
+      "paragraphes": [
+        "Une fois votre formule maîtrisée et vos résultats confirmés dans vos propres étangs, vous pouvez proposer votre aliment à d'autres pisciculteurs de votre zone. C'est une activité complémentaire intéressante, mais elle exige une qualité constante et une traçabilité de chaque lot.",
+        "Commencez par quelques éleveurs voisins, recueillez leurs retours et n'augmentez la production que lorsque vous êtes sûr de pouvoir garder la même qualité."
+      ]
+    }
+  ],
+  "erreurs": [
+    "Utiliser du maïs ou des tourteaux moisis en pensant que la cuisson réglera le problème.",
+    "Donner le même aliment aux alevins et aux poissons adultes.",
+    "Changer de formule sans cesse, ce qui empêche de savoir ce qui marche.",
+    "Distribuer trop d'aliment et polluer l'eau de l'étang.",
+    "Stocker les sacs à même le sol dans un local humide.",
+    "Négliger les vitamines et minéraux pour réduire les coûts."
+  ],
+  "faq": [
+    {
+      "q": "Quelle est la différence entre un aliment flottant et un aliment coulant ?",
+      "a": "L'aliment flottant reste à la surface, ce qui permet de voir si les poissons mangent et de limiter le gaspillage. L'aliment coulant descend au fond et convient aux poissons qui se nourrissent en profondeur, mais on contrôle moins bien la consommation. Fabriquer de l'aliment flottant demande en général une machine adaptée."
+    },
+    {
+      "q": "Peut-on nourrir les silures avec des asticots ?",
+      "a": "Les asticots et les larves d'insectes sont une source de protéines appréciée par les silures. Ils sont souvent utilisés en complément d'un aliment équilibré plutôt que seuls. Leur production doit se faire dans de bonnes conditions d'hygiène."
+    },
+    {
+      "q": "Comment conserver l'aliment pour poissons sans qu'il moisisse ?",
+      "a": "Séchez bien les granulés avant de les ensacher, puis stockez-les dans un endroit sec et aéré, sur des palettes. Fabriquez des quantités que vous utiliserez rapidement. Jetez tout lot qui sent le moisi ou présente des taches."
+    },
+    {
+      "q": "Où acheter une machine à granulés pour poissons au Cameroun ?",
+      "a": "On en trouve chez des fabricants locaux de machines agricoles, des revendeurs de matériel d'élevage ou en importation. Demandez à voir la machine fonctionner et parlez à d'autres pisciculteurs qui l'utilisent. Vérifiez aussi la disponibilité des pièces de rechange."
+    }
+  ],
+  "motsCles": [
+    "fabriquer aliment poisson Cameroun",
+    "aliment pour silures fait maison",
+    "provende tilapia",
+    "formule aliment pisciculture",
+    "machine granulés poisson",
+    "pisciculture au Cameroun",
+    "aliment flottant poisson"
+  ]
+}
