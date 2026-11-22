@@ -9,6 +9,7 @@ import {
   Play, ExternalLink, ChevronDown, ChevronUp, Headphones, WifiOff, X, Bookmark,
 } from "lucide-react";
 import PwaInstallPrompt from "@/components/PwaInstallPrompt";
+import EspaceMarketing, { BienvenueEspace } from "./EspaceMarketing";
 import {
   savePdfOffline,
   getPdfOffline,
@@ -407,7 +408,7 @@ export default function MonEspacePage() {
   const [serverDemandes, setServerDemandes] = useState<Record<string, unknown>[] | null>(null);
   const [serverCC, setServerCC] = useState<CandidatureConsultant[] | null>(null);
   const [serverConsultants, setServerConsultants] = useState<{ id: string; prenom: string; nom?: string; ville?: string; anneesExperience?: string; clientsAccompa: number; entreprisesAccompa: number; domainesIds: string[]; actif: boolean }[] | null>(null);
-  const [dynamicEbooks, setDynamicEbooks] = useState<Array<{ id: string; title: string; category: string; pages: number; price: number; slug?: string; whatsappUrl?: string; audioUrl?: string }>>([]);
+  const [dynamicEbooks, setDynamicEbooks] = useState<Array<{ id: string; title: string; category: string; pages: number; price: number; slug?: string; whatsappUrl?: string; audioUrl?: string; cover?: string; originalPrice?: number; ventes?: number }>>([]);
   const [ebookOverrides, setEbookOverrides] = useState<Record<string, { whatsappUrl?: string; audioUrl?: string }>>({});
 
   // Pré-charger le cache localStorage pour usage hors-ligne (avant les appels API)
@@ -479,6 +480,7 @@ export default function MonEspacePage() {
         const list = (data.ebooks ?? []) as Array<{
           id: string; title?: string; category?: string; pages?: number;
           price?: number; slug?: string; whatsappUrl?: string; audioUrl?: string;
+          cover?: string; originalPrice?: number; ventes?: number;
         }>;
         const mapped = list.map((e) => ({
           id: e.id,
@@ -489,6 +491,9 @@ export default function MonEspacePage() {
           slug: e.slug,
           whatsappUrl: e.whatsappUrl,
           audioUrl: e.audioUrl,
+          cover: e.cover,
+          originalPrice: e.originalPrice,
+          ventes: e.ventes,
         }));
         // Préserver les métadonnées des ebooks achetés retirés du catalogue par l'admin
         const newIds = new Set(mapped.map((e) => e.id));
@@ -1105,6 +1110,8 @@ export default function MonEspacePage() {
         </button>
       </div>
 
+      <BienvenueEspace prenom={currentUser.firstName} achetes={ebooksPurchased} nbFormations={formationsPurchased.length} />
+
       {/* Rappel notation */}
       {nonNotees.length > 0 && (
         <div className="p-4 bg-[#E8B800]/10 border border-[#E8B800]/30 rounded-2xl flex items-start gap-3">
@@ -1115,70 +1122,6 @@ export default function MonEspacePage() {
             </p>
             <p className="text-gray-600 text-xs">Votre avis aide nos membres à choisir leur accompagnement.</p>
           </div>
-        </div>
-      )}
-
-      {/* ── Sécuriser le compte (si invité) ── */}
-      {!hasPassword && !pwdSuccess && !dismissedPinBanner && (
-        <section className="p-4 bg-green-50 border border-green-200 rounded-xl">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex items-center gap-2 flex-1 min-w-0">
-              <Shield size={16} className="text-green-600 flex-shrink-0 mt-0.5" />
-              <div className="min-w-0">
-                <p className="text-gray-800 text-sm font-semibold">Sécurisez votre espace</p>
-                <p className="text-gray-500 text-xs mt-0.5">
-                  Créez un code PIN pour retrouver vos achats facilement à chaque visite.
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={() => setDismissedPinBanner(true)}
-              className="text-gray-400 hover:text-gray-600 flex-shrink-0 p-0.5"
-              aria-label="Ignorer"
-            >
-              <X size={16} />
-            </button>
-          </div>
-          <form onSubmit={handleSetPassword} className="mt-3 space-y-2 max-w-xs">
-            <div className="flex gap-2">
-              <input type="text" inputMode="numeric" autoComplete="one-time-code" value={codeEmail}
-                onChange={(e) => { setCodeEmail(e.target.value.replace(/\D/g, "").slice(0, 6)); setPwdError(""); }}
-                className={`${inputCls} text-sm py-2 tracking-widest text-center font-mono`} placeholder="Code reçu par e-mail" maxLength={6} />
-              <button type="button" onClick={() => demanderCode(userStore.currentUser!.email)} disabled={envoiCode}
-                className="flex-shrink-0 px-3 rounded-lg border border-green-600 text-green-700 text-xs font-bold disabled:opacity-50">
-                {envoiCode ? "…" : codeEnvoye ? "Renvoyer" : "Recevoir"}
-              </button>
-            </div>
-            {infoCode && <p className="text-green-700 text-xs">{infoCode}</p>}
-            <div className="relative">
-              <input required type={showPwd ? "text" : "password"} inputMode="numeric" value={newPwd}
-                onChange={(e) => { setNewPwd(e.target.value.replace(/\D/g, "").slice(0, 6)); setPwdError(""); }}
-                className={`${inputCls} pr-11 text-sm py-2`} placeholder="Code PIN (4-6 chiffres)" maxLength={6} />
-              <button type="button" onClick={() => setShowPwd(!showPwd)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-900">
-                {showPwd ? <EyeOff size={14} /> : <Eye size={14} />}
-              </button>
-            </div>
-            <input required type="password" inputMode="numeric" value={confirmPwd}
-              onChange={(e) => { setConfirmPwd(e.target.value.replace(/\D/g, "").slice(0, 6)); setPwdError(""); }}
-              className={`${inputCls} text-sm py-2`} placeholder="Confirmer le code" maxLength={6} />
-            {pwdError && (
-              <p className="text-red-400 text-xs flex items-center gap-1">
-                <AlertCircle size={12} /> {pwdError}
-              </p>
-            )}
-            <button type="submit"
-              className="px-4 py-2 bg-green-600 hover:bg-green-500 text-white font-bold rounded-lg text-xs transition-colors flex items-center gap-1.5">
-              <Lock size={12} /> Créer mon code PIN
-            </button>
-          </form>
-        </section>
-      )}
-
-      {pwdSuccess && (
-        <div className="flex items-center gap-3 p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
-          <CheckCircle size={18} className="text-emerald-600" />
-          <p className="text-emerald-700 text-sm font-medium">Code PIN créé ! Vous pouvez maintenant vous connecter avec votre email et ce code.</p>
         </div>
       )}
 
@@ -1460,6 +1403,8 @@ export default function MonEspacePage() {
           </div>
         )}
       </section>
+
+      <EspaceMarketing achetes={ebooksPurchased} tous={allEbooks} />
 
       {/* ── Mes Favoris ── */}
       {(savedEbooksList.length > 0 || savedFormationsList.length > 0) && (
