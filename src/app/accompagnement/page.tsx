@@ -334,26 +334,23 @@ export default function AccompagnementPage() {
                   className="group bg-white border border-gray-200 rounded-2xl shadow-sm hover:border-green-400 transition-all card-hover flex flex-col overflow-hidden"
                 >
                   {/* Bannière image — pleine largeur en en-tête */}
-                  {espace.image ? (
-                    <div className="w-full flex-shrink-0" style={{ height: 190 }}>
+                  <div className="w-full flex-shrink-0 relative" style={{ height: 190 }}>
+                    {espace.image ? (
                       <img
                         src={espace.image}
                         alt={espace.titre}
                         loading="lazy"
                         decoding="async"
                         className="w-full h-full object-cover block"
+                        onError={(ev) => { (ev.target as HTMLImageElement).style.display = "none"; (ev.target as HTMLImageElement).nextElementSibling?.classList.remove("hidden"); }}
                       />
-                    </div>
-                  ) : (
-                    <div
-                      className="w-full flex-shrink-0 bg-gradient-to-br from-[#E8B800]/20 to-[#27A827]/10 flex items-center justify-center border-b border-gray-100"
-                      style={{ height: 170 }}
-                    >
+                    ) : null}
+                    <div className={`${espace.image ? "hidden" : ""} absolute inset-0 bg-gradient-to-br from-[#E8B800]/20 to-[#27A827]/10 flex items-center justify-center border-b border-gray-100`}>
                       <span className="text-[#E8B800] font-black text-5xl select-none">
                         {espace.titre.charAt(0).toUpperCase()}
                       </span>
                     </div>
-                  )}
+                  </div>
 
                   {/* Contenu sous l'image */}
                   <div className="p-4 flex flex-col flex-1">
@@ -361,9 +358,12 @@ export default function AccompagnementPage() {
                       {espace.domaine}
                     </span>
 
-                    <h3 className="text-gray-900 font-bold text-base leading-snug group-hover:text-[#E8B800] transition-colors mb-4 flex-1">
+                    <h3 className="text-gray-900 font-bold text-lg leading-snug group-hover:text-[#E8B800] transition-colors mb-2 flex-1">
                       {espace.titre}
                     </h3>
+                    {espace.descriptionCourte && (
+                      <p className="text-gray-500 text-sm leading-relaxed mb-3 line-clamp-2">{espace.descriptionCourte}</p>
+                    )}
 
                     {/* Stats */}
                     <div className="space-y-2 mb-4">

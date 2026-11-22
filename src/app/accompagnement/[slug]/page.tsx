@@ -8,13 +8,126 @@ import {
   TrendingUp, Clock, Wallet, Shield, Star, ChevronRight,
   MapPin, Phone, Briefcase, MessageSquare,
 } from "lucide-react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useAccompagnementStore, EspacePersonnalise } from "@/lib/accompagnement-store";
 import { espaces as STATIC_ESPACES } from "@/lib/accompagnement-data";
 import { useUserStore } from "@/lib/user-store";
 import ReviewSection from "@/components/ReviewSection";
 import { DescriptionRenderer } from "@/components/DescriptionRenderer";
 import AnimateOnScroll, { StaggerContainer, StaggerItem, AnimatedCounter } from "@/components/AnimateOnScroll";
+
+const PHOTOS_PRO: { mots: string[]; url: string }[] = [
+  { mots: ["assurance", "compagnie"], url: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["cuisine", "restaurant", "snack", "caftria", "cafétéria"], url: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["poisson", "pisciculture", "poissonnerie"], url: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["boulangerie", "pâtisserie", "ptisserie", "bonbon", "biscuit", "chocolat"], url: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["pressing", "blanchisserie", "laverie"], url: "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["coiffure", "salon", "beauté", "styliste", "cosmeti"], url: "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["quincaillerie", "aluminium", "vitre", "parpaing", "pavé", "construction", "topograph"], url: "https://images.unsplash.com/photo-1504148455328-c376907d081c?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["commerce", "boutique", "alimentation", "pices", "épice"], url: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["pharmacie", "parapharmacie", "santé", "baume", "gel douche", "dtergent", "savon"], url: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["élevage", "levage", "poulet", "porc", "boeuf", "buf", "canard", "lapin", "escargot", "hanneton"], url: "https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["culture", "plantain", "tomate", "oignon", "gombo", "aubergine", "avocat", "carotte", "haricot", "gingembre", "poivron", "pomme de terre", "concombre", "chou", "piment", "pastèque", "champignon", "aloe", "poivre"], url: "https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["palmier", "huile"], url: "https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["apiculture", "miel", "abeille"], url: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["école", "crèche", "garderie", "code de la route"], url: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["microfinance", "librairie"], url: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["vnementielle", "événementiel", "agence"], url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["whatsapp", "distance", "digital"], url: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["boisson", "dépôt", "dpot"], url: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["shawarma", "glace"], url: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["sécurité", "gardiennage", "scurit"], url: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["meublé", "meubl"], url: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["lunette", "optique"], url: "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["oeuf", "dpt dufs", "dpot dufs"], url: "https://images.unsplash.com/photo-1569288063643-5d29ad64df09?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["automobile", "pièces"], url: "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["maison", "construire"], url: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["froid", "climatisation"], url: "https://images.unsplash.com/photo-1631545806609-30b2d6e1d890?w=1200&h=600&fit=crop&q=80" },
+  { mots: ["aliment", "fabriqu", "fabrication"], url: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&h=600&fit=crop&q=80" },
+];
+
+function getPhotoPro(titre: string): string | null {
+  const t = titre.toLowerCase();
+  for (const p of PHOTOS_PRO) {
+    if (p.mots.some((m) => t.includes(m))) return p.url;
+  }
+  return null;
+}
+
+const IMAGES_CONTENU: { mots: string[]; images: { url: string; legende: string }[] }[] = [
+  { mots: ["assurance", "compagnie"], images: [
+    { url: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=500&fit=crop&q=80", legende: "Contrat professionnel" },
+    { url: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=500&fit=crop&q=80", legende: "Suivi personnalisé" },
+  ]},
+  { mots: ["cuisine", "restaurant", "snack", "caftria", "cafétéria"], images: [
+    { url: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=450&fit=crop&q=80", legende: "Une présentation soignée pour fidéliser" },
+    { url: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800&h=450&fit=crop&q=80", legende: "Un chef passionné à l'œuvre" },
+  ]},
+  { mots: ["poisson", "pisciculture", "poissonnerie"], images: [
+    { url: "https://images.unsplash.com/photo-1498654200943-1088dd4438ae?w=800&h=450&fit=crop&q=80", legende: "Bassins professionnels modernes" },
+    { url: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=800&h=450&fit=crop&q=80", legende: "Poissons frais et de qualité" },
+  ]},
+  { mots: ["boulangerie", "pâtisserie", "ptisserie"], images: [
+    { url: "https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=800&h=450&fit=crop&q=80", legende: "Le savoir-faire artisanal" },
+    { url: "https://images.unsplash.com/photo-1486427944544-d2c246c4df4a?w=800&h=450&fit=crop&q=80", legende: "Des produits qui font revenir les clients" },
+  ]},
+  { mots: ["pressing", "blanchisserie", "laverie"], images: [
+    { url: "https://images.unsplash.com/photo-1582735689369-4fe89db7114c?w=800&h=450&fit=crop&q=80", legende: "Équipement professionnel performant" },
+    { url: "https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=800&h=450&fit=crop&q=80", legende: "Service impeccable garanti" },
+  ]},
+  { mots: ["coiffure", "salon", "beauté", "cosmeti"], images: [
+    { url: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&h=450&fit=crop&q=80", legende: "Un salon moderne et accueillant" },
+    { url: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&h=450&fit=crop&q=80", legende: "Des soins de qualité professionnelle" },
+  ]},
+  { mots: ["quincaillerie", "aluminium", "construction", "topograph"], images: [
+    { url: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&h=450&fit=crop&q=80", legende: "Matériaux de qualité pour vos projets" },
+    { url: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=450&fit=crop&q=80", legende: "Le secteur BTP en plein essor" },
+  ]},
+  { mots: ["commerce", "boutique", "alimentation"], images: [
+    { url: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=800&h=450&fit=crop&q=80", legende: "Un commerce bien organisé attire les clients" },
+    { url: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&h=450&fit=crop&q=80", legende: "Diversité des produits et satisfaction" },
+  ]},
+  { mots: ["pharmacie", "parapharmacie", "santé", "savon", "dtergent"], images: [
+    { url: "https://images.unsplash.com/photo-1576602976047-174e57a47881?w=800&h=450&fit=crop&q=80", legende: "Un espace de santé de confiance" },
+    { url: "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=800&h=450&fit=crop&q=80", legende: "Des produits certifiés et fiables" },
+  ]},
+  { mots: ["élevage", "levage", "poulet", "porc", "boeuf"], images: [
+    { url: "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=800&h=450&fit=crop&q=80", legende: "Un élevage bien géré" },
+    { url: "https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=800&h=450&fit=crop&q=80", legende: "Le potentiel de l'agriculture africaine" },
+  ]},
+  { mots: ["culture", "plantain", "tomate", "agriculture", "gombo", "champignon", "aloe"], images: [
+    { url: "https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=800&h=450&fit=crop&q=80", legende: "Des récoltes abondantes et saines" },
+    { url: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&h=450&fit=crop&q=80", legende: "L'agriculture, pilier de l'économie" },
+  ]},
+  { mots: ["école", "crèche", "garderie", "code de la route"], images: [
+    { url: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&h=450&fit=crop&q=80", legende: "Investir dans l'éducation" },
+    { url: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&h=450&fit=crop&q=80", legende: "Un cadre d'apprentissage de qualité" },
+  ]},
+  { mots: ["vnementielle", "événementiel", "agence"], images: [
+    { url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=450&fit=crop&q=80", legende: "Des événements mémorables" },
+    { url: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=450&fit=crop&q=80", legende: "Organisation et créativité" },
+  ]},
+  { mots: ["sécurité", "gardiennage", "scurit"], images: [
+    { url: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=800&h=450&fit=crop&q=80", legende: "Protection et vigilance" },
+    { url: "https://images.unsplash.com/photo-1558002038-1055907df827?w=800&h=450&fit=crop&q=80", legende: "Équipement de sécurité moderne" },
+  ]},
+  { mots: ["meublé", "meubl"], images: [
+    { url: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=450&fit=crop&q=80", legende: "Intérieurs de qualité" },
+    { url: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=450&fit=crop&q=80", legende: "Le confort qui fait la différence" },
+  ]},
+  { mots: ["maison", "construire"], images: [
+    { url: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=450&fit=crop&q=80", legende: "Votre projet immobilier accompagné" },
+    { url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=450&fit=crop&q=80", legende: "Construire avec les bons partenaires" },
+  ]},
+];
+
+function getImagesContenu(titre: string): { url: string; legende: string }[] {
+  const t = titre.toLowerCase();
+  for (const ic of IMAGES_CONTENU) {
+    if (ic.mots.some((m) => t.includes(m))) return ic.images;
+  }
+  return [];
+}
 
 const inputCls =
   "w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#27A827] focus:ring-2 focus:ring-[#27A827]/10 focus:bg-white transition-all text-sm";
@@ -50,7 +163,7 @@ function TimelineStep({ step, index, total }: { step: string; index: number; tot
         )}
       </div>
       <div className="pb-6">
-        <p className="text-gray-800 text-sm font-medium leading-relaxed pt-2">{step}</p>
+        <p className="text-gray-800 text-base font-medium leading-relaxed pt-2">{step}</p>
       </div>
     </motion.div>
   );
@@ -88,6 +201,8 @@ export default function EspaceDetailPage() {
   const [loginError, setLoginError] = useState("");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [step, setStep] = useState(1);
+  const [stepError, setStepError] = useState("");
   const [form, setForm] = useState({
     nom: "", email: "", telephone: "", ville: "",
     profession: "", capital: "", motivation: "",
@@ -108,6 +223,7 @@ export default function EspaceDetailPage() {
       setMode("inscription");
     }
   }, [userStore.currentUser, store.clientConnecte, store]);
+  const [imgError, setImgError] = useState(false);
   const [secteurs, setSecteurs] = useState<string[]>([]);
 
   useEffect(() => {
@@ -145,7 +261,10 @@ export default function EspaceDetailPage() {
   const demandesEspace = store.demandes.filter((d) => d.espaceId === espace.id);
   const validees = demandesEspace.filter((d) => d.statut === "validee").length;
   const enAttente = demandesEspace.filter((d) => d.statut === "en_attente").length;
-  const heroImage = espace.image || staticEspace?.image;
+  const coverImage = espace.image || staticEspace?.image;
+  const photoPro = getPhotoPro(espace.titre);
+  const heroImage = photoPro || coverImage;
+  const imagesContenu = getImagesContenu(espace.titre);
   const icone = staticEspace?.icone;
   const duree = staticEspace?.dureeAccompagnement;
   const investMin = staticEspace?.investissementMin;
@@ -238,14 +357,15 @@ export default function EspaceDetailPage() {
 
       {/* ═══ HERO AVEC IMAGE ═══ */}
       <section className="relative overflow-hidden">
-        {heroImage ? (
+        {heroImage && !imgError ? (
           <>
             <img
               src={heroImage}
               alt={espace.titre}
               className="absolute inset-0 w-full h-full object-cover"
+              onError={() => setImgError(true)}
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-white/80 to-white" />
+            <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-white/50 to-white" />
           </>
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-white to-yellow-50" />
@@ -297,7 +417,7 @@ export default function EspaceDetailPage() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15, duration: 0.5 }}
-            className="text-3xl sm:text-4xl font-black text-gray-900 mb-4 leading-tight"
+            className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 mb-4 leading-[1.05]"
           >
             {espace.titre}
           </motion.h1>
@@ -307,7 +427,7 @@ export default function EspaceDetailPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.25 }}
-            className="text-gray-600 text-base leading-relaxed max-w-xl mb-6"
+            className="text-gray-600 text-lg sm:text-xl leading-relaxed max-w-xl mb-6"
           >
             {espace.descriptionCourte || espace.descriptionLongue?.slice(0, 150)}
           </motion.p>
@@ -354,6 +474,33 @@ export default function EspaceDetailPage() {
         </div>
       </section>
 
+      {/* ═══ BANDE D'ACCROCHE ═══ */}
+      <section className="bg-gradient-to-r from-[#27A827]/5 via-[#E8B800]/5 to-[#27A827]/5 border-y border-[#E8B800]/10">
+        <div className="max-w-5xl mx-auto px-4 py-5 sm:py-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-center">
+            <div className="flex items-center gap-2">
+              <Shield size={18} className="text-[#27A827]" />
+              <span className="text-gray-800 text-sm sm:text-base font-semibold">100% Gratuit</span>
+            </div>
+            <div className="hidden sm:block w-px h-5 bg-[#E8B800]/30" />
+            <div className="flex items-center gap-2">
+              <Star size={18} className="text-[#E8B800]" />
+              <span className="text-gray-800 text-sm sm:text-base font-semibold">Expert dédié à votre projet</span>
+            </div>
+            <div className="hidden sm:block w-px h-5 bg-[#E8B800]/30" />
+            <div className="flex items-center gap-2">
+              <Clock size={18} className="text-[#27A827]" />
+              <span className="text-gray-800 text-sm sm:text-base font-semibold">Réponse sous 48h</span>
+            </div>
+            <div className="hidden sm:block w-px h-5 bg-[#E8B800]/30" />
+            <div className="flex items-center gap-2">
+              <Users size={18} className="text-[#E8B800]" />
+              <span className="text-gray-800 text-sm sm:text-base font-semibold">Réseau d&apos;entrepreneurs</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ CONTENU PRINCIPAL ═══ */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
         <div className="grid lg:grid-cols-5 gap-10 lg:gap-14 items-start">
@@ -367,10 +514,55 @@ export default function EspaceDetailPage() {
                 <div className="prose prose-gray max-w-none">
                   <DescriptionRenderer
                     html={espace.descriptionLongue}
-                    className="text-gray-600 text-base leading-relaxed
-                      [&_img]:rounded-xl [&_img]:my-4
-                      [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1
-                      [&_b]:text-gray-900 [&_strong]:text-gray-900 [&_i]:italic [&_em]:italic"
+                    className="text-gray-700 text-lg sm:text-xl leading-relaxed
+                      [&_img]:rounded-xl [&_img]:my-4 [&_img]:shadow-lg
+                      [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_ul]:text-lg
+                      [&_li]:text-gray-700
+                      [&_b]:text-[#E8B800] [&_b]:font-extrabold
+                      [&_strong]:text-[#E8B800] [&_strong]:font-extrabold
+                      [&_h2]:text-2xl [&_h2]:font-black [&_h2]:text-gray-900 [&_h2]:mt-8 [&_h2]:mb-4
+                      [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-gray-900 [&_h3]:mt-6 [&_h3]:mb-3
+                      [&_p]:mb-4
+                      [&_i]:italic [&_em]:italic"
+                  />
+                </div>
+              </AnimateOnScroll>
+            )}
+
+            {/* Images d'illustration dans le contenu */}
+            {imagesContenu.length > 0 && (
+              <AnimateOnScroll variant="fadeUp">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {imagesContenu.map((img, i) => (
+                    <div key={i} className="rounded-2xl overflow-hidden border border-gray-100 shadow-lg group">
+                      <div className="relative">
+                        <img
+                          src={img.url}
+                          alt={img.legende}
+                          className="w-full h-48 sm:h-56 object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                          onError={(ev) => { (ev.target as HTMLImageElement).closest('.group')!.remove(); }}
+                        />
+                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent px-3 sm:px-4 py-2.5 sm:py-3">
+                          <p className="text-white text-sm sm:text-base font-bold" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.7)" }}>{img.legende}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </AnimateOnScroll>
+            )}
+
+            {/* Affiche admin dans le contenu */}
+            {coverImage && photoPro && !imgError && (
+              <AnimateOnScroll variant="fadeUp">
+                <div className="rounded-2xl overflow-hidden border-2 border-[#E8B800]/20 shadow-xl bg-white">
+                  <img
+                    src={coverImage}
+                    alt={espace.titre}
+                    className="w-full object-contain max-h-[400px] sm:max-h-[500px]"
+                    style={{ imageRendering: "auto" }}
+                    onError={(ev) => { (ev.target as HTMLImageElement).parentElement!.style.display = "none"; }}
                   />
                 </div>
               </AnimateOnScroll>
@@ -379,30 +571,30 @@ export default function EspaceDetailPage() {
             {/* Chiffres clés */}
             <AnimateOnScroll variant="fadeUp">
               <div className="grid grid-cols-2 gap-3">
-                <div className="p-4 bg-gradient-to-br from-[#E8B800]/5 to-[#E8B800]/10 border border-[#E8B800]/15 rounded-2xl text-center">
-                  <div className="text-2xl sm:text-3xl font-black text-[#E8B800] mb-0.5">
+                <div className="p-5 bg-gradient-to-br from-[#E8B800]/5 to-[#E8B800]/10 border border-[#E8B800]/15 rounded-2xl text-center">
+                  <div className="text-3xl sm:text-4xl font-black text-[#E8B800] mb-1">
                     <AnimatedCounter value={espace.placesDisponibles} />
                   </div>
-                  <div className="text-gray-500 text-xs">place{espace.placesDisponibles > 1 ? "s" : ""} restante{espace.placesDisponibles > 1 ? "s" : ""}</div>
+                  <div className="text-gray-600 text-sm font-medium">place{espace.placesDisponibles > 1 ? "s" : ""} restante{espace.placesDisponibles > 1 ? "s" : ""}</div>
                 </div>
                 {espace.clientsSatisfaits > 0 && (
-                  <div className="p-4 bg-gradient-to-br from-[#27A827]/5 to-[#27A827]/10 border border-[#27A827]/15 rounded-2xl text-center">
-                    <div className="text-2xl sm:text-3xl font-black text-[#27A827] mb-0.5">
+                  <div className="p-5 bg-gradient-to-br from-[#27A827]/5 to-[#27A827]/10 border border-[#27A827]/15 rounded-2xl text-center">
+                    <div className="text-3xl sm:text-4xl font-black text-[#27A827] mb-1">
                       <AnimatedCounter value={espace.clientsSatisfaits} />
                     </div>
-                    <div className="text-gray-500 text-xs">client{espace.clientsSatisfaits > 1 ? "s" : ""} satisfait{espace.clientsSatisfaits > 1 ? "s" : ""}</div>
+                    <div className="text-gray-600 text-sm font-medium">client{espace.clientsSatisfaits > 1 ? "s" : ""} satisfait{espace.clientsSatisfaits > 1 ? "s" : ""}</div>
                   </div>
                 )}
                 {validees > 0 && (
-                  <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-2xl text-center">
-                    <div className="text-2xl font-black text-emerald-600 mb-0.5">{validees}</div>
-                    <div className="text-gray-500 text-xs">candidature{validees > 1 ? "s" : ""} validée{validees > 1 ? "s" : ""}</div>
+                  <div className="p-5 bg-emerald-50 border border-emerald-100 rounded-2xl text-center">
+                    <div className="text-3xl sm:text-4xl font-black text-emerald-600 mb-1">{validees}</div>
+                    <div className="text-gray-600 text-sm font-medium">candidature{validees > 1 ? "s" : ""} validée{validees > 1 ? "s" : ""}</div>
                   </div>
                 )}
                 {enAttente > 0 && (
-                  <div className="p-4 bg-yellow-50 border border-yellow-100 rounded-2xl text-center">
-                    <div className="text-2xl font-black text-yellow-600 mb-0.5">{enAttente}</div>
-                    <div className="text-gray-500 text-xs">en cours d&apos;examen</div>
+                  <div className="p-5 bg-yellow-50 border border-yellow-100 rounded-2xl text-center">
+                    <div className="text-3xl sm:text-4xl font-black text-yellow-600 mb-1">{enAttente}</div>
+                    <div className="text-gray-600 text-sm font-medium">en cours d&apos;examen</div>
                   </div>
                 )}
               </div>
@@ -412,20 +604,20 @@ export default function EspaceDetailPage() {
             {espace.avantages?.filter(Boolean).length > 0 && (
               <AnimateOnScroll variant="fadeUp">
                 <div className="p-5 sm:p-6 bg-gradient-to-br from-green-50/80 via-white to-yellow-50/50 border border-gray-100 rounded-2xl">
-                  <h3 className="text-gray-900 font-bold text-lg mb-5 flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-[#E8B800]/10 flex items-center justify-center">
-                      <TrendingUp size={16} className="text-[#E8B800]" />
+                  <h3 className="text-gray-900 font-bold text-xl sm:text-2xl mb-6 flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#E8B800]/10 flex items-center justify-center">
+                      <TrendingUp size={20} className="text-[#E8B800]" />
                     </div>
                     Pourquoi ce secteur ?
                   </h3>
                   <StaggerContainer className="space-y-3">
                     {espace.avantages.filter(Boolean).map((a, i) => (
                       <StaggerItem key={i}>
-                        <div className="flex items-start gap-3 p-3 bg-white/70 rounded-xl border border-gray-50">
-                          <div className="w-5 h-5 rounded-full bg-[#27A827]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <CheckCircle size={12} className="text-[#27A827]" />
+                        <div className="flex items-start gap-3 p-4 bg-white/70 rounded-xl border border-gray-50">
+                          <div className="w-6 h-6 rounded-full bg-[#27A827]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <CheckCircle size={14} className="text-[#27A827]" />
                           </div>
-                          <p className="text-gray-700 text-sm leading-relaxed">{a}</p>
+                          <p className="text-gray-700 text-base leading-relaxed">{a}</p>
                         </div>
                       </StaggerItem>
                     ))}
@@ -436,10 +628,10 @@ export default function EspaceDetailPage() {
 
             {/* Étapes de l'accompagnement */}
             <AnimateOnScroll variant="fadeUp">
-              <div className="p-5 sm:p-6 bg-white border border-gray-100 rounded-2xl shadow-sm">
-                <h3 className="text-gray-900 font-bold text-lg mb-6 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-[#27A827]/10 flex items-center justify-center">
-                    <CheckCircle size={16} className="text-[#27A827]" />
+              <div className="p-5 sm:p-7 bg-white border border-gray-100 rounded-2xl shadow-sm">
+                <h3 className="text-gray-900 font-bold text-xl sm:text-2xl mb-6 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#27A827]/10 flex items-center justify-center">
+                    <CheckCircle size={20} className="text-[#27A827]" />
                   </div>
                   Ce que comprend l&apos;accompagnement
                 </h3>
@@ -680,91 +872,212 @@ export default function EspaceDetailPage() {
             ) : (
               <AnimateOnScroll variant="fadeUp">
                 <div className="p-5 sm:p-7 bg-white border border-gray-100 rounded-2xl shadow-lg shadow-gray-100/50">
-                  <button onClick={() => setMode("info")} className="text-gray-500 text-xs mb-4 hover:text-gray-700 flex items-center gap-1 transition-colors">
+                  <button onClick={() => { setMode("info"); setStep(1); setStepError(""); }} className="text-gray-500 text-xs mb-4 hover:text-gray-700 flex items-center gap-1 transition-colors">
                     <ChevronRight size={12} className="rotate-180" /> Retour
                   </button>
-                  <h3 className="text-gray-900 text-lg font-bold mb-1">Demander mon accompagnement</h3>
-                  <p className="text-gray-500 text-sm mb-4">
-                    Candidature pour : <strong className="text-gray-900">{espace.titre}</strong>
-                  </p>
-                  <form onSubmit={handleInscription} className="space-y-3">
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className={labelCls}>Nom complet <span className="text-[#E8B800]">*</span></label>
-                        <input required type="text" value={form.nom} onChange={(e) => setForm({ ...form, nom: e.target.value })} className={inputCls} placeholder="Jean Dupont" />
-                      </div>
-                      <div>
-                        <label className={labelCls}>Téléphone <span className="text-[#E8B800]">*</span></label>
-                        <input required type="tel" value={form.telephone} onChange={(e) => setForm({ ...form, telephone: e.target.value })} className={inputCls} placeholder="+237 6XX..." />
-                      </div>
+
+                  <div className="mb-5">
+                    <h3 className="text-gray-900 text-lg font-bold mb-1">Demander mon accompagnement</h3>
+                    <p className="text-gray-500 text-sm mb-4">
+                      Candidature pour : <strong className="text-gray-900">{espace.titre}</strong>
+                    </p>
+                    <div className="flex items-center gap-1.5 mb-1">
+                      {[1, 2, 3].map((s) => (
+                        <div key={s} className="flex-1">
+                          <div className="h-1.5 rounded-full bg-gray-100 overflow-hidden">
+                            <motion.div
+                              className="h-full rounded-full bg-gradient-to-r from-[#E8B800] to-[#27A827]"
+                              initial={{ width: "0%" }}
+                              animate={{ width: step >= s ? "100%" : "0%" }}
+                              transition={{ duration: 0.4, ease: "easeOut" }}
+                            />
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                    <div>
-                      <label className={labelCls}>Email <span className="text-[#E8B800]">*</span></label>
-                      <input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputCls} placeholder="jean@exemple.com" />
+                    <div className="flex items-center justify-between">
+                      <p className="text-gray-400 text-xs">Étape {step} sur 3</p>
+                      <p className="text-gray-400 text-xs">{step === 1 ? "Coordonnées" : step === 2 ? "Votre profil" : "Votre projet"}</p>
                     </div>
-                    <div>
-                      <label className={labelCls}>Profession <span className="text-[#E8B800]">*</span></label>
-                      <input required type="text" value={form.profession} onChange={(e) => setForm({ ...form, profession: e.target.value })} className={inputCls} placeholder="Ex: Commerçant, Étudiant..." />
-                    </div>
-                    {secteurs.length > 0 && (
-                      <div>
-                        <label className={labelCls}>Secteur ciblé</label>
-                        <select
-                          value={form.secteurActivite}
-                          onChange={(e) => setForm({ ...form, secteurActivite: e.target.value, secteurAutre: "" })}
-                          className={selectCls}
+                  </div>
+
+                  {stepError && (
+                    <motion.p initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="text-red-500 text-xs flex items-center gap-1 mb-3 p-2 bg-red-50 rounded-lg">
+                      <AlertCircle size={12} /> {stepError}
+                    </motion.p>
+                  )}
+
+                  <form onSubmit={handleInscription}>
+                    <AnimatePresence mode="wait">
+                      {step === 1 && (
+                        <motion.div
+                          key="step1"
+                          initial={{ opacity: 0, x: 30 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -30 }}
+                          transition={{ duration: 0.25 }}
+                          className="space-y-3"
                         >
-                          <option value="">— Choisir (optionnel) —</option>
-                          {secteurs.map((s) => (
-                            <option key={s} value={s}>{s === "Autre" ? "Autre (préciser)" : s}</option>
-                          ))}
-                        </select>
-                        {form.secteurActivite === "Autre" && (
-                          <input
-                            type="text"
-                            value={form.secteurAutre}
-                            onChange={(e) => setForm({ ...form, secteurAutre: e.target.value })}
-                            className={`${inputCls} mt-2`}
-                            placeholder="Précisez votre secteur..."
-                          />
-                        )}
-                      </div>
-                    )}
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className={labelCls}>Ville <span className="text-[#E8B800]">*</span></label>
-                        <input required type="text" value={form.ville} onChange={(e) => setForm({ ...form, ville: e.target.value })} className={inputCls} placeholder="Yaoundé" />
-                      </div>
-                      <div>
-                        <label className={labelCls}>Capital <span className="text-[#E8B800]">*</span></label>
-                        <select required value={form.capital} onChange={(e) => setForm({ ...form, capital: e.target.value })} className={`${selectCls} bg-[#E8B800]/10 border-[#E8B800]/30 font-semibold`}>
-                          <option value="">Fourchette...</option>
-                          <option value="moins-500k">- de 500k FCFA</option>
-                          <option value="500k-1m">500k – 1M FCFA</option>
-                          <option value="1m-3m">1M – 3M FCFA</option>
-                          <option value="3m-10m">3M – 10M FCFA</option>
-                          <option value="plus-10m">+ de 10M FCFA</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div>
-                      <label className={labelCls}>Motivation / projet <span className="text-[#E8B800]">*</span></label>
-                      <textarea
-                        required rows={4} value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        className={`${inputCls} resize-none`}
-                        placeholder={`Décrivez votre projet dans le secteur ${espace.titre}...`}
-                      />
-                    </div>
-                    <motion.button
-                      type="submit"
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-white font-bold rounded-xl flex items-center justify-center gap-2 mt-1 shadow-lg shadow-[#27A827]/20"
-                    >
-                      <Send size={16} /> Envoyer ma demande
-                    </motion.button>
-                    <p className="text-gray-400 text-xs text-center">Vous serez contacté dans les 48–72h.</p>
+                          <div className="flex items-center gap-2 p-2.5 bg-green-50/70 rounded-xl border border-green-100/50">
+                            <div className="w-6 h-6 rounded-full bg-[#27A827] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">1</div>
+                            <span className="text-gray-700 text-sm font-medium">Vos coordonnées</span>
+                          </div>
+                          <div>
+                            <label className={labelCls}>Nom complet <span className="text-[#E8B800]">*</span></label>
+                            <input type="text" value={form.nom} onChange={(e) => { setForm({ ...form, nom: e.target.value }); setStepError(""); }} className={inputCls} placeholder="Jean Dupont" />
+                          </div>
+                          <div>
+                            <label className={labelCls}>Email <span className="text-[#E8B800]">*</span></label>
+                            <input type="email" value={form.email} onChange={(e) => { setForm({ ...form, email: e.target.value }); setStepError(""); }} className={inputCls} placeholder="jean@exemple.com" />
+                          </div>
+                          <div>
+                            <label className={labelCls}>Téléphone <span className="text-[#E8B800]">*</span></label>
+                            <input type="tel" value={form.telephone} onChange={(e) => { setForm({ ...form, telephone: e.target.value }); setStepError(""); }} className={inputCls} placeholder="+237 6XX..." />
+                          </div>
+                          <motion.button
+                            type="button"
+                            onClick={() => {
+                              if (!form.nom.trim() || !form.email.trim() || !form.telephone.trim()) {
+                                setStepError("Remplissez tous les champs pour continuer.");
+                                return;
+                              }
+                              setStepError("");
+                              setStep(2);
+                            }}
+                            whileHover={{ scale: 1.01 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="w-full py-3.5 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-white font-bold rounded-xl flex items-center justify-center gap-2 mt-1 shadow-lg shadow-[#27A827]/20"
+                          >
+                            Continuer <ArrowRight size={16} />
+                          </motion.button>
+                        </motion.div>
+                      )}
+
+                      {step === 2 && (
+                        <motion.div
+                          key="step2"
+                          initial={{ opacity: 0, x: 30 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -30 }}
+                          transition={{ duration: 0.25 }}
+                          className="space-y-3"
+                        >
+                          <div className="flex items-center gap-2 p-2.5 bg-green-50/70 rounded-xl border border-green-100/50">
+                            <div className="w-6 h-6 rounded-full bg-[#27A827] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">2</div>
+                            <span className="text-gray-700 text-sm font-medium">Votre situation</span>
+                          </div>
+                          <div>
+                            <label className={labelCls}>Profession <span className="text-[#E8B800]">*</span></label>
+                            <input type="text" value={form.profession} onChange={(e) => { setForm({ ...form, profession: e.target.value }); setStepError(""); }} className={inputCls} placeholder="Ex: Commerçant, Étudiant..." />
+                          </div>
+                          {secteurs.length > 0 && (
+                            <div>
+                              <label className={labelCls}>Secteur ciblé</label>
+                              <select
+                                value={form.secteurActivite}
+                                onChange={(e) => setForm({ ...form, secteurActivite: e.target.value, secteurAutre: "" })}
+                                className={selectCls}
+                              >
+                                <option value="">— Choisir (optionnel) —</option>
+                                {secteurs.map((s) => (
+                                  <option key={s} value={s}>{s === "Autre" ? "Autre (préciser)" : s}</option>
+                                ))}
+                              </select>
+                              {form.secteurActivite === "Autre" && (
+                                <input
+                                  type="text"
+                                  value={form.secteurAutre}
+                                  onChange={(e) => setForm({ ...form, secteurAutre: e.target.value })}
+                                  className={`${inputCls} mt-2`}
+                                  placeholder="Précisez votre secteur..."
+                                />
+                              )}
+                            </div>
+                          )}
+                          <div className="grid grid-cols-2 gap-3">
+                            <div>
+                              <label className={labelCls}>Ville <span className="text-[#E8B800]">*</span></label>
+                              <input type="text" value={form.ville} onChange={(e) => { setForm({ ...form, ville: e.target.value }); setStepError(""); }} className={inputCls} placeholder="Yaoundé" />
+                            </div>
+                            <div>
+                              <label className={labelCls}>Capital <span className="text-[#E8B800]">*</span></label>
+                              <select value={form.capital} onChange={(e) => { setForm({ ...form, capital: e.target.value }); setStepError(""); }} className={`${selectCls} bg-[#E8B800]/10 border-[#E8B800]/30 font-semibold`}>
+                                <option value="">Fourchette...</option>
+                                <option value="moins-500k">- de 500k FCFA</option>
+                                <option value="500k-1m">500k – 1M FCFA</option>
+                                <option value="1m-3m">1M – 3M FCFA</option>
+                                <option value="3m-10m">3M – 10M FCFA</option>
+                                <option value="plus-10m">+ de 10M FCFA</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="flex gap-3 mt-1">
+                            <button type="button" onClick={() => { setStep(1); setStepError(""); }} className="flex-1 py-3.5 border border-gray-200 hover:bg-gray-50 text-gray-700 rounded-xl text-sm font-medium transition-colors">
+                              Précédent
+                            </button>
+                            <motion.button
+                              type="button"
+                              onClick={() => {
+                                if (!form.profession.trim() || !form.ville.trim() || !form.capital) {
+                                  setStepError("Remplissez tous les champs pour continuer.");
+                                  return;
+                                }
+                                setStepError("");
+                                setStep(3);
+                              }}
+                              whileHover={{ scale: 1.01 }}
+                              whileTap={{ scale: 0.98 }}
+                              className="flex-1 py-3.5 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-[#27A827]/20"
+                            >
+                              Continuer <ArrowRight size={16} />
+                            </motion.button>
+                          </div>
+                        </motion.div>
+                      )}
+
+                      {step === 3 && (
+                        <motion.div
+                          key="step3"
+                          initial={{ opacity: 0, x: 30 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -30 }}
+                          transition={{ duration: 0.25 }}
+                          className="space-y-3"
+                        >
+                          <div className="flex items-center gap-2 p-2.5 bg-green-50/70 rounded-xl border border-green-100/50">
+                            <div className="w-6 h-6 rounded-full bg-[#27A827] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">3</div>
+                            <span className="text-gray-700 text-sm font-medium">Votre projet</span>
+                          </div>
+                          <div className="p-3 bg-gray-50 rounded-xl text-xs text-gray-500 space-y-1.5">
+                            <div className="flex items-center gap-2"><CheckCircle size={12} className="text-[#27A827] flex-shrink-0" /> <span className="truncate">{form.nom} · {form.email}</span></div>
+                            <div className="flex items-center gap-2"><CheckCircle size={12} className="text-[#27A827] flex-shrink-0" /> <span className="truncate">{form.profession} · {form.ville}</span></div>
+                          </div>
+                          <div>
+                            <label className={labelCls}>Décrivez votre projet et votre motivation <span className="text-[#E8B800]">*</span></label>
+                            <textarea
+                              required rows={5} value={message}
+                              onChange={(e) => setMessage(e.target.value)}
+                              className={`${inputCls} resize-none`}
+                              placeholder={`Pourquoi souhaitez-vous vous lancer dans le secteur ${espace.titre} ? Quelle est votre vision ? Avez-vous déjà de l'expérience ?`}
+                            />
+                          </div>
+                          <div className="flex gap-3 mt-1">
+                            <button type="button" onClick={() => { setStep(2); setStepError(""); }} className="flex-1 py-3.5 border border-gray-200 hover:bg-gray-50 text-gray-700 rounded-xl text-sm font-medium transition-colors">
+                              Précédent
+                            </button>
+                            <motion.button
+                              type="submit"
+                              whileHover={{ scale: 1.01 }}
+                              whileTap={{ scale: 0.98 }}
+                              className="flex-1 py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-[#27A827]/20"
+                            >
+                              <Send size={16} /> Envoyer
+                            </motion.button>
+                          </div>
+                          <p className="text-gray-400 text-xs text-center">Vous serez contacté dans les 48–72h.</p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </form>
                 </div>
               </AnimateOnScroll>
@@ -797,9 +1110,9 @@ export default function EspaceDetailPage() {
         return (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
             <AnimateOnScroll variant="fadeUp">
-              <h3 className="text-gray-900 font-bold text-xl mb-6 flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-[#E8B800]/10 flex items-center justify-center">
-                  <ArrowRight size={16} className="text-[#E8B800]" />
+              <h3 className="text-gray-900 font-bold text-2xl sm:text-3xl mb-8 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#E8B800]/10 flex items-center justify-center">
+                  <ArrowRight size={20} className="text-[#E8B800]" />
                 </div>
                 {similaires.length > 0 ? "Domaines similaires" : "Autres domaines disponibles"}
               </h3>
@@ -812,15 +1125,19 @@ export default function EspaceDetailPage() {
                   <StaggerItem key={e.id}>
                     <Link href={`/accompagnement/${e.id}`}
                       className="group block bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-[#E8B800]/20 transition-all">
-                      {img ? (
-                        <div className="h-32 sm:h-36 overflow-hidden">
-                          <img src={img} alt={e.titre} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                      <div className="h-36 sm:h-40 overflow-hidden relative">
+                        {img ? (
+                          <img
+                            src={img}
+                            alt={e.titre}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            onError={(ev) => { (ev.target as HTMLImageElement).style.display = "none"; (ev.target as HTMLImageElement).nextElementSibling?.classList.remove("hidden"); }}
+                          />
+                        ) : null}
+                        <div className={`${img ? "hidden" : ""} absolute inset-0 bg-gradient-to-br from-[#E8B800]/10 to-[#27A827]/5 flex items-center justify-center`}>
+                          <span className="text-5xl">{emoji || e.titre.charAt(0)}</span>
                         </div>
-                      ) : (
-                        <div className="h-32 sm:h-36 bg-gradient-to-br from-[#E8B800]/10 to-[#27A827]/5 flex items-center justify-center">
-                          <span className="text-4xl">{emoji || e.titre.charAt(0)}</span>
-                        </div>
-                      )}
+                      </div>
                       <div className="p-4">
                         <div className="flex items-center justify-between">
                           <div>
