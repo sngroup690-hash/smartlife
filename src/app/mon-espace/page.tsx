@@ -582,30 +582,30 @@ export default function MonEspacePage() {
     e.preventDefault();
     setLoginError("");
 
-    // Le serveur fait foi (un code remis à zéro doit être vu partout) ; la mémoire de l'appareil ne sert qu'en cas de coupure réseau.
-    const localUser = userStore.getUserByEmail(email);
+    // Un client qui a payé entre avec son adresse e-mail seule : pas de code à créer ni à recevoir.
     setEmailLoading(true);
     try {
-      const res = await fetch(`/api/user/lookup?email=${encodeURIComponent(email)}`);
-      const data = await res.json();
-      if (data.found) {
-        if (data.hasPassword) setShowPasswordField(true);
-        else { setShowPinCreation(true); demanderCode(); }
+      const res = await fetch("/api/auth/acces-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.user) {
+        userStore.setServerSession({
+          id: data.user.id,
+          firstName: data.user.firstName ?? "",
+          lastName: data.user.lastName ?? "",
+          email: data.user.email,
+          phone: "",
+          ebooksAchetes: data.user.ebooksAchetes ?? [],
+          formationsAchetees: data.user.formationsAchetees ?? [],
+        });
         return;
       }
-      if (localUser) {
-        if (localUser.hasPassword) setShowPasswordField(true);
-        else setShowPinCreation(true);
-        return;
-      }
-      setLoginError("Aucun compte trouvé pour cet email. Vérifiez ou achetez un produit d'abord.");
+      setLoginError(data.error ?? "Aucun achat trouvé pour cet e-mail. Vérifie l'adresse utilisée lors du paiement.");
     } catch {
-      if (localUser) {
-        if (localUser.hasPassword) setShowPasswordField(true);
-        else setShowPinCreation(true);
-        return;
-      }
-      setLoginError("Erreur réseau. Vérifiez votre connexion et réessayez.");
+      setLoginError("Erreur réseau. Vérifie ta connexion et réessaie.");
     } finally {
       setEmailLoading(false);
     }
