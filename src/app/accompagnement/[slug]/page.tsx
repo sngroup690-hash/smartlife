@@ -130,19 +130,19 @@ function getImagesContenu(titre: string): { url: string; legende: string }[] {
 }
 
 const IMAGES_AVANTAGES: { mots: string[]; url: string }[] = [
-  { mots: ["investissement", "capital", "départ", "accessible"], url: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&h=250&fit=crop&q=80" },
-  { mots: ["retour", "rentab", "bénéfic", "marges", "revenus", "chiffre"], url: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=250&fit=crop&q=80" },
-  { mots: ["clientèle", "fidèle", "client", "récurrent"], url: "https://images.unsplash.com/photo-1556745757-8d76bdb6984b?w=400&h=250&fit=crop&q=80" },
-  { mots: ["demande", "croissant", "porteur", "essor", "expansion"], url: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop&q=80" },
-  { mots: ["concurrence", "faible", "zone"], url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop&q=80" },
-  { mots: ["subventionné", "état", "gouvernement"], url: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=400&h=250&fit=crop&q=80" },
-  { mots: ["environnement", "nature", "durable", "respect"], url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=250&fit=crop&q=80" },
-  { mots: ["diversif", "extension", "évolution", "produits possible"], url: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=250&fit=crop&q=80" },
-  { mots: ["flexib", "adaptab", "horaire"], url: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=250&fit=crop&q=80" },
-  { mots: ["quotidien", "stable", "régulier", "constant", "premier jour"], url: "https://images.unsplash.com/photo-1556740758-90de374c12ad?w=400&h=250&fit=crop&q=80" },
-  { mots: ["professionnel", "valorisant", "image", "confiance", "reconnaissance"], url: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=250&fit=crop&q=80" },
-  { mots: ["réseau", "fournisseur", "partenaire", "livraison"], url: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&h=250&fit=crop&q=80" },
-  { mots: ["saisonnal", "féminin", "vente"], url: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&h=250&fit=crop&q=80" },
+  { mots: ["investissement", "capital", "départ", "accessible"], url: "https://images.unsplash.com/photo-1556761175-4b46a572b786?w=400&h=250&fit=crop&q=80" },
+  { mots: ["retour", "rentab", "bénéfic", "marges", "revenus", "chiffre"], url: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=250&fit=crop&q=80" },
+  { mots: ["clientèle", "fidèle", "client", "récurrent"], url: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&h=250&fit=crop&q=80" },
+  { mots: ["demande", "croissant", "porteur", "essor", "expansion"], url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=250&fit=crop&q=80" },
+  { mots: ["concurrence", "faible", "zone"], url: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400&h=250&fit=crop&q=80" },
+  { mots: ["subventionné", "état", "gouvernement"], url: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=400&h=250&fit=crop&q=80" },
+  { mots: ["environnement", "nature", "durable", "respect"], url: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=400&h=250&fit=crop&q=80" },
+  { mots: ["diversif", "extension", "évolution", "produits possible"], url: "https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=400&h=250&fit=crop&q=80" },
+  { mots: ["flexib", "adaptab", "horaire"], url: "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=400&h=250&fit=crop&q=80" },
+  { mots: ["quotidien", "stable", "régulier", "constant", "premier jour"], url: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=400&h=250&fit=crop&q=80" },
+  { mots: ["professionnel", "valorisant", "image", "confiance", "reconnaissance"], url: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=400&h=250&fit=crop&q=80" },
+  { mots: ["réseau", "fournisseur", "partenaire", "livraison"], url: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=250&fit=crop&q=80" },
+  { mots: ["saisonnal", "féminin", "vente"], url: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=250&fit=crop&q=80" },
   { mots: ["terrain", "terre", "local", "site"], url: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=250&fit=crop&q=80" },
 ];
 
@@ -159,6 +159,43 @@ const inputCls =
 const selectCls =
   "w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:border-[#27A827] focus:ring-2 focus:ring-[#27A827]/10 focus:bg-white transition-all text-sm";
 const labelCls = "block text-gray-700 text-sm font-medium mb-1.5";
+
+const PHOTOS_SECTIONS: { mots: string[]; url: string }[] = [
+  { mots: ["comprendre", "fonctionnement", "découvrir", "explorer"], url: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=800&h=400&fit=crop&q=80" },
+  { mots: ["marché", "opportunit", "étudier", "analyser", "recherche"], url: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=400&fit=crop&q=80" },
+  { mots: ["modèle", "entreprise", "business", "plan", "stratég"], url: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=400&fit=crop&q=80" },
+  { mots: ["formation", "apprendre", "maîtriser", "compétence"], url: "https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=800&h=400&fit=crop&q=80" },
+  { mots: ["financ", "budget", "investiss", "capital", "trésorerie"], url: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800&h=400&fit=crop&q=80" },
+  { mots: ["lancer", "ouverture", "démarr", "install"], url: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&h=400&fit=crop&q=80" },
+  { mots: ["gestion", "organiser", "gérer", "quotidien"], url: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=400&fit=crop&q=80" },
+  { mots: ["marketing", "communication", "promouvoir", "vendre", "vente"], url: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&h=400&fit=crop&q=80" },
+  { mots: ["client", "fidélis", "satisfaction", "accueil"], url: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=400&fit=crop&q=80" },
+  { mots: ["équipe", "recrutement", "personnel", "employé"], url: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=400&fit=crop&q=80" },
+  { mots: ["hygiène", "norme", "réglementati", "qualité", "sécurité"], url: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&h=400&fit=crop&q=80" },
+  { mots: ["présentation", "dressage", "recette", "cuisine", "plat"], url: "https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=800&h=400&fit=crop&q=80" },
+  { mots: ["technique", "équipement", "matériel", "outil"], url: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&h=400&fit=crop&q=80" },
+  { mots: ["croissance", "développ", "expansion", "suivi"], url: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=400&fit=crop&q=80" },
+];
+
+function enrichirDescription(html: string): string {
+  let compteur = 0;
+  return html.replace(
+    /(<\/h[23]>|<\/b>|<\/strong>)/gi,
+    (match, tag, offset) => {
+      const avant = html.slice(Math.max(0, offset - 200), offset).toLowerCase();
+      for (const ps of PHOTOS_SECTIONS) {
+        if (ps.mots.some((m) => avant.includes(m))) {
+          compteur++;
+          if (compteur <= 4) {
+            return `${match}<img src="${ps.url}" alt="" style="width:100%;height:auto;border-radius:16px;margin:16px 0;box-shadow:0 4px 15px rgba(0,0,0,0.1)" loading="lazy" />`;
+          }
+          return match;
+        }
+      }
+      return match;
+    }
+  );
+}
 
 type Mode = "info" | "login" | "inscription";
 
@@ -538,15 +575,15 @@ export default function EspaceDetailPage() {
               <AnimateOnScroll variant="fadeUp">
                 <div className="prose prose-gray max-w-none">
                   <DescriptionRenderer
-                    html={espace.descriptionLongue}
+                    html={enrichirDescription(espace.descriptionLongue)}
                     className="text-gray-700 text-lg sm:text-xl leading-relaxed
                       [&_img]:rounded-xl [&_img]:my-4 [&_img]:shadow-lg
                       [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_ul]:text-lg
                       [&_li]:text-gray-700
-                      [&_b]:text-[#E8B800] [&_b]:font-extrabold
-                      [&_strong]:text-[#E8B800] [&_strong]:font-extrabold
-                      [&_h2]:text-2xl [&_h2]:font-black [&_h2]:text-gray-900 [&_h2]:mt-8 [&_h2]:mb-4
-                      [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-gray-900 [&_h3]:mt-6 [&_h3]:mb-3
+                      [&_b]:text-[#E8B800] [&_b]:font-extrabold [&_b]:text-xl [&_b]:sm:text-2xl
+                      [&_strong]:text-[#E8B800] [&_strong]:font-extrabold [&_strong]:text-xl [&_strong]:sm:text-2xl
+                      [&_h2]:text-3xl [&_h2]:sm:text-4xl [&_h2]:font-black [&_h2]:text-[#E8B800] [&_h2]:mt-10 [&_h2]:mb-5 [&_h2]:border-l-4 [&_h2]:border-[#E8B800] [&_h2]:pl-4
+                      [&_h3]:text-2xl [&_h3]:sm:text-3xl [&_h3]:font-bold [&_h3]:text-[#E8B800] [&_h3]:mt-8 [&_h3]:mb-4
                       [&_p]:mb-4
                       [&_i]:italic [&_em]:italic"
                   />
