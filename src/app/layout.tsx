@@ -12,6 +12,7 @@ import CurrencyProvider from "@/components/CurrencyProvider";
 import ServiceWorkerRegistrar from "@/components/ServiceWorkerRegistrar";
 import SocialProofToast from "@/components/SocialProofToast";
 import AnimationsSite from "@/components/AnimationsSite";
+import { DESCRIPTION_SITE } from "@/lib/seo";
 import ReferralTracker from "@/components/ReferralTracker";
 import ExitIntentPopup from "@/components/ExitIntentPopup";
 import BottomNav from "@/components/BottomNav";
@@ -24,9 +25,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 const APP_URL = "https://smartlifecm.com";
 const OG_IMAGE = `${APP_URL}/logo-smartlife.jpeg`;
-const TITLE = "SMART LIFE – Ebooks, Accompagnement & Réseau Consultant";
-const DESCRIPTION =
-  "Gagnez de l'argent avec vos compétences. Ebooks pratiques, accompagnement entrepreneurial personnalisé et réseau de consultants pour transformer votre savoir en revenus.";
+const TITLE = "Smart Life — L'écosystème des visionnaires africains : guides, accompagnement et consultants";
+const DESCRIPTION = DESCRIPTION_SITE;
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -34,7 +34,11 @@ export const metadata: Metadata = {
   verification: {
     google: "IbY9wL4wtYAqWHTfvpKWqg2VlEGm9FmQsybf0ySlfNw",
   },
-  keywords: ["ebook", "formation", "accompagnement", "entrepreneuriat", "business", "Cameroun"],
+  keywords: [
+    "comment se lancer en affaires au Cameroun", "idée de business rentable Cameroun", "guide pratique business Afrique",
+    "élevage rentable Cameroun", "agriculture rentable Afrique", "accompagnement entrepreneur Cameroun",
+    "consultant business Douala Yaoundé", "visionnaires africains", "Smart Life",
+  ],
   metadataBase: new URL(APP_URL),
   manifest: "/manifest.json",
   icons: {

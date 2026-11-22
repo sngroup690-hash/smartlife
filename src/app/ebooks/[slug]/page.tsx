@@ -4,16 +4,9 @@ import path from "path";
 import { ebooks, type Ebook } from "@/lib/data";
 import EbookLandingPageClient from "./EbookLandingPageClient";
 import { stripHtml } from "@/lib/strip-html";
+import { titreGuide, descriptionGuide, jsonLd } from "@/lib/seo";
 
 const APP_URL = (process.env.NEXT_PUBLIC_APP_URL || "https://smartlifecm.com").replace(/\/$/, "");
-
-function buildOgDescription(ebook: Ebook): string {
-  if (ebook.description) {
-    const plain = stripHtml(ebook.description);
-    return plain.length > 155 ? plain.slice(0, 152) + "…" : plain;
-  }
-  return `Ebook numérique • ${ebook.category}. Accès immédiat après paiement — livré par email.`;
-}
 
 function resolveImageUrl(src: string | undefined): string | null {
   if (!src) return null;
@@ -65,8 +58,8 @@ export async function generateMetadata({
 
   if (!ebook) return { title: "Ebook introuvable | Smart Life" };
 
-  const title = `${ebook.title} | Smart Life`;
-  const description = buildOgDescription(ebook);
+  const title = `${titreGuide(ebook.title)} | Smart Life`;
+  const description = descriptionGuide(ebook.title, ebook.price, (ebook as Ebook & { ventes?: number }).ventes);
   const pageUrl = `${APP_URL}/ebooks/${slug}`;
 
   // Préférer la bannière (format paysage) à la couverture pour les previews OG
@@ -109,30 +102,51 @@ export default async function EbookPage({
   const { slug } = await params;
   const ebook = await getEbook(slug);
 
-  // Fiche produit lisible par Google (prix, note, image) pour mieux apparaître dans les recherches.
-  const donneesGoogle = ebook && {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: ebook.title,
-    image: resolveImageUrl((ebook as Ebook & { banner?: string }).banner || ebook.cover) ?? undefined,
-    description: buildOgDescription(ebook),
-    brand: { "@type": "Brand", name: "Smart Life" },
-    offers: {
-      "@type": "Offer",
-      price: ebook.price,
-      priceCurrency: "XAF",
-      availability: "https://schema.org/InStock",
-      url: `${APP_URL}/ebooks/${slug}`,
+  // Étiquettes lues par Google : fiche produit (prix, image), fil d'Ariane et questions fréquentes.
+  // Pas de note ni de nombre d'avis : Google interdit les avis qui ne viennent pas de vrais clients.
+  const urlPage = `${APP_URL}/ebooks/${slug}`;
+  const faq = (ebook?.faq ?? []).filter((q) => q.q && q.a);
+  const donneesGoogle = ebook && [
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: ebook.title,
+      image: resolveImageUrl(ebook.cover || (ebook as Ebook & { banner?: string }).banner) ?? undefined,
+      description: descriptionGuide(ebook.title, ebook.price, (ebook as Ebook & { ventes?: number }).ventes),
+      category: ebook.category,
+      brand: { "@type": "Brand", name: "Smart Life" },
+      offers: {
+        "@type": "Offer",
+        price: ebook.price,
+        priceCurrency: "XAF",
+        availability: "https://schema.org/InStock",
+        url: urlPage,
+      },
     },
-    ...(ebook.reviews > 0 && ebook.rating > 0
-      ? { aggregateRating: { "@type": "AggregateRating", ratingValue: ebook.rating, reviewCount: ebook.reviews } }
-      : {}),
-  };
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Accueil", item: APP_URL },
+        { "@type": "ListItem", position: 2, name: "Guides", item: `${APP_URL}/ebooks` },
+        { "@type": "ListItem", position: 3, name: ebook.title, item: urlPage },
+      ],
+    },
+    ...(faq.length > 0 ? [{
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faq.map((q) => ({
+        "@type": "Question",
+        name: q.q,
+        acceptedAnswer: { "@type": "Answer", text: stripHtml(q.a) },
+      })),
+    }] : []),
+  ];
 
   return (
     <>
       {donneesGoogle && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(donneesGoogle).replace(/</g, "\\u003c") }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(donneesGoogle) }} />
       )}
       <EbookLandingPageClient initial={ebook} />
     </>

@@ -1,7 +1,9 @@
 import { Metadata } from "next";
 import { espaces as STATIC_ESPACES } from "@/lib/accompagnement-data";
-import { readFile } from "fs/promises";
+import { readFile, access } from "fs/promises";
 import path from "path";
+import { titreAccompagnement, descriptionAccompagnement, jsonLd } from "@/lib/seo";
+import { photoPourEspace } from "@/lib/photo-espace";
 
 const APP_URL = (process.env.NEXT_PUBLIC_APP_URL || "https://smartlifecm.com").replace(/\/$/, "");
 
@@ -50,14 +52,10 @@ export async function generateMetadata({
 
   if (!espace) return { title: "Accompagnement | Smart Life" };
 
-  const investStr =
-    espace.investissementMin && espace.investissementMax
-      ? ` — Investissement : ${espace.investissementMin.toLocaleString("fr-FR")} à ${espace.investissementMax.toLocaleString("fr-FR")} FCFA`
-      : "";
-  const desc = `${espace.description}${investStr}`;
-  const description = desc.length > 155 ? desc.slice(0, 152) + "…" : desc;
-  const title = `${espace.titre} | Smart Life Accompagnement`;
+  const title = `${titreAccompagnement(espace.titre)} | Smart Life`;
+  const description = descriptionAccompagnement(espace.titre);
   const url = `${APP_URL}/accompagnement/${slug}`;
+  const image = await visuelEspace(slug, espace.titre);
 
   return {
     title,
@@ -69,12 +67,53 @@ export async function generateMetadata({
       title,
       description,
       siteName: "Smart Life",
-      images: [{ url: `${APP_URL}/logo-smartlife.jpeg`, width: 1200, height: 630, alt: espace.titre }],
+      images: [{ url: image, alt: espace.titre }],
     },
-    twitter: { card: "summary_large_image", title, description },
+    twitter: { card: "summary_large_image", title, description, images: [image] },
   };
 }
 
-export default function AccompagnementSlugLayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+async function visuelEspace(id: string, titre: string): Promise<string> {
+  const nom = `${String(id).replace(/[^a-zA-Z0-9_-]/g, "_")}.webp`;
+  try {
+    await access(path.join(process.cwd(), "public", "espaces", nom));
+    return `${APP_URL}/espaces/${nom}`;
+  } catch {
+    const photo = await photoPourEspace(titre);
+    return photo ? `${APP_URL}${photo}` : `${APP_URL}/logo-smartlife.jpeg`;
+  }
+}
+
+export default async function AccompagnementSlugLayout({ children, params }: { children: React.ReactNode; params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const espace = await findEspace(slug);
+  const url = `${APP_URL}/accompagnement/${slug}`;
+  // Étiquettes Google : un service d'accompagnement proposé au Cameroun et en Afrique.
+  const donnees = espace && [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: titreAccompagnement(espace.titre),
+      serviceType: "Accompagnement entrepreneurial",
+      description: descriptionAccompagnement(espace.titre),
+      provider: { "@type": "Organization", name: "Smart Life", url: APP_URL },
+      areaServed: ["Cameroun", "Afrique"],
+      url,
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Accueil", item: APP_URL },
+        { "@type": "ListItem", position: 2, name: "Accompagnement", item: `${APP_URL}/accompagnement` },
+        { "@type": "ListItem", position: 3, name: espace.titre, item: url },
+      ],
+    },
+  ];
+  return (
+    <>
+      {donnees && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(donnees) }} />}
+      {children}
+    </>
+  );
 }

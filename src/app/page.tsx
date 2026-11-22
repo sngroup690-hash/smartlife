@@ -5,6 +5,7 @@ import { testimonials } from "@/lib/data";
 import { PriceTag } from "@/components/PriceTag";
 import TitreDefilant from "@/components/TitreDefilant";
 import PhotosQuiDefilent from "@/components/PhotosQuiDefilent";
+import { ETIQUETTES_SITE, jsonLd } from "@/lib/seo";
 import { readFile, readdir } from "fs/promises";
 import path from "path";
 
@@ -62,6 +63,7 @@ export default async function HomePage() {
 
   return (
     <div className="overflow-x-hidden">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(ETIQUETTES_SITE) }} />
 
       {/* ══════ EN-TÊTE PREMIUM ══════ */}
       <section className="relative overflow-hidden" style={{ background: "linear-gradient(160deg, #fffdf3 0%, #ffffff 45%, #f1fcf3 100%)" }}>
