@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Star, ArrowRight, CheckCircle, Shield, Zap, Users, Clock } from "lucide-react";
 import { testimonials } from "@/lib/data";
 import { PriceTag } from "@/components/PriceTag";
@@ -210,9 +211,8 @@ export default async function HomePage() {
               const remise = g.originalPrice && g.originalPrice > g.price ? Math.round((1 - g.price / g.originalPrice) * 100) : 0;
               return (
                 <Link key={g.id} href={`/ebooks/${g.slug}`} className="group relative flex flex-col overflow-hidden rounded-3xl bg-white shadow-lg border border-[#f1f2f3]">
-                  <div className="relative overflow-hidden" style={{ aspectRatio: "4/3", background: "#f7f7f8" }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={g.cover} alt={g.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: "50% 20%", transformOrigin: "50% 100%" }} />
+                  <div className="relative overflow-hidden aspect-square" style={{ background: "#f7f7f8" }}>
+                    <Image src={g.cover!} alt={g.title} fill quality={90} sizes="(max-width: 1024px) 50vw, 400px" className="object-contain" />
                     {i < 3 && (
                       <span className="absolute top-2 left-2 rounded-full px-2.5 py-1 text-[10.5px] sm:text-[11.5px] font-black shadow-md" style={{ background: "#111827", color: "#fff" }}>
                         {["🥇 N°1", "🥈 N°2", "🥉 N°3"][i]} des ventes

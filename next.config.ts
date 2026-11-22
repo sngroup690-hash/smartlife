@@ -5,7 +5,9 @@ const nextConfig: NextConfig = {
     allowedDevOrigins: ["192.168.4.190"],
   }),
   images: {
-    formats: ["image/avif", "image/webp"],
+    // WebP d'abord : il garde les petits textes des couvertures nets ; 90 pour les couvertures de guides.
+    formats: ["image/webp", "image/avif"],
+    qualities: [75, 90],
     minimumCacheTTL: 86400,
     deviceSizes: [360, 480, 640, 828, 1080, 1200, 1920],
     remotePatterns: [

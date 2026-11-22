@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Nunito } from "next/font/google";
 import { Search, BookOpen, X } from "lucide-react";
 import type { Ebook } from "@/lib/data";
@@ -70,8 +71,9 @@ function CarteGuide({ guide, onAcheter }: { guide: Guide; onAcheter: Achat }) {
       <Link href={`/ebooks/${guide.slug}`} className="flex flex-col flex-1 active:scale-[0.99] transition-transform">
       <div className="relative aspect-square bg-[#f7f7f8] flex items-center justify-center overflow-hidden">
         {image && !erreurImage ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={image} alt={guide.title} loading="lazy" className="w-full h-full object-contain group-hover:scale-[1.03] transition-transform duration-300" onError={() => setErreurImage(true)} />
+          <Image src={image} alt={guide.title} fill quality={90}
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 300px"
+            className="object-contain" onError={() => setErreurImage(true)} />
         ) : (
           <BookOpen size={30} className="text-[#a9aeb5]" />
         )}
