@@ -135,9 +135,11 @@ export default async function HomePage() {
 
       {/* ══════ CHIFFRES CLÉS ══════ */}
       <section className="relative overflow-hidden" style={{ background: "linear-gradient(135deg, #1b7a1b 0%, #27A827 55%, #1f8f1f 100%)" }}>
-        <div className="max-w-6xl mx-auto px-4 py-9 sm:py-12 grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+        <div className="max-w-6xl mx-auto px-4 py-9 sm:py-12 grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-8 text-center">
           {[
             { n: 14960, s: "+", l: "clients en Afrique et dans la diaspora" },
+            { n: 33204, s: "+", l: "clients sur notre boutique Chariow" },
+            { n: 82, s: " %", l: "d'avis positifs · 248 avis au total" },
             { n: nbGuides, s: "", l: "guides pratiques" },
             { n: nbEspaces, s: "", l: "domaines d'accompagnement" },
             { n: nbConsultants, s: "", l: "consultants du terrain" },
