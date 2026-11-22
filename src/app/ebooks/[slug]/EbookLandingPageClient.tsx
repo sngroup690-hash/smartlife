@@ -348,6 +348,14 @@ export default function EbookLandingPage() {
     return () => obs.disconnect();
   }, [boutonEl]);
 
+  // La barre fixe ne doit jamais cacher le bas de la page (pied de page compris).
+  useEffect(() => {
+    if (boutonVisible || checkoutModalOpen || window.innerWidth >= 1024) return;
+    const avant = document.body.style.paddingBottom;
+    document.body.style.paddingBottom = "96px";
+    return () => { document.body.style.paddingBottom = avant; };
+  }, [boutonVisible, checkoutModalOpen]);
+
   useEffect(() => {
     const s = (params?.slug as string) ?? "";
     fetch(`/api/ebooks?slug=${encodeURIComponent(s)}`)
@@ -415,7 +423,7 @@ export default function EbookLandingPage() {
     priceColor?: string; ctaBgColor?: string; ctaTextColor?: string;
     communityBgColor?: string; communityTextColor?: string; whatsappUrl?: string; audioUrl?: string;
     commentAcheterUrl?: string; promoEndDate?: string; promoCyclique?: boolean; promoDureeHeures?: number;
-    placesRestantesBloquees?: number; vendusAffiche?: number;
+    placesRestantesBloquees?: number; vendusAffiche?: number; ventes?: number;
     avisClients?: { nom: string; note: number; texte: string }[]; reviewCardSize?: "small" | "medium" | "large";
   };
   const ctaLabel = ebook.ctaLabel || "Télécharger maintenant";
@@ -488,6 +496,12 @@ export default function EbookLandingPage() {
                     {convert(ebook.price)}
                   </span>
                 </div>
+
+                {(e.ventes ?? 0) > 0 && (
+                  <p className="-mt-2 text-center text-sm text-gray-700">
+                    🔥 Déjà <strong className="text-gray-900">{e.ventes!.toLocaleString("fr-FR")}</strong> {e.ventes === 1 ? "personne a" : "personnes ont"} acheté ce guide
+                  </p>
+                )}
 
                 <CountdownTimer endDate={e.promoEndDate} cyclique={e.promoCyclique} dureeHeures={e.promoDureeHeures} />
 
@@ -588,8 +602,9 @@ export default function EbookLandingPage() {
                     [&_img]:rounded-xl [&_img]:my-4
                     [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-1
                     [&_b]:text-gray-900 [&_strong]:text-gray-900 [&_i]:italic [&_em]:italic
-                    [&_h2]:text-gray-900 [&_h2]:font-bold [&_h2]:text-xl [&_h2]:mt-6 [&_h2]:mb-3
-                    [&_h3]:text-[#ca8a04] [&_h3]:font-bold [&_h3]:text-lg [&_h3]:mt-4 [&_h3]:mb-2"
+                    [&_h2]:text-gray-900 [&_h2]:font-bold [&_h2]:text-lg sm:[&_h2]:text-xl [&_h2]:leading-snug [&_h2]:mt-7 [&_h2]:mb-3
+                    [&_h3]:text-[#1f8f1f] [&_h3]:font-bold [&_h3]:text-base [&_h3]:mt-5 [&_h3]:mb-2
+                    [&_p]:mb-3 [&_li]:mb-1"
                 />
               </div>
             )}
@@ -659,22 +674,22 @@ export default function EbookLandingPage() {
 
       <CrossSellWidget productId={ebook.id} productType="ebook" variant="light" />
 
-      <div className="h-32 lg:h-10" />
+      <div className="h-10" />
 
       {/* Barre fixe en bas sur téléphone : prix + bouton, comme Chariow */}
       {!checkoutModalOpen && !boutonVisible && (
         <div
-          className="lg:hidden fixed left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-[0_-4px_24px_rgba(0,0,0,0.10)]"
+          className="lg:hidden fixed left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-[0_-4px_16px_rgba(0,0,0,0.08)]"
           style={{ bottom: "calc(62px + env(safe-area-inset-bottom, 0px))" }}
         >
-          <div className="px-4 pt-2 pb-3 flex flex-col gap-2">
-            <div className="flex items-baseline justify-center gap-2">
-              {ebook.originalPrice && <span className="text-sm text-gray-400 line-through">{convert(ebook.originalPrice)}</span>}
-              <span className="text-lg font-extrabold text-red-600">{convert(ebook.price)}</span>
+          <div className="px-4 py-2.5 flex items-center gap-3">
+            <div className="flex flex-col leading-tight min-w-0">
+              {ebook.originalPrice && <span className="text-xs text-gray-400 line-through">{convert(ebook.originalPrice)}</span>}
+              <span className="text-lg font-extrabold text-red-600 whitespace-nowrap">{convert(ebook.price)}</span>
             </div>
             <button
               onClick={openCheckout}
-              className={`w-full py-3 font-bold rounded-xl text-sm flex items-center justify-center gap-2 active:scale-95 ${ctaCls}`}
+              className={`flex-1 py-3 font-bold rounded-xl text-sm flex items-center justify-center gap-2 active:scale-95 ${ctaCls}`}
               style={ctaStyle}
             >
               <Download size={16} /> {ctaLabel}
