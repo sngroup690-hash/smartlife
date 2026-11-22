@@ -107,7 +107,7 @@ function PackCard({ pack }: { pack: Pack }) {
           />
           {/* Badges superposés */}
           <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
-            <span className="px-2.5 py-1 bg-black/70 text-white text-xs font-bold rounded-full flex items-center gap-1 backdrop-blur-sm">
+            <span className="px-2.5 py-1 text-xs font-bold rounded-full flex items-center gap-1 backdrop-blur-sm" style={{ background: "#27A827", color: "#fff" }}>
               <Package size={10} /> {totalItems} contenu{totalItems > 1 ? "s" : ""}
             </span>
             {discountPct > 0 && (
@@ -119,12 +119,27 @@ function PackCard({ pack }: { pack: Pack }) {
           <span className="absolute bottom-3 right-3 px-3 py-1 bg-[#E8B800] text-black text-xs font-black rounded-full flex items-center gap-1">
             <Tag size={10} /> PACK
           </span>
+          {/* Noms des guides sur l'image */}
+          <div className="absolute bottom-0 left-0 right-0 px-3 pb-10 pt-8" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }}>
+            <div className="flex flex-wrap gap-1">
+              {ebookItems.slice(0, 5).map((item) => (
+                <span key={item.id} className="px-1.5 py-0.5 rounded text-[9px] font-bold leading-tight" style={{ background: "#E8B800", color: "#000" }}>
+                  {item.title.length > 30 ? item.title.slice(0, 28) + "…" : item.title}
+                </span>
+              ))}
+              {ebookItems.length > 5 && (
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-bold" style={{ background: "rgba(232,184,0,0.5)", color: "#fff" }}>
+                  +{ebookItems.length - 5}
+                </span>
+              )}
+            </div>
+          </div>
         </div>
       ) : (
         <div className="h-32 bg-gradient-to-br from-[#E8B800]/10 via-[#27A827]/5 to-[#E8B800]/10 flex items-center justify-center relative">
           <Package size={44} className="text-[#E8B800]" />
           <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
-            <span className="px-2.5 py-1 bg-white/80 text-gray-700 text-xs font-bold rounded-full flex items-center gap-1 border border-gray-200">
+            <span className="px-2.5 py-1 text-xs font-bold rounded-full flex items-center gap-1" style={{ background: "#27A827", color: "#fff" }}>
               <Package size={10} /> {totalItems} contenu{totalItems > 1 ? "s" : ""}
             </span>
             {discountPct > 0 && (

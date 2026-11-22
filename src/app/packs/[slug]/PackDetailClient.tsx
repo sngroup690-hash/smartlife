@@ -67,7 +67,7 @@ export default function PackDetailClient({ pack }: { pack: PackData }) {
             <div className="relative w-full bg-[#f7f7f8] rounded-2xl overflow-hidden" style={{ aspectRatio: "2/1" }}>
               <img src={pack.image} alt={pack.nom} loading="lazy" decoding="async" className="w-full h-full object-cover" />
               <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
-                <span className="px-2.5 py-1 bg-black/70 text-white text-xs font-bold rounded-full flex items-center gap-1 backdrop-blur-sm">
+                <span className="px-2.5 py-1 text-xs font-bold rounded-full flex items-center gap-1 backdrop-blur-sm" style={{ background: "#27A827", color: "#fff" }}>
                   <Package size={10} /> {pack.items.length} contenu{pack.items.length > 1 ? "s" : ""}
                 </span>
                 {discountPct > 0 && (
@@ -75,6 +75,21 @@ export default function PackDetailClient({ pack }: { pack: PackData }) {
                     <Zap size={10} /> -{discountPct}%
                   </span>
                 )}
+              </div>
+              {/* Noms des guides sur l'image */}
+              <div className="absolute bottom-0 left-0 right-0 px-3 pb-10 pt-8" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }}>
+                <div className="flex flex-wrap gap-1.5">
+                  {ebookItems.slice(0, 6).map((item) => (
+                    <span key={item.id} className="px-2 py-0.5 rounded text-[10px] font-bold leading-tight" style={{ background: "#E8B800", color: "#000" }}>
+                      {item.title.length > 35 ? item.title.slice(0, 33) + "…" : item.title}
+                    </span>
+                  ))}
+                  {ebookItems.length > 6 && (
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold" style={{ background: "rgba(232,184,0,0.5)", color: "#fff" }}>
+                      +{ebookItems.length - 6}
+                    </span>
+                  )}
+                </div>
               </div>
               <span className="absolute bottom-3 right-3 px-3 py-1 bg-[#E8B800] text-black text-xs font-black rounded-full flex items-center gap-1">
                 <Tag size={10} /> PACK
