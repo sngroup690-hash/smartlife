@@ -99,11 +99,11 @@ function PackCard({ pack }: { pack: Pack }) {
     <article className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:border-[#E8B800]/50 hover:shadow-md transition-all flex flex-col">
       {/* Image / bannière */}
       {pack.image ? (
-        <div className="relative w-full bg-[#f7f7f8] overflow-hidden" style={{ aspectRatio: "2/1" }}>
+        <div className="relative w-full overflow-hidden" style={{ aspectRatio: "4/3", background: "linear-gradient(135deg, #fffbea 0%, #f0fdf4 100%)" }}>
           <img
             src={pack.image}
             alt={pack.nom}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain pt-9 pb-9"
           />
           {/* Badges superposés */}
           <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
@@ -116,11 +116,8 @@ function PackCard({ pack }: { pack: Pack }) {
               </span>
             )}
           </div>
-          <span className="absolute bottom-3 right-3 px-3 py-1 bg-[#E8B800] text-black text-xs font-black rounded-full flex items-center gap-1">
-            <Tag size={10} /> PACK
-          </span>
           {/* Noms des guides — bande fine en bas */}
-          <div className="absolute bottom-7 left-0 right-0 px-2 overflow-hidden" style={{ whiteSpace: "nowrap" }}>
+          <div className="absolute bottom-2 left-0 right-0 px-2 overflow-hidden" style={{ whiteSpace: "nowrap" }}>
             <div className="flex gap-1 overflow-hidden">
               {ebookItems.slice(0, 4).map((item, i) => {
                 const short = item.title.replace(/^GUIDE COMPLET\s*[-—:]\s*/i, "").replace(/^GUIDE COMPLET\s+/i, "");

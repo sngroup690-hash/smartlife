@@ -64,8 +64,8 @@ export default function PackDetailClient({ pack }: { pack: PackData }) {
         <div className="lg:col-span-3 space-y-8">
           {/* Bannière */}
           {pack.image ? (
-            <div className="relative w-full bg-[#f7f7f8] rounded-2xl overflow-hidden" style={{ aspectRatio: "2/1" }}>
-              <img src={pack.image} alt={pack.nom} loading="lazy" decoding="async" className="w-full h-full object-cover" />
+            <div className="relative w-full rounded-2xl overflow-hidden" style={{ aspectRatio: "4/3", background: "linear-gradient(135deg, #fffbea 0%, #f0fdf4 100%)" }}>
+              <img src={pack.image} alt={pack.nom} loading="lazy" decoding="async" className="w-full h-full object-contain pt-10 pb-10" />
               <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
                 <span className="px-2.5 py-1 text-xs font-bold rounded-full flex items-center gap-1 backdrop-blur-sm" style={{ background: "#27A827", color: "#fff" }}>
                   <Package size={10} /> {pack.items.length} contenu{pack.items.length > 1 ? "s" : ""}
@@ -77,7 +77,7 @@ export default function PackDetailClient({ pack }: { pack: PackData }) {
                 )}
               </div>
               {/* Noms des guides — bande fine en bas */}
-              <div className="absolute bottom-7 left-0 right-0 px-3 overflow-hidden" style={{ whiteSpace: "nowrap" }}>
+              <div className="absolute bottom-2 left-0 right-0 px-3 overflow-hidden" style={{ whiteSpace: "nowrap" }}>
                 <div className="flex gap-1.5 overflow-hidden">
                   {ebookItems.slice(0, 5).map((item, i) => {
                     const short = item.title.replace(/^GUIDE COMPLET\s*[-—:]\s*/i, "").replace(/^GUIDE COMPLET\s+/i, "");
@@ -95,9 +95,6 @@ export default function PackDetailClient({ pack }: { pack: PackData }) {
                   )}
                 </div>
               </div>
-              <span className="absolute bottom-3 right-3 px-3 py-1 bg-[#E8B800] text-black text-xs font-black rounded-full flex items-center gap-1">
-                <Tag size={10} /> PACK
-              </span>
             </div>
           ) : (
             <div className="h-40 bg-gradient-to-br from-[#E8B800]/10 via-[#27A827]/5 to-[#E8B800]/10 flex items-center justify-center rounded-2xl relative">
