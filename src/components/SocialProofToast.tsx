@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
+import { usePathname } from "next/navigation";
 
 type Notif = {
   id: string;
@@ -60,6 +61,7 @@ function actionDe(notif: Notif): string {
 export default function SocialProofToast() {
   const [data, setData] = useState<SPData | null>(null);
   const [visible, setVisible] = useState(false);
+  const chemin = usePathname() ?? "";
   const [ferme, setFerme] = useState(false);
   const [numero, setNumero] = useState(0);
   const [current, setCurrent] = useState<{ notif?: Notif; fomo?: string } | null>(null);
@@ -184,7 +186,7 @@ export default function SocialProofToast() {
     };
   }, [data, isMobile, buildQueue, showNext, ferme]);
 
-  if (!data?.config.enabled || ferme) return null;
+  if (!data?.config.enabled || ferme || chemin.startsWith("/admin")) return null;
   if (isMobile && !data.config.mobileEnabled) return null;
   if (!visible || !current) return null;
 

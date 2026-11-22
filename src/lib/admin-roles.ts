@@ -10,13 +10,13 @@ export const ROLE_CONFIG: Record<AdminRole, {
     label: "Super Administrateur",
     description: "Accès complet + gestion des comptes staff",
     color: "text-yellow-400",
-    tabs: ["espaces", "consultants", "candidatures_consultant", "candidatures", "ebooks", "formations", "annonces", "avis", "temoignages", "parcours", "motivations", "staff", "about"],
+    tabs: ["tableau", "espaces", "consultants", "candidatures_consultant", "candidatures", "ebooks", "formations", "annonces", "avis", "temoignages", "parcours", "motivations", "staff", "about"],
   },
   admin_manager: {
     label: "Administrateur",
     description: "Accès complet au contenu du site",
     color: "text-blue-400",
-    tabs: ["espaces", "consultants", "candidatures_consultant", "candidatures", "ebooks", "formations", "annonces", "avis", "temoignages", "parcours", "motivations", "about"],
+    tabs: ["tableau", "espaces", "consultants", "candidatures_consultant", "candidatures", "ebooks", "formations", "annonces", "avis", "temoignages", "parcours", "motivations", "about"],
   },
   content_editor: {
     label: "Éditeur de contenu",

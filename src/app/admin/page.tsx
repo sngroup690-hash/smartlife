@@ -8,9 +8,10 @@ import {
   Building2, UserCheck, ClipboardList, XCircle, Clock,
   BookOpen, Play, Download, Image as ImageIcon, Upload, FileText, Loader2,
   ShieldCheck, User as UserIcon, KeyRound, Megaphone, MessageSquare, ThumbsUp, ThumbsDown, Star,
-  Link2, ExternalLink, RefreshCw, Copy, BarChart2, AlertCircle, ShoppingBag, Package, Gift, Crown,
+  Link2, ExternalLink, RefreshCw, Copy, BarChart2, AlertCircle, ShoppingBag, Package, Gift,
 } from "lucide-react";
 import { ROLE_CONFIG, type AdminRole } from "@/lib/admin-roles";
+import TableauDeBord from "./TableauDeBord";
 import { ebooks as staticEbooks } from "@/lib/data";
 import { FORMATIONS as staticFormations } from "@/lib/formations-data";
 import {
@@ -2883,7 +2884,7 @@ function GestionVideos({ formationId, formationTitre }: { formationId: string; f
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type Onglet = "espaces" | "consultants" | "candidatures_consultant" | "candidatures" | "ebooks" | "formations" | "annonces" | "avis" | "temoignages" | "parcours" | "motivations" | "staff" | "about";
+type Onglet = "tableau" | "espaces" | "consultants" | "candidatures_consultant" | "candidatures" | "ebooks" | "formations" | "annonces" | "avis" | "temoignages" | "parcours" | "motivations" | "staff" | "about";
 
 type AdminSession = {
   password: string;
@@ -4429,6 +4430,7 @@ export default function AdminPanelPage() {
   }
 
   const TOUS_ONGLETS: { key: Onglet; label: string; icon: React.ReactNode; badge?: number }[] = [
+    { key: "tableau", label: "Tableau de bord", icon: <BarChart2 size={16} /> },
     { key: "espaces", label: "Espaces", icon: <Building2 size={16} />, badge: espaces.length },
     { key: "consultants", label: "Consultants", icon: <UserCheck size={16} />, badge: consultants.length },
     { key: "candidatures_consultant", label: "Candidat. Consult.", icon: <ClipboardList size={16} />, badge: stats.enAttenteCandidaturesConsultant || undefined },
@@ -4461,7 +4463,19 @@ export default function AdminPanelPage() {
             <span className="text-gray-700 text-xs font-semibold">{adminSession.nom}</span>
           </div>
         </div>
-        <div className="flex items-center gap-3 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
+          {allowedTabs.includes("tableau") && onglet !== "tableau" && (
+            <button onClick={() => setOnglet("tableau")} className="px-4 py-2 rounded-full text-sm font-bold shadow-sm" style={{ background: "#27A827", color: "#fff" }}>📊 Tableau de bord</button>
+          )}
+          <Link href="/" target="_blank" className="px-4 py-2 rounded-full text-sm font-bold border border-green-200 text-green-700 hover:bg-green-50">Voir le site →</Link>
+          <button onClick={() => setAdminSession(null)} className="px-4 py-2 rounded-full border border-gray-200 text-gray-900 font-bold text-sm hover:bg-gray-50">Déconnexion</button>
+        </div>
+      </div>
+
+      {/* Les outils restent accessibles d'un clic, rangés derrière un seul bouton */}
+      <details className="mb-6 rounded-2xl border border-green-200 bg-white px-4 py-3 shadow-sm">
+        <summary className="cursor-pointer text-sm font-bold text-gray-900">🧰 Tous les outils</summary>
+        <div className="mt-3 flex items-center gap-2 flex-wrap">
           <Link href="/admin/ventes" className="px-4 py-2 bg-green-50 border border-green-200 hover:bg-green-100 text-green-700 rounded-xl text-sm font-medium flex items-center gap-1.5"><ShoppingBag size={15} /> Ventes</Link>
           <Link href="/admin/payment-links" className="px-4 py-2 bg-[#E8B800]/10 border border-[#E8B800]/30 hover:bg-[#E8B800]/20 text-[#D4A017] rounded-xl text-sm font-medium flex items-center gap-1.5"><Link2 size={15} /> Liens de paiement</Link>
           <Link href="/admin/packs" className="px-4 py-2 bg-amber-50 border border-amber-200 hover:bg-amber-100 text-amber-700 rounded-xl text-sm font-medium flex items-center gap-1.5"><Package size={15} /> Packs</Link>
@@ -4481,12 +4495,11 @@ export default function AdminPanelPage() {
           <Link href="/admin/certificates" className="px-4 py-2 bg-yellow-600 border border-yellow-700 hover:bg-yellow-700 text-white rounded-xl text-sm font-medium flex items-center gap-1.5">🎓 Certificats</Link>
           <Link href="/admin/cross-sell" className="px-4 py-2 bg-orange-600 border border-orange-700 hover:bg-orange-700 text-white rounded-xl text-sm font-medium flex items-center gap-1.5">🛒 Cross-Selling</Link>
           <Link href="/admin/vip" className="px-4 py-2 bg-purple-600 border border-purple-700 hover:bg-purple-700 text-white rounded-xl text-sm font-medium flex items-center gap-1.5">👑 SmartLife Pass</Link>
-          <Link href="/accompagnement" target="_blank" className="px-4 py-2 bg-green-50 border border-green-200 hover:bg-gray-700 text-green-400 rounded-xl text-sm font-medium">Voir le site →</Link>
-          <button onClick={() => setAdminSession(null)} className="px-4 py-2 border border-green-200 text-gray-900 font-bold rounded-xl text-sm hover:bg-green-50">Déconnexion</button>
         </div>
-      </div>
+      </details>
 
-      {/* Stats rapides */}
+      {/* Stats rapides (le tableau de bord a les siennes) */}
+      {onglet !== "tableau" && (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
           { label: "Espaces actifs", value: stats.espaces, color: "text-green-600 font-bold" },
@@ -4500,66 +4513,15 @@ export default function AdminPanelPage() {
           </div>
         ))}
       </div>
-
-      {/* Outils Marketing */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-3 mb-8">
-        <Link href="/admin/promo-codes" className="flex flex-col items-center gap-2 p-4 bg-green-600 hover:bg-green-700 text-white rounded-2xl transition-colors shadow-sm">
-          <span className="text-2xl">🏷️</span>
-          <span className="text-sm font-bold">Codes Promo</span>
-          <span className="text-xs opacity-80">Partenariats & réductions</span>
-        </Link>
-        <Link href="/admin/qrcodes" className="flex flex-col items-center gap-2 p-4 bg-green-600 hover:bg-green-700 text-white rounded-2xl transition-colors shadow-sm">
-          <span className="text-2xl">⬛</span>
-          <span className="text-sm font-bold">QR Codes</span>
-          <span className="text-xs opacity-80">Campagnes terrain</span>
-        </Link>
-        <Link href="/admin/social-proof" className="flex flex-col items-center gap-2 p-4 bg-purple-600 hover:bg-purple-700 text-white rounded-2xl transition-colors shadow-sm">
-          <span className="text-2xl">🔔</span>
-          <span className="text-sm font-bold">Preuve Sociale</span>
-          <span className="text-xs opacity-80">Pop-ups & FOMO</span>
-        </Link>
-        <Link href="/admin/affiliates" className="flex flex-col items-center gap-2 p-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl transition-colors shadow-sm">
-          <span className="text-2xl">🚀</span>
-          <span className="text-sm font-bold">Affiliés</span>
-          <span className="text-xs opacity-80">Ambassadeurs & retraits</span>
-        </Link>
-        <Link href="/admin/certificates" className="flex flex-col items-center gap-2 p-4 bg-yellow-600 hover:bg-yellow-700 text-white rounded-2xl transition-colors shadow-sm">
-          <span className="text-2xl">🎓</span>
-          <span className="text-sm font-bold">Certificats</span>
-          <span className="text-xs opacity-80">Registre & paramètres</span>
-        </Link>
-        <Link href="/admin/payment-links" className="flex flex-col items-center gap-2 p-4 bg-[#E8B800]/10 hover:bg-[#E8B800]/20 border border-[#E8B800]/30 text-[#D4A017] rounded-2xl transition-colors shadow-sm">
-          <Link2 size={22} />
-          <span className="text-sm font-bold">Liens de paiement</span>
-          <span className="text-xs opacity-70">Checkout direct</span>
-        </Link>
-        <Link href="/admin/analytics" className="flex flex-col items-center gap-2 p-4 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 rounded-2xl transition-colors shadow-sm">
-          <BarChart2 size={22} />
-          <span className="text-sm font-bold">Analytique</span>
-          <span className="text-xs opacity-70">Statistiques & trafic</span>
-        </Link>
-        <Link href="/admin/cross-sell" className="flex flex-col items-center gap-2 p-4 bg-orange-600 hover:bg-orange-700 text-white rounded-2xl transition-colors shadow-sm">
-          <ShoppingBag size={22} />
-          <span className="text-sm font-bold">Cross-Selling</span>
-          <span className="text-xs opacity-80">Ventes croisées</span>
-        </Link>
-        <Link href="/admin/vip" className="flex flex-col items-center gap-2 p-4 bg-purple-600 hover:bg-purple-700 text-white rounded-2xl transition-colors shadow-sm">
-          <Crown size={22} />
-          <span className="text-sm font-bold">SmartLife Pass</span>
-          <span className="text-xs opacity-80">Abonnements VIP</span>
-        </Link>
-      </div>
+      )}
 
       {/* Onglets */}
-      <div
-        className="grid gap-1 p-1 bg-white border border-green-200 rounded-2xl mb-8"
-        style={{ gridTemplateColumns: `repeat(${Math.ceil(ONGLETS.length / 2)}, 1fr)` }}
-      >
+      <div className="flex gap-1 p-1 bg-white border border-green-200 rounded-2xl mb-8 overflow-x-auto" style={{ scrollbarWidth: "thin" }}>
         {ONGLETS.map((o) => (
           <button
             key={o.key}
             onClick={() => setOnglet(o.key)}
-            className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap min-w-0 ${
+            className={`flex-shrink-0 flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all whitespace-nowrap ${
               onglet === o.key
                 ? "bg-green-600 text-white shadow-sm"
                 : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
@@ -4583,6 +4545,20 @@ export default function AdminPanelPage() {
           </button>
         ))}
       </div>
+
+      {onglet === "tableau" && (
+        <TableauDeBord
+          motDePasse={adminSession.password}
+          nom={adminSession.nom}
+          aTraiter={{
+            demandes: stats.enAttente,
+            candidatures: stats.enAttenteCandidaturesConsultant,
+            avis: adminReviews.filter((r) => r.statut === "en_attente").length,
+            motivations: unreadMotivationsCount,
+          }}
+          allerA={(o) => { if (allowedTabs.includes(o)) setOnglet(o as Onglet); }}
+        />
+      )}
 
       {/* ══ ONGLET ESPACES ══ */}
       {onglet === "espaces" && (
