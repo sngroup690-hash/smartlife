@@ -47,7 +47,7 @@ export default function Footer() {
       <div className="bg-gradient-to-br from-[#1b7a1b] via-[#27A827] to-[#1f8f1f]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-5 text-center md:text-left">
           <div>
-            <p className="text-[20px] sm:text-2xl font-extrabold" style={{ color: "#fff" }}>Rejoins 15 000+ visionnaires africains</p>
+            <p className="text-[20px] sm:text-2xl font-extrabold" style={{ color: "#fff" }}>Rejoins 14 960+ clients et visionnaires africains</p>
             <p className="mt-1 text-sm" style={{ color: "rgba(255,255,255,0.9)" }}>Conseils, nouveaux guides et offres réservées, directement sur WhatsApp.</p>
           </div>
           <a href="https://wa.me/237694176642" target="_blank" rel="noopener noreferrer"
@@ -127,7 +127,7 @@ export default function Footer() {
 
           <div className="mt-4 flex items-center justify-center gap-2 text-[13px] text-[#374151]">
             <span className="flex">{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={14} className="fill-[#E8B800] text-[#E8B800]" />)}</span>
-            <span><strong className="text-[#1e7a1e]">15 000+</strong> clients satisfaits</span>
+            <span><strong className="text-[#1e7a1e]">14 960+</strong> clients</span>
           </div>
         </div>
 

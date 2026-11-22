@@ -4,7 +4,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 
 type Notif = {
   id: string;
-  type: "purchase" | "download" | "checkout";
+  type: "purchase" | "download" | "checkout" | "accompagnement";
   prenom: string;
   ville: string;
   produit: string;
@@ -50,6 +50,7 @@ function formatDelay(mins?: number): string {
 
 const ACTIONS_ACHAT = ["vient d'acheter", "vient de recevoir son guide", "vient de rejoindre les acheteurs de"];
 function actionDe(notif: Notif): string {
+  if (notif.type === "accompagnement") return "vient de rejoindre le programme d'accompagnement";
   if (notif.type === "checkout") return "est en train de commander";
   if (notif.type === "download") return "vient de télécharger";
   const n = notif.id.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
@@ -202,11 +203,12 @@ export default function SocialProofToast() {
 
 function NotifToast({ notif }: { notif: Notif }) {
   const isPurchase = notif.type === "purchase";
+  const isAccomp = notif.type === "accompagnement";
   return (
     <div
       style={{
-        background: "#ffffff",
-        border: "1px solid #e5e7eb",
+        background: isAccomp ? "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)" : "#ffffff",
+        border: isAccomp ? "1px solid #86efac" : "1px solid #e5e7eb",
         borderRadius: "12px",
         padding: "12px 16px",
         boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
@@ -228,7 +230,7 @@ function NotifToast({ notif }: { notif: Notif }) {
           fontSize: "20px",
         }}
       >
-        {notif.type === "checkout" ? "⏳" : isPurchase ? "🛒" : "📥"}
+        {notif.type === "accompagnement" ? "🤝" : notif.type === "checkout" ? "⏳" : isPurchase ? "🛒" : "📥"}
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <p

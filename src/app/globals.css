@@ -200,6 +200,15 @@ body {
 }
 .cta-respire { animation: cta-respire 1.8s ease-in-out infinite; }
 
+/* ── Défilement horizontal garanties ──────────────────────────── */
+@keyframes defilement-garanties {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-defilement-garanties {
+  animation: defilement-garanties 25s linear infinite;
+}
+
 /* ── Bouton Postuler vert animé ─────────────────────────────────────── */
 @keyframes postuler-glow {
   0%, 100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.5), 0 4px 14px rgba(22, 163, 74, 0.3); }
@@ -246,3 +255,27 @@ body {
 .description-boutique li { margin-bottom: 6px; }
 .description-boutique strong, .description-boutique b { font-weight: 700; }
 .description-boutique a { color: #008f51; text-decoration: underline; }
+
+/* Descriptions rédigées sans mise en forme : on les rend visuelles (titres colorés, surlignage, cartes) */
+.description-enrichie > p:first-of-type { font-size: 19px; line-height: 1.5; font-weight: 600; color: #0e0f10; }
+.description-enrichie h2 {
+  font-size: 21px; font-weight: 800; color: #fff; margin: 32px 0 14px; padding: 12px 16px; border-radius: 14px;
+  background: linear-gradient(135deg, #1b7a1b 0%, #27A827 60%, #1f8f1f 100%);
+  box-shadow: 0 6px 18px rgba(39, 168, 39, 0.18);
+}
+.description-enrichie h2:first-child { margin-top: 0; font-size: 24px; background: linear-gradient(135deg, #E8B800 0%, #f5c400 100%); color: #111; }
+.description-enrichie h3 { color: #1b7a1b; font-size: 19px; border-left: 5px solid #E8B800; padding-left: 10px; }
+.description-enrichie strong, .description-enrichie b {
+  background: linear-gradient(transparent 55%, #ffe58a 55%); padding: 0 2px; color: #0e0f10;
+}
+.description-enrichie ul { list-style: none; padding-left: 0; display: flex; flex-direction: column; gap: 8px; }
+.description-enrichie ul li {
+  position: relative; margin: 0; padding: 11px 14px 11px 44px; border-radius: 12px;
+  background: #f3fbf6; border: 1px solid rgba(0, 143, 81, 0.15); font-size: 15px; line-height: 1.45; color: #20252b;
+}
+.description-enrichie ul li::before {
+  content: "✓"; position: absolute; left: 12px; top: 10px; width: 22px; height: 22px; border-radius: 999px;
+  background: #008f51; color: #fff; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center;
+}
+.description-enrichie s { color: #a9aeb5; }
+.description-enrichie p:last-child strong { background: none; display: block; text-align: center; font-size: 18px; color: #008f51; padding: 14px; border: 2px dashed #008f51; border-radius: 14px; }

@@ -10,13 +10,12 @@ import { ebooks as TOUS_LES_EBOOKS } from "@/lib/data";
 import { FORMATIONS } from "@/lib/formations-data";
 import type { DEFAULT_CONFIG } from "@/app/api/admin/workflow-config/route";
 import PostPurchaseCrossSell from "@/components/PostPurchaseCrossSell";
+import { lienGroupeWhatsApp } from "@/lib/groupe-whatsapp";
 
 type WorkflowConfig = typeof DEFAULT_CONFIG;
 
 // ─── Groupe WhatsApp privé du guide, proposé juste après l'achat ─────────────
 
-// Lien général utilisé quand le guide n'a pas son propre groupe (réglable sur le serveur).
-const GROUPE_PAR_DEFAUT = process.env.NEXT_PUBLIC_GROUPE_WHATSAPP || "";
 
 function GroupeWhatsApp({ ebookIds }: { ebookIds: string[] }) {
   const [liens, setLiens] = useState<{ titre: string; url: string }[]>([]);
@@ -27,8 +26,9 @@ function GroupeWhatsApp({ ebookIds }: { ebookIds: string[] }) {
       .then((d: { ebooks?: { id: string; title: string; whatsappUrl?: string }[]; overrides?: Record<string, { whatsappUrl?: string }> }) => {
         const trouves = ebookIds.map((id) => {
           const e = (d.ebooks ?? []).find((x) => x.id === id) ?? TOUS_LES_EBOOKS.find((x) => x.id === id);
-          const url = d.overrides?.[id]?.whatsappUrl || (e as { whatsappUrl?: string } | undefined)?.whatsappUrl || GROUPE_PAR_DEFAUT;
-          return url ? { titre: e?.title ?? "votre guide", url } : null;
+          const titre = e?.title ?? "un guide";
+          const url = lienGroupeWhatsApp(d.overrides?.[id]?.whatsappUrl || (e as { whatsappUrl?: string } | undefined)?.whatsappUrl, titre);
+          return { titre, url };
         }).filter((x): x is { titre: string; url: string } => !!x);
         setLiens(trouves.filter((l, i) => trouves.findIndex((m) => m.url === l.url) === i));
       })
@@ -38,9 +38,10 @@ function GroupeWhatsApp({ ebookIds }: { ebookIds: string[] }) {
   if (liens.length === 0) return null;
   return (
     <div className="mb-6 rounded-2xl border-2 border-[#25D366] bg-[#25D366]/5 p-5 text-center">
-      <p className="text-[17px] font-bold text-gray-900">👥 Dernière étape : rejoins le groupe privé</p>
+      <p className="text-[12px] font-extrabold tracking-wide text-[#b45309]">⚠️ CE N&apos;EST PAS ENCORE FINI !</p>
+      <p className="mt-1 text-[17px] font-bold text-gray-900">👥 Rejoins maintenant le groupe WhatsApp des visionnaires</p>
       <p className="mt-1 text-[13px] text-gray-700">
-        Échange avec les autres visionnaires qui appliquent ce guide, pose tes questions et reçois les bonus.
+        Tu as rejoint l&apos;écosystème Smart Life : le guide, la communauté WhatsApp des visionnaires et la possibilité d&apos;être accompagné(e) par un consultant du terrain pour lancer ton activité.
       </p>
       <div className="mt-4 flex flex-col gap-2">
         {liens.map((l) => (

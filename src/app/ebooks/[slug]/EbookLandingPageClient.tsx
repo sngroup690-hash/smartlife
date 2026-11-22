@@ -403,6 +403,8 @@ export default function EbookLandingPage({ initial = null }: { initial?: Ebook |
   const shareUrl = `${SITE_EBOOK}/ebooks/${ebook.slug}`;
   const shareText = encodeURIComponent(`Découvrez cet ebook : ${ebook.title} — ${shareUrl}`);
   const dejaAchete = ebooksAchetes.includes(ebook.id);
+  // Description sans mise en forme d'origine (pas de couleurs Chariow) : on lui applique le style visuel du site.
+  const descriptionEnrichie = !!ebook.description && !/style=/i.test(ebook.description);
   const imagePrincipale = ebook.banner || ebook.cover;
   const ventes = e.vendusAffiche ?? e.ventes ?? 0;
   const apercuDispo = apercuVerifie || !urlApercu.startsWith("/");
@@ -548,13 +550,16 @@ export default function EbookLandingPage({ initial = null }: { initial?: Ebook |
 
             {/* Tout ce que l'acheteur reçoit */}
             <section className="mt-10 lg:mt-12 rounded-2xl border border-[#008f51]/20 bg-[#f3fbf6] p-5">
-              <h2 className="text-[19px] font-extrabold text-black">🎁 Tout ce que tu reçois aujourd&apos;hui</h2>
+              <p className="text-[12px] font-bold uppercase tracking-wider text-[#008f51]">Plus qu&apos;un guide</p>
+              <h2 className="mt-0.5 text-[19px] font-extrabold text-black">🎁 Tu rejoins l&apos;écosystème Smart Life</h2>
+              <p className="mt-1 text-[14px] text-[#393c41] leading-snug">Le guide te donne la méthode. La communauté et nos consultants t&apos;aident à passer à l&apos;action.</p>
               <ul className="mt-4 flex flex-col gap-3">
                 {[
                   { t: `Le guide complet en PDF${ebook.pages ? ` (${ebook.pages} pages)` : ""}`, d: "Téléchargé tout de suite après le paiement, et envoyé par e-mail." },
                   { t: "L'accès à vie", d: "Le guide reste dans ton espace : tu le relis quand tu veux, sur téléphone ou ordinateur." },
                   { t: "Le groupe WhatsApp privé", d: "Échange avec d'autres entrepreneurs qui appliquent le même guide." },
                   { t: "L'assistance sur WhatsApp", d: "Une question ou un souci de téléchargement ? On te répond." },
+                  { t: "Un accompagnement possible pour lancer ton business", d: "Si tu veux aller plus vite, un consultant du terrain peut t'accompagner pas à pas (en option)." },
                 ].map((b) => (
                   <li key={b.t} className="flex gap-3">
                     <span className="mt-0.5 w-6 h-6 rounded-full bg-[#008f51] flex items-center justify-center flex-shrink-0 text-[13px] font-bold" style={{ color: "#fff" }}>✓</span>
@@ -615,7 +620,7 @@ export default function EbookLandingPage({ initial = null }: { initial?: Ebook |
 
             {/* Description */}
             {(!ebook.sections || ebook.sections.length === 0) && ebook.description && (
-              <section className="mt-10 description-boutique">
+              <section className={`mt-10 description-boutique ${descriptionEnrichie ? "description-enrichie" : ""}`}>
                 <DescriptionRenderer html={ajouterImageSiAbsente(ebook.description, imagePrincipale)} className="" />
               </section>
             )}
@@ -630,7 +635,7 @@ export default function EbookLandingPage({ initial = null }: { initial?: Ebook |
                     </button>
                   ))}
                 </div>
-                <div className="description-boutique">
+                <div className={`description-boutique ${descriptionEnrichie ? "description-enrichie" : ""}`}>
                   <DescriptionRenderer html={activeSection === -1 ? ajouterImageSiAbsente(ebook.description, imagePrincipale) : (ebook.sections[activeSection]?.contenu || "")} className="" />
                 </div>
               </section>

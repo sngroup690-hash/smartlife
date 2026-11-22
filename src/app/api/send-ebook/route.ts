@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { readFile } from "fs/promises";
+import path from "path";
+import { lienGroupeWhatsApp, NUMERO_WHATSAPP } from "@/lib/groupe-whatsapp";
 import { ebooks as STATIC_EBOOKS } from "@/lib/data";
 import { FORMATIONS } from "@/lib/formations-data";
 import { createInvoice } from "@/lib/invoice-store";
@@ -39,14 +42,20 @@ export async function POST(req: NextRequest) {
   const produitRows = allItems.length
     ? allItems.map((item) => `
         <tr>
-          <td style="padding: 10px 14px; border-bottom: 1px solid #1e1e2e;">
-            <span style="color: #ffffff; font-size: 14px;">${item.title}</span>
-          </td>
-          <td style="padding: 10px 14px; border-bottom: 1px solid #1e1e2e; text-align: right; white-space: nowrap;">
-            <span style="background: #1e1e35; color: ${cfg.primaryColor}; font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600;">${item.type}</span>
-          </td>
+          <td style="padding:12px 14px;border-bottom:1px solid #f1f2f3;color:#111827;font-size:14px;font-weight:600;">📘 ${item.title}</td>
+          <td style="padding:12px 14px;border-bottom:1px solid #f1f2f3;text-align:right;white-space:nowrap;color:#008f51;font-size:12px;font-weight:700;">${item.type}</td>
         </tr>`).join("")
-    : `<tr><td colspan="2" style="padding: 12px 14px; color: #888; font-size: 13px;">Vos produits</td></tr>`;
+    : `<tr><td colspan="2" style="padding:12px 14px;color:#6b7280;font-size:13px;">Vos produits</td></tr>`;
+
+  // Lien du groupe WhatsApp : celui du premier guide acheté qui en a un, sinon le lien par défaut.
+  let lienDuGuide: string | undefined;
+  try {
+    const donnees = JSON.parse(await readFile(path.join(process.cwd(), "private", "ebooks-data.json"), "utf-8"));
+    lienDuGuide = (ebookIds ?? []).map((id: string) =>
+      donnees.overrides?.[id]?.whatsappUrl || (donnees.ebooks ?? []).find((e: { id: string }) => e.id === id)?.whatsappUrl
+    ).find(Boolean);
+  } catch { /* lien par défaut */ }
+  const lienGroupe = lienGroupeWhatsApp(lienDuGuide, allItems[0]?.title ?? "un guide");
 
   const montantStr = amount && amount > 0
     ? `${amount.toLocaleString("fr-FR")} ${currency ?? "XAF"}`
@@ -55,92 +64,72 @@ export async function POST(req: NextRequest) {
   const htmlContent = `<!DOCTYPE html>
 <html lang="fr">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background:#f4f4f7;font-family:Arial,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f7;padding:32px 0;">
+<body style="margin:0;padding:0;background:#f3f6f3;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f6f3;padding:24px 0;">
     <tr><td align="center">
-      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#0d0d18;border-radius:16px;overflow:hidden;">
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:18px;overflow:hidden;border:1px solid #e3ebe3;">
 
-        <!-- Header -->
+        <!-- En-tête -->
         <tr>
-          <td style="background:#0d1730;padding:28px 36px;">
-            <table width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td>
-                  <div style="font-size:22px;font-weight:900;color:${cfg.primaryColor};letter-spacing:1px;">${cfg.companyName}</div>
-                  <div style="font-size:12px;color:#8899aa;margin-top:3px;">${cfg.slogan}</div>
-                </td>
-                <td align="right">
-                  <div style="background:${cfg.primaryColor};color:#000;font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;">ACHAT CONFIRMÉ ✓</div>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr><td style="height:3px;background:${cfg.primaryColor};"></td></tr>
-
-        <!-- Body -->
-        <tr>
-          <td style="padding:32px 36px;">
-            <p style="color:#ccccdd;font-size:16px;margin:0 0 6px;">Bonjour <strong style="color:#ffffff;">${firstName}</strong>,</p>
-            <p style="color:#8899aa;font-size:14px;margin:0 0 28px;line-height:1.6;">
-              Merci pour votre achat ! Votre commande a bien été confirmée et vos produits sont prêts à être téléchargés.
-            </p>
-
-            <!-- Produits -->
-            <div style="margin-bottom:28px;">
-              <p style="color:${cfg.primaryColor};font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin:0 0 10px;">Produits achetés</p>
-              <table width="100%" cellpadding="0" cellspacing="0" style="background:#0a0a14;border-radius:10px;overflow:hidden;border:1px solid #1e1e2e;">
-                <thead>
-                  <tr style="background:#111125;">
-                    <th style="padding:10px 14px;text-align:left;color:#667;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Désignation</th>
-                    <th style="padding:10px 14px;text-align:right;color:#667;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Type</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${produitRows}
-                </tbody>
-                ${montantStr ? `
-                <tfoot>
-                  <tr style="background:#111125;">
-                    <td style="padding:12px 14px;color:#8899aa;font-size:13px;font-weight:600;">Total payé</td>
-                    <td style="padding:12px 14px;text-align:right;color:${cfg.primaryColor};font-size:16px;font-weight:900;">${montantStr}</td>
-                  </tr>
-                </tfoot>` : ""}
-              </table>
-            </div>
-
-            <!-- CTA -->
-            <p style="color:#8899aa;font-size:14px;margin:0 0 20px;line-height:1.6;">
-              Cliquez sur le bouton ci-dessous pour accéder directement à vos téléchargements&nbsp;— aucun mot de passe requis&nbsp;:
-            </p>
-            <table width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td align="center" style="padding:4px 0 8px;">
-                  <a href="${espaceUrl}"
-                     style="display:inline-block;background:${cfg.primaryColor};color:#000000;font-weight:700;font-size:15px;padding:14px 36px;border-radius:10px;text-decoration:none;">
-                    📥 Accéder à mes produits
-                  </a>
-                </td>
-              </tr>
-            </table>
-            <p style="color:#556;font-size:12px;text-align:center;margin:8px 0 0;">Ce lien est valable 30 jours et vous connecte automatiquement.</p>
-
-            ${montantStr ? `
-            <p style="color:#667;font-size:13px;text-align:center;margin-top:24px;padding-top:20px;border-top:1px solid #1a1a28;">
-              📄 Votre facture PDF est jointe à cet email.
-            </p>` : ""}
+          <td style="background:linear-gradient(135deg,#1b7a1b,#27A827);background-color:#27A827;padding:26px 30px;">
+            <div style="font-size:22px;font-weight:900;color:#ffffff;">${cfg.companyName}</div>
+            <div style="font-size:13px;color:#e6f6e6;margin-top:4px;">${cfg.slogan}</div>
           </td>
         </tr>
 
-        <!-- Footer -->
+        <!-- Corps -->
         <tr>
-          <td style="background:#060610;padding:20px 36px;">
-            <p style="color:#445;font-size:12px;margin:0;line-height:1.7;">
-              Si vous n'avez pas effectué cet achat, ignorez cet email.<br>
-              Pour toute question&nbsp;: <a href="mailto:${cfg.supportEmail}" style="color:${cfg.primaryColor};text-decoration:none;">${cfg.supportEmail}</a>
-              &nbsp;|&nbsp; ${cfg.phone}
+          <td style="padding:28px 30px 8px;">
+            <p style="display:inline-block;background:#e9f8ee;color:#008f51;font-size:12px;font-weight:700;padding:5px 12px;border-radius:20px;margin:0 0 16px;">✅ ACHAT CONFIRMÉ</p>
+            <p style="color:#111827;font-size:18px;font-weight:700;margin:0 0 6px;">Bravo ${firstName} 🎉</p>
+            <p style="color:#374151;font-size:15px;margin:0 0 22px;line-height:1.6;">
+              Votre paiement est confirmé. Votre guide est prêt : téléchargez-le maintenant, il reste disponible à vie dans votre espace.
             </p>
-            <p style="color:#334;font-size:11px;margin:10px 0 0;">${cfg.companyName} &nbsp;|&nbsp; ${cfg.website}</p>
+
+            <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;margin-bottom:22px;">
+              ${produitRows}
+              ${montantStr ? `<tr><td style="padding:12px 14px;background:#f9fafb;color:#6b7280;font-size:13px;font-weight:600;">Total payé</td><td style="padding:12px 14px;background:#f9fafb;text-align:right;color:#008f51;font-size:16px;font-weight:900;">${montantStr}</td></tr>` : ""}
+            </table>
+
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr><td align="center" style="padding:2px 0 6px;">
+                <a href="${espaceUrl}" style="display:inline-block;background:#008f51;color:#ffffff;font-weight:700;font-size:16px;padding:15px 34px;border-radius:12px;text-decoration:none;">
+                  📥 Télécharger mon guide
+                </a>
+              </td></tr>
+            </table>
+            <p style="color:#6b7280;font-size:12px;text-align:center;margin:6px 0 0;">Aucun mot de passe : ce lien vous connecte directement (valable 30 jours).</p>
+          </td>
+        </tr>
+
+        <!-- Groupe WhatsApp -->
+        <tr>
+          <td style="padding:22px 30px 26px;">
+            <table width="100%" cellpadding="0" cellspacing="0" style="background:#fffbeb;border:2px dashed #E8B800;border-radius:14px;">
+              <tr><td style="padding:20px 20px 22px;text-align:center;">
+                <p style="color:#b45309;font-size:13px;font-weight:800;letter-spacing:.5px;margin:0 0 6px;">⚠️ CE N'EST PAS ENCORE FINI !</p>
+                <p style="color:#111827;font-size:18px;font-weight:800;margin:0 0 8px;">Rejoignez maintenant le groupe WhatsApp des visionnaires</p>
+                <p style="color:#374151;font-size:14px;line-height:1.6;margin:0 0 16px;">
+                  Vous venez de rejoindre un écosystème complet : le guide, la communauté WhatsApp des visionnaires et la possibilité d'être accompagné(e) par un consultant du terrain pour lancer votre activité.
+                </p>
+                <a href="${lienGroupe}" style="display:inline-block;background:#25D366;color:#ffffff;font-weight:800;font-size:16px;padding:14px 28px;border-radius:12px;text-decoration:none;">
+                  👥 Rejoindre le groupe WhatsApp
+                </a>
+              </td></tr>
+            </table>
+            ${montantStr ? `<p style="color:#6b7280;font-size:13px;text-align:center;margin:18px 0 0;">📄 Votre facture PDF est jointe à cet e-mail.</p>` : ""}
+          </td>
+        </tr>
+
+        <!-- Pied -->
+        <tr>
+          <td style="background:#f9fafb;border-top:1px solid #eef0f2;padding:18px 30px;">
+            <p style="color:#6b7280;font-size:12px;margin:0;line-height:1.7;">
+              Une difficulté pour télécharger ? Écrivez-nous sur WhatsApp au <a href="https://wa.me/${NUMERO_WHATSAPP}" style="color:#008f51;text-decoration:none;font-weight:700;">+237 694 176 642</a>
+              ou à <a href="mailto:${cfg.supportEmail}" style="color:#008f51;text-decoration:none;">${cfg.supportEmail}</a>.<br>
+              Si vous n'avez pas effectué cet achat, ignorez cet e-mail.
+            </p>
+            <p style="color:#9ca3af;font-size:11px;margin:10px 0 0;">${cfg.companyName} · ${cfg.website}</p>
           </td>
         </tr>
 

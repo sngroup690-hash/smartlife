@@ -7,7 +7,7 @@ const ACTIVITIES_FILE = path.join(process.cwd(), "private", "recent-activities.j
 
 export type RecentActivity = {
   id: string;
-  type: "purchase" | "download" | "checkout";
+  type: "purchase" | "download" | "checkout" | "accompagnement";
   prenom: string;
   ville: string;
   produit: string;

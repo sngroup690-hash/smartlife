@@ -99,12 +99,11 @@ function PackCard({ pack }: { pack: Pack }) {
     <article className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden hover:border-[#E8B800]/50 hover:shadow-md transition-all flex flex-col">
       {/* Image / bannière */}
       {pack.image ? (
-        <div className="relative w-full bg-gray-950 overflow-hidden" style={{ aspectRatio: "2/1" }}>
-          {/* object-contain garantit que tous les mockups restent visibles */}
+        <div className="relative w-full bg-[#f7f7f8] overflow-hidden" style={{ aspectRatio: "2/1" }}>
           <img
             src={pack.image}
             alt={pack.nom}
-            className="w-full h-full object-contain"
+            className="w-full h-full object-cover"
           />
           {/* Badges superposés */}
           <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">

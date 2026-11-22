@@ -64,8 +64,8 @@ export default function PackDetailClient({ pack }: { pack: PackData }) {
         <div className="lg:col-span-3 space-y-8">
           {/* Bannière */}
           {pack.image ? (
-            <div className="relative w-full bg-gray-950 rounded-2xl overflow-hidden" style={{ aspectRatio: "2/1" }}>
-              <img src={pack.image} alt={pack.nom} loading="lazy" decoding="async" className="w-full h-full object-contain" />
+            <div className="relative w-full bg-[#f7f7f8] rounded-2xl overflow-hidden" style={{ aspectRatio: "2/1" }}>
+              <img src={pack.image} alt={pack.nom} loading="lazy" decoding="async" className="w-full h-full object-cover" />
               <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
                 <span className="px-2.5 py-1 bg-black/70 text-white text-xs font-bold rounded-full flex items-center gap-1 backdrop-blur-sm">
                   <Package size={10} /> {pack.items.length} contenu{pack.items.length > 1 ? "s" : ""}

@@ -362,12 +362,13 @@ export default function DownloadModal({ ebook, item: itemProp, onClose }: Props)
           {/* Options de paiement */}
           <PaymentBadges className="pt-1" />
 
-          <div className="grid grid-cols-2 gap-2 pt-1">
+          <div className="flex flex-wrap justify-center gap-2 pt-1">
             {[
               { icone: <Zap size={15} className="text-[#008f51]" />, texte: "Livraison instantanée" },
               { icone: <ShieldCheck size={15} className="text-[#008f51]" />, texte: "Paiement sécurisé" },
               { icone: <Illimite size={15} className="text-[#008f51]" />, texte: "Accès à vie" },
-              { icone: <Users size={15} className="text-[#008f51]" />, texte: "Groupe WhatsApp privé de visionnaires" },
+              { icone: <Users size={15} className="text-[#008f51]" />, texte: "Groupe WhatsApp privé" },
+              { icone: <CheckCircle size={15} className="text-[#008f51]" />, texte: "Accompagnement possible" },
             ].map((g) => (
               <div key={g.texte} className="flex flex-col items-center gap-1 rounded-xl bg-gray-50 py-2.5 px-1 text-center">
                 {g.icone}
