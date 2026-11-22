@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, TrendingUp, Users, Volume2, VolumeX } from "lucide-react";
+import { ArrowRight, CheckCircle, TrendingUp, Users, Volume2, VolumeX, Sparkles, Star, Shield, Zap, Target, Rocket } from "lucide-react";
+import { motion } from "framer-motion";
 import { useAccompagnementStore, EspacePersonnalise } from "@/lib/accompagnement-store";
 import AnimateOnScroll, { StaggerContainer, StaggerItem } from "@/components/AnimateOnScroll";
 
@@ -129,52 +130,131 @@ export default function AccompagnementPage() {
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div className="overflow-hidden bg-white">
 
-      {/* Hero */}
-      <div className="text-center mb-20">
-        <AnimateOnScroll variant="fadeUp">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#E8B800]/10 border border-[#E8B800]/30 rounded-full text-sm text-[#E8B800] mb-6">
-            <TrendingUp size={14} />
-            Programme d&apos;accompagnement entrepreneurial
-          </div>
-        </AnimateOnScroll>
-        <AnimateOnScroll variant="fadeUp" delay={0.15}>
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            Lancez votre <span className="gradient-text">Business</span>
-            <br />avec un expert à vos côtés
-          </h1>
-        </AnimateOnScroll>
-        <AnimateOnScroll variant="blurUp" delay={0.3}>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed mb-10">
-            Choisissez votre domaine d&apos;activité, inscrivez-vous et bénéficiez d&apos;un accompagnement
-            personnalisé de A à Z : formation, installation, gestion et suivi.
-          </p>
-        </AnimateOnScroll>
+      {/* ════════ HERO PREMIUM ════════ */}
+      <section className="relative py-12 sm:py-16 overflow-hidden">
+        {/* Fond dégradé */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#f0fdf0] via-white to-[#fef9e7]" />
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
+
+        {/* Formes flottantes */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div
+            animate={{ y: [-20, 20, -20], x: [-8, 12, -8], rotate: [0, 90, 180, 270, 360] }}
+            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-[10%] right-[6%] w-16 h-16 rounded-3xl bg-gradient-to-br from-[#E8B800]/12 to-[#E8B800]/4 border border-[#E8B800]/10"
+          />
+          <motion.div
+            animate={{ y: [15, -20, 15], x: [8, -8, 8] }}
+            transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute bottom-[15%] left-[4%] w-14 h-14 rounded-full bg-gradient-to-br from-[#27A827]/12 to-[#27A827]/4 border border-[#27A827]/10"
+          />
+          <motion.div
+            animate={{ scale: [1, 1.3, 1], rotate: [0, 45, 0] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-[45%] left-[12%] w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-200/15 to-transparent border border-amber-200/10"
+          />
+          <motion.div
+            animate={{ y: [-10, 15, -10], rotate: [0, -60, 0] }}
+            transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute bottom-[30%] right-[10%] w-12 h-12 rounded-full bg-gradient-to-br from-green-200/15 to-transparent border border-green-200/10"
+          />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2, type: "spring" }}
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/70 backdrop-blur-md border border-[#E8B800]/20 rounded-full text-sm text-gray-700 mb-8 shadow-lg shadow-[#E8B800]/5"
+        >
+          <motion.span
+            animate={{ rotate: [0, 15, -15, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <Sparkles size={16} className="text-[#E8B800]" />
+          </motion.span>
+          Accompagnement entrepreneurial
+        </motion.div>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+          className="text-[2rem] sm:text-[2.6rem] md:text-[3.5rem] font-extrabold leading-[1.1] mb-6 text-gray-900"
+        >
+          Profitez de l&apos;expertise{" "}
+          <span className="bg-gradient-to-r from-[#E8B800] to-amber-500 bg-clip-text text-transparent">d&apos;un professionnel</span>
+          <br className="hidden sm:block" />
+          {" "}pour éviter les{" "}
+          <span className="bg-gradient-to-r from-[#27A827] to-emerald-500 bg-clip-text text-transparent">pièges du terrain</span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className="text-gray-500 max-w-xl mx-auto text-base sm:text-lg leading-relaxed mb-10 font-medium"
+        >
+          Choisissez votre domaine, inscrivez-vous et bénéficiez d&apos;un accompagnement
+          personnalisé de A à Z avec un expert à vos côtés.
+        </motion.p>
 
         {/* Stats */}
-        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-[10px] mb-16" staggerDelay={0.12}>
-          <StaggerItem>
-            <div className="text-center px-3 py-3 bg-white border border-gray-200 rounded-2xl shadow-sm">
-              <div className="text-2xl sm:text-3xl font-bold gradient-text mb-0.5">{espaces.length > 0 ? `${espaces.length}+` : "8+"}</div>
-              <div className="text-gray-500 text-xs sm:text-sm leading-tight">Secteurs d&apos;activité</div>
-            </div>
-          </StaggerItem>
-          {STATIC_STATS.map((s) => (
-            <StaggerItem key={s.label}>
-              <div className="text-center px-3 py-3 bg-white border border-gray-200 rounded-2xl shadow-sm">
-                <div className="text-2xl sm:text-3xl font-bold gradient-text mb-0.5">{s.value}</div>
-                <div className="text-gray-700 font-bold text-xs sm:text-sm leading-tight">{s.label}</div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5 mb-10">
+          {[
+            { value: espaces.length > 0 ? `${espaces.length}+` : "8+", label: "Secteurs d'activité", icon: Target, gradient: "from-[#E8B800] to-amber-500" },
+            { value: "47", label: "Clients accompagnés", icon: Users, gradient: "from-[#27A827] to-emerald-500" },
+            { value: "93%", label: "Taux de réussite", icon: TrendingUp, gradient: "from-amber-500 to-[#E8B800]" },
+            { value: "6 mois", label: "Accompagnement moyen", icon: Zap, gradient: "from-green-500 to-[#27A827]" },
+          ].map((stat, i) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 + i * 0.1, duration: 0.5 }}
+              className="text-center p-4 sm:p-5 bg-white/80 backdrop-blur-sm border border-gray-100 rounded-3xl shadow-lg shadow-gray-100/50"
+            >
+              <div className={`inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-gradient-to-br ${stat.gradient} mb-2.5 shadow-lg`}>
+                <stat.icon size={18} className="text-white" />
               </div>
-            </StaggerItem>
+              <div className="text-2xl sm:text-3xl font-black text-gray-900 mb-0.5">{stat.value}</div>
+              <div className="text-gray-500 text-xs sm:text-sm font-medium leading-tight">{stat.label}</div>
+            </motion.div>
           ))}
-        </StaggerContainer>
+        </div>
+
+        {/* Social proof */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.1, duration: 0.5 }}
+          className="flex items-center justify-center gap-3 mb-10"
+        >
+          <div className="flex -space-x-2">
+            {["PK", "AM", "SO", "FK", "NB"].map((initials, i) => (
+              <div
+                key={initials}
+                className="w-8 h-8 rounded-full border-2 border-white flex items-center justify-center text-[9px] font-bold shadow-sm"
+                style={{
+                  background: i % 2 === 0 ? "linear-gradient(135deg, #27A827, #1e8c1e)" : "linear-gradient(135deg, #E8B800, #d4a017)",
+                  color: i % 2 === 0 ? "#fff" : "#000",
+                }}
+              >
+                {initials}
+              </div>
+            ))}
+          </div>
+          <p className="text-gray-500 text-xs font-medium">47 entrepreneurs nous font confiance</p>
+        </motion.div>
 
         {/* Vidéo de présentation */}
         {videoUrl && (
-          <div className="mb-12 max-w-3xl mx-auto">
+          <AnimateOnScroll variant="scaleUp" className="mb-12 max-w-3xl mx-auto">
             <AutoplayVideo src={videoUrl} />
-          </div>
+          </AnimateOnScroll>
         )}
 
         {/* Étapes */}
@@ -208,7 +288,12 @@ export default function AccompagnementPage() {
             <span className="text-gray-700 text-xs">→</span>
           </div>
         </div>
-      </div>
+
+        </div>
+      </section>
+
+      {/* ════════ ESPACES D'ACCOMPAGNEMENT ════════ */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
       {/* Espaces */}
       {espaces.length === 0 ? (
@@ -238,7 +323,7 @@ export default function AccompagnementPage() {
             </p>
           </AnimateOnScroll>
 
-          <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-20" staggerDelay={0.1}>
+          <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12" staggerDelay={0.1}>
             {espaces.map((espace) => {
               const demandes = store.demandes.filter((d) => d.espaceId === espace.id);
               const validees = demandes.filter((d) => d.statut === "validee").length;
@@ -324,8 +409,8 @@ export default function AccompagnementPage() {
 
       {/* Section Consultants */}
       {store.consultants.filter((c) => c.actif).length > 0 && (
-        <div className="mb-20">
-          <AnimateOnScroll variant="fadeUp" className="text-center mb-10">
+        <div className="mb-12">
+          <AnimateOnScroll variant="fadeUp" className="text-center mb-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-2">
               Nos <span className="gradient-text">Consultants</span>
             </h2>
@@ -369,27 +454,65 @@ export default function AccompagnementPage() {
                     </div>
                   )}
                 </div>
+                </StaggerItem>
               );
             })}
-          </div>
+          </StaggerContainer>
         </div>
       )}
 
-      {/* CTA bas de page */}
-      <div className="text-center p-12 rounded-3xl bg-gradient-to-br from-[#E8B800]/10 to-[#27A827]/5 border border-[#E8B800]/20">
-        <div className="text-4xl mb-4">💬</div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Votre domaine n&apos;est pas listé ?</h2>
-        <p className="text-gray-600 font-bold mb-8 max-w-lg mx-auto">
-          Contactez-nous pour discuter de votre projet. Nous étudions tous les secteurs d&apos;activité
-          et pouvons créer un programme sur mesure pour vous.
-        </p>
-        <Link
-          href="/contact"
-          className="inline-flex items-center gap-2 px-8 py-4 bg-[#E8B800] hover:bg-[#27A827] text-black font-bold rounded-xl transition-all"
-        >
-          Discuter de mon projet <ArrowRight size={18} />
-        </Link>
       </div>
+
+      {/* ════════ CTA PREMIUM ════════ */}
+      <section className="py-14 sm:py-20 px-5 bg-gradient-to-br from-green-50/80 via-white to-yellow-50/80">
+        <AnimateOnScroll variant="scaleUp">
+          <div className="max-w-2xl mx-auto text-center">
+            <motion.div
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm border border-[#E8B800]/20 rounded-full text-xs text-gray-600 font-semibold mb-6 shadow-sm"
+            >
+              <motion.span
+                animate={{ scale: [1, 1.4, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-2 h-2 rounded-full bg-[#27A827]"
+              />
+              Programmes sur mesure disponibles
+            </motion.div>
+
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
+              Votre domaine n&apos;est pas listé ?
+            </h2>
+            <p className="text-gray-500 text-sm sm:text-base max-w-md mx-auto mb-10 leading-relaxed">
+              Contactez-nous pour discuter de votre projet. Nous étudions tous les secteurs
+              et créons des programmes sur mesure.
+            </p>
+
+            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+              <Link
+                href="/contact"
+                className="relative group inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-black font-bold rounded-2xl text-lg shadow-2xl shadow-[#E8B800]/25 transition-all"
+              >
+                <motion.span
+                  className="absolute -inset-2 bg-gradient-to-r from-[#E8B800] to-[#27A827] rounded-3xl opacity-0 group-hover:opacity-20 blur-2xl transition-opacity duration-700"
+                />
+                <span className="relative flex items-center gap-3">
+                  Discuter de mon projet
+                  <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" />
+                </span>
+              </Link>
+            </motion.div>
+
+            <div className="flex items-center justify-center gap-5 mt-8 text-xs text-gray-400 font-medium">
+              <span className="flex items-center gap-1.5"><Shield size={13} /> Étude gratuite</span>
+              <span className="flex items-center gap-1.5"><CheckCircle size={13} /> Réponse sous 48h</span>
+              <span className="flex items-center gap-1.5"><Star size={13} /> 93% de réussite</span>
+            </div>
+          </div>
+        </AnimateOnScroll>
+      </section>
     </div>
   );
 }

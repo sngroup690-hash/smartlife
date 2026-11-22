@@ -32,19 +32,22 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div className="text-center mb-16">
-        <h1 className="text-5xl font-bold text-gray-900 mb-4">
-          Nous <span className="gradient-text">Contacter</span>
-        </h1>
-        <p className="text-gray-600 max-w-xl mx-auto text-lg">
-          Une question, un projet ou besoin d&apos;un devis ? Notre équipe vous répond dans les 24h.
-        </p>
-      </div>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <AnimateOnScroll variant="fadeUp">
+        <div className="text-center mb-10">
+          <h1 className="text-5xl font-bold text-gray-900 mb-4">
+            Nous <span className="gradient-text">Contacter</span>
+          </h1>
+          <p className="text-gray-600 max-w-xl mx-auto text-lg">
+            Une question, un projet ou besoin d&apos;un devis ? Notre équipe vous répond dans les 24h.
+          </p>
+        </div>
+      </AnimateOnScroll>
 
       <div className="grid lg:grid-cols-3 gap-12">
         {/* Contact Info */}
-        <div className="space-y-6">
+        <StaggerContainer className="space-y-6" staggerDelay={0.12}>
+          <StaggerItem>
           <div className="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center text-green-600 flex-shrink-0">
@@ -57,7 +60,9 @@ export default function ContactPage() {
               </div>
             </div>
           </div>
+          </StaggerItem>
 
+          <StaggerItem>
           <div className="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center text-green-600 flex-shrink-0">
@@ -70,7 +75,9 @@ export default function ContactPage() {
               </div>
             </div>
           </div>
+          </StaggerItem>
 
+          <StaggerItem>
           <div className="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center text-green-600 flex-shrink-0">
@@ -83,7 +90,9 @@ export default function ContactPage() {
               </div>
             </div>
           </div>
+          </StaggerItem>
 
+          <StaggerItem>
           <div className="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center text-green-600 flex-shrink-0">
@@ -96,7 +105,9 @@ export default function ContactPage() {
               </div>
             </div>
           </div>
+          </StaggerItem>
 
+          <StaggerItem>
           <div className="p-6 bg-green-50 border border-green-200 rounded-2xl">
             <div className="flex items-center gap-3 mb-3">
               <Clock size={18} className="text-green-600" />
@@ -117,9 +128,11 @@ export default function ContactPage() {
               </div>
             </div>
           </div>
-        </div>
+          </StaggerItem>
+        </StaggerContainer>
 
         {/* Contact Form */}
+        <AnimateOnScroll variant="slideRight" delay={0.2}>
         <div className="lg:col-span-2">
           {sent ? (
             <div className="flex flex-col items-center justify-center h-full text-center p-12 bg-white border border-gray-200 rounded-2xl shadow-sm">
@@ -206,6 +219,7 @@ export default function ContactPage() {
             </div>
           )}
         </div>
+        </AnimateOnScroll>
       </div>
     </div>
   );

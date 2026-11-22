@@ -59,7 +59,7 @@ export default async function HomePage() {
       </section>
 
       {/* ══════ 3 PARCOURS ══════ */}
-      <section className="py-10 sm:py-16 bg-[#f4f3f0]">
+      <section className="py-8 sm:py-12 bg-[#f4f3f0]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <AnimateOnScroll variant="fadeUp">
             <h2 className="text-center text-2xl sm:text-3xl font-black text-gray-900 mb-2">
@@ -166,7 +166,7 @@ export default async function HomePage() {
       </section>
 
       {/* ══════ EBOOKS POPULAIRES ══════ */}
-      <section className="py-10 sm:py-20">
+      <section className="py-8 sm:py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimateOnScroll variant="fadeUp">
             <div className="flex items-end justify-between gap-4 mb-8">
@@ -206,7 +206,7 @@ export default async function HomePage() {
       </section>
 
       {/* ══════ ACCOMPAGNEMENT ══════ */}
-      <section className="py-10 sm:py-20 bg-gradient-to-br from-[#E8B800]/5 to-[#27A827]/5">
+      <section className="py-8 sm:py-14 bg-gradient-to-br from-[#E8B800]/5 to-[#27A827]/5">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <AnimateOnScroll variant="fadeUp">
             <div className="text-center mb-8">
@@ -273,7 +273,7 @@ export default async function HomePage() {
       </section>
 
       {/* ══════ DEVENIR CONSULTANT ══════ */}
-      <section className="py-10 sm:py-20">
+      <section className="py-8 sm:py-14">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <AnimateOnScroll variant="scaleUp">
             <div className="bg-gradient-to-br from-emerald-50 to-green-50 border-2 border-[#27A827]/30 rounded-3xl p-6 sm:p-10">
@@ -322,7 +322,7 @@ export default async function HomePage() {
       </section>
 
       {/* ══════ TÉMOIGNAGES ══════ */}
-      <section className="py-10 sm:py-20 bg-gray-50 overflow-hidden">
+      <section className="py-8 sm:py-14 bg-gray-50 overflow-hidden">
         <AnimateOnScroll variant="fadeUp">
           <div className="text-center mb-10 px-4">
             <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mb-2">
@@ -378,7 +378,7 @@ export default async function HomePage() {
       </section>
 
       {/* ══════ CTA FINAL ══════ */}
-      <section className="py-10 sm:py-20">
+      <section className="py-8 sm:py-14">
         <AnimateOnScroll variant="scaleUp">
           <div className="max-w-3xl mx-auto px-4 text-center">
             <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mb-3">

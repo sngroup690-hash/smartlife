@@ -267,7 +267,7 @@ export default function TemoignagesPage() {
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#E8B800]/5 rounded-full blur-3xl" />
           <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#27A827]/5 rounded-full blur-3xl" />
         </div>
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 py-20 text-center">
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 py-12 text-center">
           <AnimateOnScroll variant="fadeUp">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#E8B800]/10 border border-[#E8B800]/30 rounded-full text-[#D4A017] text-sm font-bold mb-6">
               <Star size={14} className="fill-[#E8B800] text-[#E8B800]" /> Preuves Sociales
@@ -381,7 +381,7 @@ export default function TemoignagesPage() {
 
         {!loading && items.length > 0 && (
           <AnimateOnScroll variant="blurUp">
-          <div className="mt-16 text-center border border-[#E8B800]/20 rounded-2xl p-10 bg-gradient-to-br from-[#E8B800]/5 to-[#27A827]/5">
+          <div className="mt-10 text-center border border-[#E8B800]/20 rounded-2xl p-8 bg-gradient-to-br from-[#E8B800]/5 to-[#27A827]/5">
             <h2 className="text-2xl font-black text-gray-900 mb-3">Prêt à rejoindre nos clients satisfaits ?</h2>
             <p className="text-gray-600 text-sm mb-6 max-w-md mx-auto">
               Accédez à nos guides, formations et accompagnements et commencez à transformer votre situation.

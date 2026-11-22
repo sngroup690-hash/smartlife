@@ -95,10 +95,10 @@ export default async function EbooksPage({
   ).filter((e) => serverData.actif[e.id] !== false);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Header */}
       <AnimateOnScroll variant="fadeUp">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 text-green-400 text-sm mb-4">
             <BookOpen size={16} />
             <span>Bibliothèque digitale</span>
@@ -147,7 +147,7 @@ export default async function EbooksPage({
 
       {/* Témoignages clients */}
       <AnimateOnScroll variant="blurUp">
-      <div className="mt-20 relative overflow-hidden py-2">
+      <div className="mt-12 relative overflow-hidden py-2">
         <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#f9f8f5] to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#f9f8f5] to-transparent z-10 pointer-events-none" />
         <div className="flex gap-4 animate-marquee-left" style={{ width: "max-content", animationDuration: "35s" }}>
@@ -179,7 +179,7 @@ export default async function EbooksPage({
 
       {/* Promo banner */}
       <AnimateOnScroll variant="scaleUp" delay={0.1}>
-        <div className="mt-20 p-8 rounded-2xl bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 text-center">
+        <div className="mt-12 p-8 rounded-2xl bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 text-center">
           <h3 className="text-gray-900 text-2xl font-bold mb-2">📦 Pack Complet – 3 Ebooks pour le prix de 2</h3>
           <p className="text-gray-600 font-bold mb-6">Économisez jusqu&apos;à 40% en achetant plusieurs ebooks ensemble.</p>
           <a
