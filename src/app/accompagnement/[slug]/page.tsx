@@ -331,7 +331,7 @@ export default function EspaceDetailPage() {
               whileTap={{ scale: 0.97 }}
               className="px-6 py-3.5 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-white font-bold rounded-xl shadow-lg shadow-[#27A827]/20 flex items-center gap-2 text-sm"
             >
-              Postuler maintenant
+              Je veux être accompagné
               <ArrowRight size={16} />
             </motion.button>
           </motion.div>
@@ -592,9 +592,9 @@ export default function EspaceDetailPage() {
                         <span className="text-[#E8B800] font-black text-2xl">{icone || espace.titre.charAt(0).toUpperCase()}</span>
                       </div>
                     )}
-                    <h3 className="text-gray-900 text-lg font-bold mb-1">Rejoindre ce programme</h3>
+                    <h3 className="text-gray-900 text-lg font-bold mb-1">Bénéficier de l&apos;accompagnement</h3>
                     <p className="text-gray-500 text-sm">
-                      Créez votre compte ou connectez-vous pour postuler.
+                      Faites votre demande en quelques clics.
                     </p>
                   </div>
                   <div className="space-y-3 mb-6">
@@ -604,7 +604,7 @@ export default function EspaceDetailPage() {
                       whileTap={{ scale: 0.98 }}
                       className="w-full py-4 bg-gradient-to-r from-[#27A827] to-[#1f8c1f] text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-[#27A827]/20 transition-all"
                     >
-                      <Users size={18} /> Je suis nouveau — M&apos;inscrire
+                      <ArrowRight size={18} /> Je veux être accompagné
                     </motion.button>
                     <button
                       onClick={() => setMode("login")}
@@ -667,7 +667,7 @@ export default function EspaceDetailPage() {
                   <button onClick={() => setMode("info")} className="text-gray-500 text-xs mb-4 hover:text-gray-700 flex items-center gap-1 transition-colors">
                     <ChevronRight size={12} className="rotate-180" /> Retour
                   </button>
-                  <h3 className="text-gray-900 text-lg font-bold mb-1">Créer mon compte & Postuler</h3>
+                  <h3 className="text-gray-900 text-lg font-bold mb-1">Demander mon accompagnement</h3>
                   <p className="text-gray-500 text-sm mb-4">
                     Candidature pour : <strong className="text-gray-900">{espace.titre}</strong>
                   </p>
@@ -746,7 +746,7 @@ export default function EspaceDetailPage() {
                       whileTap={{ scale: 0.98 }}
                       className="w-full py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-white font-bold rounded-xl flex items-center justify-center gap-2 mt-1 shadow-lg shadow-[#27A827]/20"
                     >
-                      <Send size={16} /> Créer mon compte & Postuler
+                      <Send size={16} /> Envoyer ma demande
                     </motion.button>
                     <p className="text-gray-400 text-xs text-center">Vous serez contacté dans les 48–72h.</p>
                   </form>
@@ -824,6 +824,26 @@ export default function EspaceDetailPage() {
           </div>
         );
       })()}
+
+      {/* ═══ BOUTON FLOTTANT — toujours visible ═══ */}
+      {!submitted && !demandeExistante && (
+        <div className="fixed bottom-20 sm:bottom-6 left-0 right-0 z-40 px-4 sm:px-6 pointer-events-none">
+          <div className="max-w-lg mx-auto pointer-events-auto">
+            <motion.button
+              onClick={scrollToPostuler}
+              initial={{ y: 60, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 1, type: "spring", stiffness: 200 }}
+              whileTap={{ scale: 0.97 }}
+              className="w-full py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-white font-bold rounded-2xl flex items-center justify-center gap-2.5 text-sm shadow-xl shadow-black/15 border border-white/20"
+            >
+              <Send size={16} />
+              Je veux être accompagné
+              <ArrowRight size={16} />
+            </motion.button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
