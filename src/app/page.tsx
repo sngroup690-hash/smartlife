@@ -28,8 +28,10 @@ async function lireDonnees() {
   ]);
   let fichiers: string[] = [];
   try { fichiers = await readdir(path.join(racine, "public", "espaces")); } catch { /* pas encore de photos */ }
-  let photosConsultants: string[] = [];
-  try { photosConsultants = (await readdir(path.join(racine, "public", "consultants-terrain"))).filter((f) => f.endsWith(".webp")).map((f) => `/consultants-terrain/${f}`); } catch { /* pas encore créées */ }
+  let photosConsultants: Array<{ src: string; domaine: string }> = [];
+  try {
+    photosConsultants = JSON.parse(await readFile(path.join(racine, "public", "consultants-terrain", "liste.json"), "utf-8"));
+  } catch { /* pas encore créées */ }
   const guidesActifs = (ebooksData?.ebooks || []).filter((e) => e.actif !== false && !e.deletedAt);
   const populaires = [...guidesActifs].filter((g) => g.cover && g.slug).sort((a, b) => (b.ventes || 0) - (a.ventes || 0)).slice(0, 6);
   const espaces = Array.isArray(espacesData) ? espacesData.filter((e) => e.actif !== false) : [];
@@ -332,6 +334,10 @@ export default async function HomePage() {
               <p className="mt-3 text-[15px] text-[#393c41] leading-relaxed">
                 Partagez votre savoir et accompagnez des entrepreneurs dans votre domaine d&apos;expertise.
               </p>
+              <p className="mt-4 rounded-2xl px-4 py-3 text-[15px] sm:text-[16px] font-bold leading-snug" style={{ background: "#fffbea", borderLeft: "5px solid #E8B800", color: "#111827" }}>
+                💡 Votre <span className="text-[#c99a00]">expérience</span> et votre <span className="text-[#1e7a1e]">nom</span> ont de la valeur.{" "}
+                <span className="text-[#e30026]">Ne les gâchez pas</span> : transmettez-les et faites-en une source de revenus.
+              </p>
               <ul className="mt-5 space-y-2.5">
                 {["Commissions sur chaque accompagnement", "Formation et certification offertes", "Outils et soutien de l'équipe Smart Life", "Vous travaillez à votre rythme"].map((t) => (
                   <li key={t} className="flex items-start gap-2 text-[14.5px] text-[#20252b]"><CheckCircle size={18} className="text-[#27A827] mt-0.5 shrink-0" /> {t}</li>
@@ -346,7 +352,8 @@ export default async function HomePage() {
               <div className="relative h-[300px] sm:h-[400px]">
                 <div className="accueil-flotte absolute inset-0 overflow-hidden rounded-3xl border-4 border-white shadow-2xl">
                   <PhotosQuiDefilent
-                    photos={photosConsultants.length > 0 ? photosConsultants : [photoConsultant!.src]}
+                    photos={photosConsultants.length > 0 ? photosConsultants.map((p) => p.src) : [photoConsultant!.src]}
+                    legendes={photosConsultants.map((p) => p.domaine)}
                     alt="Un consultant Smart Life accompagne un entrepreneur sur le terrain" />
                 </div>
                 <div className="accueil-flotte absolute -bottom-3 -left-2 rounded-2xl px-4 py-3 shadow-2xl" style={{ background: "#E8B800", animationDelay: "-2s" }}>
@@ -357,6 +364,28 @@ export default async function HomePage() {
             )}
           </div>
         </div>
+
+        {/* Des consultants dans tous les domaines : bande continue, sans répétition visible */}
+        {photosConsultants.length >= 6 && (
+          <div className="mt-10">
+            <p className="text-center text-[15px] sm:text-[17px] font-extrabold text-[#111827] px-4">
+              Des consultants dans <span className="texte-brillant">tous les domaines</span> : trouvez le vôtre
+            </p>
+            <div className="mt-5 overflow-hidden" data-sans-anim>
+              <div className="flex w-max gap-3 defile-gauche" style={{ animationDuration: `${photosConsultants.length * 5}s` }}>
+                {[...photosConsultants, ...photosConsultants].map((p, i) => (
+                  <Link key={i} href="/nos-consultants" aria-hidden={i >= photosConsultants.length ? true : undefined} tabIndex={i >= photosConsultants.length ? -1 : undefined}
+                    className="relative block w-56 sm:w-72 h-40 sm:h-48 flex-shrink-0 overflow-hidden rounded-3xl shadow-lg">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={p.src} alt={`Consultant en ${p.domaine}`} loading="lazy" className="w-full h-full object-cover" style={{ objectPosition: "50% 22%" }} />
+                    <span className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent 55%)" }} />
+                    <span className="absolute bottom-2.5 left-3 right-3 text-[13px] font-extrabold leading-tight" style={{ color: "#fff" }}>{p.domaine}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* ══════ AVIS ══════ */}

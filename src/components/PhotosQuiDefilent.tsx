@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 // Diaporama : les photos se remplacent en fondu avec un léger zoom, et de petits points montrent où on en est.
-export default function PhotosQuiDefilent({ photos, alt, intervalle = 3800 }: { photos: string[]; alt: string; intervalle?: number }) {
+export default function PhotosQuiDefilent({ photos, alt, legendes, intervalle = 3800 }: { photos: string[]; alt: string; legendes?: string[]; intervalle?: number }) {
   const [rang, setRang] = useState(0);
 
   useEffect(() => {
@@ -32,7 +32,13 @@ export default function PhotosQuiDefilent({ photos, alt, intervalle = 3800 }: { 
           }}
         />
       ))}
-      {photos.length > 1 && (
+      {legendes?.[rang] && (
+        <span key={rang} className="guide-entre absolute top-3 left-3 rounded-full px-3 py-1.5 text-[12.5px] font-extrabold shadow-lg"
+          style={{ background: "rgba(255,255,255,0.95)", color: "#1e7a1e" }}>
+          👤 Consultant · {legendes[rang]}
+        </span>
+      )}
+      {photos.length > 1 && photos.length <= 8 && (
         <div className="absolute bottom-3 right-3 flex gap-1.5 rounded-full px-2 py-1.5" style={{ background: "rgba(0,0,0,0.35)" }}>
           {photos.map((src, i) => (
             <button

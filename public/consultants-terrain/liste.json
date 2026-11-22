@@ -1,0 +1,82 @@
+[
+  {
+    "src": "/consultants-terrain/ferme.webp",
+    "domaine": "Agriculture"
+  },
+  {
+    "src": "/consultants-terrain/boutique.webp",
+    "domaine": "Commerce de quartier"
+  },
+  {
+    "src": "/consultants-terrain/atelier.webp",
+    "domaine": "Fabrication artisanale"
+  },
+  {
+    "src": "/consultants-terrain/elevage.webp",
+    "domaine": "Élevage de volailles"
+  },
+  {
+    "src": "/consultants-terrain/bureau.webp",
+    "domaine": "Création d'entreprise"
+  },
+  {
+    "src": "/consultants-terrain/marche.webp",
+    "domaine": "Vente et marketing"
+  },
+  {
+    "src": "/consultants-terrain/microfinance.webp",
+    "domaine": "Microfinance"
+  },
+  {
+    "src": "/consultants-terrain/btp.webp",
+    "domaine": "Construction et BTP"
+  },
+  {
+    "src": "/consultants-terrain/couture.webp",
+    "domaine": "Couture et mode"
+  },
+  {
+    "src": "/consultants-terrain/pisciculture.webp",
+    "domaine": "Pisciculture"
+  },
+  {
+    "src": "/consultants-terrain/informatique.webp",
+    "domaine": "Numérique et vente en ligne"
+  },
+  {
+    "src": "/consultants-terrain/restauration.webp",
+    "domaine": "Restauration"
+  },
+  {
+    "src": "/consultants-terrain/sante.webp",
+    "domaine": "Santé et parapharmacie"
+  },
+  {
+    "src": "/consultants-terrain/coiffure.webp",
+    "domaine": "Coiffure et beauté"
+  },
+  {
+    "src": "/consultants-terrain/boulangerie.webp",
+    "domaine": "Boulangerie et pâtisserie"
+  },
+  {
+    "src": "/consultants-terrain/immobilier.webp",
+    "domaine": "Immobilier"
+  },
+  {
+    "src": "/consultants-terrain/transport.webp",
+    "domaine": "Transport et logistique"
+  },
+  {
+    "src": "/consultants-terrain/education.webp",
+    "domaine": "Éducation et école"
+  },
+  {
+    "src": "/consultants-terrain/cosmetique.webp",
+    "domaine": "Cosmétique"
+  },
+  {
+    "src": "/consultants-terrain/porcs.webp",
+    "domaine": "Élevage de porcs"
+  }
+]
