@@ -1,0 +1,29 @@
+{
+  "enabled": true,
+  "position": "bottom-left",
+  "delayBetween": 8,
+  "displayDuration": 6,
+  "mobileEnabled": true,
+  "mode": "mixed",
+  "fakeNotifs": [
+    { "id": "f1", "type": "purchase", "prenom": "Marie", "ville": "Douala", "produit": "Guide Poulets Pondeuses" },
+    { "id": "f2", "type": "purchase", "prenom": "Jean-Paul", "ville": "Yaoundé", "produit": "Guide Savonnerie Rentable" },
+    { "id": "f3", "type": "purchase", "prenom": "Sandrine", "ville": "Abidjan", "produit": "Guide Élevage de Porcs" },
+    { "id": "f4", "type": "purchase", "prenom": "Patrick", "ville": "Kinshasa", "produit": "Guide Commerce de Quartier" },
+    { "id": "f5", "type": "purchase", "prenom": "Nathalie", "ville": "Libreville", "produit": "Pack Volaille Rentable" },
+    { "id": "f6", "type": "purchase", "prenom": "Didier", "ville": "Brazzaville", "produit": "Guide Microfinance" },
+    { "id": "f7", "type": "accompagnement", "prenom": "Estelle", "ville": "Lomé", "produit": "Programme d'accompagnement" },
+    { "id": "f8", "type": "purchase", "prenom": "Thierry", "ville": "Cotonou", "produit": "Guide Restauration Rapide" },
+    { "id": "f9", "type": "purchase", "prenom": "Aïcha", "ville": "Dakar", "produit": "Guide Culture du Manioc" },
+    { "id": "f10", "type": "accompagnement", "prenom": "Franck", "ville": "Douala", "produit": "Programme d'accompagnement" },
+    { "id": "f11", "type": "purchase", "prenom": "Carine", "ville": "Londres", "produit": "Guide Pressing Rentable" },
+    { "id": "f12", "type": "purchase", "prenom": "Ibrahim", "ville": "Bamako", "produit": "Guide Boulangerie Artisanale" }
+  ],
+  "fomoEnabled": true,
+  "fomoMessage": "🔥 {X} personnes consultent cette page en ce moment",
+  "fomoInitialCount": 8,
+  "fomoCurrentCount": 8,
+  "fomoDecreasing": false,
+  "fomoDecreaseIntervalMin": 10,
+  "fomoLastDecreased": "2026-11-22T00:00:00.000Z"
+}

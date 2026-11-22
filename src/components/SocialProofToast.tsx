@@ -188,7 +188,7 @@ export default function SocialProofToast() {
         width: "calc(100vw - 3rem)",
         transition: "opacity 0.5s ease, transform 0.5s ease",
         opacity: fadeOut ? 0 : 1,
-        transform: fadeOut ? "translateY(8px)" : "translateY(0)",
+        transform: fadeOut ? "translateX(-20px)" : "translateX(0)",
         ...pos,
       }}
     >
@@ -209,25 +209,25 @@ function NotifToast({ notif }: { notif: Notif }) {
       style={{
         background: isAccomp ? "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)" : "#ffffff",
         border: isAccomp ? "1px solid #86efac" : "1px solid #e5e7eb",
-        borderRadius: "12px",
-        padding: "12px 16px",
-        boxShadow: "0 4px 20px rgba(0,0,0,0.12)",
+        borderRadius: "10px",
+        padding: "8px 12px",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.15), 0 1px 4px rgba(0,0,0,0.1)",
         display: "flex",
         alignItems: "flex-start",
-        gap: "12px",
+        gap: "8px",
       }}
     >
       <div
         style={{
-          width: "40px",
-          height: "40px",
+          width: "28px",
+          height: "28px",
           borderRadius: "50%",
-          background: isPurchase ? "#dcfce7" : "#dbeafe",
+          background: isPurchase ? "#dcfce7" : isAccomp ? "#dcfce7" : "#dbeafe",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           flexShrink: 0,
-          fontSize: "20px",
+          fontSize: "14px",
         }}
       >
         {notif.type === "accompagnement" ? "🤝" : notif.type === "checkout" ? "⏳" : isPurchase ? "🛒" : "📥"}
@@ -236,19 +236,19 @@ function NotifToast({ notif }: { notif: Notif }) {
         <p
           style={{
             margin: 0,
-            fontSize: "13px",
+            fontSize: "12.5px",
             fontWeight: 600,
             color: "#111827",
             lineHeight: 1.4,
           }}
         >
           <span style={{ color: "#27A827" }}>{notif.prenom}</span>
-          {notif.ville ? <> de <span style={{ color: "#2563eb" }}>{notif.ville}</span></> : null} {actionDe(notif)}
+          {notif.ville ? <> depuis <span style={{ color: "#2563eb" }}>{notif.ville}</span></> : null} {actionDe(notif)}
         </p>
         <p
           style={{
-            margin: "2px 0 0",
-            fontSize: "12px",
+            margin: "1px 0 0",
+            fontSize: "11px",
             color: "#374151",
             fontWeight: 500,
             overflow: "hidden",
@@ -258,7 +258,7 @@ function NotifToast({ notif }: { notif: Notif }) {
         >
           {notif.produit}
         </p>
-        <p style={{ margin: "2px 0 0", fontSize: "11px", color: "#9ca3af" }}>
+        <p style={{ margin: "2px 0 0", fontSize: "10px", color: "#9ca3af" }}>
           {formatDelay(notif.minutesAgo)}
         </p>
       </div>

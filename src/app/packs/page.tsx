@@ -10,7 +10,7 @@ import { PriceTag } from "@/components/PriceTag";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
-type PackItem = { type: "ebook" | "formation"; id: string; title: string };
+type PackItem = { type: "ebook" | "formation"; id: string; title: string; prix?: number };
 type Pack = {
   id: string; slug?: string; nom: string; description: string; prix: number;
   originalValeur?: number;
@@ -159,7 +159,8 @@ function PackCard({ pack }: { pack: Pack }) {
                 {ebookItems.map((item) => (
                   <li key={item.id} className="flex items-start gap-2 text-sm text-gray-700">
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0 mt-1.5" />
-                    <span className="leading-snug">{item.title}</span>
+                    <span className="leading-snug flex-1">{item.title}</span>
+                    {item.prix ? <span className="flex-shrink-0 text-[12px] font-bold text-gray-500"><PriceTag amount={item.prix} /></span> : null}
                   </li>
                 ))}
               </ul>
@@ -174,7 +175,8 @@ function PackCard({ pack }: { pack: Pack }) {
                 {formationItems.map((item) => (
                   <li key={item.id} className="flex items-start gap-2 text-sm text-gray-700">
                     <span className="w-1.5 h-1.5 rounded-full bg-purple-400 flex-shrink-0 mt-1.5" />
-                    <span className="leading-snug">{item.title}</span>
+                    <span className="leading-snug flex-1">{item.title}</span>
+                    {item.prix ? <span className="flex-shrink-0 text-[12px] font-bold text-gray-500"><PriceTag amount={item.prix} /></span> : null}
                   </li>
                 ))}
               </ul>
@@ -184,24 +186,21 @@ function PackCard({ pack }: { pack: Pack }) {
 
         {/* Prix + CTA */}
         <div className="pt-4 border-t border-gray-100 space-y-3">
-          {/* Bloc prix */}
-          <div className="flex items-end justify-between gap-3">
-            <div>
-              {hasOriginal && (
-                <p className="text-sm text-gray-400 line-through leading-none mb-1">
-                  <PriceTag amount={pack.originalValeur!} />
-                </p>
-              )}
-              <p className="text-2xl font-black text-[#27A827] leading-none">
-                <PriceTag amount={pack.prix} />
-              </p>
+          {hasOriginal && (
+            <div className="flex items-center justify-between text-[13px]">
+              <span className="font-semibold text-gray-500">Valeur totale :</span>
+              <span className="font-bold text-gray-400 line-through"><PriceTag amount={pack.originalValeur!} /></span>
             </div>
-            {hasOriginal && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-green-50 border border-green-200 text-green-700 text-xs font-black rounded-xl whitespace-nowrap">
-                <Zap size={11} /> Économisez <PriceTag amount={economy} />
-              </span>
-            )}
+          )}
+          <div className="flex items-center justify-between">
+            <span className="text-[13px] font-semibold text-gray-500">Prix du pack :</span>
+            <span className="text-2xl font-black text-[#27A827]"><PriceTag amount={pack.prix} /></span>
           </div>
+          {hasOriginal && (
+            <div className="flex items-center justify-center gap-1.5 py-2 bg-green-50 border border-green-200 text-green-700 text-[13px] font-black rounded-xl">
+              <Zap size={12} /> Tu économises <PriceTag amount={economy} />
+            </div>
+          )}
 
           {/* CTA */}
           <div className="flex gap-2">
@@ -213,7 +212,8 @@ function PackCard({ pack }: { pack: Pack }) {
             )}
             <Link
               href={buyHref}
-              className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-[#E8B800] to-[#27A827] hover:from-[#27A827] hover:to-[#E8B800] text-black font-bold rounded-xl text-sm transition-all shadow-sm"
+              className="cta-respire flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-sm font-bold shadow-md"
+              style={{ background: "linear-gradient(135deg, #E8B800, #27A827)", color: "#fff" }}
             >
               <ShoppingCart size={15} /> Obtenir ce pack
             </Link>

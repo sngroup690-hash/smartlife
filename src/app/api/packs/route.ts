@@ -51,12 +51,12 @@ export async function GET(req: NextRequest) {
     const priceMap = await buildPriceMap();
 
     const enriched = packs.map((pack) => {
-      const items = pack.items || [];
-      const originalValeur = items.reduce(
-        (sum, item) => sum + (priceMap.get(item.id) || 0),
-        0
-      );
-      return { ...pack, originalValeur };
+      const items = (pack.items || []).map((item) => ({
+        ...item,
+        prix: priceMap.get(item.id) || 0,
+      }));
+      const originalValeur = items.reduce((sum, item) => sum + item.prix, 0);
+      return { ...pack, items, originalValeur };
     });
 
     const id = req.nextUrl.searchParams.get("id");
