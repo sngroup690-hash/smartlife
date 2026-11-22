@@ -872,7 +872,7 @@ export default function EspaceDetailPage() {
                         transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
                         className="w-16 h-16 mx-auto rounded-2xl overflow-hidden border-2 border-[#E8B800]/20 mb-4"
                       >
-                        <img src={heroImage} alt="" className="w-full h-full object-cover" />
+                        <img src={heroImage} alt="" className="w-full h-full object-cover" style={{ objectPosition: "50% 20%" }} />
                       </motion.div>
                     ) : (
                       <motion.div

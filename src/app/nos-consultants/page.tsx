@@ -1291,7 +1291,8 @@ export default function NosConsultantsPage() {
                     <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16/9" }}>
                       {espace.visuel || espace.image ? (
                         <img src={espace.visuel || espace.image} alt={espace.titre} loading="lazy" decoding="async"
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          style={{ objectPosition: "50% 20%", transformOrigin: "50% 100%" }} />
                       ) : (
                         <div className={`w-full h-full bg-gradient-to-br ${config.gradientClass} flex items-center justify-center`}>
                           <span className="text-5xl">{config.emoji}</span>

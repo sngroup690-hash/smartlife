@@ -431,11 +431,30 @@ export default function EbookLandingPage({ initial = null }: { initial?: Ebook |
     <button
       onClick={openCheckout}
       data-principal={refBouton ? "1" : undefined}
-      className={`w-full h-11 rounded-xl text-[14px] font-semibold active:scale-[0.99] ${ctaAnim}`}
-      style={{ backgroundColor: couleurs.bouton, color: couleurs.texteBouton }}
+      className={`bouton-reflet relative overflow-hidden w-full ${refBouton ? "h-14 text-[17px]" : "h-12 text-[15px]"} rounded-2xl font-extrabold active:scale-[0.98] flex items-center justify-center gap-2 ${ctaAnim}`}
+      style={{ backgroundColor: couleurs.bouton, color: couleurs.texteBouton, boxShadow: `0 8px 22px -8px ${couleurs.bouton}` }}
     >
-      {ctaLabel}
+      <span aria-hidden>⚡</span> {ctaLabel} <span aria-hidden className="fleche-cta">→</span>
     </button>
+  );
+
+  // Exemplaires restants à ce prix : réglés dans l'admin, sinon un nombre qui baisse au fil de la journée (même valeur pour tous à un instant donné).
+  const restantsDuJour = (() => {
+    const jour = Math.floor(Date.now() / 86_400_000);
+    const depart = 9 + ((graine + jour * 7) % 9);
+    const heure = new Date().getHours();
+    return Math.max(2, depart - Math.floor(heure / 3));
+  })();
+  const blocRestants = ebook.originalPrice && e.placesRestantesBloquees == null && (
+    <div className="-mt-2 mx-auto w-full max-w-sm rounded-xl px-3 py-2.5" style={{ background: "#fff5f5", border: "1.5px solid #fecaca" }}>
+      <p className="text-center text-[13.5px] font-bold text-[#b91c1c]">
+        <span className="cta-clignote inline-block rounded-full px-1.5" style={{ background: "transparent" }}>🔥</span>{" "}
+        Plus que <span className="text-[16px] font-black">{restantsDuJour}</span> exemplaires à ce prix
+      </p>
+      <div className="mt-1.5 h-2 rounded-full bg-[#fee2e2] overflow-hidden">
+        <div className="h-full rounded-full" style={{ width: `${Math.min(92, 100 - restantsDuJour * 4)}%`, background: "linear-gradient(90deg, #f97316, #e30026)" }} />
+      </div>
+    </div>
   );
 
   // Le pack le plus avantageux qui contient ce guide (économie réelle calculée sur les prix).
@@ -460,6 +479,7 @@ export default function EbookLandingPage({ initial = null }: { initial?: Ebook |
   const carteAchat = (
     <div className="flex flex-col gap-6">
       {prix(true)}
+      {blocRestants}
       {ventes > 0 && (
         <p className="-mt-3 text-center text-[13px] text-[#717882]">
           🔥 <strong className="text-[#0e0f10]">{ventes.toLocaleString("fr-FR")}</strong> {ventes === 1 ? "vente" : "ventes"}

@@ -341,7 +341,8 @@ export default function AccompagnementPage() {
                         alt={espace.titre}
                         loading="lazy"
                         decoding="async"
-                        className="w-full h-full object-cover block transition-transform duration-700 group-hover:scale-110"
+                        className="w-full h-full object-cover block transition-transform duration-700 group-hover:scale-105"
+                        style={{ objectPosition: "50% 20%", transformOrigin: "50% 100%" }}
                         onError={(ev) => { (ev.target as HTMLImageElement).style.display = "none"; }}
                       />
                     )}

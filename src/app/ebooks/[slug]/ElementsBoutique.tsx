@@ -6,10 +6,22 @@ import { Menu, X, ShoppingBag } from "lucide-react";
 import CurrencySelector from "@/components/CurrencySelector";
 
 const LIENS = [
+  { href: "/", label: "Accueil" },
   { href: "/ebooks", label: "Produits" },
+  { href: "/packs", label: "Packs" },
   { href: "/accompagnement", label: "Accompagnement" },
+  { href: "/devenir-consultant", label: "Devenir consultant" },
   { href: "/temoignages", label: "Avis" },
   { href: "/contact", label: "Contact" },
+];
+
+// Raccourcis toujours visibles, même sur téléphone : on ne reste jamais « coincé » dans la boutique.
+const RACCOURCIS = [
+  { href: "/", label: "🏠 Accueil", fond: "#f7f7f8", texte: "#20252b" },
+  { href: "/accompagnement", label: "🤝 Se faire accompagner", fond: "#27A827", texte: "#fff" },
+  { href: "/devenir-consultant", label: "🚀 Devenir consultant", fond: "#E8B800", texte: "#fff" },
+  { href: "/packs", label: "📦 Packs à prix réduit", fond: "#f7f7f8", texte: "#20252b" },
+  { href: "/nos-consultants", label: "👥 Nos consultants", fond: "#f7f7f8", texte: "#20252b" },
 ];
 
 export function EnteteBoutique() {
@@ -22,8 +34,8 @@ export function EnteteBoutique() {
           <img src="/logo-smartlife.jpeg" alt="Smart Life" className="w-8 h-8 rounded-lg object-cover" />
           <span className="font-bold text-base text-black truncate">Smart Life</span>
         </Link>
-        <nav className="hidden lg:flex items-center gap-6 text-sm text-[#20252b]">
-          {LIENS.map((l) => <Link key={l.href} href={l.href} className="hover:opacity-70">{l.label}</Link>)}
+        <nav className="hidden lg:flex items-center gap-5 text-sm text-[#20252b]">
+          {LIENS.filter((l) => l.href !== "/" && l.href !== "/devenir-consultant").map((l) => <Link key={l.href} href={l.href} className="hover:opacity-70">{l.label}</Link>)}
         </nav>
         <div className="flex items-center gap-3">
           <Link href="/mon-espace" className="hidden lg:flex items-center gap-1.5 text-sm text-[#20252b] hover:opacity-70">
@@ -33,6 +45,17 @@ export function EnteteBoutique() {
           <button onClick={() => setMenu((v) => !v)} className="lg:hidden p-1 text-[#20252b]" aria-label="Menu">
             {menu ? <X size={24} /> : <Menu size={24} />}
           </button>
+        </div>
+      </div>
+      <div className="border-t border-[#f1f2f3] bg-white">
+        <div className="max-w-6xl mx-auto px-4 py-2 flex gap-2 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
+          {RACCOURCIS.map((r) => (
+            <Link key={r.href} href={r.href}
+              className={`flex-shrink-0 px-3 py-1.5 rounded-full text-[12.5px] font-bold transition-transform hover:scale-105 ${r.href === "/devenir-consultant" || r.href === "/accompagnement" ? "cta-respire shadow-sm" : "border border-[#e8e9eb]"}`}
+              style={{ background: r.fond, color: r.texte }}>
+              {r.label}
+            </Link>
+          ))}
         </div>
       </div>
       {menu && (
@@ -48,12 +71,30 @@ export function EnteteBoutique() {
   );
 }
 
+const GARANTIES = [
+  { icone: "⚡", titre: "Livraison instantanée", texte: "Ton guide arrive en quelques secondes" },
+  { icone: "🔒", titre: "Paiement sécurisé", texte: "Tes informations sont protégées" },
+  { icone: "📱", titre: "Mobile Money & carte", texte: "MTN, Orange, Wave, Visa…" },
+  { icone: "👥", titre: "Groupe privé WhatsApp", texte: "Échange avec d'autres entrepreneurs" },
+  { icone: "♾️", titre: "Accès à vie", texte: "Retélécharge ton guide quand tu veux" },
+  { icone: "🤝", titre: "Accompagnement possible", texte: "Un consultant du terrain à tes côtés" },
+  { icone: "💬", titre: "Aide sur WhatsApp", texte: "Une vraie personne te répond" },
+  { icone: "🌍", titre: "14 960+ clients", texte: "Partout en Afrique et dans la diaspora" },
+];
+
 export function PiedBoutique() {
   return (
     <footer className="border-t border-[#e8e9eb] bg-white">
-      <div className="max-w-6xl mx-auto px-4 pt-6 grid grid-cols-2 sm:grid-cols-4 gap-2">
-        {["⚡ Livraison instantanée", "🔒 Paiement sécurisé", "📱 Mobile Money & carte", "👥 Groupe privé WhatsApp"].map((g) => (
-          <span key={g} className="rounded-xl bg-[#f7f7f8] px-3 py-2.5 text-center text-[12px] font-semibold text-[#20252b]">{g}</span>
+      <div className="max-w-6xl mx-auto px-4 pt-7 grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {GARANTIES.map((g, i) => (
+          <div key={g.titre}
+            className="garantie-boutique group flex flex-col items-center gap-1.5 rounded-2xl px-3 py-4 text-center shadow-sm transition-transform hover:-translate-y-1"
+            style={{ background: i % 2 === 0 ? "linear-gradient(135deg, #fffbea, #fff4c2)" : "linear-gradient(135deg, #f0fdf4, #dcfce7)", border: `1.5px solid ${i % 2 === 0 ? "#E8B800" : "#27A827"}`, animationDelay: `${i * 0.25}s` }}>
+            <span className="flex items-center justify-center w-11 h-11 rounded-full text-[22px] shadow-md group-hover:scale-110 transition-transform"
+              style={{ background: i % 2 === 0 ? "#E8B800" : "#27A827" }}>{g.icone}</span>
+            <span className="text-[13px] font-extrabold text-[#111827] leading-tight">{g.titre}</span>
+            <span className="text-[11px] text-[#5c5e62] leading-snug">{g.texte}</span>
+          </div>
         ))}
       </div>
       <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col items-center gap-4 text-center">

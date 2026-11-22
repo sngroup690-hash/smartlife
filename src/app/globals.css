@@ -211,6 +211,18 @@ body {
 }
 .notif-flotte { animation-name: notif-flotte; animation-timing-function: ease-in-out; animation-fill-mode: forwards; }
 
+.bouton-reflet::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%);
+  transform: translateX(-120%); animation: reflet-bouton 2.6s ease-in-out infinite;
+}
+@keyframes fleche-cta { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
+.fleche-cta { display: inline-block; animation: fleche-cta 1s ease-in-out infinite; }
+
+@keyframes garantie-flotte { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.garantie-boutique { animation: garantie-flotte 3.2s ease-in-out infinite; }
+.garantie-boutique:hover { animation-play-state: paused; }
+
 @keyframes guide-entre { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 .guide-entre { animation: guide-entre .45s ease-out; }
 
@@ -226,7 +238,7 @@ body {
 main article, main a[class*="rounded-2xl"], main div[class*="rounded-2xl"][class*="shadow"] { transition: transform .3s ease, box-shadow .3s ease; }
 main article:hover, main a[class*="rounded-2xl"]:hover { transform: translateY(-4px); box-shadow: 0 14px 30px -12px rgba(0,0,0,0.18); }
 main article img, main a[class*="rounded-2xl"] img { transition: transform .6s ease; }
-main article:hover img, main a[class*="rounded-2xl"]:hover img { transform: scale(1.04); }
+main article:hover img, main a[class*="rounded-2xl"]:hover img { transform: scale(1.04); transform-origin: 50% 100%; }
 
 @keyframes texte-brillant { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 .texte-brillant {
