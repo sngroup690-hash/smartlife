@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { X, ChevronRight, Search, Home, BookOpen, Handshake, UserPlus, MoreHorizontal } from "lucide-react";
+import { X, ChevronRight, Search, Home, BookOpen, Handshake, UserPlus, Users, MoreHorizontal } from "lucide-react";
 import { useCartStore } from "@/lib/store";
 import CurrencySelector from "@/components/CurrencySelector";
 
 const DRAWER_LINKS = [
   { href: "/ebooks",              label: "Ebooks & Guides",     icon: "📚", desc: "Guides pratiques pour monter en compétences" },
   { href: "/accompagnement",      label: "Accompagnement",      icon: "🤝", desc: "Profitez de l'expertise de professionnels du terrain" },
+  { href: "/nos-consultants",     label: "Nos Consultants",     icon: "👥", desc: "Notre réseau d'experts à votre service" },
   { href: "/devenir-consultant",  label: "Devenir Consultant",  icon: "💼", desc: "Partagez votre savoir et contribuez au changement" },
   { href: "/temoignages",         label: "Avis & Témoignages",  icon: "⭐", desc: "Ce que disent nos clients" },
   { href: "/contact",             label: "Contact",             icon: "📞", desc: "Nous contacter" },
@@ -19,7 +20,8 @@ const NAV_ITEMS = [
   { href: "/", label: "Accueil", icon: Home, color: "#E8B800", activeColor: "#E8B800" },
   { href: "/ebooks", label: "Ebooks", icon: BookOpen, color: "#27A827", activeColor: "#27A827" },
   { href: "/accompagnement", label: "Accompagnement", icon: Handshake, color: "#E8B800", activeColor: "#E8B800", center: true },
-  { href: "/devenir-consultant", label: "Devenir\nConsultant", icon: UserPlus, color: "#27A827", activeColor: "#27A827" },
+  { href: "/nos-consultants", label: "Nos\nConsultants", icon: Users, color: "#27A827", activeColor: "#27A827" },
+  { href: "/devenir-consultant", label: "Devenir\nConsultant", icon: UserPlus, color: "#E8B800", activeColor: "#E8B800" },
 ];
 
 export default function BottomNav() {

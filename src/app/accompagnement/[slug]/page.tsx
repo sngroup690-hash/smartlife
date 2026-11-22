@@ -829,34 +829,58 @@ export default function EspaceDetailPage() {
                 <div className="p-6 sm:p-8 bg-white border border-gray-100 rounded-2xl shadow-lg shadow-gray-100/50">
                   <div className="text-center mb-6">
                     {heroImage ? (
-                      <div className="w-16 h-16 mx-auto rounded-2xl overflow-hidden border-2 border-[#E8B800]/20 mb-4">
+                      <motion.div
+                        initial={{ scale: 0, rotate: -10 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+                        className="w-16 h-16 mx-auto rounded-2xl overflow-hidden border-2 border-[#E8B800]/20 mb-4"
+                      >
                         <img src={heroImage} alt="" className="w-full h-full object-cover" />
-                      </div>
+                      </motion.div>
                     ) : (
-                      <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-[#E8B800]/20 to-[#27A827]/10 border border-[#E8B800]/20 flex items-center justify-center mb-4">
+                      <motion.div
+                        initial={{ scale: 0, rotate: -10 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+                        className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-[#E8B800]/20 to-[#27A827]/10 border border-[#E8B800]/20 flex items-center justify-center mb-4"
+                      >
                         <span className="text-[#E8B800] font-black text-2xl">{icone || espace.titre.charAt(0).toUpperCase()}</span>
-                      </div>
+                      </motion.div>
                     )}
-                    <h3 className="text-gray-900 text-lg font-bold mb-1">Bénéficier de l&apos;accompagnement</h3>
-                    <p className="text-gray-500 text-sm">
+                    <motion.h3
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                      className="text-gray-900 text-lg font-bold mb-1"
+                    >
+                      Bénéficier de l&apos;accompagnement
+                    </motion.h3>
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.5 }}
+                      className="text-gray-500 text-sm"
+                    >
                       Faites votre demande en quelques clics.
-                    </p>
+                    </motion.p>
                   </div>
-                  <div className="space-y-3 mb-6">
+                  <div className="mb-6">
                     <motion.button
                       onClick={() => setMode("inscription")}
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full py-4 bg-gradient-to-r from-[#27A827] to-[#1f8c1f] text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-[#27A827]/20 transition-all"
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6, type: "spring" }}
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      className="w-full py-4 bg-gradient-to-r from-[#27A827] to-[#1f8c1f] text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-[#27A827]/20 transition-all relative overflow-hidden"
                     >
+                      <motion.span
+                        className="absolute inset-0 bg-white/10 rounded-xl"
+                        animate={{ opacity: [0, 0.3, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                      />
                       <ArrowRight size={18} /> Je veux être accompagné
                     </motion.button>
-                    <button
-                      onClick={() => setMode("login")}
-                      className="w-full py-3.5 border border-gray-200 hover:bg-gray-50 text-gray-700 rounded-xl flex items-center justify-center gap-2 text-sm transition-all"
-                    >
-                      <Mail size={16} /> J&apos;ai déjà un compte
-                    </button>
                   </div>
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     {espace.clientsSatisfaits > 0 && (
