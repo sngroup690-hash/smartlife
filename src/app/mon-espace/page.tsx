@@ -577,15 +577,8 @@ export default function MonEspacePage() {
     e.preventDefault();
     setLoginError("");
 
-    // Chercher d'abord dans le store local (chemin rapide)
+    // Le serveur fait foi (un code remis à zéro doit être vu partout) ; la mémoire de l'appareil ne sert qu'en cas de coupure réseau.
     const localUser = userStore.getUserByEmail(email);
-    if (localUser) {
-      if (localUser.hasPassword) setShowPasswordField(true);
-      else setShowPinCreation(true);
-      return;
-    }
-
-    // Fallback serveur — couvre les achats depuis un autre appareil / cache effacé
     setEmailLoading(true);
     try {
       const res = await fetch(`/api/user/lookup?email=${encodeURIComponent(email)}`);
@@ -595,10 +588,18 @@ export default function MonEspacePage() {
         else setShowPinCreation(true);
         return;
       }
-      // Compte introuvable sur le serveur — afficher un message clair
+      if (localUser) {
+        if (localUser.hasPassword) setShowPasswordField(true);
+        else setShowPinCreation(true);
+        return;
+      }
       setLoginError("Aucun compte trouvé pour cet email. Vérifiez ou achetez un produit d'abord.");
     } catch {
-      // Erreur réseau — ne pas bloquer l'utilisateur silencieusement
+      if (localUser) {
+        if (localUser.hasPassword) setShowPasswordField(true);
+        else setShowPinCreation(true);
+        return;
+      }
       setLoginError("Erreur réseau. Vérifiez votre connexion et réessayez.");
     } finally {
       setEmailLoading(false);
