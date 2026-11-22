@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { readFile } from "fs/promises";
 import path from "path";
 import { ebooks as staticEbooks } from "@/lib/data";
+import { assurerPacksProposes } from "@/lib/packs-proposes";
 
 export const dynamic = "force-dynamic";
 
@@ -39,6 +40,7 @@ async function buildPriceMap(): Promise<Map<string, number>> {
 
 export async function GET(req: NextRequest) {
   try {
+    await assurerPacksProposes().catch(() => 0);
     const data = JSON.parse(await readFile(FILE, "utf-8"));
     const packs: Array<{
       statut: string;

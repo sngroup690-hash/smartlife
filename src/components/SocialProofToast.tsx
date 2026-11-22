@@ -4,7 +4,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 
 type Notif = {
   id: string;
-  type: "purchase" | "download";
+  type: "purchase" | "download" | "checkout";
   prenom: string;
   ville: string;
   produit: string;
@@ -26,7 +26,7 @@ type SPData = {
   };
   recentActivities: Array<{
     id: string;
-    type: "purchase" | "download";
+    type: "purchase" | "download" | "checkout";
     prenom: string;
     ville: string;
     produit: string;
@@ -35,15 +35,25 @@ type SPData = {
 };
 
 function timeSince(dateStr: string): number {
-  const diff = Date.now() - new Date(dateStr).getTime();
-  return Math.min(3, Math.max(1, Math.floor(diff / 60000)));
+  return Math.max(0, Math.floor((Date.now() - new Date(dateStr).getTime()) / 60000));
 }
 
+// Délai réel : une activité d'hier ne s'affiche jamais « il y a 3 minutes ».
 function formatDelay(mins?: number): string {
-  if (!mins || mins < 1) return "il y a quelques secondes";
-  if (mins === 1) return "il y a 1 minute";
-  if (mins === 2) return "il y a 2 minutes";
-  return "il y a 3 minutes";
+  if (!mins || mins < 1) return "à l'instant";
+  if (mins < 60) return `il y a ${mins} minute${mins > 1 ? "s" : ""}`;
+  const h = Math.floor(mins / 60);
+  if (h < 24) return `il y a ${h} heure${h > 1 ? "s" : ""}`;
+  const j = Math.floor(h / 24);
+  return j === 1 ? "hier" : `il y a ${j} jours`;
+}
+
+const ACTIONS_ACHAT = ["vient d'acheter", "vient de recevoir son guide", "vient de rejoindre les acheteurs de"];
+function actionDe(notif: Notif): string {
+  if (notif.type === "checkout") return "est en train de commander";
+  if (notif.type === "download") return "vient de télécharger";
+  const n = notif.id.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+  return ACTIONS_ACHAT[n % ACTIONS_ACHAT.length];
 }
 
 export default function SocialProofToast() {
@@ -218,7 +228,7 @@ function NotifToast({ notif }: { notif: Notif }) {
           fontSize: "20px",
         }}
       >
-        {isPurchase ? "🛒" : "📥"}
+        {notif.type === "checkout" ? "⏳" : isPurchase ? "🛒" : "📥"}
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <p
@@ -230,17 +240,8 @@ function NotifToast({ notif }: { notif: Notif }) {
             lineHeight: 1.4,
           }}
         >
-          {isPurchase ? (
-            <>
-              <span style={{ color: "#27A827" }}>{notif.prenom}</span> de{" "}
-              <span style={{ color: "#2563eb" }}>{notif.ville}</span> vient d&apos;acheter
-            </>
-          ) : (
-            <>
-              <span style={{ color: "#27A827" }}>{notif.prenom}</span> de{" "}
-              <span style={{ color: "#2563eb" }}>{notif.ville}</span> vient de télécharger
-            </>
-          )}
+          <span style={{ color: "#27A827" }}>{notif.prenom}</span>
+          {notif.ville ? <> de <span style={{ color: "#2563eb" }}>{notif.ville}</span></> : null} {actionDe(notif)}
         </p>
         <p
           style={{

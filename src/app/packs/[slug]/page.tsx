@@ -3,12 +3,14 @@ import { readFile } from "fs/promises";
 import path from "path";
 import { notFound } from "next/navigation";
 import PackDetailClient, { type PackData } from "./PackDetailClient";
+import { assurerPacksProposes } from "@/lib/packs-proposes";
 
 const APP_URL = (process.env.NEXT_PUBLIC_APP_URL || "https://smartlifecm.com").replace(/\/$/, "");
 const FILE = path.join(process.cwd(), "private", "packs-data.json");
 
 async function getPack(slug: string): Promise<PackData | null> {
   try {
+    await assurerPacksProposes().catch(() => 0);
     const data = JSON.parse(await readFile(FILE, "utf-8"));
     return (data.packs || []).find((p: PackData) => p.slug === slug) ?? null;
   } catch {

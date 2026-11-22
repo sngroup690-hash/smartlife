@@ -33,6 +33,10 @@ prisma/dev.db
 # Fichiers uploadés par l'admin (trop volumineux pour git)
 private/pdfs/
 private/videos/
+private/pdf-previews/
+# Packs et activités : propres à chaque serveur (créés par le site lui-même)
+private/packs-data.json
+private/recent-activities.json
 
 # Fichiers privés et artefacts locaux
 private/admins.json

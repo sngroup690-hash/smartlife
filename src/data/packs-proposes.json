@@ -1,0 +1,712 @@
+[
+  {
+    "slug": "pack-volaille-rentable",
+    "nom": "Pack Volaille Rentable",
+    "description": "Tout pour réussir avec les poules, les canards et la vente d'œufs. Tu économises 6 063 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 4 guides pratiques pour démarrer ou agrandir un élevage de volaille, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 8900,
+    "ordre": 1,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790256905534-5sc8.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-18",
+        "title": "GUIDE COMPLET LE CODE SECRET DES POULES PONDEUSES RENTABLES"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-32",
+        "title": "FABRIQUEZ VOTRE PROPRE ALIMENT POUR VOLAILLES — GUIDE COMPLET"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-80",
+        "title": "GUIDE COMPLET OUVRIR SON DÉPÔT D'ŒUFS"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-62",
+        "title": "GUIDE COMPLET — L'Élevage de Canards en Afrique"
+      }
+    ]
+  },
+  {
+    "slug": "pack-grand-eleveur",
+    "nom": "Pack Grand Éleveur",
+    "description": "Porcs et bœufs : les deux élevages qui rapportent le plus. Tu économises 4 536 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 3 guides pratiques pour se lancer dans le gros élevage, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 7900,
+    "ordre": 2,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790191732245-1pqi.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-4",
+        "title": "GUIDE COMPLET POUR L'ÉLEVAGE DE PORCS RENTABLE"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-27",
+        "title": "GUIDE COMPLET — FABRIQUEZ VOTRE PROPRE PROVENDE POUR PORCS"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-13",
+        "title": "L'ÉLEVAGE DE BOEUFS EN AFRIQUE — LE GUIDE COMPLET"
+      }
+    ]
+  },
+  {
+    "slug": "pack-pisciculture-complete",
+    "nom": "Pack Pisciculture Complète",
+    "description": "Élever, nourrir et vendre tes poissons. Tu économises 4 999 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 3 guides pratiques pour lancer un élevage de poissons du bassin à la vente, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 7900,
+    "ordre": 3,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790360154620-p4il.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-31",
+        "title": "GUIDE COMPLET DE L'ÉLEVAGE DU SILURE"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-14",
+        "title": "GUIDE COMPLET — FABRIQUEZ VOTRE PROPRE ALIMENT POUR SILURES ET TILAPIAS"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-84",
+        "title": "OUVRIR SA POISSONNERIE — LE GUIDE COMPLET"
+      }
+    ]
+  },
+  {
+    "slug": "pack-petits-elevages-malins",
+    "nom": "Pack Petits Élevages Malins",
+    "description": "4 élevages qui demandent peu d'espace et peu de capital. Tu économises 6 375 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 4 guides pratiques pour démarrer petit avec un élevage original, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 10900,
+    "ordre": 4,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790267069753-eahk.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-16",
+        "title": "GUIDE COMPLET L'ÉLEVAGE DES LAPINS"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-12",
+        "title": "GUIDE COMPLET — L'ÉLEVAGE D'ESCARGOTS RENTABLE"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-46",
+        "title": "GUIDE COMPLET L'ÉLEVAGE DES HANNETONS"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-39",
+        "title": "GUIDE : L'APICULTURE RENTABLE — Produire et Vendre un Miel de Qualité"
+      }
+    ]
+  },
+  {
+    "slug": "pack-maraicher-pro",
+    "nom": "Pack Maraîcher Pro",
+    "description": "4 légumes très demandés sur tous les marchés. Tu économises 5 757 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 4 guides pratiques pour produire et vendre des légumes toute l'année, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 9900,
+    "ordre": 5,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790685506186-92d8.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-57",
+        "title": "GUIDE CULTURE DE LA TOMATE"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-59",
+        "title": "GUIDE COMPLET CULTIVER LE POIVRON COMME UN PRO"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-47",
+        "title": "GUIDE COMPLET LA CULTURE DE L'AUBERGINE"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-54",
+        "title": "GUIDE COMPLET CULTURE DU HARICOT VERT"
+      }
+    ]
+  },
+  {
+    "slug": "pack-cultures-de-rente",
+    "nom": "Pack Cultures de Rente",
+    "description": "Palmier, poivre, soja, gingembre : les cultures qui rapportent sur la durée. Tu économises 6 220 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 4 guides pratiques pour investir dans l'agriculture rentable, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 9900,
+    "ordre": 6,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790445039918-jq9e.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-40",
+        "title": "OR VERT — Le Guide du Planteur de Palmier à Huile Rentable"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-63",
+        "title": "OR NOIR D'AFRIQUE — Le Guide du Planteur de Poivre Rentable"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-64",
+        "title": "SOJA OR JAUNE — Produisez et Vendez du Soja de Qualité, Même Sans Expérience Agricole"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-61",
+        "title": "GUIDE PRATIQUE Apprends à cultiver le gingembre pour en faire une véritable source de revenus"
+      }
+    ]
+  },
+  {
+    "slug": "pack-legumes-de-grande-consommation",
+    "nom": "Pack Légumes de Grande Consommation",
+    "description": "Pomme de terre, carotte, oignon, chou : ce que tout le monde achète. Tu économises 6 450 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 4 guides pratiques pour vendre des produits que tout le monde consomme, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 9900,
+    "ordre": 7,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790195090370-jxc8.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-8",
+        "title": "LA POMME DE TERRE : DE LA CULTURE À LA COMMERCIALISATION"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-60",
+        "title": "GUIDE COMPLET Cultive, Récolte et Vends tes Carottes comme un Pro"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-22",
+        "title": "CULTIVER L'OIGNON EN AFRIQUE — LE GUIDE COMPLET"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-48",
+        "title": "LE CHOU : DE LA CULTURE À LA COMMERCIALISATION GUIDE COMPLET"
+      }
+    ]
+  },
+  {
+    "slug": "pack-fruits-plantain",
+    "nom": "Pack Fruits & Plantain",
+    "description": "Des fruits qui se vendent vite et bien. Tu économises 5 370 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 4 guides pratiques pour cultiver des fruits rentables, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 8900,
+    "ordre": 8,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790193394516-8zus.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-6",
+        "title": "GUIDE COMPLET : LA CULTURE DE LA PASTÈQUE"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-43",
+        "title": "GUIDE PRATIQUE : LA CULTURE DE L'AVOCAT"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-55",
+        "title": "GUIDE BANANE PLANTAIN"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-49",
+        "title": "GUIDE COMPLET : LA CULTURE DU CONCOMBRE"
+      }
+    ]
+  },
+  {
+    "slug": "pack-epices-saveurs",
+    "nom": "Pack Épices & Saveurs",
+    "description": "Les produits épicés que les ménages achètent chaque semaine. Tu économises 4 692 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 3 guides pratiques pour lancer un business d'épices et de condiments, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 8900,
+    "ordre": 9,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790339286811-q6qt.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-24",
+        "title": "LANCE TON BUSINESS D'ÉPICES — LE GUIDE COMPLET"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-21",
+        "title": "GUIDE COMPLET DE LA CULTURE DU PIMENT"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-58",
+        "title": "APPRENDS, CULTIVE, RÉCOLTE ET VENDS TES GOMBOS — GUIDE COMPLET"
+      }
+    ]
+  },
+  {
+    "slug": "pack-restauration-rapide",
+    "nom": "Pack Restauration Rapide",
+    "description": "Restaurant, shawarma et cafétéria : nourrir et gagner. Tu économises 5 270 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 3 guides pratiques pour ouvrir un point de restauration, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 8900,
+    "ordre": 10,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790190706760-slnw.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-3",
+        "title": "OUVRIR UN RESTAURANT MODERNE ET RENTABLE : Le Guide Complet"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-28",
+        "title": "GUIDE COMPLET SHAWARMA GAGNANT"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-44",
+        "title": "GUIDE POUR OUVRIR & RENTABILISER UNE CAFÉTÉRIA"
+      }
+    ]
+  },
+  {
+    "slug": "pack-boulangerie-douceurs",
+    "nom": "Pack Boulangerie & Douceurs",
+    "description": "Pain, pâtisseries, biscuits et glaces. Tu économises 6 837 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 4 guides pratiques pour vendre des douceurs qui font revenir les clients, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 10900,
+    "ordre": 11,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790356401282-q2hx.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-29",
+        "title": "GUIDE POUR LANCER ET GÉRER UNE BOULANGERIE RENTABLE"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-70",
+        "title": "PLUS DE 50 RECETTES DE PÂTISSERIE — GUIDE COMPLET"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-36",
+        "title": "Guide Pratique : APPRENEZ À FABRIQUER VOS PROPRES BISCUITS ET BONBONS"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-65",
+        "title": "GUIDE FABRICATION DE GLACES"
+      }
+    ]
+  },
+  {
+    "slug": "pack-transformation-alimentaire",
+    "nom": "Pack Transformation Alimentaire",
+    "description": "Jus, ketchup et chocolat faits maison. Tu économises 5 230 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 3 guides pratiques pour transformer des produits locaux en produits finis, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 7900,
+    "ordre": 12,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790194316980-tmyy.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-7",
+        "title": "GUIDE PRATIQUE — Fabrication et Conservation de Jus, Sirops, Yaourts et Confitures"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-83",
+        "title": "GUIDE COMPLET FABRIQUEZ VOTRE PROPRE KETCHUP"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-38",
+        "title": "Guide complet LA FABRICATION ET LA VENTE DE CHOCOLAT ARTISANAL"
+      }
+    ]
+  },
+  {
+    "slug": "pack-cosmetique-maison",
+    "nom": "Pack Cosmétique Maison",
+    "description": "Baumes, gel douche, parfums et produits de beauté. Tu économises 6 823 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 4 guides pratiques pour créer sa propre marque de cosmétiques, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 10900,
+    "ordre": 13,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790273427558-2jff.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-19",
+        "title": "GUIDE FABRICATION BAUMES À LÈVRES"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-33",
+        "title": "Guide pour Gel Douche Artisanal"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-77",
+        "title": "Le Guide Complet Pour Créer Vos Propres Senteurs et Bâtir un Business Rentable"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-69",
+        "title": "FORMATION COMPLÈTE — FABRICATION DE PRODUITS COSMÉTIQUES ET D'ENTRETIEN"
+      }
+    ]
+  },
+  {
+    "slug": "pack-savon-entretien",
+    "nom": "Pack Savon & Entretien",
+    "description": "Savon, détergent et laverie : des produits du quotidien. Tu économises 4 149 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 3 guides pratiques pour fabriquer et vendre des produits d'entretien, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 6900,
+    "ordre": 14,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790623371348-8d7f.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-56",
+        "title": "GUIDE COMPLET BUSINESS SAVON MOLATO"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-73",
+        "title": "GUIDE COMPLET : FABRICATION DE DÉTERGENT EN POUDRE ET DE SOUPLINE"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-2",
+        "title": "Guide complet laverie moderne rentable"
+      }
+    ]
+  },
+  {
+    "slug": "pack-beaute-business",
+    "nom": "Pack Beauté Business",
+    "description": "Coiffure, soins des cheveux et centre de beauté. Tu économises 5 848 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 3 guides pratiques pour ouvrir un salon qui ne désemplit pas, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 8900,
+    "ordre": 15,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790254432980-w2mm.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-11",
+        "title": "SALON DE COIFFURE RENTABLE — LE GUIDE COMPLET"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-67",
+        "title": "LE GUIDE COMPLET CHEVEUX & BARBE"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-81",
+        "title": "GUIDE POUR CENTRE DE SOINS & BEAUTÉ"
+      }
+    ]
+  },
+  {
+    "slug": "pack-commerce-de-quartier",
+    "nom": "Pack Commerce de Quartier",
+    "description": "Alimentation, boissons et œufs : les commerces qui vendent tous les jours. Tu économises 4 149 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 3 guides pratiques pour ouvrir un commerce de proximité, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 6900,
+    "ordre": 16,
+    "statut": "actif",
+    "image": "/covers/guide-complet-alimentation-rentable.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-76",
+        "title": "GUIDE COMPLET ALIMENTATION RENTABLE"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-25",
+        "title": "RÉUSSIR SON DÉPÔT DE BOISSONS — LE GUIDE COMPLET"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-80",
+        "title": "GUIDE COMPLET OUVRIR SON DÉPÔT D'ŒUFS"
+      }
+    ]
+  },
+  {
+    "slug": "pack-grossiste-distribution",
+    "nom": "Pack Grossiste & Distribution",
+    "description": "Distribution, quincaillerie et pneus. Tu économises 4 999 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 3 guides pratiques pour passer au commerce de gros, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 7900,
+    "ordre": 17,
+    "statut": "actif",
+    "image": "/covers/-investir-dans-la-distribution-de-m-dica.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-85",
+        "title": "INVESTIR DANS LA DISTRIBUTION DE MÉDICAMENTS — LE GUIDE COMPLET"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-17",
+        "title": "GUIDE COMPLET — LANCER UNE QUINCAILLERIE RENTABLE EN AFRIQUE"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-82",
+        "title": "VENTE DE PNEUS GUIDE PRATIQUE"
+      }
+    ]
+  },
+  {
+    "slug": "pack-pressing-laverie",
+    "nom": "Pack Pressing & Laverie",
+    "description": "Les services de linge que tout le monde utilise. Tu économises 4 843 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 3 guides pratiques pour lancer un service de lavage rentable, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 6900,
+    "ordre": 18,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790252598706-v89g.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-10",
+        "title": "PRESSING RENTABLE : LE GUIDE COMPLET POUR CRÉER ET DÉVELOPPER VOTRE ACTIVITÉ"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-2",
+        "title": "Guide complet laverie moderne rentable"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-73",
+        "title": "GUIDE COMPLET : FABRICATION DE DÉTERGENT EN POUDRE ET DE SOUPLINE"
+      }
+    ]
+  },
+  {
+    "slug": "pack-batisseur",
+    "nom": "Pack Bâtisseur",
+    "description": "Construire, fabriquer des parpaings, poser l'aluminium, mesurer les terrains. Tu économises 7 918 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 4 guides pratiques pour se lancer dans le BTP, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 11900,
+    "ordre": 19,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790263970485-h855.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-15",
+        "title": "GUIDE COMPLET, CONSTRUIRE SA MAISON"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-45",
+        "title": "GUIDE FABRICATION DE PARPAINGS ET PAVÉS"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-37",
+        "title": "GUIDE COMPLET Le Business de l'Aluminium et des Vitres"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-75",
+        "title": "GUIDE COMPLET DEVIENS UN TOPOGRAPHE COMPÉTENT"
+      }
+    ]
+  },
+  {
+    "slug": "pack-immobilier-malin",
+    "nom": "Pack Immobilier Malin",
+    "description": "Meublés, construction et matériaux. Tu économises 5 617 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 3 guides pratiques pour gagner avec l'immobilier, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 8900,
+    "ordre": 20,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790280443163-na86.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-23",
+        "title": "BUSINESS MEUBLÉS — GUIDE COMPLET"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-15",
+        "title": "GUIDE COMPLET, CONSTRUIRE SA MAISON"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-45",
+        "title": "GUIDE FABRICATION DE PARPAINGS ET PAVÉS"
+      }
+    ]
+  },
+  {
+    "slug": "pack-argent-investissement",
+    "nom": "Pack Argent & Investissement",
+    "description": "Bourse, trading et microfinance. Tu économises 5 772 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 3 guides pratiques pour faire fructifier son argent, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 9900,
+    "ordre": 21,
+    "statut": "actif",
+    "image": "/covers/-.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-78",
+        "title": "INVESTIR EN BOURSE — LE GUIDE POUR DÉBUTANTS"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-79",
+        "title": "FORMATION TRADING COMPLÈTE — De Débutant à Trader Discipliné"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-5",
+        "title": "Le Guide pour Créer une Microfinance Rentable"
+      }
+    ]
+  },
+  {
+    "slug": "pack-education",
+    "nom": "Pack Éducation",
+    "description": "École, crèche et librairie. Tu économises 5 230 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 3 guides pratiques pour entreprendre dans l'éducation, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 7900,
+    "ordre": 22,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790616367940-s4i4.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-51",
+        "title": "GUIDE POUR CRÉER ET RENTABILISER SON ÉCOLE"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-41",
+        "title": "GUIDE COMPLET : COMMENT OUVRIR UNE CRÈCHE OU UNE GARDERIE D'ENFANTS RENTABLE"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-1",
+        "title": "LE GUIDE COMPLET DE LA LIBRAIRIE RENTABLE"
+      }
+    ]
+  },
+  {
+    "slug": "pack-auto-route",
+    "nom": "Pack Auto & Route",
+    "description": "Code de la route, auto-école, pièces auto et pneus. Tu économises 6 144 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 4 guides pratiques pour entreprendre dans l'automobile, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 10900,
+    "ordre": 23,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790346196084-cusy.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-26",
+        "title": "LE GUIDE ULTIME DU CODE DE LA ROUTE"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-71",
+        "title": "OUVRIR SON AUTO-ÉCOLE GUIDE COMPLET"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-9",
+        "title": "BOUTIQUE DE PIÈCES AUTOMOBILES : Le Guide Complet Pour Lancer une Activité Rentable et Durable"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-82",
+        "title": "VENTE DE PNEUS GUIDE PRATIQUE"
+      }
+    ]
+  },
+  {
+    "slug": "pack-vendre-plus",
+    "nom": "Pack Vendre Plus",
+    "description": "Vente sur WhatsApp, mode et lunettes. Tu économises 4 534 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 3 guides pratiques pour vendre plus et plus vite, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 7900,
+    "ordre": 24,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790779722269-upn8.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-72",
+        "title": "GUIDE COMPLET Vendre Efficacement sur WhatsApp"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-35",
+        "title": "Guide complet DEVENEZ UN(E) VÉRITABLE STYLISTE"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-52",
+        "title": "GUIDE VENTE DE LUNETTES MÉDICALES"
+      }
+    ]
+  },
+  {
+    "slug": "mega-pack-best-sellers",
+    "nom": "Méga Pack Best-sellers",
+    "description": "Les 5 guides les plus achetés de la boutique. Tu économises 8 445 FCFA par rapport aux guides achetés un par un.\n\nCe pack réunit 5 guides pratiques pour découvrir les guides préférés des clients, sans te disperser ni oublier une étape.\n\n⚡ Livraison instantanée de tous les guides en PDF\n👥 Accès au groupe WhatsApp privé\n🔒 Paiement Mobile Money ou carte",
+    "prix": 13900,
+    "ordre": 25,
+    "statut": "actif",
+    "image": "/covers/eb-admin-1790339286811-q6qt.png",
+    "items": [
+      {
+        "type": "ebook",
+        "id": "eb-admin-24",
+        "title": "LANCE TON BUSINESS D'ÉPICES — LE GUIDE COMPLET"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-25",
+        "title": "RÉUSSIR SON DÉPÔT DE BOISSONS — LE GUIDE COMPLET"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-26",
+        "title": "LE GUIDE ULTIME DU CODE DE LA ROUTE"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-27",
+        "title": "GUIDE COMPLET — FABRIQUEZ VOTRE PROPRE PROVENDE POUR PORCS"
+      },
+      {
+        "type": "ebook",
+        "id": "eb-admin-31",
+        "title": "GUIDE COMPLET DE L'ÉLEVAGE DU SILURE"
+      }
+    ]
+  }
+]

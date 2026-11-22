@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import {
   X, Lock, Phone, Mail, ChevronRight, Loader2,
-  CheckCircle, AlertCircle,
+  CheckCircle, AlertCircle, Zap, ShieldCheck, Infinity as Illimite, Users,
 } from "lucide-react";
 import { PaymentBadges } from "@/components/PaymentBadges";
 import { PriceTag } from "@/components/PriceTag";
@@ -20,14 +20,14 @@ export interface QuickCheckoutItem {
 
 interface Props {
   /** Rétrocompatibilité — utilisé par EbookCard et EbookLandingPageClient */
-  ebook?: { id: string; title: string; price: number };
+  ebook?: { id: string; title: string; price: number; cover?: string; originalPrice?: number; ventes?: number };
   /** Interface générique ebook/formation */
   item?: QuickCheckoutItem;
   onClose: () => void;
 }
 
 const inputCls =
-  "w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-[#E8B800] focus:bg-white transition-all";
+  "w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-[15px] placeholder-gray-400 focus:outline-none focus:border-[#008f51] focus:ring-2 focus:ring-[#008f51]/15 focus:bg-white transition-all";
 const labelCls =
   "block text-gray-600 text-xs font-semibold mb-1.5";
 
@@ -78,6 +78,11 @@ export default function DownloadModal({ ebook, item: itemProp, onClose }: Props)
     e.preventDefault();
     setLoading(true);
     setError("");
+    fetch("/api/social-proof/commande", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prenom: currentUser?.firstName || form.firstName, produit: item.title }),
+    }).catch(() => {});
 
     try {
       // ── 1. Obtenir un compte utilisateur ──
@@ -193,38 +198,50 @@ export default function DownloadModal({ ebook, item: itemProp, onClose }: Props)
         style={{ maxHeight: "96vh", overflowY: "auto" }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* ── En-tête ── */}
-        <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
-          <div className="flex items-center gap-2">
-            <Lock size={15} className="text-[#E8B800]" />
-            <h2 className="text-gray-900 font-bold text-base">Finaliser votre achat</h2>
+        {/* ── En-tête : où en est l'acheteur ── */}
+        <div className="px-5 pt-5 pb-4 border-b border-gray-100">
+          <div className="flex items-center justify-between">
+            <h2 className="text-gray-900 font-bold text-[17px]">Plus qu&apos;une étape 🎉</h2>
+            <button type="button" onClick={onClose} aria-label="Fermer"
+              className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-all">
+              <X size={16} />
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-700 transition-all"
-          >
-            <X size={16} />
-          </button>
+          <div className="mt-3 flex items-center gap-2 text-[11px] font-semibold">
+            <span className="flex items-center gap-1 text-[#008f51]"><span className="w-5 h-5 rounded-full bg-[#008f51] text-[#fff] flex items-center justify-center">1</span>Vos infos</span>
+            <span className="flex-1 h-px bg-gray-200" />
+            <span className="flex items-center gap-1 text-gray-400"><span className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">2</span>Paiement</span>
+            <span className="flex-1 h-px bg-gray-200" />
+            <span className="flex items-center gap-1 text-gray-400"><span className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">3</span>{item.type === "ebook" ? "Guide reçu" : "Accès"}</span>
+          </div>
         </div>
 
         {/* ── Résumé produit ── */}
-        <div className="px-6 py-4 bg-[#fffbeb] border-b border-[#E8B800]/20 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="w-10 h-10 rounded-xl bg-[#E8B800]/20 flex items-center justify-center flex-shrink-0 text-lg">
-              {item.type === "ebook" ? "📖" : "🎬"}
-            </div>
-            <div className="min-w-0">
-              <p className="text-gray-900 font-semibold text-sm leading-snug line-clamp-2">{item.title}</p>
-              <p className="text-gray-500 text-xs mt-0.5">
-                {item.type === "ebook" ? "Ebook · Livraison par email" : "Formation · Accès immédiat"}
-              </p>
-            </div>
+        <div className="px-5 py-4 bg-[#f3fbf6] border-b border-[#008f51]/10 flex items-center gap-3">
+          {ebook?.cover ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={ebook.cover} alt="" className="w-14 h-14 rounded-lg object-cover flex-shrink-0 border border-white shadow-sm" />
+          ) : (
+            <div className="w-14 h-14 rounded-lg bg-[#008f51]/10 flex items-center justify-center flex-shrink-0 text-2xl">{item.type === "ebook" ? "📖" : "🎬"}</div>
+          )}
+          <div className="min-w-0 flex-1">
+            <p className="text-gray-900 font-semibold text-[14px] leading-snug line-clamp-2">{item.title}</p>
+            <p className="mt-1 flex items-center gap-1 text-[12px] font-semibold text-[#008f51]">
+              <Zap size={12} className="fill-[#008f51]" /> {item.type === "ebook" ? "Livraison instantanée · PDF" : "Accès immédiat"}
+            </p>
           </div>
-          <p className="text-gray-900 font-bold text-xl flex-shrink-0">
-            <PriceTag amount={item.price} />
-          </p>
+          <div className="text-right flex-shrink-0">
+            {ebook?.originalPrice && ebook.originalPrice > item.price && (
+              <p className="text-[12px] text-gray-400 line-through"><PriceTag amount={ebook.originalPrice} /></p>
+            )}
+            <p className="text-[#e30026] font-bold text-lg leading-tight"><PriceTag amount={item.price} /></p>
+          </div>
         </div>
+        {ebook?.originalPrice && ebook.originalPrice > item.price && (
+          <p className="px-5 py-2 text-[12px] text-center font-semibold text-[#b45309] bg-[#fffbeb] border-b border-[#fde68a]">
+            🎁 Vous économisez <PriceTag amount={ebook.originalPrice - item.price} /> aujourd&apos;hui
+          </p>
+        )}
 
         {/* ── Formulaire ── */}
         <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4">
@@ -288,7 +305,7 @@ export default function DownloadModal({ ebook, item: itemProp, onClose }: Props)
                   placeholder="jean@exemple.com"
                 />
                 <p className="text-gray-400 text-[11px] mt-1">
-                  {item.type === "ebook" ? "L'ebook sera envoyé à cette adresse après paiement" : "Votre accès sera envoyé ici"}
+                  {item.type === "ebook" ? "Votre guide arrive ici en quelques secondes après le paiement" : "Votre accès sera envoyé ici"}
                 </p>
               </div>
             </>
@@ -310,7 +327,7 @@ export default function DownloadModal({ ebook, item: itemProp, onClose }: Props)
               className={inputCls}
               placeholder="+237 6XX XXX XXX"
             />
-            <p className="text-gray-400 text-[11px] mt-1">Utilisé pour le paiement Mobile Money</p>
+            <p className="text-gray-400 text-[11px] mt-1">Pour payer par Mobile Money et recevoir le guide sur WhatsApp</p>
           </div>
 
           {/* Erreur */}
@@ -325,7 +342,8 @@ export default function DownloadModal({ ebook, item: itemProp, onClose }: Props)
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] hover:brightness-105 text-black font-bold rounded-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-[15px] shadow-lg shadow-[#E8B800]/25 mt-1"
+            className="w-full py-4 bg-[#008f51] hover:bg-[#007a45] font-bold rounded-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-[15px] shadow-lg shadow-[#008f51]/25 mt-1 cta-respire"
+            style={{ color: "#ffffff" }}
           >
             {loading ? (
               <>
@@ -335,7 +353,7 @@ export default function DownloadModal({ ebook, item: itemProp, onClose }: Props)
             ) : (
               <>
                 <Lock size={15} />
-                Payer maintenant —&nbsp;<PriceTag amount={item.price} />
+                {item.type === "ebook" ? "Recevoir mon guide" : "Accéder maintenant"} —&nbsp;<PriceTag amount={item.price} />
                 <ChevronRight size={16} />
               </>
             )}
@@ -344,12 +362,35 @@ export default function DownloadModal({ ebook, item: itemProp, onClose }: Props)
           {/* Options de paiement */}
           <PaymentBadges className="pt-1" />
 
-          <p className="text-center text-gray-400 text-[11px] flex items-center justify-center gap-1 pb-1">
-            <Mail size={10} />
-            {item.type === "ebook"
-              ? "Ebook livré immédiatement après confirmation du paiement"
-              : "Accès à la formation activé immédiatement"}
-          </p>
+          <div className="grid grid-cols-2 gap-2 pt-1">
+            {[
+              { icone: <Zap size={15} className="text-[#008f51]" />, texte: "Livraison instantanée" },
+              { icone: <ShieldCheck size={15} className="text-[#008f51]" />, texte: "Paiement sécurisé" },
+              { icone: <Illimite size={15} className="text-[#008f51]" />, texte: "Accès à vie" },
+              { icone: <Users size={15} className="text-[#008f51]" />, texte: "Groupe WhatsApp privé de visionnaires" },
+            ].map((g) => (
+              <div key={g.texte} className="flex flex-col items-center gap-1 rounded-xl bg-gray-50 py-2.5 px-1 text-center">
+                {g.icone}
+                <span className="text-[11px] font-semibold text-gray-700 leading-tight">{g.texte}</span>
+              </div>
+            ))}
+          </div>
+          {(ebook?.ventes ?? 0) > 0 && (
+            <p className="text-center text-[12px] text-gray-500 pb-1">
+              🔥 <strong className="text-gray-800">{ebook!.ventes!.toLocaleString("fr-FR")}</strong> personnes ont déjà acheté ce guide
+            </p>
+          )}
+          <a
+            href={`https://wa.me/237694176642?text=${encodeURIComponent(`Bonjour Smart Life, j'ai payé le guide « ${item.title} » et je souhaite le recevoir.`)}`}
+            target="_blank" rel="noopener noreferrer"
+            className="flex items-start gap-2.5 rounded-xl border border-[#25D366]/40 bg-[#25D366]/5 p-3 text-[12px] leading-snug text-[#20252b]"
+          >
+            <span className="text-[18px] leading-none">💬</span>
+            <span>
+              Une difficulté après votre paiement ? Écrivez-nous sur WhatsApp au{" "}
+              <strong className="text-[#128C4A] whitespace-nowrap">+237 694 176 642</strong> et nous vous envoyons votre guide tout de suite.
+            </span>
+          </a>
         </form>
       </div>
     </div>

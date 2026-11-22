@@ -2,6 +2,8 @@
 import { readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
 
+import { assurerPacksProposes } from "@/lib/packs-proposes";
+
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const FILE = path.join(process.cwd(), "private", "packs-data.json");
 
@@ -49,7 +51,7 @@ async function readPacks(): Promise<Pack[]> {
 
 async function writePacks(packs: Pack[]) {
   await mkdir(path.dirname(FILE), { recursive: true });
-  await writeFile(FILE, JSON.stringify({ packs }, null, 2), "utf-8");
+  await writeFile(FILE, JSON.stringify({ packs, packsProposesImportes: true }, null, 2), "utf-8");
 }
 
 function auth(req: NextRequest) {
@@ -58,6 +60,7 @@ function auth(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   if (!auth(req)) return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+  await assurerPacksProposes().catch(() => 0);
   return NextResponse.json({ packs: await readPacks() });
 }
 

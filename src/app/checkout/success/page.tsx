@@ -13,6 +13,48 @@ import PostPurchaseCrossSell from "@/components/PostPurchaseCrossSell";
 
 type WorkflowConfig = typeof DEFAULT_CONFIG;
 
+// ─── Groupe WhatsApp privé du guide, proposé juste après l'achat ─────────────
+
+// Lien général utilisé quand le guide n'a pas son propre groupe (réglable sur le serveur).
+const GROUPE_PAR_DEFAUT = process.env.NEXT_PUBLIC_GROUPE_WHATSAPP || "";
+
+function GroupeWhatsApp({ ebookIds }: { ebookIds: string[] }) {
+  const [liens, setLiens] = useState<{ titre: string; url: string }[]>([]);
+  useEffect(() => {
+    if (ebookIds.length === 0) return;
+    fetch("/api/ebooks?slim=1")
+      .then((r) => r.json())
+      .then((d: { ebooks?: { id: string; title: string; whatsappUrl?: string }[]; overrides?: Record<string, { whatsappUrl?: string }> }) => {
+        const trouves = ebookIds.map((id) => {
+          const e = (d.ebooks ?? []).find((x) => x.id === id) ?? TOUS_LES_EBOOKS.find((x) => x.id === id);
+          const url = d.overrides?.[id]?.whatsappUrl || (e as { whatsappUrl?: string } | undefined)?.whatsappUrl || GROUPE_PAR_DEFAUT;
+          return url ? { titre: e?.title ?? "votre guide", url } : null;
+        }).filter((x): x is { titre: string; url: string } => !!x);
+        setLiens(trouves.filter((l, i) => trouves.findIndex((m) => m.url === l.url) === i));
+      })
+      .catch(() => {});
+  }, [ebookIds]);
+
+  if (liens.length === 0) return null;
+  return (
+    <div className="mb-6 rounded-2xl border-2 border-[#25D366] bg-[#25D366]/5 p-5 text-center">
+      <p className="text-[17px] font-bold text-gray-900">👥 Dernière étape : rejoins le groupe privé</p>
+      <p className="mt-1 text-[13px] text-gray-700">
+        Échange avec les autres visionnaires qui appliquent ce guide, pose tes questions et reçois les bonus.
+      </p>
+      <div className="mt-4 flex flex-col gap-2">
+        {liens.map((l) => (
+          <a key={l.url} href={l.url} target="_blank" rel="noopener noreferrer"
+            className="cta-respire flex items-center justify-center gap-2 h-12 rounded-xl bg-[#25D366] font-bold text-[15px]"
+            style={{ color: "#fff" }}>
+            Rejoindre le groupe WhatsApp{liens.length > 1 ? ` — ${l.titre.slice(0, 30)}` : ""}
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── Formulaire motivation ────────────────────────────────────────────────────
 
 const OBJECTIFS = [
@@ -101,6 +143,8 @@ function MotivationForm({ onSubmit, cfg, currentUser, ebookIds, formationIds }: 
         <h1 className="text-gray-900 text-2xl font-bold mb-2">{cfg.congratsTitle}</h1>
         <p className="text-gray-600 text-sm">{cfg.congratsSubtitle}</p>
       </div>
+
+      <GroupeWhatsApp ebookIds={ebookIds} />
 
       <div className="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm">
         <form onSubmit={handleSubmit} className="space-y-5">

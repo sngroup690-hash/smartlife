@@ -190,15 +190,15 @@ body {
 
 @keyframes cta-clignote {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.55; }
+  50% { opacity: 0.8; }
 }
-.cta-clignote { animation: cta-clignote 1.1s ease-in-out infinite; }
+.cta-clignote { animation: cta-clignote 1.6s ease-in-out infinite; }
 
 @keyframes cta-respire {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+  50% { transform: scale(1.015); }
 }
-.cta-respire { animation: cta-respire 1.3s ease-in-out infinite; }
+.cta-respire { animation: cta-respire 1.8s ease-in-out infinite; }
 
 /* ── Bouton Postuler vert animé ─────────────────────────────────────── */
 @keyframes postuler-glow {

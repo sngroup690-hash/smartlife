@@ -98,7 +98,7 @@ export default function PackDetailClient({ pack }: { pack: PackData }) {
             </span>
             <h1 className="text-3xl sm:text-4xl font-black text-gray-900 mb-3 leading-tight">{pack.nom}</h1>
             {pack.description && (
-              <p className="text-gray-600 leading-relaxed text-base">{pack.description}</p>
+              <p className="text-gray-600 leading-relaxed text-base whitespace-pre-line">{pack.description}</p>
             )}
           </div>
 

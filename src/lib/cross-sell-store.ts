@@ -34,6 +34,7 @@ export type RecommendedProduct = {
   category?: string;
   slug?: string;
   discountedPrice?: number;
+  ventes?: number;
 };
 
 const CONFIG_PATH = path.join(process.cwd(), "private", "cross-sell-config.json");
@@ -63,7 +64,7 @@ export async function writeCrossSellConfig(cfg: CrossSellConfig): Promise<void> 
 // ── Internal helpers ───────────────────────────────────────────────────────────
 
 type UserRow = { id: string; ebooksAchetes?: string[]; formationsAchetees?: string[] };
-type EbookMin = { id: string; slug: string; title: string; price: number; originalPrice?: number; cover: string; category: string; bestseller?: boolean };
+type EbookMin = { id: string; slug: string; title: string; price: number; originalPrice?: number; cover: string; category: string; bestseller?: boolean; ventes?: number };
 type FormationMin = { id: string; titre: string; prix: number; prixOriginal?: number; cover?: string; categorie: string; badge?: string };
 
 async function readUsers(): Promise<UserRow[]> {
@@ -79,6 +80,7 @@ async function getAllEbooks(): Promise<EbookMin[]> {
   const base: EbookMin[] = ebooks.map(e => ({
     id: e.id, slug: e.slug, title: e.title, price: e.price,
     originalPrice: e.originalPrice, cover: e.cover, category: e.category, bestseller: e.bestseller,
+    ventes: (e as { ventes?: number; vendusAffiche?: number }).vendusAffiche ?? (e as { ventes?: number }).ventes,
   }));
   try {
     const raw = await readFile(path.join(process.cwd(), "private", "ebooks-data.json"), "utf-8");
@@ -120,7 +122,7 @@ async function getAllFormations(): Promise<FormationMin[]> {
 function ebookToReco(eb: EbookMin, discountPercent?: number): RecommendedProduct {
   return {
     id: eb.id, type: "ebook", title: eb.title, price: eb.price,
-    originalPrice: eb.originalPrice, cover: eb.cover, category: eb.category, slug: eb.slug,
+    originalPrice: eb.originalPrice, cover: eb.cover, category: eb.category, slug: eb.slug, ventes: eb.ventes,
     discountedPrice: discountPercent ? Math.round(eb.price * (1 - discountPercent / 100)) : undefined,
   };
 }

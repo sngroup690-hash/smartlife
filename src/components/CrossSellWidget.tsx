@@ -16,6 +16,7 @@ export type RecommendedProduct = {
   category?: string;
   slug?: string;
   discountedPrice?: number;
+  ventes?: number;
 };
 
 type Props = {
@@ -119,8 +120,13 @@ function CarteCompacte({ product }: { product: RecommendedProduct }) {
     ? product.price
     : product.originalPrice && product.originalPrice > product.price ? product.originalPrice : null;
   return (
-    <Link href={href} className="flex flex-col rounded-xl border border-[#e8e9eb] bg-white overflow-hidden active:scale-[0.99] transition-transform">
-      <div className="aspect-square bg-[#f7f7f8] flex items-center justify-center overflow-hidden">
+    <Link href={href} className="snap-start flex-shrink-0 w-[46%] sm:w-[31%] lg:w-[23%] flex flex-col rounded-2xl border border-[#e8e9eb] bg-white overflow-hidden shadow-[0_2px_10px_rgba(0,0,0,0.05)] active:scale-[0.99] transition-transform">
+      <div className="relative aspect-square bg-[#f7f7f8] flex items-center justify-center overflow-hidden">
+        {barre && (
+          <span className="absolute top-2 left-2 z-10 px-1.5 py-0.5 rounded-md bg-[#e30026] text-[11px] font-bold" style={{ color: "#fff" }}>
+            -{Math.round((1 - prix / barre) * 100)} %
+          </span>
+        )}
         {product.cover && !imgError ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={product.cover} alt={product.title} loading="lazy" className="w-full h-full object-contain" onError={() => setImgError(true)} />
@@ -130,10 +136,12 @@ function CarteCompacte({ product }: { product: RecommendedProduct }) {
       </div>
       <div className="p-2.5 flex flex-col gap-1 flex-1">
         <p className="text-[13px] font-semibold leading-snug text-black line-clamp-2">{product.title}</p>
+        {(product.ventes ?? 0) > 0 && <p className="text-[11px] text-[#717882]">🔥 {product.ventes!.toLocaleString("fr-FR")} ventes</p>}
         <div className="mt-auto pt-1 flex flex-wrap items-baseline gap-x-1.5">
-          <span className="text-[14px] font-bold text-[#e30026]">{fmt(prix)}</span>
+          <span className="text-[15px] font-bold text-[#e30026]">{fmt(prix)}</span>
           {barre && <span className="text-[11px] text-[#a9aeb5] line-through">{fmt(barre)}</span>}
         </div>
+        <span className="mt-2 h-8 rounded-lg bg-[#008f51] text-[12px] font-semibold flex items-center justify-center" style={{ color: "#fff" }}>Voir le guide</span>
       </div>
     </Link>
   );
@@ -165,11 +173,17 @@ export default function CrossSellWidget({ productId, productType, variant = "lig
 
   if (compact) {
     return (
-      <section className="py-10 border-t border-[#e8e9eb] bg-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-[20px] font-bold text-black mb-4">Vous aimerez aussi</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-            {recommendations.slice(0, recommendations.length > 1 ? recommendations.length - (recommendations.length % 2) : 1).map((p) => <CarteCompacte key={p.id} product={p} />)}
+      <section className="py-10 border-t border-[#e8e9eb] bg-gradient-to-b from-white to-[#f3fbf6]">
+        <div className="max-w-6xl mx-auto">
+          <div className="px-4 flex items-end justify-between gap-3 mb-4">
+            <div>
+              <p className="text-[12px] font-bold uppercase tracking-wider text-[#008f51]">Souvent achetés ensemble</p>
+              <h2 className="mt-0.5 text-[21px] font-extrabold text-black">🔥 Les acheteurs ont aussi pris</h2>
+            </div>
+            {recommendations.length > 2 && <span className="text-[12px] text-[#717882] whitespace-nowrap lg:hidden">Glissez →</span>}
+          </div>
+          <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory px-4 pb-3 [scrollbar-width:none]">
+            {recommendations.map((p) => <CarteCompacte key={p.id} product={p} />)}
           </div>
         </div>
       </section>

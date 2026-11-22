@@ -51,7 +51,16 @@ export function EnteteBoutique() {
 export function PiedBoutique() {
   return (
     <footer className="border-t border-[#e8e9eb] bg-white">
+      <div className="max-w-6xl mx-auto px-4 pt-6 grid grid-cols-2 sm:grid-cols-4 gap-2">
+        {["⚡ Livraison instantanée", "🔒 Paiement sécurisé", "📱 Mobile Money & carte", "👥 Groupe privé WhatsApp"].map((g) => (
+          <span key={g} className="rounded-xl bg-[#f7f7f8] px-3 py-2.5 text-center text-[12px] font-semibold text-[#20252b]">{g}</span>
+        ))}
+      </div>
       <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col items-center gap-4 text-center">
+        <a href="https://wa.me/237694176642" target="_blank" rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 h-10 px-4 rounded-full border border-[#25D366] text-[13px] font-semibold text-[#128C4A]">
+          💬 Une question ? WhatsApp +237 694 176 642
+        </a>
         <div className="flex items-center gap-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-smartlife.jpeg" alt="Smart Life" className="w-7 h-7 rounded-md object-cover" />
