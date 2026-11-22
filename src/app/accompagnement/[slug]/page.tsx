@@ -129,6 +129,31 @@ function getImagesContenu(titre: string): { url: string; legende: string }[] {
   return [];
 }
 
+const IMAGES_AVANTAGES: { mots: string[]; url: string }[] = [
+  { mots: ["investissement", "capital", "départ", "accessible"], url: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&h=250&fit=crop&q=80" },
+  { mots: ["retour", "rentab", "bénéfic", "marges", "revenus", "chiffre"], url: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=250&fit=crop&q=80" },
+  { mots: ["clientèle", "fidèle", "client", "récurrent"], url: "https://images.unsplash.com/photo-1556745757-8d76bdb6984b?w=400&h=250&fit=crop&q=80" },
+  { mots: ["demande", "croissant", "porteur", "essor", "expansion"], url: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop&q=80" },
+  { mots: ["concurrence", "faible", "zone"], url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=250&fit=crop&q=80" },
+  { mots: ["subventionné", "état", "gouvernement"], url: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=400&h=250&fit=crop&q=80" },
+  { mots: ["environnement", "nature", "durable", "respect"], url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=250&fit=crop&q=80" },
+  { mots: ["diversif", "extension", "évolution", "produits possible"], url: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=250&fit=crop&q=80" },
+  { mots: ["flexib", "adaptab", "horaire"], url: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=250&fit=crop&q=80" },
+  { mots: ["quotidien", "stable", "régulier", "constant", "premier jour"], url: "https://images.unsplash.com/photo-1556740758-90de374c12ad?w=400&h=250&fit=crop&q=80" },
+  { mots: ["professionnel", "valorisant", "image", "confiance", "reconnaissance"], url: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=250&fit=crop&q=80" },
+  { mots: ["réseau", "fournisseur", "partenaire", "livraison"], url: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&h=250&fit=crop&q=80" },
+  { mots: ["saisonnal", "féminin", "vente"], url: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&h=250&fit=crop&q=80" },
+  { mots: ["terrain", "terre", "local", "site"], url: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&h=250&fit=crop&q=80" },
+];
+
+function getImageAvantage(texte: string): string {
+  const t = texte.toLowerCase();
+  for (const ia of IMAGES_AVANTAGES) {
+    if (ia.mots.some((m) => t.includes(m))) return ia.url;
+  }
+  return "https://images.unsplash.com/photo-1553729459-efe14ef6055d?w=400&h=250&fit=crop&q=80";
+}
+
 const inputCls =
   "w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#27A827] focus:ring-2 focus:ring-[#27A827]/10 focus:bg-white transition-all text-sm";
 const selectCls =
@@ -535,17 +560,15 @@ export default function EspaceDetailPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {imagesContenu.map((img, i) => (
                     <div key={i} className="rounded-2xl overflow-hidden border border-gray-100 shadow-lg group">
-                      <div className="relative">
-                        <img
-                          src={img.url}
-                          alt={img.legende}
-                          className="w-full h-48 sm:h-56 object-cover group-hover:scale-105 transition-transform duration-500"
-                          loading="lazy"
-                          onError={(ev) => { (ev.target as HTMLImageElement).closest('.group')!.remove(); }}
-                        />
-                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent px-3 sm:px-4 py-2.5 sm:py-3">
-                          <p className="text-white text-sm sm:text-base font-bold" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.7)" }}>{img.legende}</p>
-                        </div>
+                      <img
+                        src={img.url}
+                        alt={img.legende}
+                        className="w-full h-48 sm:h-56 object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                        onError={(ev) => { (ev.target as HTMLImageElement).closest('.group')!.remove(); }}
+                      />
+                      <div className="bg-[#E8B800] px-4 py-3">
+                        <p className="text-white text-base sm:text-lg font-extrabold tracking-wide">{img.legende}</p>
                       </div>
                     </div>
                   ))}
@@ -603,21 +626,35 @@ export default function EspaceDetailPage() {
             {/* Avantages du secteur */}
             {espace.avantages?.filter(Boolean).length > 0 && (
               <AnimateOnScroll variant="fadeUp">
-                <div className="p-5 sm:p-6 bg-gradient-to-br from-green-50/80 via-white to-yellow-50/50 border border-gray-100 rounded-2xl">
-                  <h3 className="text-gray-900 font-bold text-xl sm:text-2xl mb-6 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-[#E8B800]/10 flex items-center justify-center">
-                      <TrendingUp size={20} className="text-[#E8B800]" />
+                <div className="p-5 sm:p-8 bg-gradient-to-br from-[#E8B800]/5 via-white to-[#27A827]/5 border-2 border-[#E8B800]/20 rounded-2xl">
+                  <h3 className="text-gray-900 font-black text-2xl sm:text-3xl mb-8 flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#E8B800] to-[#27A827] flex items-center justify-center shadow-lg">
+                      <TrendingUp size={24} className="text-white" />
                     </div>
                     Pourquoi ce secteur ?
                   </h3>
-                  <StaggerContainer className="space-y-3">
+                  <StaggerContainer className="space-y-4">
                     {espace.avantages.filter(Boolean).map((a, i) => (
                       <StaggerItem key={i}>
-                        <div className="flex items-start gap-3 p-4 bg-white/70 rounded-xl border border-gray-50">
-                          <div className="w-6 h-6 rounded-full bg-[#27A827]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <CheckCircle size={14} className="text-[#27A827]" />
+                        <div className="rounded-2xl overflow-hidden border border-gray-100 shadow-md bg-white group">
+                          <div className="flex flex-col sm:flex-row">
+                            <div className="sm:w-32 sm:min-w-[8rem] h-28 sm:h-auto relative overflow-hidden">
+                              <img
+                                src={getImageAvantage(a)}
+                                alt=""
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                loading="lazy"
+                                onError={(ev) => { (ev.target as HTMLImageElement).style.display = "none"; }}
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/20" />
+                            </div>
+                            <div className="flex items-start gap-3 p-4 sm:p-5 flex-1">
+                              <div className="w-8 h-8 rounded-full bg-[#27A827] flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+                                <CheckCircle size={18} className="text-white" />
+                              </div>
+                              <p className="text-gray-900 text-lg sm:text-xl font-bold leading-snug">{a}</p>
+                            </div>
                           </div>
-                          <p className="text-gray-700 text-base leading-relaxed">{a}</p>
                         </div>
                       </StaggerItem>
                     ))}

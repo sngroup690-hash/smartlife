@@ -334,14 +334,15 @@ export default function AccompagnementPage() {
                   className="group bg-white border border-gray-200 rounded-2xl shadow-sm hover:border-green-400 transition-all card-hover flex flex-col overflow-hidden"
                 >
                   {/* Bannière image — pleine largeur en en-tête */}
-                  <div className="w-full flex-shrink-0 relative" style={{ height: 190 }}>
+                  <div className="w-full flex-shrink-0 relative bg-gray-50" style={{ height: 240 }}>
                     {espace.image ? (
                       <img
                         src={espace.image}
                         alt={espace.titre}
                         loading="lazy"
                         decoding="async"
-                        className="w-full h-full object-cover block"
+                        className="w-full h-full object-contain block"
+                        style={{ imageRendering: "auto" }}
                         onError={(ev) => { (ev.target as HTMLImageElement).style.display = "none"; (ev.target as HTMLImageElement).nextElementSibling?.classList.remove("hidden"); }}
                       />
                     ) : null}
