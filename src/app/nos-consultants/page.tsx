@@ -1050,45 +1050,6 @@ export default function NosConsultantsPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-      {/* ════════ SECTEURS PREMIUM ════════ */}
-      <div className="mb-16">
-        <AnimateOnScroll variant="fadeUp" className="flex items-center justify-between flex-wrap gap-4 mb-8">
-          <div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
-              Secteurs d&apos;
-              <span className="bg-gradient-to-r from-[#E8B800] to-amber-500 bg-clip-text text-transparent">accompagnement</span>
-            </h2>
-            <p className="text-gray-500 text-sm font-medium">{categories.length} secteur{categories.length > 1 ? "s" : ""} couverts par nos experts</p>
-          </div>
-          {filtreCategorie && (
-            <motion.button
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              onClick={() => setFiltreCategorie(null)}
-              className="flex items-center gap-2 px-5 py-2.5 bg-[#E8B800]/10 hover:bg-[#E8B800]/20 text-[#E8B800] border border-[#E8B800]/20 rounded-xl text-sm font-bold transition-all"
-            >
-              <Filter size={14} /> Tous les secteurs <X size={14} />
-            </motion.button>
-          )}
-        </AnimateOnScroll>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
-          {categories.map((cat, i) => {
-            const config = getSecteurConfig(cat);
-            return (
-              <SecteurCard
-                key={cat} secteur={config}
-                nbEspaces={espacesDuSecteur(cat).length}
-                nbConsultants={consultantsDuSecteur(cat).length}
-                isActive={filtreCategorie === cat}
-                onClick={() => setFiltreCategorie(filtreCategorie === cat ? null : cat)}
-                index={i}
-              />
-            );
-          })}
-        </div>
-      </div>
-
       {/* ════════ CONSULTANTS PREMIUM ════════ */}
       <div className="mb-20">
         <AnimateOnScroll variant="fadeUp" className="flex items-center justify-between flex-wrap gap-4 mb-8">
@@ -1251,6 +1212,45 @@ export default function NosConsultantsPage() {
             })}
           </StaggerContainer>
         )}
+      </div>
+
+      {/* ════════ SECTEURS PREMIUM ════════ */}
+      <div className="mb-16">
+        <AnimateOnScroll variant="fadeUp" className="flex items-center justify-between flex-wrap gap-4 mb-8">
+          <div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
+              Secteurs d&apos;
+              <span className="bg-gradient-to-r from-[#E8B800] to-amber-500 bg-clip-text text-transparent">accompagnement</span>
+            </h2>
+            <p className="text-gray-500 text-sm font-medium">{categories.length} secteur{categories.length > 1 ? "s" : ""} couverts par nos experts</p>
+          </div>
+          {filtreCategorie && (
+            <motion.button
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              onClick={() => setFiltreCategorie(null)}
+              className="flex items-center gap-2 px-5 py-2.5 bg-[#E8B800]/10 hover:bg-[#E8B800]/20 text-[#E8B800] border border-[#E8B800]/20 rounded-xl text-sm font-bold transition-all"
+            >
+              <Filter size={14} /> Tous les secteurs <X size={14} />
+            </motion.button>
+          )}
+        </AnimateOnScroll>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
+          {categories.map((cat, i) => {
+            const config = getSecteurConfig(cat);
+            return (
+              <SecteurCard
+                key={cat} secteur={config}
+                nbEspaces={espacesDuSecteur(cat).length}
+                nbConsultants={consultantsDuSecteur(cat).length}
+                isActive={filtreCategorie === cat}
+                onClick={() => setFiltreCategorie(filtreCategorie === cat ? null : cat)}
+                index={i}
+              />
+            );
+          })}
+        </div>
       </div>
 
       {/* ════════ ESPACES PAR SECTEUR ════════ */}
