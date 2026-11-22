@@ -219,6 +219,22 @@ body {
 @keyframes fleche-cta { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
 .fleche-cta { display: inline-block; animation: fleche-cta 1s ease-in-out infinite; }
 
+/* ── Page d'accueil premium ─────────────────────────────────────── */
+@keyframes accueil-bulle { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(40px, 30px) scale(1.12); } }
+.accueil-bulle { position: absolute; width: 440px; height: 440px; border-radius: 9999px; filter: blur(90px); opacity: 0.3; pointer-events: none; animation: accueil-bulle 14s ease-in-out infinite; }
+@keyframes accueil-flotte { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-12px) rotate(0.6deg); } }
+.accueil-flotte { animation: accueil-flotte 6s ease-in-out infinite; }
+@keyframes accueil-entree { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+.accueil-entree { animation: accueil-entree 0.8s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes defile-gauche { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes defile-droite { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.defile-gauche { animation: defile-gauche 70s linear infinite; }
+.defile-droite { animation: defile-droite 70s linear infinite; }
+.defile-gauche:hover, .defile-droite:hover { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .accueil-bulle, .accueil-flotte, .accueil-entree, .defile-gauche, .defile-droite { animation: none; }
+}
+
 @keyframes garantie-flotte { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 .garantie-boutique { animation: garantie-flotte 3.2s ease-in-out infinite; }
 .garantie-boutique:hover { animation-play-state: paused; }

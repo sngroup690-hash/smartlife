@@ -1,405 +1,363 @@
 import Link from "next/link";
-import { Star, ArrowRight, BookOpen, CheckCircle, TrendingUp, Users, Shield, Zap, Clock } from "lucide-react";
+import { Star, ArrowRight, CheckCircle, Shield, Zap, Users, Clock } from "lucide-react";
 import { ebooks, testimonials } from "@/lib/data";
-import { espaces as domainesAccompagnement } from "@/lib/accompagnement-data";
 import EbookCard from "@/components/EbookCard";
-import { readFile } from "fs/promises";
+import { readFile, readdir } from "fs/promises";
 import path from "path";
-import HeroBgSlider from "@/components/HeroBgSlider";
-import AnimatedHero from "@/components/AnimatedHero";
-import AnimateOnScroll, { StaggerContainer, StaggerItem, AnimatedCounter, Tilt3DCard, FloatingElement, ParallaxSection } from "@/components/AnimateOnScroll";
 
 export const dynamic = "force-dynamic";
 
+type Photo = { src: string; titre: string };
+type EspaceBrut = { id: string; titre: string; actif?: boolean };
+
+const propre = (t: string) =>
+  t.normalize("NFKC").replace(/\s*[:—–]\s*(le |la )?guide.*$/i, "").replace(/^[^\p{L}]+/u, "").trim();
+const sansAccents = (t: string) => t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+async function lireDonnees() {
+  const racine = process.cwd();
+  const lire = async <T,>(f: string): Promise<T | null> => {
+    try { return JSON.parse(await readFile(path.join(racine, "private", f), "utf-8")) as T; } catch { return null; }
+  };
+  const [ebooksData, espacesData, consultantsData] = await Promise.all([
+    lire<{ ebooks?: Array<{ actif?: boolean; deletedAt?: string }>; actif?: Record<string, boolean> }>("ebooks-data.json"),
+    lire<EspaceBrut[]>("espaces.json"),
+    lire<Array<{ actif?: boolean }>>("consultants.json"),
+  ]);
+  let fichiers: string[] = [];
+  try { fichiers = await readdir(path.join(racine, "public", "espaces")); } catch { /* pas encore de photos */ }
+  const espaces = Array.isArray(espacesData) ? espacesData.filter((e) => e.actif !== false) : [];
+  const photos: Photo[] = espaces.flatMap((e) => {
+    const nom = `${String(e.id).replace(/[^a-zA-Z0-9_-]/g, "_")}.webp`;
+    return fichiers.includes(nom) ? [{ src: `/espaces/${nom}`, titre: propre(e.titre) }] : [];
+  });
+  return {
+    photos,
+    nbGuides: (ebooksData?.ebooks || []).filter((e) => e.actif !== false && !e.deletedAt).length,
+    nbEspaces: espaces.length,
+    nbConsultants: Array.isArray(consultantsData) ? consultantsData.filter((c) => c.actif !== false).length : 0,
+    actif: ebooksData?.actif || {},
+  };
+}
+
 export default async function HomePage() {
-  let actifMap: Record<string, boolean> = {};
-  try {
-    const raw = await readFile(path.join(process.cwd(), "private", "ebooks-data.json"), "utf-8");
-    actifMap = (JSON.parse(raw).actif as Record<string, boolean>) || {};
-  } catch { /* file may not exist yet */ }
-  const featuredEbooks = ebooks.filter((e) => e.bestseller && actifMap[e.id] !== false).slice(0, 3);
+  const { photos, nbGuides, nbEspaces, nbConsultants, actif } = await lireDonnees();
+  const featuredEbooks = ebooks.filter((e) => e.bestseller && actif[e.id] !== false).slice(0, 3);
+  const trouver = (mot: string, defaut = 0): Photo | undefined =>
+    photos.find((p) => sansAccents(p.titre).includes(mot)) ?? photos[defaut];
+  const mosaique = [trouver("palmier", 0), trouver("alimentation", 1), trouver("evenement", 2), trouver("coiffure", 3)].filter(Boolean) as Photo[];
+  const photoGuides = trouver("epice", 4);
+  const photoAccompagnement = trouver("restaurant", 5);
+  const photoConsultant = trouver("topographe", 6);
+  const rangee1 = photos.slice(0, Math.ceil(photos.length / 2));
+  const rangee2 = photos.slice(Math.ceil(photos.length / 2));
+
+  const parcours = [
+    { href: "/ebooks", photo: photoGuides, etiquette: "📚 Guides pratiques", couleur: "#27A827", titre: "Apprenez la méthode", texte: `${nbGuides || "Des dizaines de"} guides concrets pour lancer et faire tourner votre activité.`, bouton: "Voir les guides" },
+    { href: "/accompagnement", photo: photoAccompagnement, etiquette: "🤝 Accompagnement", couleur: "#E8B800", titre: "Lancez-vous avec un expert", texte: "Un consultant du terrain à vos côtés pour éviter les pièges et réussir plus vite.", bouton: "Déposer ma candidature" },
+    { href: "/devenir-consultant", photo: photoConsultant, etiquette: "🚀 Devenir consultant", couleur: "#27A827", titre: "Partagez votre savoir", texte: "Accompagnez des entrepreneurs dans votre domaine et rejoignez le réseau Smart Life.", bouton: "Rejoindre le réseau" },
+  ];
 
   return (
     <div className="overflow-x-hidden">
 
-      {/* ══════ HERO ANIMÉ ══════ */}
-      <section className="relative min-h-[60vh] sm:min-h-[80vh] flex items-center">
-        <HeroBgSlider />
-        <AnimatedHero />
-      </section>
-
-      {/* ══════ CHIFFRES CLÉS ══════ */}
-      <section className="py-6 sm:py-10 border-b border-gray-200 bg-white">
-        <StaggerContainer className="max-w-5xl mx-auto px-4" staggerDelay={0.15}>
-          <div className="grid grid-cols-3 gap-4">
-            <StaggerItem>
-              <div className="text-center">
-                <div className="text-xl sm:text-3xl font-black text-[#27A827]">
-                  <AnimatedCounter value={15000} suffix="+" />
-                </div>
-                <div className="text-gray-500 text-[11px] sm:text-sm mt-1">Ebooks vendus</div>
-              </div>
-            </StaggerItem>
-            <StaggerItem>
-              <div className="text-center">
-                <div className="text-xl sm:text-3xl font-black text-[#27A827]">
-                  <AnimatedCounter value={7} suffix="" />
-                </div>
-                <div className="text-gray-500 text-[11px] sm:text-sm mt-1">Entrepreneurs accompagnés</div>
-              </div>
-            </StaggerItem>
-            <StaggerItem>
-              <div className="text-center">
-                <div className="text-xl sm:text-3xl font-black text-[#E8B800]">⚡</div>
-                <div className="text-gray-500 text-[11px] sm:text-sm mt-1">Livraison instantanée</div>
-              </div>
-            </StaggerItem>
-          </div>
-        </StaggerContainer>
-      </section>
-
-      {/* ══════ 3 PARCOURS ══════ */}
-      <section className="py-8 sm:py-12 bg-[#f4f3f0]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <AnimateOnScroll variant="fadeUp">
-            <h2 className="text-center text-2xl sm:text-3xl font-black text-gray-900 mb-2">
-              Choisissez votre <span className="text-[#27A827]">parcours</span>
-            </h2>
-            <p className="text-center text-gray-500 text-sm mb-8">
-              3 façons de créer de la valeur avec Smart Life
+      {/* ══════ EN-TÊTE PREMIUM ══════ */}
+      <section className="relative overflow-hidden" style={{ background: "linear-gradient(160deg, #fffdf3 0%, #ffffff 45%, #f1fcf3 100%)" }}>
+        <span className="accueil-bulle" style={{ top: "-120px", left: "-100px", background: "#E8B800" }} />
+        <span className="accueil-bulle" style={{ bottom: "-140px", right: "-120px", background: "#27A827", animationDelay: "-6s" }} />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12 lg:pt-16 lg:pb-20 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+          <div>
+            <p className="accueil-entree inline-flex items-center gap-2.5 rounded-full bg-white px-3 py-1.5 shadow-md border border-[#f1f2f3]">
+              <span className="flex -space-x-2">
+                {["M", "J", "A", "S"].map((l, i) => (
+                  <span key={l} className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-black"
+                    style={{ background: i % 2 === 0 ? "#E8B800" : "#27A827", color: "#fff" }}>{l}</span>
+                ))}
+              </span>
+              <span className="text-[12.5px] font-semibold text-[#393c41]">
+                <span className="text-[#E8B800]">★★★★★</span> Rejoint par <strong className="text-[#111827]">14 960+</strong> clients
+              </span>
             </p>
-          </AnimateOnScroll>
-
-          <StaggerContainer className="grid gap-4 sm:grid-cols-3 sm:gap-6" staggerDelay={0.15}>
-
-            {/* EBOOKS */}
-            <StaggerItem>
-              <Tilt3DCard>
-              <Link href="/ebooks" className="group bg-white rounded-2xl p-5 sm:p-7 border-2 border-[#27A827]/20 hover:border-[#27A827] shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col h-full">
-                <div className="flex items-start gap-4 sm:flex-col">
-                  <div className="w-12 h-12 rounded-xl bg-[#27A827]/15 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
-                    <BookOpen size={22} className="text-[#27A827]" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-[#27A827] text-xs font-bold uppercase tracking-wide mb-1">Ebooks &amp; Guides</p>
-                    <h3 className="text-gray-900 font-bold text-lg leading-tight mb-2">
-                      Montez en compétences
-                    </h3>
-                    <p className="text-gray-500 text-sm mb-3 hidden sm:block">
-                      Guides pratiques en IA, marketing digital, business et productivité.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
-                  <span className="text-[#1e8c1e] font-bold text-sm bg-[#27A827]/8 px-3 py-1 rounded-full">
-                    Dès 3 500 FCFA
-                  </span>
-                  <span className="text-[#27A827] font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all duration-300">
-                    Voir <ArrowRight size={14} />
-                  </span>
-                </div>
+            <h1 className="accueil-entree mt-5 text-[34px] sm:text-[48px] lg:text-[58px] font-black leading-[1.05] tracking-tight text-[#111827]" style={{ animationDelay: "0.1s" }}>
+              Votre business en Afrique,{" "}
+              <span className="texte-brillant">de l&apos;idée au succès.</span>
+            </h1>
+            <p className="accueil-entree mt-4 text-[16px] sm:text-[18px] leading-relaxed text-[#393c41] max-w-xl" style={{ animationDelay: "0.2s" }}>
+              Des guides pratiques, une communauté de visionnaires et des consultants du terrain pour vous accompagner pas à pas.
+            </p>
+            <div className="accueil-entree mt-7 flex flex-col sm:flex-row gap-3" style={{ animationDelay: "0.3s" }}>
+              <Link href="/ebooks" className="bouton-reflet cta-respire relative overflow-hidden inline-flex items-center justify-center gap-2 h-14 px-7 rounded-2xl text-[16px] font-extrabold shadow-xl"
+                style={{ background: "linear-gradient(135deg, #27A827, #1b7a1b)", color: "#fff", boxShadow: "0 14px 30px -12px #27A827" }}>
+                📚 Voir les guides <ArrowRight size={18} className="fleche-cta" />
               </Link>
-              </Tilt3DCard>
-            </StaggerItem>
-
-            {/* ACCOMPAGNEMENT */}
-            <StaggerItem>
-              <Tilt3DCard>
-              <Link href="/accompagnement" className="group bg-white rounded-2xl p-5 sm:p-7 border-2 border-[#E8B800]/20 hover:border-[#E8B800] shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col h-full">
-                <div className="flex items-start gap-4 sm:flex-col">
-                  <div className="w-12 h-12 rounded-xl bg-[#E8B800]/15 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
-                    <TrendingUp size={22} className="text-[#E8B800]" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-[#E8B800] text-xs font-bold uppercase tracking-wide mb-1">Accompagnement</p>
-                    <h3 className="text-gray-900 font-bold text-lg leading-tight mb-2">
-                      Lancez votre business
-                    </h3>
-                    <p className="text-gray-500 text-sm mb-3 hidden sm:block">
-                      Saisissez l&apos;expertise de nos consultants pour éviter les pièges du terrain.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
-                  <span className="text-[#E8B800] font-bold text-sm bg-[#E8B800]/10 px-3 py-1 rounded-full">
-                    Sur candidature
-                  </span>
-                  <span className="text-[#E8B800] font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all duration-300">
-                    Postuler <ArrowRight size={14} />
-                  </span>
-                </div>
+              <Link href="/accompagnement" className="bouton-reflet relative overflow-hidden inline-flex items-center justify-center gap-2 h-14 px-7 rounded-2xl text-[16px] font-extrabold shadow-xl"
+                style={{ background: "linear-gradient(135deg, #E8B800, #d4a300)", color: "#fff", boxShadow: "0 14px 30px -12px #E8B800" }}>
+                🤝 Être accompagné
               </Link>
-              </Tilt3DCard>
-            </StaggerItem>
+            </div>
+            <Link href="/devenir-consultant" className="accueil-entree mt-3 inline-flex items-center gap-1.5 text-[14px] font-bold text-[#1e7a1e] hover:gap-2.5 transition-all" style={{ animationDelay: "0.35s" }}>
+              🚀 Vous êtes expert ? Devenez consultant <ArrowRight size={15} />
+            </Link>
+            <div className="accueil-entree mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[13px] font-semibold text-[#393c41]" style={{ animationDelay: "0.4s" }}>
+              {["Paiement Mobile Money", "Guide reçu en quelques secondes", "Aide sur WhatsApp"].map((t) => (
+                <span key={t} className="inline-flex items-center gap-1.5"><CheckCircle size={15} className="text-[#27A827]" /> {t}</span>
+              ))}
+            </div>
+          </div>
 
-            {/* DEVENIR CONSULTANT */}
-            <StaggerItem>
-              <Tilt3DCard>
-              <Link href="/devenir-consultant" className="group bg-white rounded-2xl p-5 sm:p-7 border-2 border-[#27A827]/20 hover:border-[#27A827] shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col h-full">
-                <div className="flex items-start gap-4 sm:flex-col">
-                  <div className="w-12 h-12 rounded-xl bg-[#27A827]/15 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
-                    <Users size={22} className="text-[#27A827]" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-[#27A827] text-xs font-bold uppercase tracking-wide mb-1">Devenir Consultant</p>
-                    <h3 className="text-gray-900 font-bold text-lg leading-tight mb-2">
-                      Partagez votre savoir
-                    </h3>
-                    <p className="text-gray-500 text-sm mb-3 hidden sm:block">
-                      Contribuez à un monde meilleur en accompagnant des entrepreneurs.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
-                  <span className="text-[#1e8c1e] font-bold text-sm bg-[#27A827]/8 px-3 py-1 rounded-full">
-                    Gratuit
-                  </span>
-                  <span className="text-[#27A827] font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all duration-300">
-                    Rejoindre <ArrowRight size={14} />
-                  </span>
-                </div>
-              </Link>
-              </Tilt3DCard>
-            </StaggerItem>
-          </StaggerContainer>
+          {/* Mosaïque de vraies photos qui flottent */}
+          {mosaique.length >= 4 && (
+            <div className="relative h-[360px] sm:h-[460px] lg:h-[540px]">
+              {[
+                { s: { left: "0%", top: "6%", width: "56%", height: "52%" }, d: "0s" },
+                { s: { right: "0%", top: "0%", width: "41%", height: "40%" }, d: "-1.5s" },
+                { s: { right: "3%", bottom: "2%", width: "52%", height: "50%" }, d: "-3s" },
+                { s: { left: "5%", bottom: "0%", width: "38%", height: "35%" }, d: "-4.5s" },
+              ].map((c, i) => (
+                <figure key={i} className="accueil-flotte absolute overflow-hidden rounded-3xl border-4 border-white shadow-2xl" style={{ ...c.s, animationDelay: c.d }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={mosaique[i].src} alt={mosaique[i].titre} className="w-full h-full object-cover" style={{ objectPosition: "50% 22%" }} />
+                  <figcaption className="absolute bottom-2 left-2 right-2 truncate rounded-full px-2.5 py-1 text-[10.5px] font-bold shadow"
+                    style={{ background: "rgba(255,255,255,0.92)", color: "#111827" }}>{mosaique[i].titre}</figcaption>
+                </figure>
+              ))}
+              <div className="accueil-flotte absolute left-[38%] top-[44%] rounded-2xl px-3.5 py-2.5 shadow-2xl" style={{ background: "rgba(255,255,255,0.94)", backdropFilter: "blur(8px)", animationDelay: "-2s" }}>
+                <p className="text-[11px] font-semibold text-[#5c5e62]">Clients satisfaits</p>
+                <p className="text-[20px] font-black text-[#27A827] leading-none mt-0.5">14 960+</p>
+              </div>
+              <div className="accueil-flotte absolute right-[2%] top-[38%] rounded-2xl px-3 py-2 shadow-2xl" style={{ background: "#E8B800", animationDelay: "-3.5s" }}>
+                <p className="text-[12px] font-extrabold" style={{ color: "#fff" }}>⚡ Reçu en quelques secondes</p>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* ══════ EBOOKS POPULAIRES ══════ */}
-      <section className="py-8 sm:py-14">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimateOnScroll variant="fadeUp">
-            <div className="flex items-end justify-between gap-4 mb-8">
-              <div>
-                <p className="text-[#27A827] font-bold text-sm flex items-center gap-2 mb-2">
-                  <Zap size={14} /> Les plus vendus
-                </p>
-                <h2 className="text-2xl sm:text-3xl font-black text-gray-900">
-                  Ebooks populaires
-                </h2>
-              </div>
-              <Link href="/ebooks" className="text-[#27A827] hover:text-[#1a7a1a] font-bold text-sm flex items-center gap-1 shrink-0">
-                Tout voir <ArrowRight size={14} />
-              </Link>
+      {/* ══════ CHIFFRES CLÉS ══════ */}
+      <section className="relative overflow-hidden" style={{ background: "linear-gradient(135deg, #1b7a1b 0%, #27A827 55%, #1f8f1f 100%)" }}>
+        <div className="max-w-6xl mx-auto px-4 py-9 sm:py-12 grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+          {[
+            { n: 14960, s: "+", l: "clients en Afrique et dans la diaspora" },
+            { n: nbGuides, s: "", l: "guides pratiques" },
+            { n: nbEspaces, s: "", l: "domaines d'accompagnement" },
+            { n: nbConsultants, s: "", l: "consultants du terrain" },
+          ].filter((c) => c.n > 0).map((c) => (
+            <div key={c.l}>
+              <p className="text-[34px] sm:text-[44px] font-black leading-none" style={{ color: "#fff" }}>
+                <span data-compteur={c.n} data-suffixe={c.s}>{c.n.toLocaleString("fr-FR")}{c.s}</span>
+              </p>
+              <p className="mt-2 text-[13px] sm:text-[14px] font-semibold" style={{ color: "rgba(255,255,255,0.88)" }}>{c.l}</p>
             </div>
-          </AnimateOnScroll>
+          ))}
+        </div>
+      </section>
 
-          <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" staggerDelay={0.12}>
-            {featuredEbooks.map((ebook) => (
-              <StaggerItem key={ebook.id}>
-                <EbookCard ebook={ebook} />
-              </StaggerItem>
+      {/* ══════ 3 PARCOURS ══════ */}
+      <section className="py-12 sm:py-16" style={{ background: "#faf9f5" }}>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <p className="text-center text-[12px] font-extrabold uppercase tracking-[0.2em] text-[#27A827]">Votre chemin</p>
+          <h2 className="mt-2 text-center text-[28px] sm:text-[38px] font-black text-[#111827] leading-tight">
+            Choisissez votre <span className="texte-brillant">parcours</span>
+          </h2>
+          <p className="mt-2 text-center text-[15px] text-[#5c5e62]">Trois façons de réussir avec Smart Life</p>
+          <div className="mt-9 grid gap-5 sm:grid-cols-3">
+            {parcours.map((p) => (
+              <Link key={p.href} href={p.href} className="group relative block h-[380px] overflow-hidden rounded-3xl shadow-xl">
+                {p.photo ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={p.photo.src} alt={p.titre} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    style={{ objectPosition: "50% 22%", transformOrigin: "50% 100%" }} />
+                ) : (
+                  <span className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${p.couleur}, #111827)` }} />
+                )}
+                <span className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.05) 75%)" }} />
+                <div className="absolute inset-x-0 bottom-0 p-5">
+                  <span className="inline-block rounded-full px-3 py-1 text-[11.5px] font-extrabold shadow" style={{ background: p.couleur, color: "#fff" }}>{p.etiquette}</span>
+                  <h3 className="mt-3 text-[24px] font-black leading-tight" style={{ color: "#fff" }}>{p.titre}</h3>
+                  <p className="mt-1.5 text-[14px] leading-snug" style={{ color: "rgba(255,255,255,0.88)" }}>{p.texte}</p>
+                  <span className="mt-4 inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-[14px] font-extrabold transition-all group-hover:gap-3"
+                    style={{ background: "#fff", color: "#111827" }}>
+                    {p.bouton} <ArrowRight size={16} />
+                  </span>
+                </div>
+              </Link>
             ))}
-          </StaggerContainer>
+          </div>
+        </div>
+      </section>
 
-          <AnimateOnScroll variant="fadeUp" delay={0.3}>
-            <div className="text-center mt-8">
-              <Link
-                href="/ebooks"
-                className="cta-glow inline-flex items-center gap-2 px-8 py-4 bg-[#27A827] hover:bg-[#1e8c1e] text-white font-bold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.05]"
-              >
-                Voir tout le catalogue <ArrowRight size={18} />
-              </Link>
+      {/* ══════ GUIDES POPULAIRES ══════ */}
+      <section className="py-12 sm:py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-end justify-between gap-4 mb-8">
+            <div>
+              <p className="text-[12px] font-extrabold uppercase tracking-[0.2em] text-[#E8B800] flex items-center gap-2"><Zap size={14} /> Les plus vendus</p>
+              <h2 className="mt-2 text-[28px] sm:text-[38px] font-black text-[#111827] leading-tight">Guides populaires</h2>
             </div>
-          </AnimateOnScroll>
+            <Link href="/ebooks" className="text-[#27A827] hover:gap-2 font-bold text-sm flex items-center gap-1 shrink-0 transition-all">
+              Tout voir <ArrowRight size={14} />
+            </Link>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {featuredEbooks.map((ebook) => <EbookCard key={ebook.id} ebook={ebook} />)}
+          </div>
+          <div className="text-center mt-9">
+            <Link href="/ebooks" className="bouton-reflet cta-respire relative overflow-hidden inline-flex items-center gap-2 h-14 px-8 rounded-2xl text-[16px] font-extrabold shadow-xl"
+              style={{ background: "#E8B800", color: "#fff", boxShadow: "0 14px 30px -12px #E8B800" }}>
+              Voir tout le catalogue <ArrowRight size={18} className="fleche-cta" />
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* ══════ ACCOMPAGNEMENT ══════ */}
-      <section className="py-8 sm:py-14 bg-gradient-to-br from-[#E8B800]/5 to-[#27A827]/5">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <AnimateOnScroll variant="fadeUp">
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#E8B800]/15 rounded-full text-[#C49A00] text-xs font-bold mb-4">
-                <TrendingUp size={12} /> Programme d&apos;accompagnement
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mb-3">
-                Évitez les pièges du terrain avec un <span style={{ color: "#E8B800" }}>expert dédié</span>
-              </h2>
-              <p className="text-gray-500 text-sm max-w-lg mx-auto">
-                Connaître les pièges d&apos;un business ne se limite pas à avoir un plan d&apos;affaires. Profitez de l&apos;expertise de ceux qui sont passés avant vous.
-              </p>
-            </div>
-          </AnimateOnScroll>
-
-          <StaggerContainer className="grid sm:grid-cols-2 gap-4 mb-8" staggerDelay={0.1}>
+      <section className="py-12 sm:py-16 overflow-hidden" style={{ background: "linear-gradient(180deg, #fffbea 0%, #f0fdf4 100%)" }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
+          <p className="text-[12px] font-extrabold uppercase tracking-[0.2em] text-[#b38f00]">Programme d&apos;accompagnement</p>
+          <h2 className="mt-2 text-[28px] sm:text-[38px] font-black text-[#111827] leading-tight">
+            Évitez les pièges du terrain avec un <span className="texte-brillant">expert dédié</span>
+          </h2>
+          <p className="mt-3 text-[15px] text-[#5c5e62] max-w-2xl mx-auto">
+            Un plan d&apos;affaires ne suffit pas. Profitez de l&apos;expérience de ceux qui sont passés avant vous.
+          </p>
+          <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-3 text-left">
             {[
-              { icon: <Shield size={18} />, title: "Accompagnement personnalisé", desc: "Un expert dédié qui vous guide pas à pas" },
-              { icon: <Zap size={18} />, title: "Résultats concrets", desc: "Stratégie, sourcing, installation et suivi" },
-              { icon: <Users size={18} />, title: "Réseau d'entrepreneurs", desc: "Rejoignez une communauté qui avance ensemble" },
-              { icon: <Clock size={18} />, title: "Suivi continu", desc: "On ne vous lâche pas après le lancement" },
-            ].map((item) => (
-              <StaggerItem key={item.title}>
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-200 hover:border-[#E8B800]/40 hover:shadow-md transition-all duration-300">
-                  <div className="w-9 h-9 rounded-lg bg-[#E8B800]/15 flex items-center justify-center text-[#E8B800] shrink-0">
-                    {item.icon}
-                  </div>
-                  <div>
-                    <p className="text-gray-900 font-bold text-sm">{item.title}</p>
-                    <p className="text-gray-500 text-xs mt-0.5">{item.desc}</p>
-                  </div>
-                </div>
-              </StaggerItem>
+              { icone: <Shield size={20} />, titre: "Un expert dédié", texte: "Il vous guide pas à pas" },
+              { icone: <Zap size={20} />, titre: "Du concret", texte: "Stratégie, fournisseurs, installation" },
+              { icone: <Users size={20} />, titre: "Un réseau", texte: "Des entrepreneurs qui avancent ensemble" },
+              { icone: <Clock size={20} />, titre: "Un suivi", texte: "On ne vous lâche pas après le lancement" },
+            ].map((b, i) => (
+              <div key={b.titre} className="rounded-2xl bg-white p-4 shadow-md border border-[#f1f2f3]">
+                <span className="flex items-center justify-center w-10 h-10 rounded-xl shadow" style={{ background: i % 2 === 0 ? "#E8B800" : "#27A827", color: "#fff" }}>{b.icone}</span>
+                <p className="mt-3 text-[14px] font-extrabold text-[#111827]">{b.titre}</p>
+                <p className="mt-0.5 text-[12.5px] text-[#5c5e62] leading-snug">{b.texte}</p>
+              </div>
             ))}
-          </StaggerContainer>
+          </div>
+        </div>
 
-          <AnimateOnScroll variant="fadeIn" delay={0.2}>
-            <div className="flex flex-wrap justify-center gap-2 mb-8">
-              {domainesAccompagnement.slice(0, 6).map((d) => (
-                <span key={d.id} className="px-3 py-1.5 bg-white text-gray-700 text-xs font-medium rounded-full border border-gray-200 hover:border-[#E8B800]/40 hover:bg-[#E8B800]/5 transition-colors duration-200 shadow-sm">
-                  {d.icone} {d.titre.length > 25 ? d.titre.slice(0, 25) + "…" : d.titre}
-                </span>
-              ))}
-              {domainesAccompagnement.length > 6 && (
-                <span className="px-3 py-1.5 bg-[#E8B800]/15 text-[#C49A00] text-xs font-bold rounded-full border border-[#E8B800]/30">
-                  +{domainesAccompagnement.length - 6} domaines
-                </span>
-              )}
-            </div>
-          </AnimateOnScroll>
+        {/* Deux rangées de vraies photos d'activités qui défilent en sens inverse */}
+        {photos.length >= 8 && (
+          <div className="mt-10 space-y-3" data-sans-anim>
+            {[{ l: rangee1, c: "defile-gauche" }, { l: rangee2, c: "defile-droite" }].map((r, k) => (
+              <div key={k} className="overflow-hidden">
+                <div className={`flex w-max gap-3 ${r.c}`}>
+                  {[...r.l, ...r.l].map((p, i) => (
+                    <Link key={i} href="/accompagnement" aria-hidden={i >= r.l.length ? true : undefined} tabIndex={i >= r.l.length ? -1 : undefined}
+                      className="relative block w-52 sm:w-64 h-32 sm:h-40 flex-shrink-0 overflow-hidden rounded-2xl shadow-lg">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={p.src} alt={p.titre} loading="lazy" className="w-full h-full object-cover" style={{ objectPosition: "50% 22%" }} />
+                      <span className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75), transparent 60%)" }} />
+                      <span className="absolute bottom-2 left-2.5 right-2.5 text-[12px] font-extrabold leading-tight line-clamp-2" style={{ color: "#fff" }}>{p.titre}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
-          <AnimateOnScroll variant="scaleUp" delay={0.3}>
-            <div className="text-center">
-              <Link
-                href="/accompagnement"
-                className="cta-shimmer cta-pulse inline-flex items-center gap-2 px-8 py-4 text-black font-bold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-[1.05] text-base"
-              >
-                Postuler maintenant <ArrowRight size={18} />
-              </Link>
-              <p className="text-gray-500 text-xs mt-3">Places limitées · Candidature étudiée sous 48h</p>
-            </div>
-          </AnimateOnScroll>
+        <div className="mt-10 text-center px-4">
+          <Link href="/accompagnement" className="bouton-reflet cta-clignote relative overflow-hidden inline-flex items-center gap-2 h-14 px-8 rounded-2xl text-[16px] font-extrabold shadow-xl"
+            style={{ background: "linear-gradient(135deg, #E8B800, #27A827)", color: "#fff" }}>
+            Déposer ma candidature gratuite <ArrowRight size={18} className="fleche-cta" />
+          </Link>
+          <p className="mt-3 text-[13px] text-[#5c5e62]">Places limitées · Candidature étudiée sous 48 h</p>
         </div>
       </section>
 
       {/* ══════ DEVENIR CONSULTANT ══════ */}
-      <section className="py-8 sm:py-14">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <AnimateOnScroll variant="scaleUp">
-            <div className="bg-gradient-to-br from-emerald-50 to-green-50 border-2 border-[#27A827]/30 rounded-3xl p-6 sm:p-10">
-              <div className="grid sm:grid-cols-2 gap-8 items-center">
-                <div>
-                  <p className="text-[#27A827] text-xs font-bold uppercase tracking-wide mb-2">Rejoignez le réseau</p>
-                  <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mb-3">
-                    Devenez <span className="text-[#27A827]">Consultant</span> Smart Life
-                  </h2>
-                  <p className="text-gray-600 text-sm mb-5">
-                    Partagez votre savoir et contribuez à un monde meilleur en accompagnant des entrepreneurs dans votre domaine d&apos;expertise.
-                  </p>
-                  <ul className="space-y-2.5 mb-6">
-                    {[
-                      "Commissions sur chaque accompagnement",
-                      "Formation et certification offerte",
-                      "Outils et support de l'équipe Smart Life",
-                      "Flexibilité totale — travaillez à votre rythme",
-                    ].map((item) => (
-                      <li key={item} className="flex items-start gap-2 text-gray-700 text-sm">
-                        <CheckCircle size={16} className="text-[#27A827] mt-0.5 shrink-0" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    href="/devenir-consultant"
-                    className="btn-postuler inline-flex items-center gap-2 px-6 py-3.5 bg-[#27A827] hover:bg-[#1e8c1e] text-white font-bold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.05]"
-                  >
-                    Candidature gratuite <ArrowRight size={16} />
-                  </Link>
+      <section className="py-12 sm:py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid lg:grid-cols-2 gap-8 items-center rounded-[2rem] p-6 sm:p-10 shadow-xl" style={{ background: "linear-gradient(135deg, #f0fdf4, #ffffff 60%, #fffbea)", border: "2px solid #27A827" }}>
+            <div>
+              <p className="text-[12px] font-extrabold uppercase tracking-[0.2em] text-[#27A827]">Rejoignez le réseau</p>
+              <h2 className="mt-2 text-[28px] sm:text-[38px] font-black text-[#111827] leading-tight">
+                Devenez <span className="texte-brillant">consultant</span> Smart Life
+              </h2>
+              <p className="mt-3 text-[15px] text-[#393c41] leading-relaxed">
+                Partagez votre savoir et accompagnez des entrepreneurs dans votre domaine d&apos;expertise.
+              </p>
+              <ul className="mt-5 space-y-2.5">
+                {["Commissions sur chaque accompagnement", "Formation et certification offertes", "Outils et soutien de l'équipe Smart Life", "Vous travaillez à votre rythme"].map((t) => (
+                  <li key={t} className="flex items-start gap-2 text-[14.5px] text-[#20252b]"><CheckCircle size={18} className="text-[#27A827] mt-0.5 shrink-0" /> {t}</li>
+                ))}
+              </ul>
+              <Link href="/devenir-consultant" className="bouton-reflet btn-postuler relative overflow-hidden mt-7 inline-flex items-center gap-2 h-14 px-7 rounded-2xl text-[16px] font-extrabold"
+                style={{ background: "#27A827", color: "#fff" }}>
+                Candidature gratuite <ArrowRight size={18} className="fleche-cta" />
+              </Link>
+            </div>
+            {photoConsultant && (
+              <div className="relative h-[300px] sm:h-[380px]">
+                <div className="accueil-flotte absolute inset-0 overflow-hidden rounded-3xl border-4 border-white shadow-2xl">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={photoConsultant.src} alt="Consultant Smart Life sur le terrain" className="w-full h-full object-cover" style={{ objectPosition: "50% 22%" }} />
                 </div>
-                <div className="hidden sm:flex flex-col items-center justify-center">
-                  <FloatingElement duration={3} distance={10}>
-                  <div className="text-7xl mb-4">💼</div>
-                  <div className="text-center">
-                    <div className="text-4xl font-black text-[#27A827] mb-1">0 FCFA</div>
-                    <p className="text-gray-500 text-sm font-bold">pour rejoindre le réseau</p>
-                  </div>
-                  </FloatingElement>
+                <div className="accueil-flotte absolute -bottom-3 -left-2 rounded-2xl px-4 py-3 shadow-2xl" style={{ background: "#E8B800", animationDelay: "-2s" }}>
+                  <p className="text-[22px] font-black leading-none" style={{ color: "#fff" }}>0 FCFA</p>
+                  <p className="text-[12px] font-bold mt-1" style={{ color: "#fff" }}>pour rejoindre le réseau</p>
                 </div>
               </div>
-            </div>
-          </AnimateOnScroll>
+            )}
+          </div>
         </div>
       </section>
 
-      {/* ══════ TÉMOIGNAGES ══════ */}
-      <section className="py-8 sm:py-14 bg-gray-50 overflow-hidden">
-        <AnimateOnScroll variant="fadeUp">
-          <div className="text-center mb-10 px-4">
-            <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mb-2">
-              Ils nous font <span className="text-[#27A827]">confiance</span>
-            </h2>
-            <p className="text-gray-500 text-sm">Plus de 15 000 ebooks vendus</p>
-          </div>
-        </AnimateOnScroll>
-
-        <AnimateOnScroll variant="fadeIn" delay={0.2}>
-          <div className="relative overflow-hidden py-2">
-            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-gray-50 to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-gray-50 to-transparent z-10 pointer-events-none" />
-
-            <div
-              className="flex gap-4 animate-marquee-left"
-              style={{ width: "max-content", animationDuration: "35s" }}
-            >
-              {[...testimonials, ...testimonials, ...testimonials].map((t, i) => (
-                <div
-                  key={i}
-                  className="flex-shrink-0 w-72 p-4 bg-white border border-gray-200 rounded-2xl flex flex-col gap-3 shadow-sm hover:shadow-md transition-shadow duration-300"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-[#27A827]/15 flex items-center justify-center text-[#1e8c1e] font-bold text-sm shrink-0">
-                      {t.avatar}
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-gray-900 font-bold text-sm truncate">{t.name}</p>
-                      <div className="flex gap-0.5 mt-0.5">
-                        {[...Array(5)].map((_, j) => (
-                          <Star key={j} size={10} className={j < t.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"} />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
-                    &ldquo;{t.content}&rdquo;
-                  </p>
+      {/* ══════ AVIS ══════ */}
+      <section className="py-12 sm:py-16 overflow-hidden" style={{ background: "#faf9f5" }}>
+        <div className="text-center mb-9 px-4">
+          <p className="text-[12px] font-extrabold uppercase tracking-[0.2em] text-[#27A827]">Avis clients</p>
+          <h2 className="mt-2 text-[28px] sm:text-[38px] font-black text-[#111827]">Ils nous font <span className="texte-brillant">confiance</span></h2>
+          <p className="mt-2 text-[15px] text-[#5c5e62]">Plus de 14 960 clients en Afrique et dans la diaspora</p>
+        </div>
+        <div className="relative overflow-hidden py-2" data-sans-anim>
+          <div className="flex gap-4 animate-marquee-left" style={{ width: "max-content", animationDuration: "40s" }}>
+            {[...testimonials, ...testimonials, ...testimonials].map((t, i) => (
+              <div key={i} className="relative flex-shrink-0 w-80 p-5 bg-white rounded-3xl flex flex-col gap-3 shadow-lg border border-[#f1f2f3]">
+                <span className="absolute -top-1 right-4 text-[54px] font-black leading-none" style={{ color: "#E8B800", opacity: 0.35 }}>&ldquo;</span>
+                <div className="flex gap-0.5">
+                  {[...Array(5)].map((_, j) => (
+                    <Star key={j} size={14} className={j < t.rating ? "fill-[#E8B800] text-[#E8B800]" : "text-gray-300"} />
+                  ))}
                 </div>
-              ))}
-            </div>
+                <p className="text-[14px] text-[#393c41] leading-relaxed line-clamp-4">{t.content}</p>
+                <div className="flex items-center gap-3 mt-auto pt-2 border-t border-[#f1f2f3]">
+                  <span className="w-9 h-9 rounded-full flex items-center justify-center font-black text-[13px] shrink-0" style={{ background: "#27A827", color: "#fff" }}>{t.avatar}</span>
+                  <p className="text-[14px] font-bold text-[#111827] truncate">{t.name}</p>
+                </div>
+              </div>
+            ))}
           </div>
-        </AnimateOnScroll>
-
-        <AnimateOnScroll variant="fadeUp" delay={0.3}>
-          <div className="text-center mt-8 px-4">
-            <Link href="/temoignages" className="text-[#27A827] hover:text-[#1a7a1a] font-bold text-sm inline-flex items-center gap-1">
-              Voir tous les avis <ArrowRight size={14} />
-            </Link>
-          </div>
-        </AnimateOnScroll>
+        </div>
+        <div className="text-center mt-8 px-4">
+          <Link href="/temoignages" className="text-[#27A827] font-bold text-sm inline-flex items-center gap-1 hover:gap-2 transition-all">
+            Voir tous les avis <ArrowRight size={14} />
+          </Link>
+        </div>
       </section>
 
-      {/* ══════ CTA FINAL ══════ */}
-      <section className="py-8 sm:py-14">
-        <AnimateOnScroll variant="scaleUp">
-          <div className="max-w-3xl mx-auto px-4 text-center">
-            <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mb-3">
-              Prêt à passer à l&apos;action ?
-            </h2>
-            <p className="text-gray-500 text-sm mb-8 max-w-md mx-auto">
-              Rejoignez des centaines d&apos;entrepreneurs qui ont transformé leurs compétences en revenus avec Smart Life.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-3">
-              <Link href="/ebooks" className="cta-glow px-8 py-4 bg-[#27A827] hover:bg-[#1e8c1e] text-white font-bold rounded-xl transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.05]">
-                Acheter un Ebook
-              </Link>
-              <Link href="/accompagnement" className="cta-pulse px-8 py-4 border-2 border-[#E8B800] hover:bg-[#E8B800]/10 text-[#E8B800] font-bold rounded-xl transition-all duration-300">
-                Être accompagné
-              </Link>
-              <Link href="/devenir-consultant" className="btn-postuler px-8 py-4 border-2 border-[#27A827] hover:bg-[#27A827]/8 text-[#27A827] font-bold rounded-xl transition-all duration-300">
-                Devenir Consultant
-              </Link>
-            </div>
+      {/* ══════ APPEL FINAL ══════ */}
+      <section className="py-12 sm:py-16 bg-white px-4">
+        <div className="relative max-w-4xl mx-auto overflow-hidden rounded-[2rem] px-6 py-10 sm:px-12 sm:py-14 text-center shadow-2xl"
+          style={{ background: "linear-gradient(135deg, #1b7a1b 0%, #27A827 50%, #b8a000 100%)" }}>
+          <span className="accueil-bulle" style={{ top: "-160px", right: "-120px", background: "#E8B800" }} />
+          <h2 className="relative text-[28px] sm:text-[40px] font-black leading-tight" style={{ color: "#fff" }}>Prêt à passer à l&apos;action ?</h2>
+          <p className="relative mt-3 text-[15px] sm:text-[17px] max-w-xl mx-auto" style={{ color: "rgba(255,255,255,0.92)" }}>
+            Rejoignez plus de 14 960 clients qui avancent avec Smart Life.
+          </p>
+          <div className="relative mt-7 flex flex-col sm:flex-row justify-center gap-3">
+            <Link href="/ebooks" className="bouton-reflet relative overflow-hidden inline-flex items-center justify-center h-13 px-7 py-3.5 rounded-2xl text-[15px] font-extrabold shadow-lg" style={{ background: "#fff", color: "#1b7a1b" }}>
+              📚 Acheter un guide
+            </Link>
+            <Link href="/accompagnement" className="cta-respire inline-flex items-center justify-center px-7 py-3.5 rounded-2xl text-[15px] font-extrabold shadow-lg" style={{ background: "#E8B800", color: "#fff" }}>
+              🤝 Être accompagné
+            </Link>
+            <Link href="/devenir-consultant" className="inline-flex items-center justify-center px-7 py-3.5 rounded-2xl text-[15px] font-extrabold border-2" style={{ borderColor: "#fff", color: "#fff" }}>
+              🚀 Devenir consultant
+            </Link>
           </div>
-        </AnimateOnScroll>
+        </div>
       </section>
     </div>
   );

@@ -16,6 +16,9 @@ const CIBLES = [
   "footer > div > *",
 ].join(",");
 
+// Les bandes qui défilent sur le côté n'entrent jamais « dans l'écran » : elles ne doivent pas être cachées.
+const SANS_ANIM = "[data-sans-anim], .animate-marquee-left, .animate-marquee-right, .defile-gauche, .defile-droite, .animate-defilement-garanties";
+
 function animerCompteur(el: HTMLElement) {
   const fin = Number(el.dataset.compteur);
   if (!fin) return;
@@ -60,7 +63,7 @@ export default function AnimationsSite() {
     const preparer = () => {
       const hauteur = window.innerHeight;
       document.querySelectorAll<HTMLElement>(CIBLES).forEach((el) => {
-        if (el.dataset.animPrete || el.closest("[data-sans-anim]") || el.closest(".anim-avant")) return;
+        if (el.dataset.animPrete || el.closest(SANS_ANIM) || el.closest(".anim-avant")) return;
         el.dataset.animPrete = "1";
         if (el.getBoundingClientRect().top < hauteur) return;
         const rang = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
