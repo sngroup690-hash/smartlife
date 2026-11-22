@@ -584,7 +584,7 @@ type EbookForm = {
   rating: string; reviews: string; bestseller: boolean; new: boolean;
   cover: string; banner: string; downloadUrl: string;
   ctaLabel: string;
-  ctaAnimation: "pulse" | "bounce" | "shimmer" | "glow" | "wiggle" | "none";
+  ctaAnimation: "clignote" | "respire" | "pulse" | "bounce" | "shimmer" | "glow" | "wiggle" | "none";
   reviewCardSize: "small" | "medium" | "large";
   faq: FaqItemForm[];
   avisClients: AvisClientForm[];
@@ -603,6 +603,7 @@ type EbookForm = {
   priceColor: string;
   ctaBgColor: string;
   ctaTextColor: string;
+  bandeauColor: string;
   coverHeight: string;
   coverObjectPosition: string;
   coverObjectFit: "cover" | "contain";
@@ -625,7 +626,7 @@ const EBOOK_VIDE: EbookForm = {
   whatsappUrl: "", coverLayout: "full", pdfPreviewUrl: "", promoEndDate: "",
   promoCyclique: false, promoDureeHeures: "24",
   vendusAffiche: "", placesRestantesBloquees: "",
-  cardBgColor: "", cardTextColor: "", priceColor: "", ctaBgColor: "", ctaTextColor: "",
+  cardBgColor: "", cardTextColor: "", priceColor: "", ctaBgColor: "", ctaTextColor: "", bandeauColor: "",
   coverHeight: "260", coverObjectPosition: "center", coverObjectFit: "cover",
   communityBgColor: "", communityTextColor: "",
   audioUrl: "", videoUrl: "",
@@ -1754,13 +1755,15 @@ function FormulaireEbook({
 
           <div>
             <label className={labelCls}>Animation du bouton CTA</label>
-            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
               {([
-                { value: "pulse"   as const, label: "Pulse",   icon: "💓" },
-                { value: "bounce"  as const, label: "Bounce",  icon: "⬆️" },
-                { value: "shimmer" as const, label: "Shimmer", icon: "✨" },
-                { value: "glow"    as const, label: "Glow",    icon: "🔆" },
-                { value: "wiggle"  as const, label: "Wiggle",  icon: "👋" },
+                { value: "clignote" as const, label: "Clignote",          icon: "💡" },
+                { value: "respire"  as const, label: "Avance et recule",  icon: "↔️" },
+                { value: "pulse"   as const, label: "Pulsation", icon: "💓" },
+                { value: "bounce"  as const, label: "Rebond",    icon: "⬆️" },
+                { value: "shimmer" as const, label: "Reflet",    icon: "✨" },
+                { value: "glow"    as const, label: "Halo",      icon: "🔆" },
+                { value: "wiggle"  as const, label: "Secousse",  icon: "👋" },
                 { value: "none"    as const, label: "Aucune",  icon: "✋" },
               ]).map((opt) => (
                 <button key={opt.value} type="button" onClick={() => set("ctaAnimation", opt.value)}
@@ -1791,7 +1794,7 @@ function FormulaireEbook({
             <div className="flex items-center justify-between">
               <label className="text-gray-900 text-sm font-bold">🎨 Couleurs des éléments</label>
               <button type="button"
-                onClick={() => { set("cardBgColor",""); set("cardTextColor",""); set("priceColor",""); set("ctaBgColor",""); set("ctaTextColor",""); }}
+                onClick={() => { set("cardBgColor",""); set("cardTextColor",""); set("priceColor",""); set("ctaBgColor",""); set("ctaTextColor",""); set("bandeauColor",""); }}
                 className="text-xs text-red-400 hover:text-red-600 font-semibold">Réinitialiser</button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1801,6 +1804,7 @@ function FormulaireEbook({
                 { key: "priceColor"    as const, label: "Prix",                 default: "#111827", icon: "💰" },
                 { key: "ctaBgColor"    as const, label: "Fond du bouton CTA",   default: "#27A827", icon: "🔲" },
                 { key: "ctaTextColor"  as const, label: "Texte du bouton CTA",  default: "#ffffff", icon: "🖊️" },
+                { key: "bandeauColor"  as const, label: "Bandeau du titre (page produit)", default: "#27A827", icon: "🏷️" },
               ]).map(({ key, label, default: def, icon }) => (
                 <div key={key} className="flex items-center gap-3 bg-white rounded-xl px-3 py-2.5 border border-green-100">
                   <input type="color" value={(form[key] as string) || def} onChange={(e) => set(key, e.target.value)}
@@ -4386,10 +4390,10 @@ export default function AdminPanelPage() {
 
   // ── Helpers Ebooks ──
   function toEbookForm(e: EbookAdmin): EbookForm {
-    return { title: e.title, description: e.description, category: e.category, price: String(e.price), originalPrice: e.originalPrice ? String(e.originalPrice) : "", pages: String(e.pages), rating: String(e.rating), reviews: String(e.reviews), bestseller: !!e.bestseller, new: !!e.new, cover: e.cover || "", banner: e.banner || "", downloadUrl: e.downloadUrl || "", ctaLabel: e.ctaLabel || "", ctaAnimation: (e.ctaAnimation as EbookForm["ctaAnimation"]) || "pulse", reviewCardSize: (e.reviewCardSize as EbookForm["reviewCardSize"]) || "medium", faq: e.faq || [], avisClients: e.avisClients || [], sections: (e.sections as SectionForm[]) || [], commentAcheterUrl: e.commentAcheterUrl || "", whatsappUrl: e.whatsappUrl || "", coverLayout: e.coverLayout || "full", pdfPreviewUrl: e.pdfPreviewUrl || "", promoEndDate: e.promoEndDate || "", promoCyclique: e.promoCyclique ?? false, promoDureeHeures: e.promoDureeHeures ? String(e.promoDureeHeures) : "24", vendusAffiche: e.vendusAffiche != null ? String(e.vendusAffiche) : "", placesRestantesBloquees: e.placesRestantesBloquees != null ? String(e.placesRestantesBloquees) : "", cardBgColor: e.cardBgColor || "", cardTextColor: e.cardTextColor || "", priceColor: e.priceColor || "", ctaBgColor: e.ctaBgColor || "", ctaTextColor: e.ctaTextColor || "", coverHeight: e.coverHeight ? String(e.coverHeight) : "260", coverObjectPosition: e.coverObjectPosition || "center", coverObjectFit: e.coverObjectFit || "cover", communityBgColor: (e as { communityBgColor?: string }).communityBgColor || "", communityTextColor: (e as { communityTextColor?: string }).communityTextColor || "", audioUrl: (e as { audioUrl?: string }).audioUrl || "", videoUrl: (e as { videoUrl?: string }).videoUrl || "", metaTitle: (e as { metaTitle?: string }).metaTitle || "", metaDescription: (e as { metaDescription?: string }).metaDescription || "", keywords: (e as { keywords?: string }).keywords || "", customSlug: (e as { customSlug?: string }).customSlug || "", ogImage: (e as { ogImage?: string }).ogImage || "" };
+    return { title: e.title, description: e.description, category: e.category, price: String(e.price), originalPrice: e.originalPrice ? String(e.originalPrice) : "", pages: String(e.pages), rating: String(e.rating), reviews: String(e.reviews), bestseller: !!e.bestseller, new: !!e.new, cover: e.cover || "", banner: e.banner || "", downloadUrl: e.downloadUrl || "", ctaLabel: e.ctaLabel || "", ctaAnimation: (e.ctaAnimation as EbookForm["ctaAnimation"]) || "pulse", reviewCardSize: (e.reviewCardSize as EbookForm["reviewCardSize"]) || "medium", faq: e.faq || [], avisClients: e.avisClients || [], sections: (e.sections as SectionForm[]) || [], commentAcheterUrl: e.commentAcheterUrl || "", whatsappUrl: e.whatsappUrl || "", coverLayout: e.coverLayout || "full", pdfPreviewUrl: e.pdfPreviewUrl || "", promoEndDate: e.promoEndDate || "", promoCyclique: e.promoCyclique ?? false, promoDureeHeures: e.promoDureeHeures ? String(e.promoDureeHeures) : "24", vendusAffiche: e.vendusAffiche != null ? String(e.vendusAffiche) : "", placesRestantesBloquees: e.placesRestantesBloquees != null ? String(e.placesRestantesBloquees) : "", cardBgColor: e.cardBgColor || "", cardTextColor: e.cardTextColor || "", priceColor: e.priceColor || "", ctaBgColor: e.ctaBgColor || "", ctaTextColor: e.ctaTextColor || "", bandeauColor: e.bandeauColor || "", coverHeight: e.coverHeight ? String(e.coverHeight) : "260", coverObjectPosition: e.coverObjectPosition || "center", coverObjectFit: e.coverObjectFit || "cover", communityBgColor: (e as { communityBgColor?: string }).communityBgColor || "", communityTextColor: (e as { communityTextColor?: string }).communityTextColor || "", audioUrl: (e as { audioUrl?: string }).audioUrl || "", videoUrl: (e as { videoUrl?: string }).videoUrl || "", metaTitle: (e as { metaTitle?: string }).metaTitle || "", metaDescription: (e as { metaDescription?: string }).metaDescription || "", keywords: (e as { keywords?: string }).keywords || "", customSlug: (e as { customSlug?: string }).customSlug || "", ogImage: (e as { ogImage?: string }).ogImage || "" };
   }
   function saveEbook(form: EbookForm) {
-    const data = { title: form.title.trim(), description: form.description.trim(), category: form.category, price: parseInt(form.price) || 0, originalPrice: form.originalPrice ? parseInt(form.originalPrice) : undefined, pages: parseInt(form.pages) || 80, rating: parseFloat(form.rating) || 4.5, reviews: parseInt(form.reviews) || 0, bestseller: form.bestseller, new: form.new, cover: form.cover.trim(), ctaLabel: form.ctaLabel || undefined, ctaAnimation: form.ctaAnimation, reviewCardSize: form.reviewCardSize, sections: form.sections.filter(s => s.titre.trim()), faq: form.faq.filter(f => f.q.trim()), avisClients: form.avisClients.filter(a => a.nom.trim() && a.texte.trim()), commentAcheterUrl: form.commentAcheterUrl.trim() || undefined, whatsappUrl: form.whatsappUrl.trim() || undefined, coverLayout: form.coverLayout, pdfPreviewUrl: form.pdfPreviewUrl.trim() || undefined, downloadUrl: form.downloadUrl.trim() || undefined, promoEndDate: form.promoEndDate.trim() || undefined, promoCyclique: form.promoCyclique || undefined, promoDureeHeures: form.promoCyclique ? (parseInt(form.promoDureeHeures) || 24) : undefined, vendusAffiche: form.vendusAffiche ? (parseInt(form.vendusAffiche) || undefined) : undefined, placesRestantesBloquees: form.placesRestantesBloquees ? (parseInt(form.placesRestantesBloquees) || undefined) : undefined, cardBgColor: form.cardBgColor.trim() || undefined, cardTextColor: form.cardTextColor.trim() || undefined, priceColor: form.priceColor.trim() || undefined, ctaBgColor: form.ctaBgColor.trim() || undefined, ctaTextColor: form.ctaTextColor.trim() || undefined, coverHeight: parseInt(form.coverHeight) || undefined, coverObjectPosition: form.coverObjectPosition || undefined, coverObjectFit: form.coverObjectFit !== "cover" ? form.coverObjectFit : undefined, banner: form.banner.trim() || undefined, communityBgColor: form.communityBgColor.trim() || undefined, communityTextColor: form.communityTextColor.trim() || undefined, audioUrl: form.audioUrl.trim() || undefined, videoUrl: form.videoUrl.trim() || undefined, metaTitle: form.metaTitle.trim() || undefined, metaDescription: form.metaDescription.trim() || undefined, keywords: form.keywords.trim() || undefined, customSlug: form.customSlug.trim() || undefined, ogImage: form.ogImage.trim() || undefined };
+    const data = { title: form.title.trim(), description: form.description.trim(), category: form.category, price: parseInt(form.price) || 0, originalPrice: form.originalPrice ? parseInt(form.originalPrice) : undefined, pages: parseInt(form.pages) || 80, rating: parseFloat(form.rating) || 4.5, reviews: parseInt(form.reviews) || 0, bestseller: form.bestseller, new: form.new, cover: form.cover.trim(), ctaLabel: form.ctaLabel || undefined, ctaAnimation: form.ctaAnimation, reviewCardSize: form.reviewCardSize, sections: form.sections.filter(s => s.titre.trim()), faq: form.faq.filter(f => f.q.trim()), avisClients: form.avisClients.filter(a => a.nom.trim() && a.texte.trim()), commentAcheterUrl: form.commentAcheterUrl.trim() || undefined, whatsappUrl: form.whatsappUrl.trim() || undefined, coverLayout: form.coverLayout, pdfPreviewUrl: form.pdfPreviewUrl.trim() || undefined, downloadUrl: form.downloadUrl.trim() || undefined, promoEndDate: form.promoEndDate.trim() || undefined, promoCyclique: form.promoCyclique || undefined, promoDureeHeures: form.promoCyclique ? (parseInt(form.promoDureeHeures) || 24) : undefined, vendusAffiche: form.vendusAffiche ? (parseInt(form.vendusAffiche) || undefined) : undefined, placesRestantesBloquees: form.placesRestantesBloquees ? (parseInt(form.placesRestantesBloquees) || undefined) : undefined, cardBgColor: form.cardBgColor.trim() || undefined, cardTextColor: form.cardTextColor.trim() || undefined, priceColor: form.priceColor.trim() || undefined, ctaBgColor: form.ctaBgColor.trim() || undefined, ctaTextColor: form.ctaTextColor.trim() || undefined, bandeauColor: form.bandeauColor.trim() || undefined, coverHeight: parseInt(form.coverHeight) || undefined, coverObjectPosition: form.coverObjectPosition || undefined, coverObjectFit: form.coverObjectFit !== "cover" ? form.coverObjectFit : undefined, banner: form.banner.trim() || undefined, communityBgColor: form.communityBgColor.trim() || undefined, communityTextColor: form.communityTextColor.trim() || undefined, audioUrl: form.audioUrl.trim() || undefined, videoUrl: form.videoUrl.trim() || undefined, metaTitle: form.metaTitle.trim() || undefined, metaDescription: form.metaDescription.trim() || undefined, keywords: form.keywords.trim() || undefined, customSlug: form.customSlug.trim() || undefined, ogImage: form.ogImage.trim() || undefined };
     if (editEbookId) {
       catalogue.modifierEbook(editEbookId, data);
       catalogue.setEbookOverride(editEbookId, data);
@@ -5111,6 +5115,7 @@ export default function AdminPanelPage() {
                           priceColor: (override as { priceColor?: string }).priceColor || e.priceColor || "",
                           ctaBgColor: (override as { ctaBgColor?: string }).ctaBgColor || e.ctaBgColor || "",
                           ctaTextColor: (override as { ctaTextColor?: string }).ctaTextColor || e.ctaTextColor || "",
+                          bandeauColor: (override as { bandeauColor?: string }).bandeauColor || e.bandeauColor || "",
                           coverHeight: String((override as { coverHeight?: number }).coverHeight || e.coverHeight || 260),
                           coverObjectPosition: (override as { coverObjectPosition?: string }).coverObjectPosition || e.coverObjectPosition || "center",
                           coverObjectFit: ((override as { coverObjectFit?: "cover"|"contain" }).coverObjectFit || e.coverObjectFit || "cover") as "cover"|"contain",
@@ -5150,6 +5155,7 @@ export default function AdminPanelPage() {
                             priceColor: form.priceColor.trim() || undefined,
                             ctaBgColor: form.ctaBgColor.trim() || undefined,
                             ctaTextColor: form.ctaTextColor.trim() || undefined,
+                            bandeauColor: form.bandeauColor.trim() || undefined,
                             coverHeight: parseInt(form.coverHeight) || undefined,
                             communityBgColor: form.communityBgColor.trim() || undefined,
                             communityTextColor: form.communityTextColor.trim() || undefined,

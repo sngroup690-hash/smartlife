@@ -17,6 +17,7 @@ import BottomNav from "@/components/BottomNav";
 import CartAbandonmentBanner from "@/components/CartAbandonmentBanner";
 import OnboardingPopup from "@/components/OnboardingPopup";
 import { Suspense } from "react";
+import MasquerSurPageProduit from "@/components/MasquerSurPageProduit";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -68,22 +69,28 @@ export default function RootLayout({
   return (
     <html lang="fr" className="h-full">
       <body className={`${inter.className} min-h-full flex flex-col bg-[#f9f8f5] text-gray-900 overflow-x-hidden`}>
-        <AnnouncementBanner />
-        <Navbar />
-        <BuyerRecognitionBanner />
+        <MasquerSurPageProduit>
+          <AnnouncementBanner />
+          <Navbar />
+          <BuyerRecognitionBanner />
+        </MasquerSurPageProduit>
         <AnalyticsTracker />
         <CurrencyProvider />
         <main className="flex-1 pb-16 lg:pb-0">{children}</main>
-        <Footer />
-        <BottomNav />
+        <MasquerSurPageProduit>
+          <Footer />
+          <BottomNav />
+        </MasquerSurPageProduit>
         <PopupManager />
         <PixelManager />
         <ServiceWorkerRegistrar />
         <SocialProofToast />
         <Suspense fallback={null}><ReferralTracker /></Suspense>
         <ExitIntentPopup />
-        <CartAbandonmentBanner />
-        <OnboardingPopup />
+        <MasquerSurPageProduit>
+          <CartAbandonmentBanner />
+          <OnboardingPopup />
+        </MasquerSurPageProduit>
       </body>
     </html>
   );

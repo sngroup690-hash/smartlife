@@ -30,7 +30,7 @@ export type Ebook = {
   new?: boolean;
   sections?: Section[];
   ctaLabel?: string;
-  ctaAnimation?: "pulse" | "bounce" | "shimmer" | "glow" | "wiggle" | "none";
+  ctaAnimation?: "clignote" | "respire" | "pulse" | "bounce" | "shimmer" | "glow" | "wiggle" | "none";
   reviewCardSize?: "small" | "medium" | "large";
   faq?: FaqItem[];
   avisClients?: AvisClient[];
@@ -45,6 +45,7 @@ export type Ebook = {
   priceColor?: string;
   ctaBgColor?: string;
   ctaTextColor?: string;
+  bandeauColor?: string;
   coverHeight?: number;
   coverObjectPosition?: string;
   coverObjectFit?: "cover" | "contain";

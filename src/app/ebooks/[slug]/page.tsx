@@ -101,6 +101,40 @@ export async function generateMetadata({
   };
 }
 
-export default function EbookPage() {
-  return <EbookLandingPageClient />;
+export default async function EbookPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const ebook = await getEbook(slug);
+
+  // Fiche produit lisible par Google (prix, note, image) pour mieux apparaître dans les recherches.
+  const donneesGoogle = ebook && {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: ebook.title,
+    image: resolveImageUrl((ebook as Ebook & { banner?: string }).banner || ebook.cover) ?? undefined,
+    description: buildOgDescription(ebook),
+    brand: { "@type": "Brand", name: "Smart Life" },
+    offers: {
+      "@type": "Offer",
+      price: ebook.price,
+      priceCurrency: "XAF",
+      availability: "https://schema.org/InStock",
+      url: `${APP_URL}/ebooks/${slug}`,
+    },
+    ...(ebook.reviews > 0 && ebook.rating > 0
+      ? { aggregateRating: { "@type": "AggregateRating", ratingValue: ebook.rating, reviewCount: ebook.reviews } }
+      : {}),
+  };
+
+  return (
+    <>
+      {donneesGoogle && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(donneesGoogle).replace(/</g, "\\u003c") }} />
+      )}
+      <EbookLandingPageClient initial={ebook} />
+    </>
+  );
 }

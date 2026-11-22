@@ -111,7 +111,35 @@ function ProductCard({
   );
 }
 
-export default function CrossSellWidget({ productId, productType, variant = "light" }: Props) {
+function CarteCompacte({ product }: { product: RecommendedProduct }) {
+  const [imgError, setImgError] = useState(false);
+  const href = product.type === "ebook" ? `/ebooks/${product.slug || product.id}` : `/formation/${product.id}`;
+  const prix = product.discountedPrice && product.discountedPrice < product.price ? product.discountedPrice : product.price;
+  const barre = product.discountedPrice && product.discountedPrice < product.price
+    ? product.price
+    : product.originalPrice && product.originalPrice > product.price ? product.originalPrice : null;
+  return (
+    <Link href={href} className="flex flex-col rounded-xl border border-[#e8e9eb] bg-white overflow-hidden active:scale-[0.99] transition-transform">
+      <div className="aspect-square bg-[#f7f7f8] flex items-center justify-center overflow-hidden">
+        {product.cover && !imgError ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={product.cover} alt={product.title} loading="lazy" className="w-full h-full object-contain" onError={() => setImgError(true)} />
+        ) : (
+          <BookOpen size={28} className="text-gray-400" />
+        )}
+      </div>
+      <div className="p-2.5 flex flex-col gap-1 flex-1">
+        <p className="text-[13px] font-semibold leading-snug text-black line-clamp-2">{product.title}</p>
+        <div className="mt-auto pt-1 flex flex-wrap items-baseline gap-x-1.5">
+          <span className="text-[14px] font-bold text-[#e30026]">{fmt(prix)}</span>
+          {barre && <span className="text-[11px] text-[#a9aeb5] line-through">{fmt(barre)}</span>}
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+export default function CrossSellWidget({ productId, productType, variant = "light", compact = false }: Props & { compact?: boolean }) {
   const [recommendations, setRecommendations] = useState<RecommendedProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [added, setAdded] = useState<Set<string>>(new Set());
@@ -134,6 +162,19 @@ export default function CrossSellWidget({ productId, productType, variant = "lig
   if (loading || recommendations.length === 0) return null;
 
   const isDark = variant === "dark";
+
+  if (compact) {
+    return (
+      <section className="py-10 border-t border-[#e8e9eb] bg-white">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-[20px] font-bold text-black mb-4">Vous aimerez aussi</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            {recommendations.slice(0, recommendations.length > 1 ? recommendations.length - (recommendations.length % 2) : 1).map((p) => <CarteCompacte key={p.id} product={p} />)}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   function handleAdd(product: RecommendedProduct) {
     addItem({

@@ -39,7 +39,7 @@ export type FormationAdmin = {
   faq?: FaqItem[];
   avisClients?: AvisClient[];
   commentAcheterUrl?: string;
-  ctaAnimation?: "pulse" | "bounce" | "shimmer" | "glow" | "wiggle" | "none";
+  ctaAnimation?: "clignote" | "respire" | "pulse" | "bounce" | "shimmer" | "glow" | "wiggle" | "none";
   reviewCardSize?: "small" | "medium" | "large";
   createdAt: string;
   deletedAt?: string;
@@ -54,6 +54,7 @@ export type FormationAdmin = {
   priceColor?: string;
   ctaBgColor?: string;
   ctaTextColor?: string;
+  bandeauColor?: string;
 };
 
 // Surcharges pour les ebooks statiques (modifiés par l'admin)
