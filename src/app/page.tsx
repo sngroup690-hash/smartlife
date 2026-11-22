@@ -117,8 +117,7 @@ export default async function HomePage() {
                 { s: { left: "5%", bottom: "0%", width: "38%", height: "35%" }, d: "-4.5s" },
               ].map((c, i) => (
                 <figure key={i} className="accueil-flotte absolute overflow-hidden rounded-3xl border-4 border-white shadow-2xl" style={{ ...c.s, animationDelay: c.d }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={mosaique[i].src} alt={mosaique[i].titre} className="w-full h-full object-cover" style={{ objectPosition: "50% 22%" }} />
+                  <Image src={mosaique[i].src} alt={mosaique[i].titre} fill priority={i < 2} sizes="(max-width: 1024px) 55vw, 340px" className="object-cover" style={{ objectPosition: "50% 22%" }} />
                   <figcaption className="absolute bottom-2 left-2 right-2 truncate rounded-full px-2.5 py-1 text-[10.5px] font-bold shadow"
                     style={{ background: "rgba(255,255,255,0.92)", color: "#111827" }}>{mosaique[i].titre}</figcaption>
                 </figure>
@@ -171,8 +170,7 @@ export default async function HomePage() {
             {parcours.map((p) => (
               <Link key={p.href} href={p.href} className="group relative block h-[380px] overflow-hidden rounded-3xl shadow-xl">
                 {p.photo ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={p.photo.src} alt={p.titre} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  <Image src={p.photo.src} alt={p.titre} fill sizes="(max-width: 640px) 92vw, 380px" className="object-cover transition-transform duration-700 group-hover:scale-110"
                     style={{ objectPosition: "50% 22%", transformOrigin: "50% 100%" }} />
                 ) : (
                   <span className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${p.couleur}, #111827)` }} />
@@ -271,8 +269,7 @@ export default async function HomePage() {
               <div key={b.titre} className="group overflow-hidden rounded-[1.75rem] bg-white shadow-lg border border-[#f1f2f3] transition-transform hover:-translate-y-1.5">
                 <div className="relative h-32 overflow-hidden">
                   {b.photo && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={b.photo.src} alt="" loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" style={{ objectPosition: "50% 22%", transformOrigin: "50% 100%" }} />
+                    <Image src={b.photo.src} alt="" fill sizes="(max-width: 640px) 92vw, 300px" className="object-cover transition-transform duration-700 group-hover:scale-110" style={{ objectPosition: "50% 22%", transformOrigin: "50% 100%" }} />
                   )}
                   <span className="absolute inset-0" style={{ background: `linear-gradient(to top, ${i % 2 === 0 ? "rgba(232,184,0,0.75)" : "rgba(39,168,39,0.75)"}, transparent 70%)` }} />
                   <span className="absolute bottom-2 left-3 text-[34px] font-black leading-none" style={{ color: "#fff", textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}>0{i + 1}</span>
@@ -301,8 +298,7 @@ export default async function HomePage() {
                   {[...r.l, ...r.l].map((p, i) => (
                     <Link key={i} href="/accompagnement" aria-hidden={i >= r.l.length ? true : undefined} tabIndex={i >= r.l.length ? -1 : undefined}
                       className="relative block w-52 sm:w-64 h-32 sm:h-40 flex-shrink-0 overflow-hidden rounded-2xl shadow-lg">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={p.src} alt={p.titre} loading="lazy" className="w-full h-full object-cover" style={{ objectPosition: "50% 22%" }} />
+                      <Image src={p.src} alt={p.titre} fill sizes="256px" className="object-cover" style={{ objectPosition: "50% 22%" }} />
                       <span className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75), transparent 60%)" }} />
                       <span className="absolute bottom-2 left-2.5 right-2.5 text-[12px] font-extrabold leading-tight line-clamp-2" style={{ color: "#fff" }}>{p.titre}</span>
                     </Link>
@@ -376,8 +372,7 @@ export default async function HomePage() {
                 {[...photosConsultants, ...photosConsultants].map((p, i) => (
                   <Link key={i} href="/nos-consultants" aria-hidden={i >= photosConsultants.length ? true : undefined} tabIndex={i >= photosConsultants.length ? -1 : undefined}
                     className="relative block w-56 sm:w-72 h-40 sm:h-48 flex-shrink-0 overflow-hidden rounded-3xl shadow-lg">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={p.src} alt={`Consultant en ${p.domaine}`} loading="lazy" className="w-full h-full object-cover" style={{ objectPosition: "50% 22%" }} />
+                    <Image src={p.src} alt={`Consultant en ${p.domaine}`} fill sizes="288px" className="object-cover" style={{ objectPosition: "50% 22%" }} />
                     <span className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7), transparent 55%)" }} />
                     <span className="absolute bottom-2.5 left-3 right-3 text-[13px] font-extrabold leading-tight" style={{ color: "#fff" }}>{p.domaine}</span>
                   </Link>

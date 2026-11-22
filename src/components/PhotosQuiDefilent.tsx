@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 // Diaporama : les photos se remplacent en fondu avec un léger zoom, et de petits points montrent où on en est.
 export default function PhotosQuiDefilent({ photos, alt, legendes, intervalle = 3800 }: { photos: string[]; alt: string; legendes?: string[]; intervalle?: number }) {
@@ -16,14 +17,15 @@ export default function PhotosQuiDefilent({ photos, alt, legendes, intervalle = 
   return (
     <div className="absolute inset-0">
       {photos.map((src, i) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <Image
           key={src}
           src={src}
           alt={i === rang ? alt : ""}
           aria-hidden={i !== rang}
-          loading={i === 0 ? "eager" : "lazy"}
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          sizes="(max-width: 1024px) 92vw, 560px"
+          loading={Math.abs(i - rang) <= 1 ? "eager" : "lazy"}
+          className="object-cover"
           style={{
             objectPosition: "50% 22%",
             opacity: i === rang ? 1 : 0,
