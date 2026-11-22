@@ -77,6 +77,7 @@ export default function EspaceDetailPage() {
 
   const espace = allServerEspaces.find((e) => e.id === slug);
   const staticEspace = STATIC_ESPACES.find((e) => e.id === slug);
+  const userStore = useUserStore();
   const clientConnecte = store.clientConnecte ? store.getClientById(store.clientConnecte) : null;
   const demandeExistante = clientConnecte
     ? store.getDemandeParEspace(clientConnecte.id, slug)
@@ -92,6 +93,21 @@ export default function EspaceDetailPage() {
     profession: "", capital: "", motivation: "",
     secteurActivite: "", secteurAutre: "",
   });
+
+  useEffect(() => {
+    const user = userStore.currentUser;
+    if (!user || store.clientConnecte) return;
+    const existing = store.connecterClient(user.email);
+    if (!existing) {
+      setForm((prev) => ({
+        ...prev,
+        nom: prev.nom || [user.firstName, user.lastName].filter(Boolean).join(" "),
+        email: prev.email || user.email,
+        telephone: prev.telephone || user.phone,
+      }));
+      setMode("inscription");
+    }
+  }, [userStore.currentUser, store.clientConnecte, store]);
   const [secteurs, setSecteurs] = useState<string[]>([]);
 
   useEffect(() => {
@@ -827,19 +843,38 @@ export default function EspaceDetailPage() {
 
       {/* ═══ BOUTON FLOTTANT — toujours visible ═══ */}
       {!submitted && !demandeExistante && (
-        <div className="fixed bottom-20 sm:bottom-6 left-0 right-0 z-40 px-4 sm:px-6 pointer-events-none">
+        <div className="fixed bottom-20 lg:bottom-6 left-0 right-0 z-40 px-4 sm:px-6 pointer-events-none">
           <div className="max-w-lg mx-auto pointer-events-auto">
             <motion.button
               onClick={scrollToPostuler}
               initial={{ y: 60, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 1, type: "spring", stiffness: 200 }}
+              animate={{
+                y: 0,
+                opacity: 1,
+                scale: [1, 1.03, 1],
+                boxShadow: [
+                  "0 10px 25px -5px rgba(0,0,0,0.15)",
+                  "0 15px 35px -5px rgba(232,184,0,0.35)",
+                  "0 10px 25px -5px rgba(0,0,0,0.15)",
+                ],
+              }}
+              transition={{
+                y: { delay: 1, type: "spring", stiffness: 200 },
+                opacity: { delay: 1 },
+                scale: { delay: 2, duration: 2, repeat: Infinity, ease: "easeInOut" },
+                boxShadow: { delay: 2, duration: 2, repeat: Infinity, ease: "easeInOut" },
+              }}
               whileTap={{ scale: 0.97 }}
               className="w-full py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-white font-bold rounded-2xl flex items-center justify-center gap-2.5 text-sm shadow-xl shadow-black/15 border border-white/20"
             >
               <Send size={16} />
               Je veux être accompagné
-              <ArrowRight size={16} />
+              <motion.span
+                animate={{ x: [0, 4, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <ArrowRight size={16} />
+              </motion.span>
             </motion.button>
           </div>
         </div>
