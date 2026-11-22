@@ -43,15 +43,46 @@ const GARANTIES = [
 export default function Footer() {
   return (
     <footer className="mt-0">
+      {/* Appel à l'accompagnement — comble le vide avant le pied de page, sur toutes les pages */}
+      <div className="px-4 sm:px-6 lg:px-8 pt-6 pb-10" style={{ background: "#fff" }}>
+        <div className="relative max-w-5xl mx-auto overflow-hidden rounded-3xl p-6 sm:p-9 text-center shadow-xl"
+          style={{ background: "linear-gradient(135deg, #fffbea 0%, #ffffff 45%, #f0fdf4 100%)", border: "2px solid #E8B800" }}>
+          <span className="absolute -top-10 -left-10 w-36 h-36 rounded-full opacity-40 animate-pulse" style={{ background: "#E8B800", filter: "blur(40px)" }} />
+          <span className="absolute -bottom-12 -right-10 w-40 h-40 rounded-full opacity-30 animate-pulse" style={{ background: "#27A827", filter: "blur(44px)" }} />
+          <p className="relative inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-bold mb-3" style={{ background: "#27A827", color: "#fff" }}>
+            🤝 100 % gratuit
+          </p>
+          <p className="relative text-[22px] sm:text-[28px] font-extrabold leading-tight text-[#111827]">
+            Inscrivez-vous et déposez votre candidature <span className="texte-brillant">gratuitement</span>
+          </p>
+          <p className="relative mt-2 text-[15px] sm:text-base text-[#393c41] max-w-2xl mx-auto leading-relaxed">
+            Faites-vous accompagner par un expert pour réussir votre projet : lancer votre activité ou faire grandir celle qui tourne déjà.
+          </p>
+          <div className="relative mt-5 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link href="/accompagnement" className="cta-clignote inline-flex items-center justify-center gap-2 h-12 px-7 rounded-xl text-[15px] font-bold shadow-lg"
+              style={{ background: "linear-gradient(135deg, #E8B800, #27A827)", color: "#fff" }}>
+              Déposer ma candidature gratuite →
+            </Link>
+            <Link href="/register" className="inline-flex items-center justify-center h-12 px-6 rounded-xl text-[15px] font-bold border-2 border-[#27A827] text-[#1e7a1e] hover:bg-[#f0fdf4] transition-colors">
+              Créer mon compte gratuit
+            </Link>
+          </div>
+        </div>
+      </div>
+
       {/* Invitation à la communauté */}
       <div className="bg-gradient-to-br from-[#1b7a1b] via-[#27A827] to-[#1f8f1f]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-5 text-center md:text-left">
           <div>
-            <p className="text-[20px] sm:text-2xl font-extrabold" style={{ color: "#fff" }}>Rejoins 14 960+ clients et visionnaires africains</p>
+            <p className="text-[20px] sm:text-2xl font-extrabold" style={{ color: "#fff" }}>
+              Rejoins{" "}
+              <span data-compteur="14960" data-suffixe="+" className="inline-block min-w-[4.2em] px-1.5 rounded-lg" style={{ background: "#E8B800", color: "#fff" }}>14 960+</span>{" "}
+              clients et visionnaires africains
+            </p>
             <p className="mt-1 text-sm" style={{ color: "rgba(255,255,255,0.9)" }}>Conseils, nouveaux guides et offres réservées, directement sur WhatsApp.</p>
           </div>
           <a href="https://wa.me/237694176642" target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-2 h-12 px-6 rounded-xl bg-white font-bold text-[15px] text-[#128C4A] shadow-lg hover:scale-[1.02] transition-transform whitespace-nowrap">
+            className="cta-respire flex items-center gap-2 h-12 px-6 rounded-xl bg-white font-bold text-[15px] text-[#128C4A] shadow-lg hover:scale-[1.02] transition-transform whitespace-nowrap">
             <WhatsAppIcon /> Nous écrire sur WhatsApp
           </a>
         </div>
@@ -127,7 +158,7 @@ export default function Footer() {
 
           <div className="mt-4 flex items-center justify-center gap-2 text-[13px] text-[#374151]">
             <span className="flex">{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={14} className="fill-[#E8B800] text-[#E8B800]" />)}</span>
-            <span><strong className="text-[#1e7a1e]">14 960+</strong> clients</span>
+            <span><strong className="text-[#1e7a1e]" data-compteur="14960" data-suffixe="+">14 960+</strong> clients</span>
           </div>
         </div>
 

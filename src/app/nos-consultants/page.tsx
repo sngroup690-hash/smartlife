@@ -663,7 +663,7 @@ function ProfilModal({
           {/* Motivation */}
           {consultant.motivation && (
             <div>
-              <p className="text-gray-500 text-xs mb-2 uppercase tracking-wider">À propos</p>
+              <p className="text-gray-500 text-xs mb-2 uppercase tracking-wider">Son parcours, en ses mots</p>
               <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl">
                 <p className="text-gray-600 text-sm leading-relaxed">{consultant.motivation}</p>
               </div>
@@ -677,6 +677,47 @@ function ProfilModal({
               <ExternalLink size={14} /> Voir le portfolio
             </a>
           )}
+
+          {/* Pourquoi il fait partie du réseau — uniquement à partir de ses vraies données */}
+          <div className="rounded-2xl p-4" style={{ background: "linear-gradient(135deg, #f0fdf4, #fffbea)", border: "1.5px solid #27A827" }}>
+            <p className="text-[13px] font-extrabold text-[#1e7a1e] mb-2.5">🏅 Pourquoi {consultant.prenom} fait partie de nos consultants</p>
+            <ul className="space-y-2 text-[13px] text-[#393c41] leading-snug">
+              {consultant.anneesExperience && (
+                <li className="flex gap-2"><CheckCircle size={14} className="text-[#27A827] flex-shrink-0 mt-0.5" /> Une expérience de terrain : {consultant.anneesExperience}.</li>
+              )}
+              {domaines.length > 0 && (
+                <li className="flex gap-2"><CheckCircle size={14} className="text-[#27A827] flex-shrink-0 mt-0.5" /> Maîtrise concrète {domaines.length > 1 ? `de ces ${domaines.length} domaines` : "de ce domaine"} : {domaines.slice(0, 3).join(", ")}{domaines.length > 3 ? "…" : ""}.</li>
+              )}
+              {(consultant.clientsAccompa > 0 || consultant.entreprisesAccompa > 0) && (
+                <li className="flex gap-2"><CheckCircle size={14} className="text-[#27A827] flex-shrink-0 mt-0.5" /> A déjà accompagné {consultant.clientsAccompa > 0 ? `${consultant.clientsAccompa} porteur${consultant.clientsAccompa > 1 ? "s" : ""} de projet` : ""}{consultant.clientsAccompa > 0 && consultant.entreprisesAccompa > 0 ? " et " : ""}{consultant.entreprisesAccompa > 0 ? `${consultant.entreprisesAccompa} entreprise${consultant.entreprisesAccompa > 1 ? "s" : ""}` : ""}.</li>
+              )}
+              {reviews.length > 0 && (
+                <li className="flex gap-2"><CheckCircle size={14} className="text-[#27A827] flex-shrink-0 mt-0.5" /> Note des clients accompagnés : {avgNote}/5 ({reviews.length} avis).</li>
+              )}
+              <li className="flex gap-2"><CheckCircle size={14} className="text-[#27A827] flex-shrink-0 mt-0.5" /> Connaissance des réalités du marché africain : coûts, clients, fournisseurs, pièges à éviter.</li>
+            </ul>
+          </div>
+
+          {/* Comment nous sélectionnons nos consultants */}
+          <div>
+            <p className="text-gray-500 text-xs mb-3 uppercase tracking-wider">Comment nous sélectionnons nos consultants</p>
+            <ol className="space-y-2.5">
+              {[
+                ["Candidature détaillée", "Chaque consultant présente son parcours, ses années d'expérience et les projets déjà menés."],
+                ["Étude du dossier par l'équipe Smart Life", "Nous vérifions que l'expérience correspond vraiment aux domaines accompagnés."],
+                ["Validation", "Seuls les profils retenus apparaissent ici, avec les domaines pour lesquels ils sont validés."],
+                ["Suivi après chaque accompagnement", "Les clients accompagnés laissent un avis : un consultant mal noté n'est plus mis en avant."],
+              ].map(([titre, texte], i) => (
+                <li key={titre} className="flex gap-3">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-[12px] font-black" style={{ background: i % 2 === 0 ? "#E8B800" : "#27A827", color: "#fff" }}>{i + 1}</span>
+                  <div>
+                    <p className="text-[13px] font-bold text-[#111827]">{titre}</p>
+                    <p className="text-[12px] text-[#5c5e62] leading-snug">{texte}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
 
           {/* Avis clients */}
           {reviews.length > 0 && (
@@ -703,7 +744,8 @@ function ProfilModal({
         <div className="p-6 pt-0 space-y-3 border-t border-gray-100 mt-2">
           <button
             onClick={onDemander}
-            className="w-full flex items-center justify-center gap-2 py-3 bg-[#E8B800] hover:bg-[#27A827] text-black font-bold rounded-xl transition-all text-sm"
+            className="cta-clignote w-full flex items-center justify-center gap-2 py-3 font-bold rounded-xl text-sm shadow-lg"
+            style={{ background: "linear-gradient(135deg, #E8B800, #27A827)", color: "#fff" }}
           >
             Demander un accompagnement <ArrowRight size={16} />
           </button>
@@ -1245,17 +1287,31 @@ export default function NosConsultantsPage() {
                 {espaces_cat.map((espace) => (
                   <StaggerItem key={espace.id}>
                   <Link href={`/accompagnement/${espace.id}`}
-                    className="group p-5 bg-white border border-gray-100 rounded-2xl shadow-sm hover:border-[#E8B800]/40 hover:shadow-lg transition-all hover:-translate-y-1">
-                    {espace.image ? (
-                      <div className="w-12 h-12 rounded-xl overflow-hidden border border-gray-200 mb-3 shadow-sm">
-                        <img src={espace.image} alt={espace.titre} loading="lazy" decoding="async" className="w-full h-full object-cover" />
-                      </div>
-                    ) : (
-                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${config.gradientClass} border ${config.borderClass} flex items-center justify-center mb-3`}>
-                        <span className="text-lg">{config.emoji}</span>
-                      </div>
-                    )}
-                    <h4 className="text-gray-900 font-bold text-sm leading-snug group-hover:text-[#E8B800] transition-colors mb-2">{espace.titre}</h4>
+                    className="group block overflow-hidden bg-white border border-gray-100 rounded-2xl shadow-sm hover:border-[#E8B800]/40 hover:shadow-lg transition-all hover:-translate-y-1">
+                    <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16/9" }}>
+                      {espace.visuel || espace.image ? (
+                        <img src={espace.visuel || espace.image} alt={espace.titre} loading="lazy" decoding="async"
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                      ) : (
+                        <div className={`w-full h-full bg-gradient-to-br ${config.gradientClass} flex items-center justify-center`}>
+                          <span className="text-5xl">{config.emoji}</span>
+                        </div>
+                      )}
+                      <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.45), transparent 55%)" }} />
+                      <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-[10px] font-bold shadow-sm" style={{ background: "#27A827", color: "#fff" }}>
+                        {config.emoji} {config.categorie}
+                      </span>
+                      {espace.placesDisponibles <= 2 && (
+                        <span className="cta-clignote absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full text-[10px] font-bold" style={{ background: "#ef4444", color: "#fff" }}>
+                          Plus que {espace.placesDisponibles} place{espace.placesDisponibles > 1 ? "s" : ""}
+                        </span>
+                      )}
+                    </div>
+                    <div className="p-4">
+                    <h4 className="text-gray-900 font-bold text-sm leading-snug group-hover:text-[#E8B800] transition-colors mb-1.5">{espace.titre}</h4>
+                    <p className="text-[11.5px] text-[#393c41] leading-snug mb-2.5">
+                      Soumettez votre projet et faites-vous accompagner par un expert à vos côtés pour réussir le lancement de votre activité, ou optimiser celle qui tourne déjà.
+                    </p>
                     <div className="space-y-1.5">
                       {espace.clientsSatisfaits > 0 && (
                         <div className="flex items-center gap-1.5 text-xs text-gray-400">
@@ -1272,6 +1328,7 @@ export default function NosConsultantsPage() {
                       <span className="flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-[#E8B800] to-amber-500 text-black text-xs font-bold rounded-lg group-hover:from-[#27A827] group-hover:to-emerald-500 transition-all shadow-sm">
                         Postuler <ArrowRight size={10} />
                       </span>
+                    </div>
                     </div>
                   </Link>
                   </StaggerItem>

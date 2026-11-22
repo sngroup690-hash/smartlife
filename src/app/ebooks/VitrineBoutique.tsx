@@ -8,6 +8,7 @@ import type { Ebook } from "@/lib/data";
 import { useCurrencyStore } from "@/lib/currency-store";
 import { EnteteBoutique, PiedBoutique } from "./[slug]/ElementsBoutique";
 import DownloadModal from "@/components/DownloadModal";
+import TitreDefilant from "@/components/TitreDefilant";
 
 const nunito = Nunito({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
 
@@ -79,7 +80,7 @@ function CarteGuide({ guide, onAcheter }: { guide: Guide; onAcheter: Achat }) {
         )}
       </div>
       <div className="p-2.5 flex flex-col gap-1 flex-1">
-        <p className="text-[13px] font-semibold leading-snug text-black line-clamp-2">{guide.title}</p>
+        <TitreDefilant texte={guide.title} className="text-[13px] font-semibold text-black" />
         {ventes > 0 && <p className="text-[11px] text-[#717882]">🔥 {ventes.toLocaleString("fr-FR")} ventes</p>}
         <div className="mt-auto pt-1 flex flex-wrap items-baseline gap-x-1.5">
           <span className="text-[15px] font-bold text-[#e30026]">{convert(guide.price)}</span>
@@ -134,7 +135,7 @@ function SectionPacks() {
               </span>
             </div>
             <div className="p-3">
-              <p className="text-[14px] font-bold leading-snug line-clamp-2">{p.nom}</p>
+              <TitreDefilant texte={p.nom} className="text-[14px] font-bold" />
               <p className="mt-1">
                 <span className="text-[16px] font-extrabold text-[#e30026]">{convert(p.prix)}</span>{" "}
                 <span className="text-[12px] text-[#a9aeb5] line-through">{convert(p.originalValeur)}</span>

@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import Link from "next/link";
+import TitreDefilant from "@/components/TitreDefilant";
 
 type SlideItem = {
   icon: string;
@@ -41,7 +42,7 @@ function SlideCard({ item }: { item: SlideItem }) {
       className={`flex-shrink-0 w-48 p-4 rounded-2xl bg-gradient-to-br ${item.color} border border-white/10 hover:border-white/30 transition-all cursor-pointer group`}
     >
       <div className="text-3xl mb-2">{item.icon}</div>
-      <h4 className="text-white font-bold text-sm leading-snug mb-1 line-clamp-2">{item.title}</h4>
+      <TitreDefilant texte={item.title} className="text-white font-bold text-sm mb-1" />
       <p className="text-gray-400 text-xs mb-2 line-clamp-1">{item.subtitle}</p>
       {item.price && (
         <p className="text-[#E8B800] font-bold text-xs">{item.price}</p>

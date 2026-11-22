@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { readFile } from "fs/promises";
+import { readFile, readdir } from "fs/promises";
 import path from "path";
+import { photoPourEspace } from "@/lib/photo-espace";
 import { espaces as STATIC_ESPACES } from "@/lib/accompagnement-data";
 
 export const dynamic = "force-dynamic";
@@ -23,14 +24,25 @@ const STATIC_DEFAULTS = STATIC_ESPACES.map((e) => ({
   image: e.image,
 }));
 
+// Visuel d'un espace : sa photo Agnes (public/espaces/<id>.webp), sinon la photo du guide du même sujet.
+async function avecVisuel<T extends { id: string; titre: string }>(espaces: T[]) {
+  let fichiers = new Set<string>();
+  try { fichiers = new Set(await readdir(path.join(process.cwd(), "public", "espaces"))); } catch { /* aucun */ }
+  return Promise.all(espaces.map(async (e) => {
+    const nom = `${String(e.id).replace(/[^a-zA-Z0-9_-]/g, "_")}.webp`;
+    const visuel = fichiers.has(nom) ? `/espaces/${nom}` : await photoPourEspace(e.titre);
+    return visuel ? { ...e, visuel } : e;
+  }));
+}
+
 export async function GET() {
   try {
     const raw = await readFile(ESPACES_FILE, "utf-8");
     const espaces = JSON.parse(raw);
     if (Array.isArray(espaces) && espaces.length > 0) {
-      return NextResponse.json({ espaces });
+      return NextResponse.json({ espaces: await avecVisuel(espaces) });
     }
   } catch { /* file missing or unreadable */ }
 
-  return NextResponse.json({ espaces: STATIC_DEFAULTS });
+  return NextResponse.json({ espaces: await avecVisuel(STATIC_DEFAULTS) });
 }

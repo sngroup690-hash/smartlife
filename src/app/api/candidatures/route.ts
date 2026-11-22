@@ -42,6 +42,9 @@ export async function POST(req: NextRequest) {
   if (!prenom || !nom || !email || !telephone || !ville || !anneesExperience || !motivation) {
     return NextResponse.json({ error: "Champs requis manquants." }, { status: 400 });
   }
+  if (!photoUrl) {
+    return NextResponse.json({ error: "La photo de profil est obligatoire." }, { status: 400 });
+  }
 
   const all = await readAll();
   const now = new Date().toISOString();

@@ -334,34 +334,31 @@ export default function AccompagnementPage() {
                   className="group bg-white border border-gray-200 rounded-2xl shadow-sm hover:border-green-400 transition-all card-hover flex flex-col overflow-hidden"
                 >
                   {/* Bannière image — pleine largeur en en-tête */}
-                  <div className="w-full flex-shrink-0 relative bg-gray-50" style={{ height: 240 }}>
-                    {espace.image ? (
+                  <div className="w-full flex-shrink-0 relative overflow-hidden" style={{ aspectRatio: "16/10", background: "linear-gradient(135deg, #E8B800, #27A827)" }}>
+                    {(espace.visuel || espace.image) && (
                       <img
-                        src={espace.image}
+                        src={espace.visuel || espace.image}
                         alt={espace.titre}
                         loading="lazy"
                         decoding="async"
-                        className="w-full h-full object-contain block"
-                        style={{ imageRendering: "auto" }}
-                        onError={(ev) => { (ev.target as HTMLImageElement).style.display = "none"; (ev.target as HTMLImageElement).nextElementSibling?.classList.remove("hidden"); }}
+                        className="w-full h-full object-cover block transition-transform duration-700 group-hover:scale-110"
+                        onError={(ev) => { (ev.target as HTMLImageElement).style.display = "none"; }}
                       />
-                    ) : null}
-                    <div className={`${espace.image ? "hidden" : ""} absolute inset-0 bg-gradient-to-br from-[#E8B800]/20 to-[#27A827]/10 flex items-center justify-center border-b border-gray-100`}>
-                      <span className="text-[#E8B800] font-black text-5xl select-none">
-                        {espace.titre.charAt(0).toUpperCase()}
-                      </span>
-                    </div>
+                    )}
+                    <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.35) 45%, transparent 70%)" }} />
+                    <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[11px] font-bold shadow" style={{ background: "#27A827", color: "#fff" }}>
+                      {espace.domaine}
+                    </span>
+                    <p className="absolute bottom-3 left-3 right-3 text-[17px] font-extrabold leading-tight" style={{ color: "#fff", textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}>
+                      {espace.titre.normalize("NFKC")}
+                    </p>
                   </div>
 
                   {/* Contenu sous l'image */}
                   <div className="p-4 flex flex-col flex-1">
-                    <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full w-fit mb-3">
-                      {espace.domaine}
-                    </span>
-
-                    <h3 className="text-gray-900 font-bold text-lg leading-snug group-hover:text-[#E8B800] transition-colors mb-2 flex-1">
-                      {espace.titre}
-                    </h3>
+                    <p className="text-[13px] font-semibold text-[#27A827] leading-snug mb-2">
+                      Soumettez votre projet et faites-vous accompagner par un expert à vos côtés.
+                    </p>
                     {espace.descriptionCourte && (
                       <p className="text-gray-500 text-sm leading-relaxed mb-3 line-clamp-2">{espace.descriptionCourte}</p>
                     )}

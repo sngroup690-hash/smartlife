@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useUserStore } from "@/lib/user-store";
 import { PriceTag } from "@/components/PriceTag";
+import BandeGuides from "@/components/BandeGuides";
 import VideoPlayer from "@/components/VideoPlayer";
 
 type PackItem = { type: "ebook" | "formation"; id: string; title: string };
@@ -76,25 +77,7 @@ export default function PackDetailClient({ pack }: { pack: PackData }) {
                   </span>
                 )}
               </div>
-              {/* Noms des guides — bande fine en bas */}
-              <div className="absolute bottom-2 left-0 right-0 px-3 overflow-hidden" style={{ whiteSpace: "nowrap" }}>
-                <div className="flex gap-1.5 overflow-hidden">
-                  {ebookItems.slice(0, 5).map((item, i) => {
-                    const short = item.title.replace(/^GUIDE COMPLET\s*[-—:]\s*/i, "").replace(/^GUIDE COMPLET\s+/i, "");
-                    const label = short.length > 22 ? short.slice(0, 20) + "…" : short;
-                    return (
-                      <span key={item.id} className="px-2 py-0.5 rounded text-[9px] font-bold leading-tight flex-shrink-0" style={{ background: i % 2 === 0 ? "#E8B800" : "#27A827", color: "#fff" }}>
-                        {label}
-                      </span>
-                    );
-                  })}
-                  {ebookItems.length > 5 && (
-                    <span className="px-2 py-0.5 rounded text-[9px] font-bold flex-shrink-0" style={{ background: "#E8B800", color: "#fff" }}>
-                      +{ebookItems.length - 5}
-                    </span>
-                  )}
-                </div>
-              </div>
+              <BandeGuides items={ebookItems} taille="text-[11px]" />
             </div>
           ) : (
             <div className="h-40 bg-gradient-to-br from-[#E8B800]/10 via-[#27A827]/5 to-[#E8B800]/10 flex items-center justify-center rounded-2xl relative">

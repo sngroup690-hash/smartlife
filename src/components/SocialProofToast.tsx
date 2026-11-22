@@ -60,7 +60,8 @@ function actionDe(notif: Notif): string {
 export default function SocialProofToast() {
   const [data, setData] = useState<SPData | null>(null);
   const [visible, setVisible] = useState(false);
-  const [fadeOut, setFadeOut] = useState(false);
+  const [ferme, setFerme] = useState(false);
+  const [numero, setNumero] = useState(0);
   const [current, setCurrent] = useState<{ notif?: Notif; fomo?: string } | null>(null);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -112,13 +113,17 @@ export default function SocialProofToast() {
       }
     }
 
+    for (let i = notifs.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [notifs[i], notifs[j]] = [notifs[j], notifs[i]];
+    }
     for (const n of notifs) {
       queue.push({ notif: n });
     }
 
-    // FOMO
-    if (d.config.fomoEnabled && d.config.fomoCurrentCount > 0) {
-      const msg = d.config.fomoMessage.replace("{X}", String(d.config.fomoCurrentCount));
+    // FOMO : le nombre est tiré au hasard à chaque affichage
+    if (d.config.fomoEnabled) {
+      const msg = d.config.fomoMessage;
       // Insérer FOMO toutes les 3 notifs
       const withFomo: typeof queue = [];
       queue.forEach((item, i) => {
@@ -138,24 +143,33 @@ export default function SocialProofToast() {
     const item = queueRef.current[indexRef.current % queueRef.current.length];
     indexRef.current++;
 
-    setFadeOut(false);
-    setCurrent(item);
+    setCurrent(item.fomo ? { fomo: item.fomo.replace("{X}", String(8 + Math.floor(Math.random() * 33))) } : item);
     setVisible(true);
+    setNumero((n) => n + 1);
 
-    const displayMs = data.config.displayDuration * 1000;
+    // La bulle apparaît, flotte en montant, puis s'efface (animation CSS « notif-flotte »).
+    const vieMs = data.config.displayDuration * 1000 + 1200;
     const delayMs = data.config.delayBetween * 1000;
 
     timerRef.current = setTimeout(() => {
-      setFadeOut(true);
-      timerRef.current = setTimeout(() => {
-        setVisible(false);
-        timerRef.current = setTimeout(showNext, delayMs);
-      }, 500);
-    }, displayMs);
+      setVisible(false);
+      timerRef.current = setTimeout(showNext, delayMs);
+    }, vieMs);
   }, [data]);
 
+  const fermer = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setVisible(false);
+    setFerme(true);
+    try { sessionStorage.setItem("notifs-fermees", "1"); } catch { /* navigation privée */ }
+  };
+
   useEffect(() => {
-    if (!data) return;
+    try { if (sessionStorage.getItem("notifs-fermees")) setFerme(true); } catch { /* navigation privée */ }
+  }, []);
+
+  useEffect(() => {
+    if (!data || ferme) return;
     if (!data.config.enabled) return;
     if (isMobile && !data.config.mobileEnabled) return;
 
@@ -168,30 +182,44 @@ export default function SocialProofToast() {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [data, isMobile, buildQueue, showNext]);
+  }, [data, isMobile, buildQueue, showNext, ferme]);
 
-  if (!data?.config.enabled) return null;
+  if (!data?.config.enabled || ferme) return null;
   if (isMobile && !data.config.mobileEnabled) return null;
   if (!visible || !current) return null;
 
   const pos = data.config.position === "bottom-right"
-    ? { right: "1.5rem", left: "auto" }
-    : { left: "1.5rem", right: "auto" };
+    ? { right: "1rem", left: "auto" }
+    : { left: "1rem", right: "auto" };
 
   return (
     <div
+      key={numero}
+      className="notif-flotte"
       style={{
         position: "fixed",
-        bottom: "1.5rem",
+        bottom: isMobile ? "5.25rem" : "1.5rem",
         zIndex: 9999,
-        maxWidth: "320px",
-        width: "calc(100vw - 3rem)",
-        transition: "opacity 0.5s ease, transform 0.5s ease",
-        opacity: fadeOut ? 0 : 1,
-        transform: fadeOut ? "translateX(-20px)" : "translateX(0)",
+        maxWidth: "260px",
+        width: "calc(100vw - 2rem)",
+        animationDuration: `${data.config.displayDuration * 1000 + 1200}ms`,
         ...pos,
       }}
     >
+      <button
+        type="button"
+        onClick={fermer}
+        aria-label="Fermer les notifications"
+        style={{
+          position: "absolute", top: "-7px", right: "-7px", zIndex: 1,
+          width: "20px", height: "20px", borderRadius: "50%", border: "1px solid #e5e7eb",
+          background: "#fff", color: "#6b7280", fontSize: "13px", lineHeight: "18px",
+          display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
+          boxShadow: "0 1px 4px rgba(0,0,0,0.15)",
+        }}
+      >
+        ×
+      </button>
       {current.fomo ? (
         <FomoToast message={current.fomo} />
       ) : current.notif ? (
@@ -219,8 +247,8 @@ function NotifToast({ notif }: { notif: Notif }) {
     >
       <div
         style={{
-          width: "28px",
-          height: "28px",
+          width: "24px",
+          height: "24px",
           borderRadius: "50%",
           background: isPurchase ? "#dcfce7" : isAccomp ? "#dcfce7" : "#dbeafe",
           display: "flex",
@@ -236,7 +264,7 @@ function NotifToast({ notif }: { notif: Notif }) {
         <p
           style={{
             margin: 0,
-            fontSize: "12.5px",
+            fontSize: "11.5px",
             fontWeight: 600,
             color: "#111827",
             lineHeight: 1.4,
@@ -248,7 +276,7 @@ function NotifToast({ notif }: { notif: Notif }) {
         <p
           style={{
             margin: "1px 0 0",
-            fontSize: "11px",
+            fontSize: "10.5px",
             color: "#374151",
             fontWeight: 500,
             overflow: "hidden",
@@ -282,19 +310,19 @@ function FomoToast({ message }: { message: string }) {
     <div
       style={{
         background: "linear-gradient(135deg, #ff6b35 0%, #f7c59f 100%)",
-        borderRadius: "12px",
-        padding: "12px 16px",
-        boxShadow: "0 4px 20px rgba(255,107,53,0.3)",
+        borderRadius: "10px",
+        padding: "8px 12px",
+        boxShadow: "0 4px 16px rgba(255,107,53,0.3)",
         display: "flex",
         alignItems: "center",
-        gap: "10px",
+        gap: "8px",
       }}
     >
-      <span style={{ fontSize: "22px" }}>⚡</span>
+      <span style={{ fontSize: "16px" }}>⚡</span>
       <p
         style={{
           margin: 0,
-          fontSize: "13px",
+          fontSize: "12px",
           fontWeight: 700,
           color: "#ffffff",
           lineHeight: 1.4,

@@ -11,6 +11,7 @@ import PixelManager from "@/components/PixelManager";
 import CurrencyProvider from "@/components/CurrencyProvider";
 import ServiceWorkerRegistrar from "@/components/ServiceWorkerRegistrar";
 import SocialProofToast from "@/components/SocialProofToast";
+import AnimationsSite from "@/components/AnimationsSite";
 import ReferralTracker from "@/components/ReferralTracker";
 import ExitIntentPopup from "@/components/ExitIntentPopup";
 import BottomNav from "@/components/BottomNav";
@@ -85,6 +86,7 @@ export default function RootLayout({
         <PixelManager />
         <ServiceWorkerRegistrar />
         <SocialProofToast />
+        <AnimationsSite />
         <Suspense fallback={null}><ReferralTracker /></Suspense>
         <ExitIntentPopup />
         <MasquerSurPageProduit>

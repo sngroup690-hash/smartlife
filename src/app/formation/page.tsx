@@ -12,6 +12,7 @@ import { PriceTag } from "@/components/PriceTag";
 import { useUserStore } from "@/lib/user-store";
 import { FORMATIONS, type Formation } from "@/lib/formations-data";
 import { testimonials } from "@/lib/data";
+import TitreDefilant from "@/components/TitreDefilant";
 
 const CATEGORIES = [
   "Toutes",
@@ -398,7 +399,7 @@ export default function FormationPage() {
                     <ModeBadge mode={f.mode ?? "both"} />
                   </div>
 
-                  <h3 className="font-bold text-sm leading-tight mb-2 line-clamp-2" style={{ color: "#27A827" }}>{f.titre}</h3>
+                  <TitreDefilant texte={f.titre} className="font-bold text-sm mb-2" style={{ color: "#27A827" }} />
                   <p className="text-xs leading-relaxed mb-3 line-clamp-2 flex-1" style={{ color: "#27A827" }}>{stripHtml(f.description)}</p>
 
                   <p className="text-gray-600 text-xs mb-3">par <span className="text-gray-400">{f.instructeur}</span></p>

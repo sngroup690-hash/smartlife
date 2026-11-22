@@ -54,6 +54,7 @@ export type EspacePersonnalise = {
   actif: boolean;
   createdAt: string;
   image?: string;
+  visuel?: string;
 };
 
 export type Consultant = {

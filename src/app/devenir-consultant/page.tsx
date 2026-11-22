@@ -100,6 +100,12 @@ const STEP_CONFIG = [
   { label: "Motivation", icon: FileText },
 ];
 
+const ENCOURAGEMENTS = [
+  "👋 On commence : votre photo et vos coordonnées.",
+  "💪 Très bien ! Parlez-nous de votre expérience.",
+  "🏁 Dernière étape : pourquoi vous rejoindre ?",
+];
+
 /* ───────── Barre de progression premium ───────── */
 function StepBar({ current }: { current: number }) {
   const total = STEP_CONFIG.length;
@@ -162,9 +168,19 @@ function StepBar({ current }: { current: number }) {
         />
       </div>
 
-      <p className="text-right text-xs text-gray-400 mt-2 font-medium">
-        Étape {current} sur {total}
-      </p>
+      <div className="flex items-center justify-between mt-2">
+        <motion.p
+          key={current}
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="text-[13px] font-semibold text-[#1e7a1e]"
+        >
+          {ENCOURAGEMENTS[current - 1]}
+        </motion.p>
+        <p className="text-xs text-gray-500 font-bold whitespace-nowrap">
+          Étape {current}/{total} · {Math.round(((current - 1) / total) * 100)} %
+        </p>
+      </div>
     </div>
   );
 }
@@ -220,6 +236,7 @@ export default function DevenirConsultantPage() {
   function validateStep(step: number): boolean {
     const errs: Partial<Record<keyof FormDataType, string>> = {};
     if (step === 1) {
+      if (!form.photoUrl) errs.photoUrl = "Ajoutez une photo de vous : elle est obligatoire pour apparaître parmi nos consultants";
       if (!form.prenom.trim()) errs.prenom = "Le prénom est requis";
       if (!form.nom.trim()) errs.nom = "Le nom est requis";
       if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
@@ -1045,13 +1062,13 @@ export default function DevenirConsultantPage() {
                     <div className="flex flex-col items-center gap-3">
                       <div className="relative group">
                         <button type="button" onClick={() => photoInputRef.current?.click()} disabled={photoUploading}
-                          className="w-24 h-24 rounded-full border-2 border-dashed border-gray-200 hover:border-[#E8B800] bg-gray-50 overflow-hidden flex items-center justify-center transition-all group-hover:border-[#E8B800] group-hover:shadow-lg group-hover:shadow-[#E8B800]/10 focus:outline-none">
+                          className={`${photoPreview ? "" : "cta-respire"} relative w-28 h-28 rounded-full border-[3px] border-dashed ${errors.photoUrl ? "border-red-400 bg-red-50" : "border-[#E8B800] bg-[#fffbea]"} overflow-hidden flex items-center justify-center transition-all group-hover:shadow-lg group-hover:shadow-[#E8B800]/20 focus:outline-none`}>
                           {photoPreview ? (
                             <Image src={photoPreview} alt="Aperçu photo" fill className="object-cover rounded-full" unoptimized />
                           ) : (
-                            <div className="flex flex-col items-center gap-1 text-gray-400">
-                              {photoUploading ? <span className="w-5 h-5 border-2 border-gray-300 border-t-[#E8B800] rounded-full animate-spin" /> : <Camera size={22} />}
-                              <span className="text-xs">Photo</span>
+                            <div className="flex flex-col items-center gap-1 text-[#b38f00]">
+                              {photoUploading ? <span className="w-5 h-5 border-2 border-gray-300 border-t-[#E8B800] rounded-full animate-spin" /> : <Camera size={26} />}
+                              <span className="text-[11px] font-bold">Ajouter</span>
                             </div>
                           )}
                         </button>
@@ -1062,8 +1079,13 @@ export default function DevenirConsultantPage() {
                           </button>
                         )}
                       </div>
-                      <p className="text-gray-400 text-xs">{photoUploading ? "Upload en cours…" : "Photo de profil (optionnel)"}</p>
-                      {photoError && <p className="text-red-400 text-xs">{photoError}</p>}
+                      <p className="text-[13px] font-bold text-[#111827]">
+                        {photoUploading ? "Envoi de la photo…" : photoPreview ? "✅ Photo ajoutée" : <>Votre photo de profil <span className="text-[#E8B800]">*</span> (obligatoire)</>}
+                      </p>
+                      {!photoPreview && !photoUploading && (
+                        <p className="text-[12px] text-gray-500 text-center max-w-xs">Une photo nette de votre visage : les clients font confiance à un consultant qu&apos;ils peuvent voir.</p>
+                      )}
+                      {(photoError || errors.photoUrl) && <p className="text-red-500 text-xs font-semibold text-center">{photoError || errors.photoUrl}</p>}
                       <input ref={photoInputRef} type="file" accept="image/jpeg,image/jpg,image/png,image/webp" className="hidden" onChange={handlePhotoChange} />
                     </div>
 

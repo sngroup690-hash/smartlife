@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ShoppingCart, Check, BookOpen, Play } from "lucide-react";
 import { useCartStore } from "@/lib/store";
 import { useUserStore } from "@/lib/user-store";
+import TitreDefilant from "@/components/TitreDefilant";
 
 export type RecommendedProduct = {
   id: string;
@@ -135,7 +136,7 @@ function CarteCompacte({ product }: { product: RecommendedProduct }) {
         )}
       </div>
       <div className="p-2.5 flex flex-col gap-1 flex-1">
-        <p className="text-[13px] font-semibold leading-snug text-black line-clamp-2">{product.title}</p>
+        <TitreDefilant texte={product.title} className="text-[13px] font-semibold text-black" />
         {(product.ventes ?? 0) > 0 && <p className="text-[11px] text-[#717882]">🔥 {product.ventes!.toLocaleString("fr-FR")} ventes</p>}
         <div className="mt-auto pt-1 flex flex-wrap items-baseline gap-x-1.5">
           <span className="text-[15px] font-bold text-[#e30026]">{fmt(prix)}</span>

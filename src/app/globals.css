@@ -189,10 +189,56 @@ body {
 .cta-wiggle { animation: cta-wiggle 3s ease-in-out infinite; }
 
 @keyframes cta-clignote {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.8; }
+  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(232, 184, 0, 0.55); }
+  50% { opacity: 0.6; transform: scale(1.03); box-shadow: 0 0 0 8px rgba(232, 184, 0, 0); }
 }
-.cta-clignote { animation: cta-clignote 1.6s ease-in-out infinite; }
+.cta-clignote { position: relative; overflow: hidden; animation: cta-clignote 1.1s ease-in-out infinite; }
+.cta-clignote::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%);
+  transform: translateX(-120%); animation: reflet-bouton 2.4s ease-in-out infinite;
+}
+@keyframes reflet-bouton { 0%, 40% { transform: translateX(-120%); } 80%, 100% { transform: translateX(120%); } }
+
+/* ── Notification de vente : apparaît, flotte en montant, s'efface ── */
+@keyframes notif-flotte {
+  0% { opacity: 0; transform: translateY(24px) scale(0.96); }
+  12% { opacity: 1; transform: translateY(0) scale(1); }
+  30% { transform: translateY(-4px) rotate(-0.4deg); }
+  50% { transform: translateY(-10px) rotate(0.4deg); }
+  70% { transform: translateY(-16px) rotate(-0.3deg); opacity: 1; }
+  100% { opacity: 0; transform: translateY(-46px) scale(0.97); }
+}
+.notif-flotte { animation-name: notif-flotte; animation-timing-function: ease-in-out; animation-fill-mode: forwards; }
+
+@keyframes guide-entre { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.guide-entre { animation: guide-entre .45s ease-out; }
+
+/* ── Animations de tout le site ─────────────────────────────────── */
+.anim-avant { opacity: 0; transform: translateY(28px) scale(0.98); transition: opacity 0.7s cubic-bezier(.2,.7,.2,1), transform 0.7s cubic-bezier(.2,.7,.2,1); }
+.anim-avant.anim-visible { opacity: 1; transform: none; }
+
+@keyframes titre-defile-v { 0%, 18% { transform: translateY(0); } 62%, 82% { transform: translateY(var(--decalage)); } 100% { transform: translateY(0); } }
+@keyframes titre-defile-h { 0%, 15% { transform: translateX(0); } 60%, 80% { transform: translateX(var(--decalage)); } 100% { transform: translateX(0); } }
+.titre-defile-v { animation: titre-defile-v 8s ease-in-out infinite; }
+.titre-defile-h { animation: titre-defile-h 8s ease-in-out infinite; }
+
+main article, main a[class*="rounded-2xl"], main div[class*="rounded-2xl"][class*="shadow"] { transition: transform .3s ease, box-shadow .3s ease; }
+main article:hover, main a[class*="rounded-2xl"]:hover { transform: translateY(-4px); box-shadow: 0 14px 30px -12px rgba(0,0,0,0.18); }
+main article img, main a[class*="rounded-2xl"] img { transition: transform .6s ease; }
+main article:hover img, main a[class*="rounded-2xl"]:hover img { transform: scale(1.04); }
+
+@keyframes texte-brillant { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+.texte-brillant {
+  background: linear-gradient(90deg, #E8B800, #27A827, #E8B800, #27A827);
+  background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent !important;
+  animation: texte-brillant 4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-avant { opacity: 1; transform: none; }
+  .titre-defile-v, .titre-defile-h, .cta-clignote, .cta-clignote::after, .texte-brillant { animation: none; }
+}
 
 @keyframes cta-respire {
   0%, 100% { transform: scale(1); }
