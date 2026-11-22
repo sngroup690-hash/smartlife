@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 36">
+  <!-- Yellow background -->
+  <rect width="96" height="36" rx="5" fill="#FFCB00"/>
+  <!-- Black triangles (MTN chevrons) -->
+  <polygon points="8,28 16,8 24,28" fill="#000" opacity="0.15"/>
+  <!-- MTN text -->
+  <text x="48" y="25" font-family="'Helvetica Neue',Arial,sans-serif" font-size="18" font-weight="900" fill="#000" text-anchor="middle" letter-spacing="1">MTN</text>
+  <!-- MoMo subtitle -->
+  <text x="48" y="33" font-family="Arial,sans-serif" font-size="7" font-weight="600" fill="#000" text-anchor="middle" opacity="0.6">MoMo</text>
+</svg>

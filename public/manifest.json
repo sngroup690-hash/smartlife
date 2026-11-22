@@ -1,0 +1,26 @@
+{
+  "name": "SMART LIFE",
+  "short_name": "Smart Life",
+  "description": "Mon Espace – Accédez à vos ebooks et formations hors-ligne",
+  "start_url": "/mon-espace",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f9f8f5",
+  "theme_color": "#E8B800",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "/logo-smartlife.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo-smartlife.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}

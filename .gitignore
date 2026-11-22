@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+.next/
+out/
+dist/
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Prisma
+prisma/dev.db
+
+# Fichiers uploadés par l'admin (trop volumineux pour git)
+private/pdfs/
+private/videos/
+
+# Fichiers privés et artefacts locaux
+private/admins.json
+
+# Archives de déploiement (volumineux)
+deploy*.zip
+deploy*.tar.gz
+*.tar.gz
+next-build.zip
+next_prod.zip
+server_deploy.zip
+static_deploy.zip
+
+# Logs
+*.log
+nul

@@ -1,0 +1,18 @@
+[
+  {
+    "reference": "TEST-123",
+    "userId": "test-id",
+    "ebookIds": [
+      "eb1"
+    ],
+    "formationIds": [],
+    "amount": 5000,
+    "createdAt": "2026-09-25T06:46:36.895Z",
+    "customerIp": "unknown",
+    "customerUa": "curl/8.19.0",
+    "customerEmail": "test@test.com",
+    "customerName": "Test User",
+    "customerPhone": "+237600000000",
+    "currency": "XAF"
+  }
+]

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 36">
+  <!-- White background with blue border -->
+  <rect width="80" height="36" rx="5" fill="#fff" stroke="#E0E0E0" stroke-width="1"/>
+  <!-- Visa classic blue bar top -->
+  <rect x="0" y="0" width="80" height="5" rx="5" fill="#1A1F71"/>
+  <rect x="0" y="3" width="80" height="2" fill="#1A1F71"/>
+  <!-- Gold bar bottom -->
+  <rect x="0" y="31" width="80" height="5" rx="5" fill="#F7A600"/>
+  <rect x="0" y="31" width="80" height="2" fill="#F7A600"/>
+  <!-- VISA wordmark -->
+  <text x="40" y="25" font-family="'Times New Roman',Georgia,serif" font-size="22" font-weight="700" fill="#1A1F71" text-anchor="middle" font-style="italic" letter-spacing="1">VISA</text>
+</svg>

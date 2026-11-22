@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 36">
+  <!-- White background -->
+  <rect width="80" height="36" rx="5" fill="#fff" stroke="#E8E8E8" stroke-width="1"/>
+  <!-- Left red circle -->
+  <circle cx="30" cy="17" r="12" fill="#EB001B"/>
+  <!-- Right orange circle -->
+  <circle cx="50" cy="17" r="12" fill="#F79E1B"/>
+  <!-- Overlap blend (darker orange) -->
+  <path d="M40,7.2 C43.6,9.6 46,13.1 46,17 C46,20.9 43.6,24.4 40,26.8 C36.4,24.4 34,20.9 34,17 C34,13.1 36.4,9.6 40,7.2Z" fill="#FF5F00"/>
+  <!-- mastercard text -->
+  <text x="40" y="34" font-family="Arial,sans-serif" font-size="6.5" font-weight="600" fill="#231F20" text-anchor="middle" letter-spacing="0.3">mastercard</text>
+</svg>

@@ -1,0 +1,11 @@
+[
+  {
+    "id": "8d8b062b-10d9-43c2-8f91-fee3f1cc20da",
+    "name": "Test",
+    "email": "test@test.com",
+    "subject": "Test",
+    "message": "Message de test",
+    "createdAt": "2026-09-25T06:53:28.973Z",
+    "read": false
+  }
+]

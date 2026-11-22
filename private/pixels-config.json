@@ -1,0 +1,5 @@
+{
+  "facebook": { "enabled": true, "pixelId": "1626801115667833", "capiToken": "" },
+  "tiktok": { "enabled": false, "pixelId": "" },
+  "googleAds": { "enabled": false, "conversionId": "", "conversionLabel": "" }
+}

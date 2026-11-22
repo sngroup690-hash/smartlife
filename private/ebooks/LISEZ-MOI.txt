@@ -1,0 +1,43 @@
+DOSSIER PRIVÉ — PDFs des Ebooks
+================================
+
+Déposez ici vos fichiers PDF en respectant exactement ces noms :
+
+  eb-001.pdf → Guide pratique : Comment bien gérer son temps
+  eb-002.pdf → Guide pratique : Comment lire, retenir et mieux apprendre
+  eb-003.pdf → Guide pratique : Réussir son entretien d'embauche...
+  eb-004.pdf → Guide pratique : Comment détecter un mensonge
+  eb-005.pdf → Guide pratique : Comment prier spirituellement pour ses enfants
+  eb-006.pdf → Guide pratique : Comment prier pour obtenir ce que l'on désire
+  eb-007.pdf → Guide pratique : Perdre du poids efficacement
+  eb-008.pdf → Guide pratique : Prendre soin de son estomac...
+  eb-009.pdf → Guide pratique : Éclaircir et nettoyer les zones sombres
+  eb-010.pdf → Élevage complet de volailles
+  eb-011.pdf → Élevage de poissons (Silures)
+  eb-012.pdf → Élevage de porcs
+  eb-013.pdf → Élevage de bovins en Afrique
+  eb-014.pdf → Élevage de lapins
+  eb-015.pdf → Élevage de canards
+  eb-016.pdf → Élevage d'escargots
+  eb-017.pdf → Comment bien nourrir, dresser et entretenir son chien
+  eb-018.pdf → Cultures maraîchères & légumes
+  eb-019.pdf → Cultures vivrières & tubercules
+  eb-020.pdf → Cultures pérennes & spécialisées
+  eb-021.pdf → Restauration & Alimentation
+  eb-022.pdf → Boutiques & Commerces
+  eb-023.pdf → Services & Immobilier
+  eb-024.pdf → Établissements & BTP
+  eb-025.pdf → Agroalimentaire
+  eb-026.pdf → Cosmétique & Chimie
+  eb-027.pdf → Matériaux (Parpaings)
+  eb-028.pdf → Comment gagner de l'argent avec l'IA
+  eb-029.pdf → Écrire et publier un livre grâce à l'IA
+  eb-030.pdf → Campagnes publicitaires Facebook
+  eb-031.pdf → Comment louer des logements meublés
+  eb-032.pdf → Réussir dans le télétravail
+  eb-033.pdf → Comment investir en bourse
+  eb-034.pdf → Comment obtenir des financements
+  eb-035.pdf → Contrats et plaintes juridiques
+
+IMPORTANT : Ce dossier n'est PAS accessible publiquement.
+Seule l'API /api/download/[id] peut servir ces fichiers après vérification du paiement.

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 36">
+  <!-- Background -->
+  <rect width="108" height="36" rx="5" fill="#fff"/>
+  <!-- Orange sphere -->
+  <defs>
+    <radialGradient id="omg" cx="38%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#FFB347"/>
+      <stop offset="100%" stop-color="#E05000"/>
+    </radialGradient>
+  </defs>
+  <circle cx="18" cy="18" r="13" fill="url(#omg)"/>
+  <ellipse cx="15" cy="12" rx="6" ry="3.5" fill="rgba(255,255,255,0.3)"/>
+  <!-- "Orange" wordmark -->
+  <text x="36" y="16" font-family="'Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="800" fill="#FF6600" letter-spacing="-0.3">Orange</text>
+  <!-- "Money" label -->
+  <text x="36" y="28" font-family="'Helvetica Neue',Arial,sans-serif" font-size="10" font-weight="500" fill="#555">Money</text>
+</svg>

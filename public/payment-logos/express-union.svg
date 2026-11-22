@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 36">
+  <!-- Dark navy background -->
+  <rect width="112" height="36" rx="5" fill="#002D72"/>
+  <!-- Gold accent bar -->
+  <rect x="0" y="0" width="6" height="36" rx="5" fill="#F5A623"/>
+  <rect x="0" y="0" width="6" height="36" rx="0" fill="#F5A623"/>
+  <!-- EU monogram -->
+  <text x="18" y="24" font-family="'Helvetica Neue',Arial,sans-serif" font-size="16" font-weight="900" fill="#F5A623">EU</text>
+  <!-- Divider -->
+  <rect x="46" y="8" width="1.5" height="20" fill="rgba(255,255,255,0.25)" rx="1"/>
+  <!-- Express Union stacked text -->
+  <text x="54" y="17" font-family="'Helvetica Neue',Arial,sans-serif" font-size="8.5" font-weight="700" fill="#fff" letter-spacing="0.5">EXPRESS</text>
+  <text x="54" y="28" font-family="'Helvetica Neue',Arial,sans-serif" font-size="8.5" font-weight="400" fill="rgba(255,255,255,0.8)" letter-spacing="0.5">UNION</text>
+</svg>
