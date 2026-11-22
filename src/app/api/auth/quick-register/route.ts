@@ -34,14 +34,15 @@ export async function POST(req: NextRequest) {
   const idx = users.findIndex((u) => (u.email as string).toLowerCase() === emailLower);
 
   if (idx !== -1) {
-    // Compte existant — mise à jour du téléphone si fourni
-    const existing = users[idx];
-    if (phone?.trim()) {
-      users[idx] = { ...existing, phone: phone.trim() };
-      await writeUsers(users);
-    }
-    const { password: _p, ...pub } = users[idx] as Record<string, unknown>;
-    return NextResponse.json({ success: true, user: pub, existing: true });
+    // Compte existant : on ne modifie rien sans preuve (pas même le téléphone).
+    // Sans code PIN, on ne dévoile jamais les achats ni les données d'un compte existant :
+    // seulement de quoi rattacher la nouvelle commande au bon compte.
+    const u = users[idx] as Record<string, unknown>;
+    return NextResponse.json({
+      success: true,
+      existing: true,
+      user: { id: u.id, firstName: u.firstName, lastName: u.lastName, email: u.email, phone: phone?.trim() || "", ebooksAchetes: [], formationsAchetees: [], hasPassword: u.hasPassword },
+    });
   }
 
   // Nouveau compte avec mot de passe aléatoire (l'utilisateur accède via lien magique)

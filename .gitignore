@@ -40,6 +40,9 @@ private/recent-activities.json
 
 # Fichiers privés et artefacts locaux
 private/admins.json
+private/users.json
+private/codes-verification.json
+private/magic-tokens.json
 
 # Archives de déploiement (volumineux)
 deploy*.zip

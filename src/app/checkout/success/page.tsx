@@ -359,13 +359,15 @@ function SuccessContent() {
           body: JSON.stringify({
             userId: currentUser.id,
             email: currentUser.email,
+            reference: ref,
             ebookIds: ebookIdsCopy,
             formationIds: formationIdsCopy,
           }),
         })
           .then((r) => r.json())
-          .then((data) => {
-            if (!data.token) return;
+          .catch(() => ({} as { token?: string }))
+          .then((data: { token?: string }) => {
+            // L'e-mail de livraison part toujours ; le lien magique n'y figure que si le paiement est déjà confirmé.
             const ebookTitles = ebookIdsCopy.map((id) => {
               const eb = TOUS_LES_EBOOKS.find((e) => e.id === id);
               return eb?.title ?? id;
@@ -383,7 +385,7 @@ function SuccessContent() {
                 ebookIds: ebookIdsCopy,
                 ebookTitles,
                 formationTitles,
-                magicToken: data.token,
+                magicToken: data.token || undefined,
                 amount: purchaseAmount,
                 currency: purchaseCurrency,
                 reference: ref,

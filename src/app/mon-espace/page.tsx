@@ -374,6 +374,11 @@ export default function MonEspacePage() {
   const [emailLoading, setEmailLoading] = useState(false);
   const [showPwd, setShowPwd] = useState(false);
   const [loginError, setLoginError] = useState("");
+  // Code à 6 chiffres reçu par e-mail (preuve d'accès à la boîte)
+  const [codeEmail, setCodeEmail] = useState("");
+  const [codeEnvoye, setCodeEnvoye] = useState(false);
+  const [envoiCode, setEnvoiCode] = useState(false);
+  const [infoCode, setInfoCode] = useState("");
 
   // Création mot de passe (section compte)
   const [newPwd, setNewPwd] = useState("");
@@ -585,7 +590,7 @@ export default function MonEspacePage() {
       const data = await res.json();
       if (data.found) {
         if (data.hasPassword) setShowPasswordField(true);
-        else setShowPinCreation(true);
+        else { setShowPinCreation(true); demanderCode(); }
         return;
       }
       if (localUser) {
@@ -606,51 +611,59 @@ export default function MonEspacePage() {
     }
   }
 
-  // ── Créer PIN depuis le formulaire de connexion ──
+  // ── Envoyer un code à 6 chiffres par e-mail ──
+  async function demanderCode(adresse: string = email) {
+    setEnvoiCode(true);
+    setInfoCode("");
+    setPwdError("");
+    try {
+      const res = await fetch("/api/auth/code", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: adresse }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok) {
+        setCodeEnvoye(true);
+        setInfoCode(`Code envoyé à ${adresse}. Regarde aussi dans les « Spams » ou « Promotions ».`);
+      } else {
+        setPwdError(data.error ?? "Le code n'a pas pu être envoyé.");
+        if (res.status === 429) setCodeEnvoye(true);
+      }
+    } catch {
+      setPwdError("Erreur réseau. Vérifie ta connexion et réessaie.");
+    } finally {
+      setEnvoiCode(false);
+    }
+  }
+
+  // ── Entrer avec le code reçu par e-mail (et choisir son code PIN) ──
   async function handleCreateLoginPin(e: React.FormEvent) {
     e.preventDefault();
     setPwdError("");
-    if (newPwd.length < 4) { setPwdError("Minimum 4 chiffres."); return; }
-    if (newPwd !== confirmPwd) { setPwdError("Les codes ne correspondent pas."); return; }
+    if (!/^\d{6}$/.test(codeEmail)) { setPwdError("Entre le code à 6 chiffres reçu par e-mail."); return; }
+    if (newPwd.length < 4) { setPwdError("Choisis un code PIN d'au moins 4 chiffres."); return; }
+    if (newPwd !== confirmPwd) { setPwdError("Les deux codes PIN ne correspondent pas."); return; }
     setPinLoading(true);
     try {
-      const res = await fetch("/api/user/set-pin", {
+      const res = await fetch("/api/auth/connexion-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, pin: newPwd }),
+        body: JSON.stringify({ email, code: codeEmail, nouveauPin: newPwd }),
       });
-      if (res.ok || res.status === 404) {
-        // Login via l'API pour récupérer les données complètes depuis le serveur
-        try {
-          const loginRes = await fetch("/api/auth/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password: newPwd }),
-          });
-          if (loginRes.ok) {
-            const loginData = await loginRes.json();
-            userStore.setServerSession({
-              id: loginData.user.id,
-              firstName: loginData.user.firstName ?? "",
-              lastName: loginData.user.lastName ?? "",
-              email: loginData.user.email,
-              phone: loginData.user.phone ?? "",
-              ebooksAchetes: loginData.user.ebooksAchetes ?? [],
-              formationsAchetees: loginData.user.formationsAchetees ?? [],
-            });
-            return;
-          }
-        } catch { /* réseau — fallback local */ }
-        // Fallback : compte local seulement (checkout sans serveur)
-        userStore.setPassword(email, newPwd);
-        userStore.loginByEmail(email);
-        return;
-      }
-      const data = await res.json();
-      setPwdError(data.error ?? "Erreur serveur.");
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) { setPwdError(data.error ?? "Erreur serveur."); return; }
+      userStore.setServerSession({
+        id: data.user.id,
+        firstName: data.user.firstName ?? "",
+        lastName: data.user.lastName ?? "",
+        email: data.user.email,
+        phone: data.user.phone ?? "",
+        ebooksAchetes: data.user.ebooksAchetes ?? [],
+        formationsAchetees: data.user.formationsAchetees ?? [],
+      });
     } catch {
-      userStore.setPassword(email, newPwd);
-      userStore.loginByEmail(email);
+      setPwdError("Erreur réseau. Vérifie ta connexion et réessaie.");
     } finally {
       setPinLoading(false);
     }
@@ -685,15 +698,21 @@ export default function MonEspacePage() {
         });
         return;
       }
+      if (res.status === 429) {
+        const d = await res.json().catch(() => ({}));
+        setLoginError(d.error ?? "Trop d'essais. Réessaie plus tard ou demande un code par e-mail.");
+        return;
+      }
     } catch { /* erreur réseau */ }
 
-    setLoginError("Mot de passe incorrect.");
+    setLoginError("Code incorrect. Tu peux aussi recevoir un code par e-mail juste en dessous.");
   }
 
   // ── Créer mot de passe ──
   async function handleSetPassword(e: React.FormEvent) {
     e.preventDefault();
     setPwdError("");
+    if (!/^\d{6}$/.test(codeEmail)) { setPwdError("Entre d'abord le code à 6 chiffres reçu par e-mail."); return; }
     if (newPwd.length < 4) { setPwdError("Minimum 4 chiffres."); return; }
     if (newPwd !== confirmPwd) { setPwdError("Les codes ne correspondent pas."); return; }
     setPinLoading(true);
@@ -701,11 +720,10 @@ export default function MonEspacePage() {
       const res = await fetch("/api/user/set-pin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: userStore.currentUser!.email, pin: newPwd }),
+        body: JSON.stringify({ email: userStore.currentUser!.email, pin: newPwd, codeEmail }),
       });
       const data = await res.json();
       if (!res.ok) { setPwdError(data.error ?? "Erreur."); return; }
-      userStore.setPassword(userStore.currentUser!.email, newPwd);
       setPwdSuccess(true);
     } catch {
       setPwdError("Erreur réseau.");
@@ -741,22 +759,33 @@ export default function MonEspacePage() {
 
           {showPinCreation ? (
             <form onSubmit={handleCreateLoginPin} className="space-y-4">
-              <div className="text-center pb-2">
-                <Lock size={26} className="text-blue-500 mx-auto mb-2" />
-                <h3 className="text-gray-900 font-bold text-base">Créez votre code PIN</h3>
+              <div className="text-center pb-1">
+                <Mail size={26} className="text-[#27A827] mx-auto mb-2" />
+                <h3 className="text-gray-900 font-bold text-base">Entre le code reçu par e-mail</h3>
                 <p className="text-gray-600 text-xs mt-1">
-                  Pour sécuriser votre espace, définissez un code d&apos;accès.
+                  Nous venons d&apos;envoyer un code à 6 chiffres à <span className="font-semibold text-gray-900">{email}</span>.
                 </p>
-                <p className="text-gray-500 text-xs mt-0.5">
-                  Compte : <span className="font-medium">{email}</span>
-                </p>
+              </div>
+              <input required type="text" inputMode="numeric" autoComplete="one-time-code"
+                value={codeEmail}
+                onChange={(e) => { setCodeEmail(e.target.value.replace(/\D/g, "").slice(0, 6)); setPwdError(""); }}
+                className={`${inputCls} tracking-[0.5em] text-center text-2xl font-mono font-bold`}
+                placeholder="000000" maxLength={6} autoFocus />
+              {infoCode && <p className="text-[#1e7a1e] text-xs text-center">{infoCode}</p>}
+              <button type="button" onClick={() => demanderCode()} disabled={envoiCode}
+                className="w-full text-center text-[#1e7a1e] text-xs font-bold underline underline-offset-2 disabled:opacity-50">
+                {envoiCode ? "Envoi en cours…" : codeEnvoye ? "Je n'ai rien reçu : renvoyer le code" : "Recevoir le code par e-mail"}
+              </button>
+              <div className="pt-2 border-t border-gray-100">
+                <p className="text-gray-900 font-bold text-sm text-center">Choisis ton code PIN</p>
+                <p className="text-gray-500 text-xs text-center mt-0.5">Tu l&apos;utiliseras pour revenir dans ton espace sans attendre d&apos;e-mail.</p>
               </div>
               <div className="relative">
                 <input required type={showPwd ? "text" : "password"} inputMode="numeric"
                   value={newPwd}
                   onChange={(e) => { setNewPwd(e.target.value.replace(/\D/g, "").slice(0, 6)); setPwdError(""); }}
                   className={`${inputCls} pr-11 tracking-widest text-center text-lg font-mono`}
-                  placeholder="• • • • • •" maxLength={6} autoFocus />
+                  placeholder="Nouveau code PIN" maxLength={6} />
                 <button type="button" onClick={() => setShowPwd(!showPwd)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
                   {showPwd ? <EyeOff size={17} /> : <Eye size={17} />}
@@ -776,9 +805,9 @@ export default function MonEspacePage() {
                 className="w-full py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-black font-bold rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-60">
                 {pinLoading
                   ? <span className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-                  : <><Lock size={16} /> Créer mon PIN et accéder à Mon Espace</>}
+                  : <><Lock size={16} /> Accéder à mon espace</>}
               </button>
-              <button type="button" onClick={() => { setShowPinCreation(false); setNewPwd(""); setConfirmPwd(""); setPwdError(""); }}
+              <button type="button" onClick={() => { setShowPinCreation(false); setNewPwd(""); setConfirmPwd(""); setPwdError(""); setCodeEmail(""); setCodeEnvoye(false); setInfoCode(""); }}
                 className="w-full text-center text-gray-600 text-xs hover:text-gray-400 py-1">
                 ← Utiliser un autre email
               </button>
@@ -832,6 +861,11 @@ export default function MonEspacePage() {
               <button type="submit"
                 className="w-full py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] hover:from-[#27A827] hover:to-[#E8B800] text-black font-bold rounded-xl transition-all flex items-center justify-center gap-2">
                 <Lock size={16} /> Se connecter
+              </button>
+              <button type="button"
+                onClick={() => { setShowPasswordField(false); setPassword(""); setLoginError(""); setShowPinCreation(true); demanderCode(); }}
+                className="w-full rounded-xl border-2 border-[#27A827] py-3 text-sm font-bold text-[#1e7a1e] hover:bg-[#f0fdf4]">
+                🔑 Code oublié ? Recevoir un code par e-mail
               </button>
               <button type="button" onClick={() => { setShowPasswordField(false); setPassword(""); setLoginError(""); }}
                 className="w-full text-center text-gray-600 text-xs hover:text-gray-400 transition-colors py-1">
@@ -1106,6 +1140,16 @@ export default function MonEspacePage() {
             </button>
           </div>
           <form onSubmit={handleSetPassword} className="mt-3 space-y-2 max-w-xs">
+            <div className="flex gap-2">
+              <input type="text" inputMode="numeric" autoComplete="one-time-code" value={codeEmail}
+                onChange={(e) => { setCodeEmail(e.target.value.replace(/\D/g, "").slice(0, 6)); setPwdError(""); }}
+                className={`${inputCls} text-sm py-2 tracking-widest text-center font-mono`} placeholder="Code reçu par e-mail" maxLength={6} />
+              <button type="button" onClick={() => demanderCode(userStore.currentUser!.email)} disabled={envoiCode}
+                className="flex-shrink-0 px-3 rounded-lg border border-green-600 text-green-700 text-xs font-bold disabled:opacity-50">
+                {envoiCode ? "…" : codeEnvoye ? "Renvoyer" : "Recevoir"}
+              </button>
+            </div>
+            {infoCode && <p className="text-green-700 text-xs">{infoCode}</p>}
             <div className="relative">
               <input required type={showPwd ? "text" : "password"} inputMode="numeric" value={newPwd}
                 onChange={(e) => { setNewPwd(e.target.value.replace(/\D/g, "").slice(0, 6)); setPwdError(""); }}

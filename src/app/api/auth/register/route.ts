@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
+import { hacherCode } from "@/lib/securite-compte";
 
 const USERS_FILE = path.join(process.cwd(), "private", "users.json");
 
@@ -43,7 +44,7 @@ export async function POST(req: NextRequest) {
     lastName: lastName.trim(),
     email: email.trim().toLowerCase(),
     phone: phone?.trim() || "",
-    password,
+    password: hacherCode(String(password)),
     hasPassword: true,
     ebooksAchetes: [],
     formationsAchetees: [],

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
+import { hacherCode, verifierCode, minutesDeBlocage, noterEchec, effacerEchecs } from "@/lib/securite-compte";
 
 const USERS_FILE = path.join(process.cwd(), "private", "users.json");
 
@@ -32,26 +33,33 @@ export async function POST(req: NextRequest) {
 
   if (idx !== -1) {
     const existing = users[idx];
-    const existingPwd = (existing.password as string) || "";
-    // Si le compte a déjà un PIN, vérifier qu'il correspond
-    if (existingPwd && existingPwd !== password) {
-      return NextResponse.json(
-        { error: "Un compte existe déjà avec cet email. Vérifiez votre code PIN.", code: "WRONG_PIN" },
-        { status: 401 }
-      );
+    if (existing.hasPassword === true) {
+      // Compte protégé : il faut son vrai code PIN.
+      const bloque = minutesDeBlocage(emailLower);
+      if (bloque > 0) {
+        return NextResponse.json({ error: `Trop d'essais. Réessaie dans ${bloque} minute${bloque > 1 ? "s" : ""}.`, code: "WRONG_PIN" }, { status: 429 });
+      }
+      if (!verifierCode(existing.password, String(password))) {
+        noterEchec(emailLower);
+        return NextResponse.json(
+          { error: "Un compte existe déjà avec cet email. Vérifiez votre code PIN.", code: "WRONG_PIN" },
+          { status: 401 }
+        );
+      }
+      effacerEchecs(emailLower);
+      const { password: _p, ...pub } = existing;
+      return NextResponse.json({ success: true, user: pub, existing: true });
     }
-    // Pas de PIN ou PIN correct → mettre à jour et retourner
-    users[idx] = {
-      ...existing,
-      firstName: (firstName as string).trim(),
-      lastName: (lastName as string).trim(),
-      phone: (phone as string)?.trim() || existing.phone,
-      password,
-      hasPassword: true,
-    };
-    await writeUsers(users);
-    const { password: _p, ...pub } = users[idx];
-    return NextResponse.json({ success: true, user: pub, existing: true });
+    // Compte sans code : on permet d'acheter, sans dévoiler les anciens achats ni fixer de code sans preuve.
+    // Le client créera son code dans « Mon espace » avec le code reçu par e-mail.
+    return NextResponse.json({
+      success: true,
+      existing: true,
+      user: {
+        id: existing.id, firstName: existing.firstName, lastName: existing.lastName, email: existing.email,
+        phone: (phone as string)?.trim() || "", ebooksAchetes: [], formationsAchetees: [],
+      },
+    });
   }
 
   // Nouveau compte
@@ -61,7 +69,7 @@ export async function POST(req: NextRequest) {
     lastName: (lastName as string).trim(),
     email: emailLower,
     phone: (phone as string)?.trim() || "",
-    password,
+    password: hacherCode(String(password)),
     hasPassword: true,
     ebooksAchetes: [],
     formationsAchetees: [],

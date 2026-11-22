@@ -30,16 +30,32 @@ async function writeTokens(tokens: MagicToken[]) {
   await writeFile(TOKENS_FILE, JSON.stringify(tokens, null, 2), "utf-8");
 }
 
-// POST /api/auth/magic-link — génère un token de connexion automatique
+// La commande doit avoir réellement été payée par cette adresse (vente enregistrée).
+// Le paiement peut être confirmé quelques secondes après l'arrivée sur la page de succès : on patiente un peu.
+async function venteConfirmee(reference: string, email: string): Promise<boolean> {
+  const { queryAllSales } = await import("@/lib/analytics");
+  for (let essai = 0; essai < 8; essai++) {
+    const ventes = await queryAllSales();
+    if (ventes.some((v) => v.reference === reference && v.customerEmail.toLowerCase() === email.toLowerCase())) return true;
+    await new Promise((r) => setTimeout(r, 1500));
+  }
+  return false;
+}
+
+// POST /api/auth/magic-link — génère un lien de connexion, uniquement après un paiement confirmé
 export async function POST(req: NextRequest) {
-  const { userId, email, ebookIds = [], formationIds = [] } = await req.json() as {
+  const { userId, email, reference, ebookIds = [], formationIds = [] } = await req.json() as {
     userId?: string;
     email: string;
+    reference?: string;
     ebookIds?: string[];
     formationIds?: string[];
   };
 
   if (!email) return NextResponse.json({ error: "email requis" }, { status: 400 });
+  if (!reference || !(await venteConfirmee(reference, email))) {
+    return NextResponse.json({ error: "Paiement non confirmé pour cette commande." }, { status: 403 });
+  }
 
   const token = crypto.randomUUID();
   const now = new Date();
