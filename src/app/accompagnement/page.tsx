@@ -337,7 +337,7 @@ export default function AccompagnementPage() {
                   {espace.image ? (
                     <div className="w-full flex-shrink-0" style={{ height: 190 }}>
                       <img
-                        src={espace.image.split("?")[0]}
+                        src={espace.image}
                         alt={espace.titre}
                         loading="lazy"
                         decoding="async"

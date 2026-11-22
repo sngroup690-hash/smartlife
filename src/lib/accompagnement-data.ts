@@ -12,7 +12,8 @@ export type Espace = {
   avantages: string[];
   exigences: string[];
   etapes: string[];
-  places: number; // places disponibles
+  places: number;
+  image?: string;
 };
 
 export const espaces: Espace[] = [
@@ -25,6 +26,7 @@ export const espaces: Espace[] = [
       "Le secteur du pressing est en pleine expansion au Cameroun. Nous vous accompagnons dans la création de votre pressing : choix de l'équipement, formation des employés, stratégie commerciale et gestion quotidienne. Un business rentable avec un retour sur investissement rapide.",
     icone: "👔",
     categorie: "Services",
+    image: "https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=600&h=400&fit=crop&q=80",
     investissementMin: 500000,
     investissementMax: 2000000,
     dureeAccompagnement: "3 mois",
@@ -60,6 +62,7 @@ export const espaces: Espace[] = [
       "La pisciculture est un secteur très porteur au Cameroun avec une forte demande en protéines animales. Notre équipe d'experts vous accompagne de A à Z : choix du site, construction des bassins, sélection des espèces (tilapia, clarias), alimentation, gestion sanitaire et commercialisation.",
     icone: "🐟",
     categorie: "Agriculture",
+    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=400&fit=crop&q=80",
     investissementMin: 800000,
     investissementMax: 5000000,
     dureeAccompagnement: "6 mois",
@@ -95,6 +98,7 @@ export const espaces: Espace[] = [
       "Le secteur BTP est en plein essor et les quincailleries sont des commerces très rentables. Nous vous aidons à choisir les bons produits, négocier avec les fournisseurs, organiser votre espace de vente, gérer vos stocks et fidéliser votre clientèle professionnelle et particulière.",
     icone: "🔧",
     categorie: "Commerce",
+    image: "https://images.unsplash.com/photo-1504148455328-c376907d081c?w=600&h=400&fit=crop&q=80",
     investissementMin: 1500000,
     investissementMax: 10000000,
     dureeAccompagnement: "4 mois",
@@ -130,6 +134,7 @@ export const espaces: Espace[] = [
       "La restauration est l'un des secteurs les plus accessibles et les plus rentables. Nous vous accompagnons dans le choix du concept, des recettes, de l'équipement, de la décoration, du recrutement et de la gestion. Que ce soit un snack de quartier ou un restaurant thématique.",
     icone: "🍽️",
     categorie: "Restauration",
+    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&h=400&fit=crop&q=80",
     investissementMin: 300000,
     investissementMax: 3000000,
     dureeAccompagnement: "3 mois",
@@ -165,6 +170,7 @@ export const espaces: Espace[] = [
       "Le secteur de la beauté ne connaît pas la crise ! Salons de coiffure, centres esthétiques et instituts de beauté ont une clientèle fidèle et des revenus réguliers. Nous vous aidons à créer un salon attractif, recruter des coiffeurs qualifiés et développer votre portefeuille clients.",
     icone: "💇",
     categorie: "Beauté",
+    image: "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=600&h=400&fit=crop&q=80",
     investissementMin: 400000,
     investissementMax: 2500000,
     dureeAccompagnement: "2 mois",
@@ -200,6 +206,7 @@ export const espaces: Espace[] = [
       "Le commerce général reste l'une des activités les plus accessibles pour les entrepreneurs débutants. Nous vous aidons à choisir les bons produits, négocier les prix avec les grossistes, organiser votre espace, gérer votre trésorerie et développer votre chiffre d'affaires.",
     icone: "🏪",
     categorie: "Commerce",
+    image: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=600&h=400&fit=crop&q=80",
     investissementMin: 250000,
     investissementMax: 2000000,
     dureeAccompagnement: "2 mois",
@@ -235,6 +242,7 @@ export const espaces: Espace[] = [
       "La boulangerie est un secteur porteur avec une demande quotidienne. Pain, viennoiseries, gâteaux : nous vous formons aux recettes, vous aidons à choisir l'équipement adapté, à trouver vos fournisseurs de farine et matières premières, et à fidéliser votre clientèle de quartier.",
     icone: "🥖",
     categorie: "Alimentaire",
+    image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=400&fit=crop&q=80",
     investissementMin: 600000,
     investissementMax: 4000000,
     dureeAccompagnement: "4 mois",
@@ -270,6 +278,7 @@ export const espaces: Espace[] = [
       "Le secteur de la santé et du bien-être est en forte croissance. Nous vous accompagnons dans la création d'une parapharmacie : réglementation, sourcing de produits certifiés, aménagement de l'espace, formation sur les produits et stratégie commerciale pour attirer et fidéliser votre clientèle.",
     icone: "💊",
     categorie: "Santé & Bien-être",
+    image: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=600&h=400&fit=crop&q=80",
     investissementMin: 1000000,
     investissementMax: 5000000,
     dureeAccompagnement: "5 mois",

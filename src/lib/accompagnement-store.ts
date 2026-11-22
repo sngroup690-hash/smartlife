@@ -16,6 +16,7 @@ const ESPACES_PAR_DEFAUT: EspacePersonnalise[] = STATIC_ESPACES.map((e) => ({
   espacesSimilaires: [],
   actif: true,
   createdAt: "2025-01-01T00:00:00.000Z",
+  image: e.image,
 }));
 
 export type StatutDemande = "en_attente" | "validee" | "rejetee";
@@ -363,13 +364,18 @@ export const useAccompagnementStore = create<AccompagnementStore>()(
       name: "sn-accompagnement-v3",
       merge: (persisted: unknown, current) => {
         const p = persisted as Partial<AccompagnementStore>;
+        const defaultsMap = new Map(ESPACES_PAR_DEFAUT.map((e) => [e.id, e]));
         const persistedIds = new Set((p.espaces ?? []).map((e) => e.id));
-        // Ajouter les domaines par défaut manquants (pas encore dans le store)
         const manquants = ESPACES_PAR_DEFAUT.filter((e) => !persistedIds.has(e.id));
+        const enriched = (p.espaces ?? []).map((e) => {
+          const def = defaultsMap.get(e.id);
+          if (def && !e.image && def.image) return { ...e, image: def.image };
+          return e;
+        });
         return {
           ...current,
           ...p,
-          espaces: [...manquants, ...(p.espaces ?? [])],
+          espaces: [...manquants, ...enriched],
         };
       },
     }

@@ -20,6 +20,7 @@ const STATIC_DEFAULTS = STATIC_ESPACES.map((e) => ({
   espacesSimilaires: [],
   actif: true,
   createdAt: "2025-01-01T00:00:00.000Z",
+  image: e.image,
 }));
 
 export async function GET() {
