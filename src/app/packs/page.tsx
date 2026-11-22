@@ -119,17 +119,21 @@ function PackCard({ pack }: { pack: Pack }) {
           <span className="absolute bottom-3 right-3 px-3 py-1 bg-[#E8B800] text-black text-xs font-black rounded-full flex items-center gap-1">
             <Tag size={10} /> PACK
           </span>
-          {/* Noms des guides sur l'image */}
-          <div className="absolute bottom-0 left-0 right-0 px-3 pb-10 pt-8" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }}>
-            <div className="flex flex-wrap gap-1">
-              {ebookItems.slice(0, 5).map((item) => (
-                <span key={item.id} className="px-1.5 py-0.5 rounded text-[9px] font-bold leading-tight" style={{ background: "#E8B800", color: "#000" }}>
-                  {item.title.length > 30 ? item.title.slice(0, 28) + "…" : item.title}
-                </span>
-              ))}
-              {ebookItems.length > 5 && (
-                <span className="px-1.5 py-0.5 rounded text-[9px] font-bold" style={{ background: "rgba(232,184,0,0.5)", color: "#fff" }}>
-                  +{ebookItems.length - 5}
+          {/* Noms des guides — bande fine en bas */}
+          <div className="absolute bottom-7 left-0 right-0 px-2 overflow-hidden" style={{ whiteSpace: "nowrap" }}>
+            <div className="flex gap-1 overflow-hidden">
+              {ebookItems.slice(0, 4).map((item, i) => {
+                const short = item.title.replace(/^GUIDE COMPLET\s*[-—:]\s*/i, "").replace(/^GUIDE COMPLET\s+/i, "");
+                const label = short.length > 18 ? short.slice(0, 16) + "…" : short;
+                return (
+                  <span key={item.id} className="px-1.5 py-0.5 rounded text-[8px] font-bold leading-tight flex-shrink-0" style={{ background: i % 2 === 0 ? "#E8B800" : "#27A827", color: "#fff" }}>
+                    {label}
+                  </span>
+                );
+              })}
+              {ebookItems.length > 4 && (
+                <span className="px-1.5 py-0.5 rounded text-[8px] font-bold flex-shrink-0" style={{ background: "#E8B800", color: "#fff" }}>
+                  +{ebookItems.length - 4}
                 </span>
               )}
             </div>

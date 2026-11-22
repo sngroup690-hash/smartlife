@@ -76,17 +76,21 @@ export default function PackDetailClient({ pack }: { pack: PackData }) {
                   </span>
                 )}
               </div>
-              {/* Noms des guides sur l'image */}
-              <div className="absolute bottom-0 left-0 right-0 px-3 pb-10 pt-8" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }}>
-                <div className="flex flex-wrap gap-1.5">
-                  {ebookItems.slice(0, 6).map((item) => (
-                    <span key={item.id} className="px-2 py-0.5 rounded text-[10px] font-bold leading-tight" style={{ background: "#E8B800", color: "#000" }}>
-                      {item.title.length > 35 ? item.title.slice(0, 33) + "…" : item.title}
-                    </span>
-                  ))}
-                  {ebookItems.length > 6 && (
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold" style={{ background: "rgba(232,184,0,0.5)", color: "#fff" }}>
-                      +{ebookItems.length - 6}
+              {/* Noms des guides — bande fine en bas */}
+              <div className="absolute bottom-7 left-0 right-0 px-3 overflow-hidden" style={{ whiteSpace: "nowrap" }}>
+                <div className="flex gap-1.5 overflow-hidden">
+                  {ebookItems.slice(0, 5).map((item, i) => {
+                    const short = item.title.replace(/^GUIDE COMPLET\s*[-—:]\s*/i, "").replace(/^GUIDE COMPLET\s+/i, "");
+                    const label = short.length > 22 ? short.slice(0, 20) + "…" : short;
+                    return (
+                      <span key={item.id} className="px-2 py-0.5 rounded text-[9px] font-bold leading-tight flex-shrink-0" style={{ background: i % 2 === 0 ? "#E8B800" : "#27A827", color: "#fff" }}>
+                        {label}
+                      </span>
+                    );
+                  })}
+                  {ebookItems.length > 5 && (
+                    <span className="px-2 py-0.5 rounded text-[9px] font-bold flex-shrink-0" style={{ background: "#E8B800", color: "#fff" }}>
+                      +{ebookItems.length - 5}
                     </span>
                   )}
                 </div>
