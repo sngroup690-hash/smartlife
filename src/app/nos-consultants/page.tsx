@@ -7,7 +7,10 @@ import {
   Users, Star, CheckCircle, ArrowRight, Briefcase,
   MapPin, TrendingUp, Award, Shield, X, Clock, ExternalLink,
   Filter, Send, MessageSquare, ChevronDown, ChevronUp, Loader2,
+  Sparkles,
 } from "lucide-react";
+import { motion } from "framer-motion";
+import AnimateOnScroll, { StaggerContainer, StaggerItem } from "@/components/AnimateOnScroll";
 import { useAccompagnementStore, type EspacePersonnalise } from "@/lib/accompagnement-store";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -40,17 +43,20 @@ type ConsultantReview = {
 type SecteurConfig = {
   categorie: string; emoji: string; illustration: string;
   gradientClass: string; borderClass: string; textClass: string;
-  accentClass: string; desc: string;
+  accentClass: string; desc: string; photo: string;
 };
 
 const SECTEURS_CONFIG: SecteurConfig[] = [
-  { categorie: "Agriculture",       emoji: "🌾", illustration: "🌱🐟🌿", gradientClass: "from-emerald-50 to-green-100",  borderClass: "border-emerald-200", textClass: "text-emerald-800", accentClass: "bg-emerald-500", desc: "Pisciculture, élevage & cultures" },
-  { categorie: "Commerce",          emoji: "🏪", illustration: "🛒💼📦", gradientClass: "from-amber-50 to-yellow-100",   borderClass: "border-amber-200",   textClass: "text-amber-800",   accentClass: "bg-amber-500",   desc: "Boutiques, quincaillerie & négoce" },
-  { categorie: "Services",          emoji: "⚙️", illustration: "🧺👔✨", gradientClass: "from-blue-50 to-indigo-100",    borderClass: "border-blue-200",    textClass: "text-blue-800",    accentClass: "bg-blue-500",    desc: "Pressing, entretien & maintenance" },
-  { categorie: "Restauration",      emoji: "🍽️", illustration: "👨‍🍳🥘🍴", gradientClass: "from-orange-50 to-red-100",  borderClass: "border-orange-200",  textClass: "text-orange-800",  accentClass: "bg-orange-500",  desc: "Restaurants, snacks & traiteurs" },
-  { categorie: "Beauté",            emoji: "💆", illustration: "💇‍♀️✂️💅", gradientClass: "from-pink-50 to-rose-100",   borderClass: "border-pink-200",    textClass: "text-pink-800",    accentClass: "bg-pink-500",    desc: "Coiffure, esthétique & cosmétique" },
-  { categorie: "Alimentaire",       emoji: "🥖", illustration: "🧁🥐🍞", gradientClass: "from-yellow-50 to-amber-100",  borderClass: "border-yellow-200",  textClass: "text-yellow-800",  accentClass: "bg-yellow-500",  desc: "Boulangerie, pâtisserie & épicerie" },
-  { categorie: "Santé & Bien-être", emoji: "💊", illustration: "🏥💊🌿", gradientClass: "from-teal-50 to-cyan-100",     borderClass: "border-teal-200",    textClass: "text-teal-800",    accentClass: "bg-teal-500",    desc: "Parapharmacie, soins & bien-être" },
+  { categorie: "Agriculture",       emoji: "🌾", illustration: "🌱🐟🌿", gradientClass: "from-emerald-50 to-green-100",  borderClass: "border-emerald-200", textClass: "text-emerald-800", accentClass: "bg-emerald-500", desc: "Pisciculture, élevage & cultures", photo: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&h=400&fit=crop&q=80" },
+  { categorie: "Commerce",          emoji: "🏪", illustration: "🛒💼📦", gradientClass: "from-amber-50 to-yellow-100",   borderClass: "border-amber-200",   textClass: "text-amber-800",   accentClass: "bg-amber-500",   desc: "Boutiques, quincaillerie & négoce", photo: "https://images.unsplash.com/photo-1556740758-90de374c12ad?w=600&h=400&fit=crop&q=80" },
+  { categorie: "Services",          emoji: "⚙️", illustration: "🧺👔✨", gradientClass: "from-blue-50 to-indigo-100",    borderClass: "border-blue-200",    textClass: "text-blue-800",    accentClass: "bg-blue-500",    desc: "Pressing, entretien & maintenance", photo: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=600&h=400&fit=crop&q=80" },
+  { categorie: "Restauration",      emoji: "🍽️", illustration: "👨‍🍳🥘🍴", gradientClass: "from-orange-50 to-red-100",  borderClass: "border-orange-200",  textClass: "text-orange-800",  accentClass: "bg-orange-500",  desc: "Restaurants, snacks & traiteurs", photo: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&h=400&fit=crop&q=80" },
+  { categorie: "Beauté",            emoji: "💆", illustration: "💇‍♀️✂️💅", gradientClass: "from-pink-50 to-rose-100",   borderClass: "border-pink-200",    textClass: "text-pink-800",    accentClass: "bg-pink-500",    desc: "Coiffure, esthétique & cosmétique", photo: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&h=400&fit=crop&q=80" },
+  { categorie: "Alimentaire",       emoji: "🥖", illustration: "🧁🥐🍞", gradientClass: "from-yellow-50 to-amber-100",  borderClass: "border-yellow-200",  textClass: "text-yellow-800",  accentClass: "bg-yellow-500",  desc: "Boulangerie, pâtisserie & épicerie", photo: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=400&fit=crop&q=80" },
+  { categorie: "Santé & Bien-être", emoji: "💊", illustration: "🏥💊🌿", gradientClass: "from-teal-50 to-cyan-100",     borderClass: "border-teal-200",    textClass: "text-teal-800",    accentClass: "bg-teal-500",    desc: "Parapharmacie, soins & bien-être", photo: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&h=400&fit=crop&q=80" },
+  { categorie: "Artisanat",         emoji: "🎨", illustration: "🪡🧵✂️", gradientClass: "from-violet-50 to-purple-100", borderClass: "border-violet-200",  textClass: "text-violet-800",  accentClass: "bg-violet-500",  desc: "Artisanat, création & savoir-faire", photo: "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=600&h=400&fit=crop&q=80" },
+  { categorie: "BTP",               emoji: "🏗️", illustration: "🧱🏠🔨", gradientClass: "from-slate-50 to-gray-100",   borderClass: "border-slate-200",   textClass: "text-slate-800",   accentClass: "bg-slate-500",   desc: "Construction, bâtiment & travaux", photo: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=400&fit=crop&q=80" },
+  { categorie: "Numérique",         emoji: "💻", illustration: "📱🌐💡", gradientClass: "from-indigo-50 to-blue-100",   borderClass: "border-indigo-200",  textClass: "text-indigo-800",  accentClass: "bg-indigo-500",  desc: "Tech, digital & innovation", photo: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop&q=80" },
 ];
 
 function getSecteurConfig(categorie: string): SecteurConfig {
@@ -59,6 +65,7 @@ function getSecteurConfig(categorie: string): SecteurConfig {
       categorie, emoji: "🏢", illustration: "📊💡🎯",
       gradientClass: "from-gray-50 to-slate-100", borderClass: "border-gray-200",
       textClass: "text-gray-800", accentClass: "bg-gray-500", desc: "Accompagnement professionnel",
+      photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop&q=80",
     }
   );
 }
@@ -712,40 +719,70 @@ function ProfilModal({
 // ── Carte secteur ──────────────────────────────────────────────────────────────
 
 function SecteurCard({
-  secteur, nbEspaces, nbConsultants, isActive, onClick,
+  secteur, nbEspaces, nbConsultants, isActive, onClick, index,
 }: {
   secteur: SecteurConfig; nbEspaces: number; nbConsultants: number;
-  isActive: boolean; onClick: () => void;
+  isActive: boolean; onClick: () => void; index: number;
 }) {
   return (
-    <button
+    <motion.button
       onClick={onClick}
-      className={`relative w-full text-left rounded-2xl border-2 overflow-hidden transition-all duration-200 group ${
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ delay: index * 0.08, duration: 0.5, ease: "easeOut" }}
+      whileHover={{ y: -6, scale: 1.02 }}
+      whileTap={{ scale: 0.97 }}
+      className={`relative w-full text-left rounded-3xl overflow-hidden transition-shadow duration-300 group ${
         isActive
-          ? `${secteur.borderClass} ring-2 ring-offset-2 ring-current shadow-lg scale-[1.02]`
-          : "border-gray-200 hover:border-gray-300 hover:shadow-md hover:scale-[1.01]"
+          ? "ring-3 ring-[#E8B800] shadow-xl shadow-[#E8B800]/20"
+          : "shadow-md hover:shadow-xl"
       }`}
     >
-      <div className={`bg-gradient-to-br ${secteur.gradientClass} p-5`}>
-        <div className="absolute top-2 right-3 text-4xl opacity-20 select-none pointer-events-none">{secteur.illustration}</div>
+      {/* Photo de fond */}
+      <div className="relative h-44 sm:h-48 overflow-hidden">
+        <img
+          src={secteur.photo}
+          alt={secteur.categorie}
+          loading="lazy"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
+        {/* Badge actif */}
         {isActive && (
-          <span className={`absolute top-3 right-3 w-6 h-6 ${secteur.accentClass} rounded-full flex items-center justify-center text-white text-xs font-bold`}>✓</span>
+          <motion.span
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="absolute top-3 right-3 w-8 h-8 bg-[#E8B800] rounded-full flex items-center justify-center text-black text-sm font-bold shadow-lg"
+          >
+            ✓
+          </motion.span>
         )}
-        <div className="text-4xl mb-3">{secteur.emoji}</div>
-        <h3 className={`font-black text-base leading-tight mb-1 ${secteur.textClass}`}>{secteur.categorie}</h3>
-        <p className="text-gray-600 text-xs leading-relaxed mb-3">{secteur.desc}</p>
-        <div className="flex items-center gap-3">
-          <span className={`text-xs font-bold px-2 py-1 bg-white/70 border ${secteur.borderClass} ${secteur.textClass} rounded-full`}>
-            {nbEspaces} espace{nbEspaces > 1 ? "s" : ""}
-          </span>
-          {nbConsultants > 0 && (
-            <span className={`text-xs font-bold px-2 py-1 ${secteur.accentClass} text-white rounded-full`}>
-              {nbConsultants} expert{nbConsultants > 1 ? "s" : ""}
-            </span>
-          )}
+
+        {/* Emoji flottant */}
+        <span className="absolute top-3 left-3 text-3xl drop-shadow-lg select-none">{secteur.emoji}</span>
+
+        {/* Contenu en bas */}
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          <h3 className="font-black text-lg text-white leading-tight mb-1 drop-shadow-md">{secteur.categorie}</h3>
+          <p className="text-white/80 text-xs leading-relaxed">{secteur.desc}</p>
         </div>
       </div>
-    </button>
+
+      {/* Badges en dessous */}
+      <div className="flex items-center gap-2 px-4 py-3 bg-white">
+        <span className="text-xs font-bold px-3 py-1 bg-[#E8B800]/10 text-[#E8B800] rounded-full border border-[#E8B800]/20">
+          {nbEspaces} espace{nbEspaces > 1 ? "s" : ""}
+        </span>
+        {nbConsultants > 0 && (
+          <span className="text-xs font-bold px-3 py-1 bg-[#27A827]/10 text-[#27A827] rounded-full border border-[#27A827]/20">
+            {nbConsultants} expert{nbConsultants > 1 ? "s" : ""}
+          </span>
+        )}
+        <ArrowRight size={14} className="ml-auto text-gray-300 group-hover:text-[#E8B800] group-hover:translate-x-1 transition-all" />
+      </div>
+    </motion.button>
   );
 }
 
@@ -872,58 +909,123 @@ export default function NosConsultantsPage() {
     : [];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div className="overflow-hidden bg-white">
 
-      {/* Hero */}
-      <div className="text-center mb-20">
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#E8B800]/10 border border-[#E8B800]/30 rounded-full text-sm text-[#E8B800] mb-6">
-          <Shield size={14} /> Équipe d&apos;experts SMART LIFE
+      {/* ════════ HERO PREMIUM ════════ */}
+      <section className="relative py-14 sm:py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#f0fdf0] via-white to-[#fef9e7]" />
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
+
+        {/* Formes flottantes */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div
+            animate={{ y: [-20, 20, -20], x: [-8, 12, -8], rotate: [0, 90, 180, 270, 360] }}
+            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-[10%] right-[6%] w-16 h-16 rounded-3xl bg-gradient-to-br from-[#E8B800]/12 to-[#E8B800]/4 border border-[#E8B800]/10"
+          />
+          <motion.div
+            animate={{ y: [15, -20, 15], x: [8, -8, 8] }}
+            transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute bottom-[15%] left-[4%] w-14 h-14 rounded-full bg-gradient-to-br from-[#27A827]/12 to-[#27A827]/4 border border-[#27A827]/10"
+          />
+          <motion.div
+            animate={{ scale: [1, 1.3, 1], rotate: [0, 45, 0] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-[45%] left-[12%] w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-200/15 to-transparent border border-amber-200/10"
+          />
         </div>
-        <h1 className="text-5xl font-bold text-gray-900 mb-6">
-          Nos <span className="gradient-text">Consultants</span>
-          <br />&amp; Secteurs d&apos;expertise
-        </h1>
-        <p className="text-gray-600 max-w-2xl mx-auto text-lg leading-relaxed mb-10">
-          Des experts passionnés qui accompagnent entrepreneurs et entreprises à chaque étape de leur développement en Afrique.
-        </p>
 
-        <div className="flex flex-wrap justify-center gap-6">
-          {[
-            { value: consultants.length || "—", label: "Consultants actifs", icon: Users },
-            { value: totalClients || "47+", label: "Clients accompagnés", icon: CheckCircle },
-            { value: totalEntreprises || "20+", label: "Entreprises suivies", icon: Briefcase },
-            { value: categories.length || espacesActifs.length, label: "Secteurs couverts", icon: Award },
-          ].map((s) => (
-            <div key={s.label} className="text-center px-8 py-4 bg-white border border-gray-200 rounded-2xl shadow-sm min-w-[140px]">
-              <div className="flex justify-center mb-2"><s.icon size={18} className="text-[#E8B800]" /></div>
-              <div className="text-3xl font-bold gradient-text mb-1">{s.value}</div>
-              <div className="text-gray-500 text-sm">{s.label}</div>
-            </div>
-          ))}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, type: "spring" }}
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/70 backdrop-blur-md border border-[#E8B800]/20 rounded-full text-sm text-gray-700 mb-8 shadow-lg shadow-[#E8B800]/5"
+          >
+            <motion.span
+              animate={{ rotate: [0, 15, -15, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <Sparkles size={16} className="text-[#E8B800]" />
+            </motion.span>
+            Réseau d&apos;experts SMART LIFE
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="text-[2rem] sm:text-[2.6rem] md:text-[3.5rem] font-extrabold leading-[1.1] mb-6 text-gray-900"
+          >
+            Nos{" "}
+            <span className="bg-gradient-to-r from-[#E8B800] to-amber-500 bg-clip-text text-transparent">Consultants</span>
+            <br className="hidden sm:block" />
+            {" "}& Secteurs d&apos;
+            <span className="bg-gradient-to-r from-[#27A827] to-emerald-500 bg-clip-text text-transparent">expertise</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="text-gray-500 max-w-xl mx-auto text-base sm:text-lg leading-relaxed mb-10 font-medium"
+          >
+            Des experts passionnés qui accompagnent entrepreneurs et entreprises
+            à chaque étape de leur développement en Afrique.
+          </motion.p>
+
+          {/* Stats animées */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5 mb-6">
+            {[
+              { value: consultants.length, label: "Consultants actifs", icon: Users, gradient: "from-[#E8B800] to-amber-500" },
+              { value: totalClients || 47, label: "Clients accompagnés", icon: CheckCircle, gradient: "from-[#27A827] to-emerald-500" },
+              { value: totalEntreprises || 20, label: "Entreprises suivies", icon: Briefcase, gradient: "from-amber-500 to-[#E8B800]" },
+              { value: categories.length || espacesActifs.length, label: "Secteurs couverts", icon: Award, gradient: "from-green-500 to-[#27A827]" },
+            ].map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 25 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 + i * 0.1, duration: 0.5 }}
+                className="text-center p-4 sm:p-5 bg-white/80 backdrop-blur-sm border border-gray-100 rounded-3xl shadow-lg shadow-gray-100/50"
+              >
+                <div className={`inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-gradient-to-br ${stat.gradient} mb-2.5 shadow-lg`}>
+                  <stat.icon size={18} className="text-white" />
+                </div>
+                <div className="text-2xl sm:text-3xl font-black text-gray-900 mb-0.5">{stat.value}+</div>
+                <div className="text-gray-500 text-xs sm:text-sm font-medium leading-tight">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
 
-      {/* Secteurs */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      {/* ════════ SECTEURS PREMIUM ════════ */}
       <div className="mb-16">
-        <div className="flex items-center justify-between flex-wrap gap-4 mb-8">
+        <AnimateOnScroll variant="fadeUp" className="flex items-center justify-between flex-wrap gap-4 mb-8">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-1">
-              Secteurs d&apos;<span className="gradient-text">accompagnement</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
+              Secteurs d&apos;
+              <span className="bg-gradient-to-r from-[#E8B800] to-amber-500 bg-clip-text text-transparent">accompagnement</span>
             </h2>
-            <p className="text-gray-500 text-sm">{categories.length} secteur{categories.length > 1 ? "s" : ""} couverts par nos experts</p>
+            <p className="text-gray-500 text-sm font-medium">{categories.length} secteur{categories.length > 1 ? "s" : ""} couverts par nos experts</p>
           </div>
           {filtreCategorie && (
-            <button
+            <motion.button
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
               onClick={() => setFiltreCategorie(null)}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-sm font-medium transition-all"
+              className="flex items-center gap-2 px-5 py-2.5 bg-[#E8B800]/10 hover:bg-[#E8B800]/20 text-[#E8B800] border border-[#E8B800]/20 rounded-xl text-sm font-bold transition-all"
             >
               <Filter size={14} /> Tous les secteurs <X size={14} />
-            </button>
+            </motion.button>
           )}
-        </div>
+        </AnimateOnScroll>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {categories.map((cat) => {
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-5">
+          {categories.map((cat, i) => {
             const config = getSecteurConfig(cat);
             return (
               <SecteurCard
@@ -932,54 +1034,75 @@ export default function NosConsultantsPage() {
                 nbConsultants={consultantsDuSecteur(cat).length}
                 isActive={filtreCategorie === cat}
                 onClick={() => setFiltreCategorie(filtreCategorie === cat ? null : cat)}
+                index={i}
               />
             );
           })}
         </div>
       </div>
 
-      {/* Consultants */}
+      {/* ════════ CONSULTANTS PREMIUM ════════ */}
       <div className="mb-20">
-        <div className="flex items-center justify-between flex-wrap gap-4 mb-8">
+        <AnimateOnScroll variant="fadeUp" className="flex items-center justify-between flex-wrap gap-4 mb-8">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-1">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
               {filtreCategorie
-                ? <>Experts en <span className="gradient-text">{filtreCategorie}</span></>
-                : <>L&apos;équipe <span className="gradient-text">SMART LIFE</span></>
+                ? <>Experts en <span className="bg-gradient-to-r from-[#E8B800] to-amber-500 bg-clip-text text-transparent">{filtreCategorie}</span></>
+                : <>L&apos;équipe <span className="bg-gradient-to-r from-[#27A827] to-emerald-500 bg-clip-text text-transparent">SMART LIFE</span></>
               }
             </h2>
-            <p className="text-gray-500 text-sm">
+            <p className="text-gray-500 text-sm font-medium">
               {consultantsFiltres.length} consultant{consultantsFiltres.length > 1 ? "s" : ""}
               {filtreCategorie ? ` dans ce secteur` : ` au total`}
             </p>
           </div>
           {filtreCategorie && (
-            <span className={`px-4 py-2 bg-gradient-to-r ${getSecteurConfig(filtreCategorie).gradientClass} border ${getSecteurConfig(filtreCategorie).borderClass} ${getSecteurConfig(filtreCategorie).textClass} rounded-xl text-sm font-bold flex items-center gap-2`}>
+            <motion.span
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className={`px-5 py-2.5 bg-gradient-to-r ${getSecteurConfig(filtreCategorie).gradientClass} border ${getSecteurConfig(filtreCategorie).borderClass} ${getSecteurConfig(filtreCategorie).textClass} rounded-xl text-sm font-bold flex items-center gap-2 shadow-sm`}
+            >
               {getSecteurConfig(filtreCategorie).emoji} {filtreCategorie}
-            </span>
+            </motion.span>
           )}
-        </div>
+        </AnimateOnScroll>
 
         {consultantsFiltres.length === 0 ? (
-          <div className="text-center py-16 bg-gray-50 border border-gray-200 rounded-3xl">
-            <div className="text-5xl mb-4">{filtreCategorie ? getSecteurConfig(filtreCategorie).emoji : "👥"}</div>
-            <h3 className="text-gray-900 font-bold text-xl mb-2">
-              {filtreCategorie ? `Aucun consultant disponible en ${filtreCategorie}` : "Équipe en cours de présentation"}
-            </h3>
-            <p className="text-gray-600 max-w-md mx-auto text-sm mb-5">
-              {filtreCategorie
-                ? "Nos experts dans ce secteur seront bientôt disponibles."
-                : "Notre équipe de consultants est active et disponible. Contactez-nous pour être mis en relation."}
-            </p>
-            {filtreCategorie && (
-              <button onClick={() => setFiltreCategorie(null)}
-                className="px-5 py-2.5 border border-gray-300 hover:bg-gray-100 text-gray-700 rounded-xl text-sm font-medium transition-all">
-                Voir tous les consultants
-              </button>
-            )}
-          </div>
+          <AnimateOnScroll variant="scaleUp">
+            <div className="text-center py-16 sm:py-20 bg-gradient-to-br from-green-50/80 via-white to-yellow-50/80 border border-gray-100 rounded-3xl shadow-sm">
+              <motion.div
+                animate={{ y: [-5, 5, -5] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="text-6xl mb-5"
+              >
+                {filtreCategorie ? getSecteurConfig(filtreCategorie).emoji : "👥"}
+              </motion.div>
+              <h3 className="text-gray-900 font-extrabold text-2xl mb-3">
+                {filtreCategorie ? `Aucun consultant en ${filtreCategorie}` : "Équipe en cours de constitution"}
+              </h3>
+              <p className="text-gray-500 max-w-md mx-auto text-sm mb-6 leading-relaxed">
+                {filtreCategorie
+                  ? "Nos experts dans ce secteur seront bientôt disponibles. Contactez-nous pour être accompagné."
+                  : "Notre équipe de consultants se constitue. Contactez-nous pour être mis en relation avec un expert ou pour devenir consultant."}
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                {filtreCategorie && (
+                  <button onClick={() => setFiltreCategorie(null)}
+                    className="px-6 py-3 border border-gray-200 hover:bg-gray-50 text-gray-700 rounded-xl text-sm font-bold transition-all">
+                    Voir tous les secteurs
+                  </button>
+                )}
+                <Link
+                  href="/devenir-consultant"
+                  className="px-6 py-3 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-black rounded-xl text-sm font-bold shadow-lg shadow-[#E8B800]/20 hover:shadow-xl transition-all flex items-center gap-2"
+                >
+                  Devenir consultant <ArrowRight size={14} />
+                </Link>
+              </div>
+            </div>
+          </AnimateOnScroll>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" staggerDelay={0.1}>
             {consultantsFiltres.map((c) => {
               const domaines = domainesNoms(c.domainesIds);
               const categoriesPrincipales = [...new Set(
@@ -989,10 +1112,13 @@ export default function NosConsultantsPage() {
               const cReviews = reviewsByConsultant[c.id] ?? [];
 
               return (
-                <div key={c.id}
-                  className="bg-white border border-gray-200 rounded-2xl shadow-sm hover:border-[#E8B800]/40 hover:shadow-md transition-all flex flex-col overflow-hidden">
+                <StaggerItem key={c.id}>
+                <motion.div
+                  whileHover={{ y: -4, scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="bg-white border border-gray-100 rounded-3xl shadow-md hover:shadow-xl hover:border-[#E8B800]/30 transition-shadow flex flex-col overflow-hidden">
                   {mainConfig && (
-                    <div className={`bg-gradient-to-r ${mainConfig.gradientClass} px-4 py-2 flex items-center gap-2`}>
+                    <div className={`bg-gradient-to-r ${mainConfig.gradientClass} px-4 py-2.5 flex items-center gap-2`}>
                       <span className="text-base">{mainConfig.emoji}</span>
                       <span className={`text-xs font-bold ${mainConfig.textClass}`}>{mainConfig.categorie}</span>
                     </div>
@@ -1065,60 +1191,66 @@ export default function NosConsultantsPage() {
                     <div className="mt-auto">
                       <button
                         onClick={() => setSelectedConsultant(c)}
-                        className="w-full py-2.5 px-4 bg-[#E8B800]/10 hover:bg-[#E8B800]/20 border border-[#E8B800]/30 hover:border-[#E8B800]/60 text-[#E8B800] text-sm font-semibold rounded-xl transition-all flex items-center justify-center gap-2"
+                        className="w-full py-3 px-4 bg-gradient-to-r from-[#E8B800] to-amber-500 hover:from-[#27A827] hover:to-emerald-500 text-black text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
                       >
                         Voir le profil <ArrowRight size={14} />
                       </button>
                     </div>
                   </div>
-                </div>
+                </motion.div>
+                </StaggerItem>
               );
             })}
-          </div>
+          </StaggerContainer>
         )}
       </div>
 
-      {/* Espaces par secteur */}
+      {/* ════════ ESPACES PAR SECTEUR ════════ */}
       <div className="mb-20">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2 text-center">
-          Domaines d&apos;<span className="gradient-text">expertise</span> &amp; projets accompagnés
-        </h2>
-        <p className="text-gray-500 text-sm text-center mb-10">
-          {espacesActifs.length} espace{espacesActifs.length > 1 ? "s" : ""} disponible{espacesActifs.length > 1 ? "s" : ""}
-        </p>
+        <AnimateOnScroll variant="fadeUp" className="text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3">
+            Domaines d&apos;
+            <span className="bg-gradient-to-r from-[#27A827] to-emerald-500 bg-clip-text text-transparent">expertise</span>
+            {" "}& projets accompagnés
+          </h2>
+          <p className="text-gray-500 text-sm font-medium">
+            {espacesActifs.length} espace{espacesActifs.length > 1 ? "s" : ""} disponible{espacesActifs.length > 1 ? "s" : ""}
+          </p>
+        </AnimateOnScroll>
 
         {categories.map((cat) => {
           const config = getSecteurConfig(cat);
           const espaces_cat = espacesDuSecteur(cat);
           if (espaces_cat.length === 0) return null;
           return (
-            <div key={cat} className="mb-10">
-              <div className={`flex items-center gap-3 px-4 py-3 bg-gradient-to-r ${config.gradientClass} border ${config.borderClass} rounded-xl mb-4`}>
+            <AnimateOnScroll key={cat} variant="fadeUp" className="mb-10">
+              <div className={`flex items-center gap-3 px-5 py-3.5 bg-gradient-to-r ${config.gradientClass} border ${config.borderClass} rounded-2xl mb-5 shadow-sm`}>
                 <span className="text-2xl">{config.emoji}</span>
                 <div>
                   <h3 className={`font-bold text-base ${config.textClass}`}>{config.categorie}</h3>
                   <p className="text-gray-500 text-xs">{config.desc}</p>
                 </div>
-                <span className={`ml-auto text-xs font-bold px-3 py-1 ${config.accentClass} text-white rounded-full`}>
+                <span className={`ml-auto text-xs font-bold px-3 py-1.5 ${config.accentClass} text-white rounded-full shadow-sm`}>
                   {espaces_cat.length} espace{espaces_cat.length > 1 ? "s" : ""}
                 </span>
               </div>
 
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" staggerDelay={0.08}>
                 {espaces_cat.map((espace) => (
-                  <Link key={espace.id} href={`/accompagnement/${espace.id}`}
-                    className="group p-5 bg-white border border-gray-200 rounded-2xl shadow-sm hover:border-[#E8B800]/40 hover:shadow-md transition-all">
+                  <StaggerItem key={espace.id}>
+                  <Link href={`/accompagnement/${espace.id}`}
+                    className="group p-5 bg-white border border-gray-100 rounded-2xl shadow-sm hover:border-[#E8B800]/40 hover:shadow-lg transition-all hover:-translate-y-1">
                     {espace.image ? (
-                      <div className="w-10 h-10 rounded-xl overflow-hidden border border-gray-200 mb-3">
+                      <div className="w-12 h-12 rounded-xl overflow-hidden border border-gray-200 mb-3 shadow-sm">
                         <img src={espace.image} alt={espace.titre} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                       </div>
                     ) : (
-                      <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${config.gradientClass} border ${config.borderClass} flex items-center justify-center mb-3`}>
+                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${config.gradientClass} border ${config.borderClass} flex items-center justify-center mb-3`}>
                         <span className="text-lg">{config.emoji}</span>
                       </div>
                     )}
                     <h4 className="text-gray-900 font-bold text-sm leading-snug group-hover:text-[#E8B800] transition-colors mb-2">{espace.titre}</h4>
-                    <div className="space-y-1">
+                    <div className="space-y-1.5">
                       {espace.clientsSatisfaits > 0 && (
                         <div className="flex items-center gap-1.5 text-xs text-gray-400">
                           <CheckCircle size={11} className="text-emerald-400" />
@@ -1130,53 +1262,72 @@ export default function NosConsultantsPage() {
                         <span><strong className={espace.placesDisponibles <= 2 ? "text-orange-500" : "text-gray-900"}>{espace.placesDisponibles}</strong> place{espace.placesDisponibles > 1 ? "s" : ""} dispo</span>
                       </div>
                     </div>
-                    <div className="flex items-center justify-end mt-3 pt-2 border-t border-gray-100">
-                      <span className="flex items-center gap-1 px-3 py-1.5 bg-[#E8B800] text-black text-xs font-bold rounded-lg group-hover:bg-[#27A827] transition-colors">
+                    <div className="flex items-center justify-end mt-3 pt-3 border-t border-gray-100">
+                      <span className="flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-[#E8B800] to-amber-500 text-black text-xs font-bold rounded-lg group-hover:from-[#27A827] group-hover:to-emerald-500 transition-all shadow-sm">
                         Postuler <ArrowRight size={10} />
                       </span>
                     </div>
                   </Link>
+                  </StaggerItem>
                 ))}
-              </div>
-            </div>
+              </StaggerContainer>
+            </AnimateOnScroll>
           );
         })}
       </div>
 
-      {/* Atouts */}
-      <div className="grid md:grid-cols-3 gap-6 mb-20">
+      {/* ════════ ATOUTS ════════ */}
+      <StaggerContainer className="grid md:grid-cols-3 gap-6 mb-20" staggerDelay={0.15}>
         {[
-          { icon: TrendingUp, titre: "Résultats mesurables", desc: "Chaque accompagnement est axé sur des objectifs concrets et des résultats quantifiables pour votre activité." },
-          { icon: Star, titre: "Expertise terrain", desc: "Nos consultants ont une expérience directe du marché africain et comprennent les réalités locales." },
-          { icon: MapPin, titre: "Présence locale", desc: "Disponibles en présentiel au Cameroun et en ligne pour toute l'Afrique francophone et la diaspora." },
+          { icon: TrendingUp, titre: "Résultats mesurables", desc: "Chaque accompagnement est axé sur des objectifs concrets et des résultats quantifiables pour votre activité.", gradient: "from-[#E8B800] to-amber-500" },
+          { icon: Star, titre: "Expertise terrain", desc: "Nos consultants ont une expérience directe du marché africain et comprennent les réalités locales.", gradient: "from-[#27A827] to-emerald-500" },
+          { icon: MapPin, titre: "Présence locale", desc: "Disponibles en présentiel au Cameroun et en ligne pour toute l'Afrique francophone et la diaspora.", gradient: "from-amber-500 to-[#E8B800]" },
         ].map((item) => (
-          <div key={item.titre} className="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm">
-            <div className="w-10 h-10 rounded-xl bg-[#E8B800]/10 border border-[#E8B800]/20 flex items-center justify-center mb-4">
-              <item.icon size={18} className="text-[#E8B800]" />
-            </div>
-            <h3 className="text-gray-900 font-bold mb-2">{item.titre}</h3>
-            <p className="text-gray-600 text-sm leading-relaxed">{item.desc}</p>
-          </div>
+          <StaggerItem key={item.titre}>
+            <motion.div
+              whileHover={{ y: -4 }}
+              className="p-7 bg-white border border-gray-100 rounded-3xl shadow-md hover:shadow-xl transition-shadow"
+            >
+              <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center mb-5 shadow-lg`}>
+                <item.icon size={20} className="text-white" />
+              </div>
+              <h3 className="text-gray-900 font-extrabold text-lg mb-2">{item.titre}</h3>
+              <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+            </motion.div>
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerContainer>
 
-      {/* CTA */}
-      <div className="text-center p-12 rounded-3xl bg-gradient-to-br from-[#E8B800]/10 to-[#27A827]/5 border border-[#E8B800]/20">
-        <div className="text-4xl mb-4">🚀</div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Rejoindre l&apos;équipe SMART LIFE ?</h2>
-        <p className="text-gray-600 mb-8 max-w-lg mx-auto">
-          Vous êtes expert dans votre domaine et souhaitez accompagner des entrepreneurs ? Candidatez pour rejoindre notre réseau de consultants.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/devenir-consultant"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-[#E8B800] hover:bg-[#27A827] text-black font-bold rounded-xl transition-all shadow-lg shadow-[#E8B800]/30 hover:shadow-[#27A827]/40 hover:scale-105 animate-[bounce_2s_ease-in-out_infinite]">
-            Devenir consultant <ArrowRight size={18} />
-          </Link>
-          <Link href="/accompagnement"
-            className="inline-flex items-center gap-2 px-8 py-4 border border-gray-200 hover:border-[#E8B800]/40 text-gray-700 hover:text-gray-900 rounded-xl transition-all">
-            Voir les espaces
-          </Link>
+      {/* ════════ CTA PREMIUM ════════ */}
+      <AnimateOnScroll variant="scaleUp" className="mb-16">
+        <div className="text-center p-10 sm:p-14 rounded-3xl bg-gradient-to-br from-green-50/80 via-white to-yellow-50/80 border border-gray-100 shadow-sm">
+          <motion.div
+            animate={{ y: [-5, 5, -5] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="text-5xl mb-5"
+          >
+            🚀
+          </motion.div>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">Rejoindre l&apos;équipe SMART LIFE ?</h2>
+          <p className="text-gray-500 mb-8 max-w-lg mx-auto text-sm sm:text-base leading-relaxed">
+            Vous êtes expert dans votre domaine et souhaitez accompagner des entrepreneurs ?
+            Candidatez pour rejoindre notre réseau de consultants.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+              <Link href="/devenir-consultant"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-black font-bold rounded-2xl transition-all shadow-xl shadow-[#E8B800]/20 text-base">
+                Devenir consultant <ArrowRight size={18} />
+              </Link>
+            </motion.div>
+            <Link href="/accompagnement"
+              className="inline-flex items-center gap-2 px-8 py-4 border border-gray-200 hover:border-[#E8B800]/40 text-gray-700 hover:text-gray-900 rounded-2xl transition-all text-base font-medium">
+              Voir les espaces
+            </Link>
+          </div>
         </div>
+      </AnimateOnScroll>
+
       </div>
 
       {/* ── Modals ── */}
