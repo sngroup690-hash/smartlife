@@ -212,7 +212,7 @@ function PackCard({ pack }: { pack: Pack }) {
             )}
             <Link
               href={buyHref}
-              className="cta-respire flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-sm font-bold shadow-md"
+              className="cta-clignote flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-sm font-bold shadow-md"
               style={{ background: "linear-gradient(135deg, #E8B800, #27A827)", color: "#fff" }}
             >
               <ShoppingCart size={15} /> Obtenir ce pack
