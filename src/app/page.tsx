@@ -82,7 +82,7 @@ export default async function HomePage() {
   ];
 
   return (
-    <div className="overflow-x-hidden bg-white text-[var(--g-encre)]">
+    <div className="accueil overflow-x-hidden bg-white text-[var(--g-encre)]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(ETIQUETTES_SITE) }} />
 
       {/* ══════ EN-TÊTE ══════ */}
@@ -352,7 +352,7 @@ export default async function HomePage() {
         </div>
         <div className="relative overflow-hidden py-1" data-sans-anim>
           <div className="flex gap-4 animate-marquee-left" style={{ width: "max-content", animationDuration: "50s" }}>
-            {[...testimonials, ...testimonials, ...testimonials].map((t, i) => (
+            {[...testimonials, ...testimonials].map((t, i) => (
               <div key={i} className="flex-shrink-0 w-80 p-6 bg-white rounded-[14px] border border-[var(--g-ligne)] flex flex-col gap-3">
                 <div className="flex gap-0.5">
                   {[...Array(5)].map((_, j) => (

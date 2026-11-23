@@ -338,6 +338,11 @@ html { scroll-behavior: auto; touch-action: manipulation; -webkit-tap-highlight-
 .anim-pause, .anim-pause::before, .anim-pause::after,
 .anim-pause *, .anim-pause *::before, .anim-pause *::after { animation-play-state: paused !important; }
 
+/* Première visite plus rapide : le téléphone ne prépare une section de l'accueil (et le pied de page)
+   que lorsqu'elle approche de l'écran. La taille réservée évite que la page saute en défilant. */
+.accueil > section ~ section,
+footer { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+
 /* Menu du bas */
 @keyframes menu-halo { 0% { transform: scale(1); opacity: 0.45; } 100% { transform: scale(1.55); opacity: 0; } }
 .menu-halo { animation: menu-halo 2s ease-out infinite; }
