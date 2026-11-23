@@ -149,6 +149,18 @@ export function processDescription(html: string): string {
   // 5. Nettoyer les styles problématiques copiés-collés (Word, GDocs…)
   result = result.replace(/<([a-z][a-z0-9]*)[^>]*>/gi, sanitizeTag);
 
+  // 5 bis. Surlignages sombres ou vifs (noir, rouge, marron…) : remplacés par le jaune et le vert
+  //        de Smart Life, en alternance, avec un texte lisible par-dessus.
+  let rangFond = 0;
+  result = result.replace(/<([a-z][a-z0-9]*)(\s[^>]*?)style="([^"]*)"([^>]*)>/gi, (balise, nom, avant, style, apres) => {
+    const m = style.match(/background(?:-color)?\s*:\s*([^;]+)/i);
+    if (!m || !fondSombre(m[1])) return balise;
+    const vert = /rgb\(\s*0\s*,\s*1[0-9]{2}\s*,\s*0\s*\)/.test(m[1]) || rangFond++ % 2 === 1;
+    const couleur = vert ? "#27A827" : "#E8B800";
+    const nouveauStyle = style.replace(/background(?:-color)?\s*:\s*[^;]+/i, `background-color:${couleur}`);
+    return `<${nom}${avant}data-fond="${vert ? "vert" : "jaune"}" style="${nouveauStyle}"${apres}>`;
+  });
+
   // 6. Titre ou paragraphe entièrement surligné (fond coloré) : bandeau rectangulaire
   //    aligné, au lieu d'un surlignage en escalier ligne par ligne sur téléphone.
   result = result.replace(
@@ -176,6 +188,29 @@ export function processDescription(html: string): string {
     .join("");
 
   return result;
+}
+
+// ─── Fonds sombres ────────────────────────────────────────────────────────────
+
+const NOMS_SOMBRES = /^(black|navy|darkblue|darkred|maroon|darkgreen|green|brown|purple|indigo|red|crimson|darkslategray|darkslategrey|midnightblue)$/i;
+
+// Vrai si la couleur de fond est sombre ou très vive (luminance faible).
+function fondSombre(valeur: string): boolean {
+  const v = valeur.trim().toLowerCase();
+  let r: number, g: number, b: number;
+  const rgb = v.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([\d.]+))?/);
+  const hex = v.match(/#([0-9a-f]{3}|[0-9a-f]{6})\b/);
+  if (rgb) {
+    if (rgb[4] !== undefined && parseFloat(rgb[4]) < 0.5) return false;
+    [r, g, b] = [+rgb[1], +rgb[2], +rgb[3]];
+  } else if (hex) {
+    const h = hex[1].length === 3 ? hex[1].split("").map((c) => c + c).join("") : hex[1];
+    [r, g, b] = [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16));
+  } else {
+    return NOMS_SOMBRES.test(v.split(/\s/)[0] ?? "");
+  }
+  const lin = (c: number) => { const s = c / 255; return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4); };
+  return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b) < 0.3;
 }
 
 // ─── Titres entièrement surlignés ─────────────────────────────────────────────

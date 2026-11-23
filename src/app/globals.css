@@ -445,6 +445,9 @@ main article:hover img, main a[class*="rounded-2xl"]:hover img { transform: scal
 /* Titre ou paragraphe entièrement surligné : bandeau rectangulaire, bien aligné sur téléphone */
 .description-boutique .bandeau-surligne { display: block; padding: 0.35em 0.6em; border-radius: 12px; }
 .description-boutique .bandeau-titre { padding: 0.35em 0.6em; border-radius: 12px; }
+/* Surlignages sombres remplacés par le jaune et le vert Smart Life : texte toujours lisible */
+.description-boutique [data-fond="jaune"], .description-boutique [data-fond="jaune"] * { color: #111 !important; }
+.description-boutique [data-fond="vert"], .description-boutique [data-fond="vert"] * { color: #fff !important; }
 .description-boutique .bandeau-titre [style*="background"] { background-color: transparent !important; padding: 0 !important; }
 /* Mots surlignés au milieu d'une phrase : petit arrondi propre à chaque ligne */
 .description-boutique :is(span, strong, b, em, mark)[style*="background"]:not(.bandeau-surligne) { padding: 0 0.15em; border-radius: 4px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
