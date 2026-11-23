@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Menu, X, ShoppingBag } from "lucide-react";
+import { Menu, X, ShoppingBag, Check } from "lucide-react";
 import CurrencySelector from "@/components/CurrencySelector";
 
 const LIENS = [
@@ -17,25 +17,25 @@ const LIENS = [
 
 // Raccourcis toujours visibles, même sur téléphone : on ne reste jamais « coincé » dans la boutique.
 const RACCOURCIS = [
-  { href: "/", label: "🏠 Accueil", fond: "#f7f7f8", texte: "#20252b" },
-  { href: "/accompagnement", label: "🤝 Se faire accompagner", fond: "#27A827", texte: "#fff" },
-  { href: "/devenir-consultant", label: "🚀 Devenir consultant", fond: "#E8B800", texte: "#fff" },
-  { href: "/packs", label: "📦 Packs à prix réduit", fond: "#f7f7f8", texte: "#20252b" },
-  { href: "/nos-consultants", label: "👥 Nos consultants", fond: "#f7f7f8", texte: "#20252b" },
+  { href: "/", label: "Accueil" },
+  { href: "/accompagnement", label: "Se faire accompagner", fort: true },
+  { href: "/devenir-consultant", label: "Devenir consultant" },
+  { href: "/packs", label: "Packs à prix réduit" },
+  { href: "/nos-consultants", label: "Nos consultants" },
 ];
 
 export function EnteteBoutique() {
   const [menu, setMenu] = useState(false);
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-[#e8e9eb]">
+    <header className="sticky top-0 z-40 bg-white">
       <div className="max-w-6xl mx-auto h-[65px] px-4 flex items-center justify-between gap-3">
         <Link href="/" className="flex items-center gap-2 min-w-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-smartlife.jpeg" alt="Smart Life" className="w-8 h-8 rounded-lg object-cover" />
-          <span className="font-bold text-base text-black truncate">Smart Life</span>
+          <span className="font-semibold text-[17px] tracking-[-0.01em] text-[var(--g-encre)] truncate">Smart Life</span>
         </Link>
-        <nav className="hidden lg:flex items-center gap-5 text-sm text-[#20252b]">
-          {LIENS.filter((l) => l.href !== "/" && l.href !== "/devenir-consultant").map((l) => <Link key={l.href} href={l.href} className="hover:opacity-70">{l.label}</Link>)}
+        <nav className="hidden lg:flex items-center gap-6 text-[14.5px] text-[var(--g-gris)]">
+          {LIENS.filter((l) => l.href !== "/" && l.href !== "/devenir-consultant").map((l) => <Link key={l.href} href={l.href} className="hover:text-[var(--g-encre)] transition-colors">{l.label}</Link>)}
         </nav>
         <div className="flex items-center gap-3">
           <Link href="/mon-espace" className="hidden lg:flex items-center gap-1.5 text-sm text-[#20252b] hover:opacity-70">
@@ -47,17 +47,17 @@ export function EnteteBoutique() {
           </button>
         </div>
       </div>
-      <div className="border-t border-[#f1f2f3] bg-white">
+      <div className="border-t border-[var(--g-ligne)] bg-white">
         <div className="max-w-6xl mx-auto px-4 py-2 flex gap-2 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
           {RACCOURCIS.map((r) => (
             <Link key={r.href} href={r.href}
-              className={`flex-shrink-0 px-3 py-1.5 rounded-full text-[12.5px] font-bold transition-transform hover:scale-105 ${r.href === "/devenir-consultant" || r.href === "/accompagnement" ? "cta-respire shadow-sm" : "border border-[#e8e9eb]"}`}
-              style={{ background: r.fond, color: r.texte }}>
+              className={`flex-shrink-0 px-3.5 py-1.5 rounded-[8px] text-[13px] font-medium transition-colors ${r.fort ? "bg-[var(--g-jaune)] text-[var(--g-encre)] font-semibold" : "border border-[var(--g-ligne)] text-[var(--g-encre)] hover:border-[var(--g-encre)]"}`}>
               {r.label}
             </Link>
           ))}
         </div>
       </div>
+      <div className="bande-wax h-[10px]" aria-hidden="true" />
       {menu && (
         <div className="lg:hidden border-t border-[#e8e9eb] bg-white px-4 py-2">
           {[...LIENS, { href: "/mon-espace", label: "Mes achats" }].map((l) => (
@@ -72,35 +72,35 @@ export function EnteteBoutique() {
 }
 
 const GARANTIES = [
-  { icone: "⚡", titre: "Livraison instantanée", texte: "Ton guide arrive en quelques secondes" },
-  { icone: "🔒", titre: "Paiement sécurisé", texte: "Tes informations sont protégées" },
-  { icone: "📱", titre: "Mobile Money & carte", texte: "MTN, Orange, Wave, Visa…" },
-  { icone: "👥", titre: "Groupe privé WhatsApp", texte: "Échange avec d'autres entrepreneurs" },
-  { icone: "♾️", titre: "Accès à vie", texte: "Retélécharge ton guide quand tu veux" },
-  { icone: "🤝", titre: "Accompagnement possible", texte: "Un consultant du terrain à tes côtés" },
-  { icone: "💬", titre: "Aide sur WhatsApp", texte: "Une vraie personne te répond" },
-  { icone: "🌍", titre: "14 960+ clients", texte: "Partout en Afrique et dans la diaspora" },
+  { titre: "Livraison instantanée", texte: "Ton guide arrive en quelques secondes" },
+  { titre: "Paiement sécurisé", texte: "Tes informations sont protégées" },
+  { titre: "Mobile Money & carte", texte: "MTN, Orange, Wave, Visa…" },
+  { titre: "Groupe privé WhatsApp", texte: "Échange avec d'autres entrepreneurs" },
+  { titre: "Accès à vie", texte: "Retélécharge ton guide quand tu veux" },
+  { titre: "Accompagnement possible", texte: "Un consultant du terrain à tes côtés" },
+  { titre: "Aide sur WhatsApp", texte: "Une vraie personne te répond" },
+  { titre: "14 960 clients", texte: "Partout en Afrique et dans la diaspora" },
 ];
 
 export function PiedBoutique() {
   return (
-    <footer className="border-t border-[#e8e9eb] bg-white">
-      <div className="max-w-6xl mx-auto px-4 pt-7 grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {GARANTIES.map((g, i) => (
-          <div key={g.titre}
-            className="garantie-boutique group flex flex-col items-center gap-1.5 rounded-2xl px-3 py-4 text-center shadow-sm transition-transform hover:-translate-y-1"
-            style={{ background: i % 2 === 0 ? "linear-gradient(135deg, #fffbea, #fff4c2)" : "linear-gradient(135deg, #f0fdf4, #dcfce7)", border: `1.5px solid ${i % 2 === 0 ? "#E8B800" : "#27A827"}`, animationDelay: `${i * 0.25}s` }}>
-            <span className="flex items-center justify-center w-11 h-11 rounded-full text-[22px] shadow-md group-hover:scale-110 transition-transform"
-              style={{ background: i % 2 === 0 ? "#E8B800" : "#27A827" }}>{g.icone}</span>
-            <span className="text-[13px] font-extrabold text-[#111827] leading-tight">{g.titre}</span>
-            <span className="text-[11px] text-[#5c5e62] leading-snug">{g.texte}</span>
+    <footer className="bg-[var(--g-doux)]">
+      <div className="bande-wax h-[18px]" aria-hidden="true" />
+      <div className="max-w-6xl mx-auto px-4 pt-9 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-6">
+        {GARANTIES.map((g) => (
+          <div key={g.titre} className="flex items-start gap-2.5">
+            <Check size={17} strokeWidth={2.5} className="mt-[3px] flex-shrink-0 text-[var(--g-vert)]" />
+            <div>
+              <p className="text-[14.5px] font-semibold leading-tight text-[var(--g-encre)]">{g.titre}</p>
+              <p className="mt-1 text-[13px] leading-snug text-[var(--g-gris)]">{g.texte}</p>
+            </div>
           </div>
         ))}
       </div>
       <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col items-center gap-4 text-center">
         <a href="https://wa.me/237694176642" target="_blank" rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 h-10 px-4 rounded-full border border-[#25D366] text-[13px] font-semibold text-[#128C4A]">
-          💬 Une question ? WhatsApp +237 694 176 642
+          className="g-btn">
+          Une question ? WhatsApp +237 694 176 642
         </a>
         <div className="flex items-center gap-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}

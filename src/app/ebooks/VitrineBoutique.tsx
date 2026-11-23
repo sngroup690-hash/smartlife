@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, BookOpen, X } from "lucide-react";
+import { Search, BookOpen, X, MessageCircle, ArrowRight } from "lucide-react";
 import type { Ebook } from "@/lib/data";
 import { useCurrencyStore } from "@/lib/currency-store";
 import { EnteteBoutique, PiedBoutique } from "./[slug]/ElementsBoutique";
@@ -15,15 +15,15 @@ type Guide = Ebook & { ventes?: number; vendusAffiche?: number };
 type Temoignage = { name: string; role: string; content: string; rating: number; avatar: string };
 
 const NOMS_COURTS: Record<string, string> = {
-  Tous: "✨ Tous",
-  "Développement Personnel, Compétences & Spiritualité": "🧠 Développement perso",
-  "Santé, Bien-être & Soins Corporels": "💆 Santé & beauté",
-  "Élevage & Dresseurs": "🐔 Élevage",
-  "Agriculture & Cultures Rentables": "🌱 Agriculture",
-  "Création d'Entreprises & Commerce Réel": "🏪 Commerce & business",
-  "Fabrication Artisanale & Transformation": "🧴 Fabrication",
-  "Business Numérique, IA & Tech": "💻 Numérique & IA",
-  "Gestion, Droit & Finance": "💰 Finance & gestion",
+  Tous: "Tous",
+  "Développement Personnel, Compétences & Spiritualité": "Développement perso",
+  "Santé, Bien-être & Soins Corporels": "Santé & beauté",
+  "Élevage & Dresseurs": "Élevage",
+  "Agriculture & Cultures Rentables": "Agriculture",
+  "Création d'Entreprises & Commerce Réel": "Commerce & business",
+  "Fabrication Artisanale & Transformation": "Fabrication",
+  "Business Numérique, IA & Tech": "Numérique & IA",
+  "Gestion, Droit & Finance": "Finance & gestion",
 };
 
 type Achat = (g: Guide) => void;
@@ -65,34 +65,31 @@ function CarteGuide({ guide, onAcheter }: { guide: Guide; onAcheter: Achat }) {
     ? Math.round((1 - guide.price / guide.originalPrice) * 100) : 0;
   const ventes = ventesDe(guide);
   return (
-    <div className="group flex flex-col rounded-xl border border-[#e8e9eb] bg-white overflow-hidden">
+    <div className="group flex flex-col bg-white">
       <Link href={`/ebooks/${guide.slug}`} className="flex flex-col flex-1 active:scale-[0.99] transition-transform">
-      <div className="relative aspect-square bg-[#f7f7f8] flex items-center justify-center overflow-hidden">
+      <div className="relative aspect-square rounded-[14px] bg-[var(--g-doux)] flex items-center justify-center overflow-hidden">
         {image && !erreurImage ? (
           <Image src={image} alt={guide.title} fill quality={90}
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 300px"
-            className="object-contain" onError={() => setErreurImage(true)} />
+            className="object-contain transition-transform duration-500 group-hover:scale-[1.03]" onError={() => setErreurImage(true)} />
         ) : (
           <BookOpen size={30} className="text-[#a9aeb5]" />
         )}
-        {reduction > 0 && (
-          <span className="absolute top-2 left-2 px-1.5 py-0.5 rounded-md bg-[#e30026] text-[11px] font-bold" style={{ color: "#fff" }}>-{reduction} %</span>
-        )}
       </div>
-      <div className="p-2.5 flex flex-col gap-1 flex-1">
-        <TitreDefilant texte={guide.title} className="text-[13px] font-semibold text-black" />
-        {ventes > 0 && <p className="text-[11px] text-[#717882]">🔥 {ventes.toLocaleString("fr-FR")} ventes</p>}
-        <div className="mt-auto pt-1 flex flex-wrap items-baseline gap-x-1.5">
-          <span className="text-[15px] font-bold text-[#e30026]">{convert(guide.price)}</span>
-          {reduction > 0 && <span className="text-[11px] text-[#a9aeb5] line-through">{convert(guide.originalPrice!)}</span>}
+      <div className="pt-3 flex flex-col gap-1 flex-1">
+        <h3 className="text-[14px] sm:text-[15.5px] font-semibold leading-snug tracking-[-0.01em] text-[var(--g-encre)] line-clamp-2">{guide.title}</h3>
+        {ventes > 0 && <p className="text-[12.5px] text-[var(--g-gris)]">{ventes.toLocaleString("fr-FR")} ventes</p>}
+        <div className="mt-auto pt-1 flex flex-wrap items-baseline gap-x-2 tabular-nums">
+          <span className="text-[15.5px] sm:text-[17px] font-semibold text-[var(--g-encre)]">{convert(guide.price)}</span>
+          {reduction > 0 && <span className="text-[12.5px] text-[var(--g-gris)] line-through">{convert(guide.originalPrice!)}</span>}
+          {reduction > 0 && <span className="text-[12.5px] font-semibold text-[var(--g-vert)]">−{reduction} %</span>}
         </div>
       </div>
       </Link>
-      <div className="px-2.5 pb-2.5">
+      <div className="pt-2.5">
         <button onClick={() => onAcheter(guide)}
-          className="w-full h-9 rounded-lg bg-[#008f51] text-[13px] font-bold active:scale-[0.98] transition-transform"
-          style={{ color: "#fff" }}>
-          ⚡ Acheter
+          className="g-btn w-full !h-10 !text-[14px]">
+          Acheter
         </button>
       </div>
     </div>
@@ -112,35 +109,32 @@ function SectionPacks() {
   if (packs.length === 0) return null;
   const maxEco = Math.max(...packs.map((p) => p.originalValeur - p.prix));
   return (
-    <section className="mt-8 -mx-4 py-6 bg-[#fffbeb] border-y border-[#fde68a]">
+    <section className="mt-12 -mx-4 py-8 bg-[var(--g-jaune-doux)]">
       <div className="px-4 flex items-end justify-between gap-3 mb-3">
         <div>
-          <h2 className="text-[19px] font-bold">📦 Packs à prix cassé</h2>
-          <p className="text-[13px] text-[#b45309] font-semibold">Jusqu&apos;à {convert(maxEco)} d&apos;économie</p>
+          <h2 className="text-[24px] sm:text-[28px] font-semibold tracking-[-0.02em]">Packs à prix cassé</h2>
+          <p className="text-[14px] text-[var(--g-gris)]">Jusqu&apos;à {convert(maxEco)} d&apos;économie</p>
         </div>
-        <Link href="/packs" className="text-[13px] font-semibold text-[#008f51] whitespace-nowrap">Tout voir →</Link>
+        <Link href="/packs" className="g-lien text-[14.5px] whitespace-nowrap">Tout voir <ArrowRight size={15} /></Link>
       </div>
       <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory px-4 pb-2 [scrollbar-width:none]">
         {packs.map((p) => (
           <Link key={p.slug} href={`/packs/${p.slug}`}
-            className="snap-start flex-shrink-0 w-[62%] sm:w-[34%] lg:w-[24%] rounded-2xl bg-white border border-[#e8e9eb] overflow-hidden shadow-sm">
+            className="snap-start flex-shrink-0 w-[62%] sm:w-[34%] lg:w-[24%] rounded-[14px] bg-white overflow-hidden">
             <div className="relative aspect-[4/3] bg-[#f7f7f8]">
               {p.image && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={p.image} alt={p.nom} loading="lazy" className="w-full h-full object-cover" />
               )}
-              <span className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-[#E8B800] text-[11px] font-bold text-black">{p.items?.length ?? 0} guides</span>
-              <span className="absolute top-2 right-2 px-1.5 py-0.5 rounded-md bg-[#e30026] text-[11px] font-bold" style={{ color: "#fff" }}>
-                -{Math.round((1 - p.prix / p.originalValeur) * 100)} %
-              </span>
+              <span className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-white text-[12px] font-semibold text-[var(--g-encre)]">{p.items?.length ?? 0} guides</span>
             </div>
             <div className="p-3">
-              <TitreDefilant texte={p.nom} className="text-[14px] font-bold" />
-              <p className="mt-1">
-                <span className="text-[16px] font-extrabold text-[#e30026]">{convert(p.prix)}</span>{" "}
-                <span className="text-[12px] text-[#a9aeb5] line-through">{convert(p.originalValeur)}</span>
+              <TitreDefilant texte={p.nom} className="text-[15px] font-semibold" />
+              <p className="mt-1 tabular-nums">
+                <span className="text-[16px] font-semibold text-[var(--g-encre)]">{convert(p.prix)}</span>{" "}
+                <span className="text-[12.5px] text-[var(--g-gris)] line-through">{convert(p.originalValeur)}</span>
               </p>
-              <p className="text-[12px] font-semibold text-[#008f51]">Tu économises {convert(p.originalValeur - p.prix)}</p>
+              <p className="text-[13px] font-semibold text-[var(--g-vert)]">Tu économises {convert(p.originalValeur - p.prix)}</p>
             </div>
           </Link>
         ))}
@@ -151,7 +145,7 @@ function SectionPacks() {
 
 function Grille({ guides, onAcheter }: { guides: Guide[]; onAcheter: Achat }) {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-9 sm:gap-x-6">
       {guides.map((g) => <CarteGuide key={g.id} guide={g} onAcheter={onAcheter} />)}
     </div>
   );
@@ -193,33 +187,22 @@ export default function VitrineBoutique({
       <EnteteBoutique />
 
       {/* Bandeau de la boutique */}
-      <div style={{ background: "linear-gradient(135deg, #1b7a1b 0%, #27A827 55%, #1f8f1f 100%)" }}>
-        <div className="max-w-6xl mx-auto px-4 pt-10 pb-8 lg:pt-14 lg:pb-12">
-          <h1 className="text-[24px] lg:text-[32px] font-extrabold leading-tight !text-white">Boutique Smart Life</h1>
-          <p className="mt-2 text-[15px] lg:text-[17px] leading-snug max-w-xl" style={{ color: "rgba(255,255,255,0.92)" }}>
-            Plus que des guides : un écosystème pour lancer et réussir ton activité en Afrique — le guide, la communauté WhatsApp et des consultants pour t&apos;accompagner.
-          </p>
-          <div className="mt-5 flex flex-wrap gap-2 text-[12px] font-semibold">
-            {[`📚 ${guides.length} guides`, "⭐ 14 960+ clients", "🤝 Accompagnement possible"]
-              .filter(Boolean).map((t) => (
-                <span key={t!} className="px-3 py-1.5 rounded-full bg-white/15 backdrop-blur-sm" style={{ color: "#fff" }}>{t}</span>
-              ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-white border-b border-[#f1f2f3] overflow-hidden">
-        <div className="animate-defilement-garanties flex gap-2 py-3 w-max">
-          {[...["⚡ Reçu en quelques secondes", "📱 Paiement Mobile Money", "♾️ Accès à vie", "👥 Groupe WhatsApp privé", "💬 Aide sur WhatsApp", "🤝 Accompagnement possible", "🌍 14 960+ clients en Afrique"], ...["⚡ Reçu en quelques secondes", "📱 Paiement Mobile Money", "♾️ Accès à vie", "👥 Groupe WhatsApp privé", "💬 Aide sur WhatsApp", "🤝 Accompagnement possible", "🌍 14 960+ clients en Afrique"]].map((g, i) => (
-            <span key={i} className="flex-shrink-0 px-3 py-1.5 rounded-full bg-[#f3fbf6] border border-[#008f51]/15 text-[12px] font-semibold text-[#20252b]">{g}</span>
-          ))}
-        </div>
+      <div className="max-w-6xl mx-auto px-4 pt-10 pb-6 lg:pt-14">
+        <h1 className="text-[36px] sm:text-[48px] lg:text-[58px] font-semibold leading-[1.03] tracking-[-0.035em] text-[var(--g-encre)]">
+          Boutique <span className="g-surligne">Smart Life</span>
+        </h1>
+        <p className="mt-4 text-[17px] lg:text-[19px] leading-[1.45] max-w-[46ch] text-[var(--g-gris)]">
+          Plus que des guides : un écosystème pour lancer et réussir ton activité en Afrique. Le guide, la communauté WhatsApp et des consultants pour t&apos;accompagner.
+        </p>
+        <p className="mt-4 text-[14.5px] text-[var(--g-gris)] tabular-nums">
+          {guides.length} guides · 14 960 clients · Reçu en quelques secondes · Paiement Mobile Money · Accès à vie · Aide sur WhatsApp
+        </p>
       </div>
 
       <div className="max-w-6xl mx-auto px-4">
         {/* Recherche + catégories */}
-        <div className="sticky top-[65px] z-30 bg-white pt-4 pb-3 -mx-4 px-4 border-b border-[#f1f2f3]">
-          <label className="flex items-center gap-2 h-11 px-3 rounded-xl border border-[#d4d6d7] focus-within:border-[#008f51] bg-white">
+        <div className="sticky top-[65px] z-30 bg-white pt-4 pb-3 -mx-4 px-4 border-b border-[var(--g-ligne)]">
+          <label className="flex items-center gap-2 h-12 px-3.5 rounded-[10px] bg-[var(--g-doux)] border border-transparent focus-within:border-[var(--g-encre)]">
             <Search size={17} className="text-[#717882] flex-shrink-0" />
             <input
               value={recherche}
@@ -232,7 +215,7 @@ export default function VitrineBoutique({
           <div className="mt-3 flex gap-2 overflow-x-auto -mx-4 px-4 pb-1 [scrollbar-width:none]">
             {categories.map((c) => (
               <button key={c} onClick={() => { setCategorie(c); setNombreVisible(12); }}
-                className={`flex-shrink-0 px-3.5 py-1.5 rounded-full text-[13px] font-semibold border whitespace-nowrap transition-colors ${categorie === c ? "border-[#008f51] bg-[#008f51]" : "border-[#d4d6d7] text-[#20252b] bg-white"}`}
+                className={`flex-shrink-0 px-3.5 py-1.5 rounded-[8px] text-[13.5px] font-medium border whitespace-nowrap transition-colors ${categorie === c ? "border-[var(--g-encre)] bg-[var(--g-encre)]" : "border-[var(--g-ligne)] text-[var(--g-encre)] bg-white hover:border-[var(--g-encre)]"}`}
                 style={categorie === c ? { color: "#fff" } : {}}>
                 {NOMS_COURTS[c] ?? c}
               </button>
@@ -242,8 +225,8 @@ export default function VitrineBoutique({
 
         {!modeListe && plusVendus.length > 0 && (
           <ApparitionScroll>
-          <section className="mt-6">
-            <h2 className="text-[19px] font-bold mb-3">🔥 Les plus vendus</h2>
+          <section className="mt-10">
+            <h2 className="text-[24px] sm:text-[28px] font-semibold tracking-[-0.02em] mb-5">Les plus vendus</h2>
             <Grille guides={plusVendus} onAcheter={setAchat} />
           </section>
           </ApparitionScroll>
@@ -253,9 +236,9 @@ export default function VitrineBoutique({
 
         {!modeListe && ordre && aDecouvrir.length > 0 && (
           <ApparitionScroll delai={100}>
-          <section className="mt-8">
-            <h2 className="text-[19px] font-bold mb-1">✨ À découvrir aujourd&apos;hui</h2>
-            <p className="text-[13px] text-[#717882] mb-3">Une nouvelle sélection à chaque visite.</p>
+          <section className="mt-14">
+            <h2 className="text-[24px] sm:text-[28px] font-semibold tracking-[-0.02em] mb-1">À découvrir aujourd&apos;hui</h2>
+            <p className="text-[14.5px] text-[var(--g-gris)] mb-5">Une nouvelle sélection à chaque visite.</p>
             <Grille guides={aDecouvrir} onAcheter={setAchat} />
           </section>
           </ApparitionScroll>
@@ -263,39 +246,35 @@ export default function VitrineBoutique({
 
         {/* Avis clients, remontés pour rassurer tôt */}
         {!modeListe && temoignages.length > 0 && (
-          <section className="mt-8 -mx-4 py-8 bg-[#f7f7f8] overflow-hidden">
-            <h2 className="px-4 text-[19px] font-bold mb-4">⭐ Ils nous font confiance</h2>
+          <section className="mt-14 -mx-4 py-10 bg-[var(--g-doux)] overflow-hidden">
+            <h2 className="px-4 text-[24px] sm:text-[28px] font-semibold tracking-[-0.02em] mb-5">Ils nous font confiance</h2>
             <div className="flex gap-3 animate-marquee-left" style={{ width: "max-content", animationDuration: "40s" }}>
               {[...temoignages, ...temoignages].map((t, i) => (
-                <div key={i} className="w-72 flex-shrink-0 p-4 bg-white rounded-xl border border-[#e8e9eb]">
-                  <div className="flex items-center gap-2.5 mb-2">
-                    <span className="w-9 h-9 rounded-full bg-[#27A827] flex items-center justify-center text-[13px] font-bold" style={{ color: "#fff" }}>{t.avatar}</span>
-                    <div>
-                      <p className="text-[14px] font-bold">{t.name}</p>
-                      <p className="text-[12px] text-[#008f51] font-semibold">{t.role}</p>
-                    </div>
+                <div key={i} className="w-72 flex-shrink-0 p-5 bg-white rounded-[14px]">
+                  <p className="text-[14px] text-[var(--g-jaune)]">{"★".repeat(t.rating)}<span className="text-[var(--g-ligne)]">{"★".repeat(5 - t.rating)}</span></p>
+                  <p className="mt-2 text-[14.5px] text-[#2c322e] leading-[1.5] line-clamp-4">{t.content}</p>
+                  <div className="mt-3 pt-3 border-t border-[var(--g-ligne)]">
+                    <p className="text-[14px] font-semibold">{t.name}</p>
+                    <p className="text-[12.5px] text-[var(--g-gris)]">{t.role}</p>
                   </div>
-                  <p className="text-[13px] text-[#393c41] leading-relaxed line-clamp-4">{t.content}</p>
-                  <p className="mt-2 text-[13px]">{"★".repeat(t.rating)}<span className="text-[#d4d6d7]">{"★".repeat(5 - t.rating)}</span></p>
                 </div>
               ))}
             </div>
           </section>
         )}
 
-        <section className="mt-8 pb-10">
-          <h2 className="text-[19px] font-bold mb-3">
-            {modeListe ? `${filtres.length} guide${filtres.length > 1 ? "s" : ""} trouvé${filtres.length > 1 ? "s" : ""}` : "📚 Tous les guides"}
+        <section className="mt-14 pb-10">
+          <h2 className="text-[24px] sm:text-[28px] font-semibold tracking-[-0.02em] mb-5">
+            {modeListe ? `${filtres.length} guide${filtres.length > 1 ? "s" : ""} trouvé${filtres.length > 1 ? "s" : ""}` : "Tous les guides"}
           </h2>
           {filtres.length === 0 ? (
-            <p className="py-10 text-center text-[14px] text-[#717882]">Aucun guide ne correspond. Essaie un autre mot.</p>
+            <p className="py-10 text-center text-[15px] text-[var(--g-gris)]">Aucun guide ne correspond. Essaie un autre mot.</p>
           ) : (
             <>
               <Grille guides={filtres.slice(0, nombreVisible)} onAcheter={setAchat} />
               {filtres.length > nombreVisible && (
                 <button onClick={() => setNombreVisible((n) => n + 12)}
-                  className="mt-5 w-full h-11 rounded-xl text-[14px] font-bold cta-respire"
-                  style={{ background: "#E8B800", color: "#fff" }}>
+                  className="g-btn-ghost mt-8 w-full">
                   Voir plus de guides ({filtres.length - nombreVisible})
                 </button>
               )}
@@ -307,12 +286,12 @@ export default function VitrineBoutique({
       {/* Packs */}
       <ApparitionScroll>
       <section className="max-w-6xl mx-auto px-4 py-10">
-        <div className="rounded-2xl border border-[#fde68a] bg-[#fffbeb] p-6 text-center">
-          <p className="text-[18px] font-bold">📦 3 guides pour le prix de 2</p>
-          <p className="mt-1 text-[14px] text-[#393c41]">Économisez jusqu&apos;à 40 % en prenant plusieurs guides ensemble.</p>
-          <Link href="/packs" className="mt-4 inline-flex items-center justify-center h-11 px-6 rounded-xl text-[14px] font-bold cta-respire" style={{ background: "#E8B800", color: "#fff" }}>
-            Voir les packs
-          </Link>
+        <div className="rounded-[18px] bg-[var(--g-jaune)] p-7 sm:p-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+          <div>
+            <p className="text-[24px] sm:text-[30px] font-semibold tracking-[-0.02em] text-[var(--g-encre)]">3 guides pour le prix de 2</p>
+            <p className="mt-1 text-[15.5px] text-[#3d3a1f]">Économisez jusqu&apos;à 40 % en prenant plusieurs guides ensemble.</p>
+          </div>
+          <Link href="/packs" className="g-btn g-btn-noir self-start sm:self-auto">Voir les packs</Link>
         </div>
       </section>
       </ApparitionScroll>
@@ -321,9 +300,9 @@ export default function VitrineBoutique({
 
       <a href={`https://wa.me/237694176642?text=${encodeURIComponent("Bonjour Smart Life, j'ai besoin d'aide pour choisir un guide.")}`}
         target="_blank" rel="noopener noreferrer"
-        className="fixed bottom-4 right-4 z-40 flex items-center gap-2 h-12 pl-3 pr-4 rounded-full bg-[#25D366] shadow-lg text-[13px] font-bold"
+        className="fixed bottom-4 lg:bottom-5 right-4 z-40 flex items-center gap-2 h-11 pl-3.5 pr-4 rounded-[10px] bg-[var(--g-encre)] shadow-[0_6px_20px_rgba(16,20,16,0.18)] text-[14px] font-semibold"
         style={{ color: "#fff" }}>
-        <span className="text-[18px]">💬</span> Besoin d&apos;aide pour choisir ?
+        <MessageCircle size={17} /> Besoin d&apos;aide pour choisir ?
       </a>
 
       {achat && (
