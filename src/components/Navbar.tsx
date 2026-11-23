@@ -67,7 +67,7 @@ export default function Navbar() {
 
               <Link
                 href="/mon-espace"
-                className="hidden md:flex items-center px-4 py-2 bg-[var(--g-encre)] hover:bg-black text-white text-[14px] font-semibold rounded-[10px] transition-colors duration-200"
+                className="hidden md:flex items-center px-4 py-2 bg-[var(--g-jaune)] hover:bg-[var(--g-jaune-fonce)] text-[var(--g-encre)] text-[14px] font-semibold rounded-[10px] transition-colors duration-200"
               >
                 Mon espace
               </Link>
@@ -83,7 +83,7 @@ export default function Navbar() {
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 flex items-center justify-center bg-[var(--g-vert)] text-white text-[10px] font-bold rounded-full px-[3px] leading-none"
+                    className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 flex items-center justify-center bg-[var(--g-jaune)] text-[var(--g-encre)] text-[10px] font-bold rounded-full px-[3px] leading-none"
                   >
                     {cartCount}
                   </motion.span>

@@ -83,7 +83,7 @@ export default async function HomePage() {
       {/* ══════ EN-TÊTE ══════ */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16">
         <h1 className="text-[40px] sm:text-[60px] lg:text-[76px] font-semibold leading-[1.02] tracking-[-0.035em] max-w-[15ch]">
-          Votre business en Afrique, <span className="text-[var(--g-gris-clair)]">de l&apos;idée au succès.</span>
+          Votre business en Afrique, de l&apos;idée au <span className="g-surligne">succès.</span>
         </h1>
         <div className="mt-7 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
           <p className="text-[18px] sm:text-[20px] leading-[1.45] text-[var(--g-gris)] max-w-[44ch]">
@@ -114,16 +114,19 @@ export default async function HomePage() {
       )}
 
       {/* ══════ CHIFFRES ══════ */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-        <div className="grid grid-cols-2 lg:grid-cols-3 border-t border-[var(--g-ligne)]">
-          {chiffres.map((c, i) => (
-            <div key={c.l} className={`py-6 pr-4 border-b border-[var(--g-ligne)] ${i % 2 === 1 ? "pl-4 border-l lg:border-l-0 lg:pl-0" : ""} lg:[&:not(:nth-child(3n+1))]:pl-6 lg:[&:not(:nth-child(3n+1))]:border-l`}>
-              <p className="g-chiffre">
-                {c.texte ?? <span data-compteur={c.n} data-suffixe={c.s}>{c.n.toLocaleString("fr-FR")}{c.s}</span>}
-              </p>
-              <p className="mt-2 text-[14.5px] leading-snug text-[var(--g-gris)]">{c.l}</p>
-            </div>
-          ))}
+      <section className="mt-14 bg-[var(--g-vert-profond)]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-y-2">
+            {chiffres.map((c, i) => (
+              <div key={c.l} className={`py-5 pr-4 ${i % 2 === 1 ? "pl-4 border-l border-white/20 lg:border-l-0 lg:pl-0" : ""} lg:[&:not(:nth-child(3n+1))]:pl-6 lg:[&:not(:nth-child(3n+1))]:border-l lg:[&:not(:nth-child(3n+1))]:border-white/20`}>
+                <span className="block h-[3px] w-7 rounded-full bg-[var(--g-jaune)] mb-4" aria-hidden="true" />
+                <p className="g-chiffre" style={{ color: "#fff" }}>
+                  {c.texte ?? <span data-compteur={c.n} data-suffixe={c.s}>{c.n.toLocaleString("fr-FR")}{c.s}</span>}
+                </p>
+                <p className="mt-2 text-[14.5px] leading-snug" style={{ color: "rgba(255,255,255,0.82)" }}>{c.l}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -176,18 +179,18 @@ export default async function HomePage() {
 
       {/* ══════ ANALYSE SMART ══════ */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24">
-        <Link href="/analyse-smart" className="group grid lg:grid-cols-[1.4fr_1fr] gap-8 items-center rounded-[18px] bg-[var(--g-doux)] p-7 sm:p-12">
+        <Link href="/analyse-smart" className="group grid lg:grid-cols-[1.4fr_1fr] gap-8 items-center rounded-[18px] bg-[var(--g-jaune-doux)] p-7 sm:p-12">
           <div>
             <p className="text-[14px] font-semibold text-[var(--g-vert)]">Nouveau · Analyse Smart</p>
             <h2 className="g-titre-section mt-2">Quel business lancer maintenant au Cameroun ?</h2>
             <p className="mt-3 text-[16.5px] leading-[1.5] text-[var(--g-gris)] max-w-[52ch]">
               Les business d&apos;avenir, analysés à partir des chiffres officiels et de ce que nos clients achètent : pourquoi maintenant, les risques, et pour qui.
             </p>
-            <span className="g-btn mt-6">Lire l&apos;analyse</span>
+            <span className="g-btn g-btn-noir mt-6">Lire l&apos;analyse</span>
           </div>
-          <ul className="border-t border-[#d7ddd7] text-[16px]">
+          <ul className="border-t border-[#ecdc9a] text-[16px]">
             {[["Cameroun", "Disponible"], ["Bénin", "Bientôt"], ["Togo", "Bientôt"], ["Côte d'Ivoire", "Bientôt"]].map(([pays, etat], i) => (
-              <li key={pays} className="flex items-center justify-between py-3.5 border-b border-[#d7ddd7]">
+              <li key={pays} className="flex items-center justify-between py-3.5 border-b border-[#ecdc9a]">
                 <span className={i === 0 ? "font-semibold" : "text-[var(--g-gris)]"}>{pays}</span>
                 <span className={`text-[14px] ${i === 0 ? "font-semibold text-[var(--g-vert)]" : "text-[var(--g-gris)]"}`}>{etat}</span>
               </li>
@@ -226,7 +229,7 @@ export default async function HomePage() {
 
       {/* ══════ DEVENIR CONSULTANT ══════ */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center rounded-[18px] bg-[var(--g-vert-doux)] p-6 sm:p-10">
           <div>
             <p className="text-[14px] font-semibold text-[var(--g-vert)]">Rejoignez le réseau</p>
             <h2 className="g-titre-section mt-2">Devenez consultant Smart Life</h2>
@@ -240,7 +243,7 @@ export default async function HomePage() {
                 </li>
               ))}
             </ul>
-            <Link href="/devenir-consultant" className="g-btn mt-7">Candidature gratuite</Link>
+            <Link href="/devenir-consultant" className="g-btn mt-7" style={{ background: "var(--g-vert)", color: "#fff" }}>Candidature gratuite</Link>
           </div>
           {(photosConsultants.length > 0 || photoConsultant) && (
             <div>
@@ -308,16 +311,16 @@ export default async function HomePage() {
 
       {/* ══════ APPEL FINAL ══════ */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
-        <div className="rounded-[18px] bg-[var(--g-doux)] overflow-hidden">
+        <div className="rounded-[18px] bg-[var(--g-jaune)] overflow-hidden">
           <div className="p-8 sm:p-12 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-7">
             <div>
               <h2 className="g-titre-section max-w-[16ch]">Prêt à passer à l&apos;action ?</h2>
-              <p className="mt-2 text-[16.5px] text-[var(--g-gris)]">Rejoignez plus de 14 960 clients qui avancent avec Smart Life.</p>
+              <p className="mt-2 text-[16.5px] text-[#3d3a1f]">Rejoignez plus de 14 960 clients qui avancent avec Smart Life.</p>
             </div>
             <div className="flex flex-wrap gap-2.5">
-              <Link href="/ebooks" className="g-btn">Acheter un guide</Link>
-              <Link href="/accompagnement" className="g-btn-ghost bg-white">Être accompagné</Link>
-              <Link href="/devenir-consultant" className="g-btn-ghost bg-white">Devenir consultant</Link>
+              <Link href="/ebooks" className="g-btn g-btn-noir">Acheter un guide</Link>
+              <Link href="/accompagnement" className="g-btn-ghost bg-white shadow-none">Être accompagné</Link>
+              <Link href="/devenir-consultant" className="g-btn-ghost bg-white shadow-none">Devenir consultant</Link>
             </div>
           </div>
           <div className="bande-wax h-3" aria-hidden="true" />

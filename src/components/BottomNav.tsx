@@ -69,7 +69,7 @@ export default function BottomNav() {
                 >
                   {item.label}
                 </span>
-                <span className="h-[3px] w-4 rounded-full" style={{ background: "var(--g-vert)", opacity: active ? 1 : 0 }} />
+                <span className="h-[3px] w-4 rounded-full" style={{ background: "var(--g-jaune)", opacity: active ? 1 : 0 }} />
               </Link>
             );
           })}
@@ -149,7 +149,7 @@ export default function BottomNav() {
             <Link
               href="/mon-espace"
               onClick={() => setDrawerOpen(false)}
-              className="flex-1 py-2.5 bg-[var(--g-encre)] text-white font-semibold text-sm text-center rounded-[10px] transition-colors"
+              className="flex-1 py-2.5 bg-[var(--g-jaune)] text-[var(--g-encre)] font-semibold text-sm text-center rounded-[10px] transition-colors"
             >
               Mon espace
             </Link>
