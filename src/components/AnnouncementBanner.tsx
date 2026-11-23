@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { X, Megaphone, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 
 type Announcement = {
@@ -38,6 +38,30 @@ const PRESET_BTN_BG: Record<string, string> = {
 };
 
 const ROTATE_INTERVAL = 5000;
+
+// Texte sur une ligne : s'il ne tient pas, il défile lentement de droite à gauche.
+function TexteDefilant({ texte }: { texte: string }) {
+  const cadre = useRef<HTMLSpanElement>(null);
+  const [deborde, setDeborde] = useState(false);
+  useEffect(() => {
+    const el = cadre.current;
+    if (!el) return;
+    const mesurer = () => setDeborde(el.scrollWidth > el.clientWidth + 2);
+    mesurer();
+    const ro = new ResizeObserver(mesurer);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [texte]);
+  return (
+    <span ref={cadre} className="relative min-w-0 flex-1 sm:flex-none overflow-hidden whitespace-nowrap">
+      {deborde ? (
+        <span className="ann-defile inline-block" style={{ animationDuration: `${Math.max(12, texte.length * 0.22)}s` }}>
+          {texte}<span className="px-6" aria-hidden="true">•</span>{texte}<span className="px-6" aria-hidden="true">•</span>
+        </span>
+      ) : texte}
+    </span>
+  );
+}
 
 export default function AnnouncementBanner() {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
@@ -109,85 +133,60 @@ export default function AnnouncementBanner() {
   if (!ann) return null;
 
   const isCustom = ann.color === "custom";
-  const bg     = isCustom ? (ann.bgColor   || "#1e293b") : (PRESET_BG[ann.color]   ?? PRESET_BG.yellow);
-  const txt    = isCustom ? (ann.textColor || "#ffffff") : (PRESET_TEXT[ann.color]  ?? PRESET_TEXT.yellow);
+  // Sans couleur choisie : vert très doux du site et texte foncé (pas de fond sombre)
+  const bg     = isCustom ? (ann.bgColor   || "#EAF6E8") : (PRESET_BG[ann.color]   ?? PRESET_BG.yellow);
+  const txt    = isCustom ? (ann.textColor || "#101410") : (PRESET_TEXT[ann.color]  ?? PRESET_TEXT.yellow);
   const btnBg  = isCustom ? (ann.btnBgColor || "#E8B800") : (PRESET_BTN_BG[ann.color] ?? PRESET_BTN_BG.yellow);
   const btnTxt = isCustom ? (ann.btnTextColor || "#000000") : "#ffffff";
 
+  // Bannière fine, sur une seule ligne : un texte trop long défile doucement au lieu de passer à la ligne.
   return (
     <div
-      className="relative overflow-hidden border-b border-black/5"
+      className="relative border-b border-black/5"
       style={{ backgroundColor: bg, color: txt }}
     >
-      {/* Navigation gauche */}
-      {active.length > 1 && (
-        <button
-          onClick={() => advance(-1, active.length)}
-          className="absolute left-2 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-black/10 transition-colors z-10"
-          aria-label="Annonce précédente"
-        >
-          <ChevronLeft size={14} />
-        </button>
-      )}
-
-      {/* Contenu animé */}
-      <div
-        key={animKey}
-        className="animate-ann-slide flex items-center justify-center gap-3 px-10 py-2.5 text-sm font-medium"
-      >
-        <Megaphone size={14} className="shrink-0" />
-        <span>{ann.text}</span>
-
+      <div key={animKey} className="animate-ann-slide flex items-center gap-2 h-[30px] pl-3 pr-8 sm:justify-center text-[12px] sm:text-[12.5px] font-medium">
+        {active.length > 1 && (
+          <button onClick={() => advance(-1, active.length)} className="hidden sm:inline-flex p-0.5 rounded-full hover:bg-black/10" aria-label="Annonce précédente">
+            <ChevronLeft size={12} />
+          </button>
+        )}
+        <Megaphone size={12} className="shrink-0 hidden sm:block" />
+        <TexteDefilant texte={ann.text} />
         {ann.link && (
           <a
             href={ann.link}
             target={ann.link.startsWith("http") ? "_blank" : "_self"}
             rel="noopener noreferrer"
-            className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold transition-opacity hover:opacity-80"
+            className="shrink-0 inline-flex items-center gap-1 px-2 py-[2px] rounded-full text-[11px] font-bold leading-none transition-opacity hover:opacity-80"
             style={{ backgroundColor: btnBg, color: btnTxt }}
           >
-            {ann.linkText || "Voir"} <ExternalLink size={11} />
+            {ann.linkText || "Voir"} <ExternalLink size={9} />
           </a>
         )}
-
-        {/* Indicateurs dots */}
         {active.length > 1 && (
-          <div className="flex items-center gap-1 ml-1">
+          <button onClick={() => advance(1, active.length)} className="hidden sm:inline-flex p-0.5 rounded-full hover:bg-black/10" aria-label="Annonce suivante">
+            <ChevronRight size={12} />
+          </button>
+        )}
+        {active.length > 1 && (
+          <span className="hidden sm:flex items-center gap-1">
             {active.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goTo(i)}
-                className="rounded-full transition-all"
-                style={{
-                  width:  i === safeIndex ? "16px" : "6px",
-                  height: "6px",
-                  backgroundColor: i === safeIndex ? txt : `${txt}55`,
-                }}
-                aria-label={`Annonce ${i + 1}`}
-              />
+              <button key={i} onClick={() => goTo(i)} className="rounded-full transition-all"
+                style={{ width: i === safeIndex ? "12px" : "5px", height: "5px", backgroundColor: i === safeIndex ? txt : `${txt}55` }}
+                aria-label={`Annonce ${i + 1}`} />
             ))}
-          </div>
+          </span>
         )}
       </div>
-
-      {/* Navigation droite */}
-      {active.length > 1 && (
-        <button
-          onClick={() => advance(1, active.length)}
-          className="absolute right-8 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-black/10 transition-colors z-10"
-          aria-label="Annonce suivante"
-        >
-          <ChevronRight size={14} />
-        </button>
-      )}
 
       {/* Fermer */}
       <button
         onClick={() => setDismissed((prev) => new Set(prev).add(ann.id))}
-        className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-black/10 transition-colors z-10"
+        className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-black/10 transition-colors"
         aria-label="Fermer l'annonce"
       >
-        <X size={14} />
+        <X size={12} />
       </button>
     </div>
   );

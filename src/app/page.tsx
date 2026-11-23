@@ -1,6 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Star, ArrowRight, Check } from "lucide-react";
+import { Star, ArrowRight, Check, Users, ShoppingBag, ThumbsUp, BookOpen, Compass, Zap } from "lucide-react";
+
+// Une icône par chiffre, dans le même ordre que la liste des chiffres
+const ICONES_CHIFFRES = [Users, ShoppingBag, ThumbsUp, BookOpen, Compass, Zap];
 import { testimonials } from "@/lib/data";
 import { PriceTag } from "@/components/PriceTag";
 import PhotosQuiDefilent from "@/components/PhotosQuiDefilent";
@@ -85,6 +88,37 @@ export default async function HomePage() {
         {/* Deux halos doux jaune et vert qui flottent lentement derrière le titre */}
         <span aria-hidden="true" className="hero-tache hero-tache-jaune" />
         <span aria-hidden="true" className="hero-tache hero-tache-verte" />
+        {/* Décor « avenir meilleur » : soleil levant, activité qui grandit, flèche de croissance */}
+        <svg aria-hidden="true" className="hero-avenir" viewBox="0 0 300 280" fill="none">
+          <defs>
+            <radialGradient id="avenir-soleil" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#FFD84D" />
+              <stop offset="70%" stopColor="#E8B800" />
+              <stop offset="100%" stopColor="#E8B800" stopOpacity="0.85" />
+            </radialGradient>
+            <linearGradient id="avenir-barre" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#27A827" />
+              <stop offset="100%" stopColor="#1e7a1e" />
+            </linearGradient>
+          </defs>
+          <g className="avenir-rayons" stroke="#E8B800" strokeWidth="4" strokeLinecap="round" opacity="0.55">
+            {Array.from({ length: 12 }).map((_, i) => {
+              const a = (i * Math.PI) / 6;
+              return <line key={i} x1={190 + Math.cos(a) * 86} y1={120 + Math.sin(a) * 86} x2={190 + Math.cos(a) * 104} y2={120 + Math.sin(a) * 104} />;
+            })}
+          </g>
+          <circle className="avenir-soleil" cx="190" cy="120" r="66" fill="url(#avenir-soleil)" />
+          <line x1="14" y1="250" x2="290" y2="250" stroke="#1E2B5E" strokeOpacity="0.18" strokeWidth="3" strokeLinecap="round" />
+          {[34, 60, 90, 122, 158].map((h, i) => (
+            <rect key={i} className="avenir-barre" style={{ ["--i" as string]: i }} x={38 + i * 46} y={250 - h} width="30" height={h} rx="7" fill="url(#avenir-barre)" />
+          ))}
+          <path className="avenir-fleche" d="M22 222 C 90 214, 150 170, 196 120 S 262 52, 276 40" stroke="#101410" strokeWidth="5" strokeLinecap="round" />
+          <path className="avenir-pointe" d="M256 36 L 280 36 L 280 60" stroke="#101410" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+          <g className="avenir-etincelles" fill="#E8B800">
+            <path d="M58 70 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z" />
+            <path d="M118 30 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z" />
+          </g>
+        </svg>
         <p className="hero-apparait relative inline-flex items-center gap-2 rounded-full bg-white/90 border border-[var(--g-ligne)] px-3.5 py-1.5 text-[13.5px] font-medium" style={{ ["--d" as string]: "0ms" }}>
           <span className="point-vivant" aria-hidden="true" />
           14 960+ clients nous font confiance
@@ -101,7 +135,7 @@ export default async function HomePage() {
           </p>
           <div className="hero-apparait flex flex-wrap gap-2.5" style={{ ["--d" as string]: "800ms" }}>
             <Link href="/ebooks" className="g-btn bouton-reflet relative overflow-hidden">Voir les guides <ArrowRight size={17} className="fleche-cta" /></Link>
-            <Link href="/accompagnement" className="g-btn-ghost">Être accompagné <ArrowRight size={17} /></Link>
+            <Link href="/accompagnement" className="g-btn g-btn-vert">Être accompagné <ArrowRight size={17} /></Link>
           </div>
         </div>
         <p className="hero-apparait relative mt-5 text-[14.5px] text-[var(--g-gris)]" style={{ ["--d" as string]: "950ms" }}>
@@ -124,18 +158,28 @@ export default async function HomePage() {
       )}
 
       {/* ══════ CHIFFRES ══════ */}
-      <section className="mt-14 bg-[var(--g-vert-profond)]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-y-2">
-            {chiffres.map((c, i) => (
-              <div key={c.l} className={`py-5 pr-4 ${i % 2 === 1 ? "pl-4 border-l border-white/20 lg:border-l-0 lg:pl-0" : ""} lg:[&:not(:nth-child(3n+1))]:pl-6 lg:[&:not(:nth-child(3n+1))]:border-l lg:[&:not(:nth-child(3n+1))]:border-white/20`}>
-                <span className="barre-chiffre block h-[3px] w-7 rounded-full bg-[var(--g-jaune)] mb-4" aria-hidden="true" />
-                <p className="g-chiffre" style={{ color: "#fff" }}>
-                  {c.texte ?? <span data-compteur={c.n} data-suffixe={c.s}>{c.n.toLocaleString("fr-FR")}{c.s}</span>}
-                </p>
-                <p className="mt-2 text-[14.5px] leading-snug" style={{ color: "rgba(255,255,255,0.82)" }}>{c.l}</p>
-              </div>
-            ))}
+      <section className="bloc-chiffres relative mt-14 overflow-hidden bg-[var(--g-vert-profond)]">
+        {/* Lumière jaune douce dans un coin, pour donner de la profondeur au vert */}
+        <span aria-hidden="true" className="chiffres-lumiere" />
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.14em]" style={{ color: "var(--g-jaune)" }}>Smart Life en chiffres</p>
+          <h2 className="mt-2 text-[26px] sm:text-[34px] font-semibold leading-[1.12] tracking-[-0.025em] max-w-[22ch]" style={{ color: "#fff" }}>
+            Des milliers d&apos;entrepreneurs avancent déjà avec nous
+          </h2>
+          <div className="mt-8 grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            {chiffres.map((c, i) => {
+              const Icone = ICONES_CHIFFRES[i % ICONES_CHIFFRES.length];
+              return (
+                <div key={c.l} className="carte-chiffre rounded-[16px] p-4 sm:p-6">
+                  <span className="chiffre-icone" aria-hidden="true"><Icone size={20} strokeWidth={2.2} /></span>
+                  <p className="mt-4 g-chiffre" style={{ color: i % 2 === 0 ? "#fff" : "var(--g-jaune)" }}>
+                    {c.texte ?? <span data-compteur={c.n} data-suffixe={c.s}>{c.n.toLocaleString("fr-FR")}{c.s}</span>}
+                  </p>
+                  <span className="barre-chiffre mt-3 block h-[3px] w-8 rounded-full bg-[var(--g-jaune)]" aria-hidden="true" />
+                  <p className="mt-3 text-[13.5px] sm:text-[14.5px] leading-snug" style={{ color: "rgba(255,255,255,0.85)" }}>{c.l}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

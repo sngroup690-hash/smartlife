@@ -586,6 +586,44 @@ main article:hover img, main a[class*="rounded-2xl"]:hover img { transform: scal
 .barre-chiffre { transform-origin: left; transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s; }
 .anim-avant:not(.anim-visible) .barre-chiffre { transform: scaleX(0); }
 
+/* Bouton vert (à côté du jaune) */
+.g-btn.g-btn-vert { background: var(--g-vert-vif); color: #fff; }
+.g-btn.g-btn-vert:hover { background: var(--g-vert); box-shadow: 0 10px 22px -10px rgba(39, 168, 39, 0.9); }
+
+/* Décor « avenir meilleur » à droite du titre de l'accueil */
+.hero-avenir { position: absolute; z-index: 0; pointer-events: none; right: 4px; top: 92px; width: 132px; opacity: 0.72; }
+@media (min-width: 640px) { .hero-avenir { width: 250px; top: 70px; right: 16px; opacity: 0.85; } }
+@media (min-width: 1024px) { .hero-avenir { width: 360px; top: 40px; right: 32px; opacity: 1; } }
+.avenir-rayons { transform-origin: 190px 120px; animation: avenir-tourne 40s linear infinite; }
+@keyframes avenir-tourne { to { transform: rotate(360deg); } }
+.avenir-soleil { transform-box: fill-box; transform-origin: center; animation: avenir-respire 5s ease-in-out infinite alternate, avenir-leve 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both; }
+@keyframes avenir-respire { from { transform: scale(1); } to { transform: scale(1.06); } }
+@keyframes avenir-leve { from { opacity: 0; translate: 0 40px; } to { opacity: 1; translate: 0 0; } }
+.avenir-barre { transform-box: fill-box; transform-origin: bottom; animation: avenir-barre 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 120ms + 500ms); }
+@keyframes avenir-barre { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+.avenir-fleche { stroke-dasharray: 360; stroke-dashoffset: 360; animation: avenir-trace 1.3s ease-out 1.2s forwards; }
+@keyframes avenir-trace { to { stroke-dashoffset: 0; } }
+.avenir-pointe { opacity: 0; animation: hero-apparait 0.4s ease-out 2.4s forwards; }
+.avenir-etincelles path { transform-box: fill-box; transform-origin: center; animation: avenir-scintille 2.6s ease-in-out infinite; }
+.avenir-etincelles path:nth-child(2) { animation-delay: 1.3s; }
+@keyframes avenir-scintille { 0%, 100% { opacity: 0.25; transform: scale(0.7); } 50% { opacity: 1; transform: scale(1.1); } }
+
+/* Bloc des chiffres : cartes vitrées sur le vert, icône jaune, lumière douce */
+.chiffres-lumiere { position: absolute; width: 620px; height: 620px; right: -220px; top: -260px; border-radius: 50%; background: radial-gradient(circle, rgba(232, 184, 0, 0.22) 0%, rgba(232, 184, 0, 0) 65%); pointer-events: none; }
+.carte-chiffre { background: rgba(255, 255, 255, 0.07); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12); transition: transform 0.3s ease, background-color 0.3s ease; }
+.carte-chiffre:hover { transform: translateY(-4px); background: rgba(255, 255, 255, 0.11); }
+/* Bannière d'annonce fine : texte trop long qui défile en boucle */
+@keyframes ann-defile { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.ann-defile { animation: ann-defile linear infinite; will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ann-defile { animation: none; }
+  .avenir-rayons, .avenir-soleil, .avenir-barre, .avenir-etincelles path { animation: none !important; }
+  .avenir-fleche { animation: none !important; stroke-dashoffset: 0; }
+  .avenir-pointe { animation: none !important; opacity: 1; }
+}
+.chiffre-icone { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 12px; background: var(--g-jaune); color: var(--g-encre); }
+
 @media (prefers-reduced-motion: reduce) {
   .mot-entre, .hero-apparait, .surligne-anime, .legende-glisse { animation: none !important; opacity: 1 !important; transform: none !important; background-size: 100% 100% !important; }
   .hero-tache, .photo-lente, .point-vivant::after { animation: none !important; }
