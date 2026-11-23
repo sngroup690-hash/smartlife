@@ -660,3 +660,9 @@ main article:hover img, main a[class*="rounded-2xl"]:hover img { transform: scal
   .squelette { animation: none; }
   ::view-transition-old(.fondu-page), ::view-transition-new(.fondu-page) { animation: none; }
 }
+
+/* Style Galerie : le texte blanc reste blanc sur les fonds sombres (noir, vert foncé, vert WhatsApp).
+   La règle ancienne « .text-white → gris foncé » plus haut le rendait illisible sur ces fonds. */
+.text-white:is([class*="bg-[var(--g-vert)]"], [class*="bg-[var(--g-vert-profond)]"], [class*="bg-[var(--g-vert-vif)]"], [class*="bg-[var(--g-encre)]"], [class*="bg-black"], [class*="bg-[#1ebe5c]"], [class*="bg-[#20b858]"], [class*="bg-[#25D366]"], [class*="bg-[#1e7a1e]"]) {
+  color: #fff !important;
+}
