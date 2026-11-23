@@ -4,6 +4,8 @@ import path from "path";
 import { FORMATIONS, type Formation } from "@/lib/formations-data";
 import FormationLandingPageClient from "./FormationLandingPageClient";
 import { stripHtml } from "@/lib/strip-html";
+import { redirect } from "next/navigation";
+import { formationsActives } from "@/lib/reglages-site";
 
 const APP_URL = (process.env.NEXT_PUBLIC_APP_URL || "https://smartlifecm.com").replace(/\/$/, "");
 
@@ -96,6 +98,9 @@ export async function generateMetadata({
   };
 }
 
-export default function FormationPage() {
+// Formations masquées depuis l'administration : la page de vente renvoie vers les guides.
+// (Le lecteur /formation/[id]/watch reste ouvert pour les clients qui ont déjà acheté.)
+export default async function FormationPage() {
+  if (!(await formationsActives())) redirect("/ebooks");
   return <FormationLandingPageClient />;
 }

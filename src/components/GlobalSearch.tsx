@@ -126,7 +126,8 @@ export default function GlobalSearch() {
   const [query, setQuery] = useState("");
   const [activeIdx, setActiveIdx] = useState(-1);
   const [allEbooks, setAllEbooks] = useState<Ebook[]>(staticEbooks);
-  const [allFormations, setAllFormations] = useState<Formation[]>([...FORMATIONS]);
+  // Formations ajoutées seulement si elles sont activées dans l'administration
+  const [allFormations, setAllFormations] = useState<Formation[]>([]);
   const [dataLoaded, setDataLoaded] = useState(false);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
 
@@ -150,8 +151,11 @@ export default function GlobalSearch() {
     setDataLoaded(true);
     Promise.allSettled([
       fetch("/api/ebooks?slim=1").then((r) => r.json()),
-      fetch("/api/formations").then((r) => r.json()),
+      fetch("/api/site-settings")
+        .then((r) => r.json())
+        .then((reglages) => (reglages?.formationsActives ? fetch("/api/formations").then((r) => r.json()) : null)),
     ]).then(([ebRes, fRes]) => {
+      if (fRes.status === "fulfilled" && fRes.value) setAllFormations([...FORMATIONS]);
       if (ebRes.status === "fulfilled" && Array.isArray(ebRes.value.ebooks)) {
         const dyn = (ebRes.value.ebooks as (Ebook & { actif?: boolean; deletedAt?: string })[])
           .filter((e) => e.actif !== false && !e.deletedAt);
@@ -160,7 +164,7 @@ export default function GlobalSearch() {
           ...dyn.filter((e) => !prev.some((p) => p.id === e.id)),
         ]);
       }
-      if (fRes.status === "fulfilled" && Array.isArray(fRes.value.formations)) {
+      if (fRes.status === "fulfilled" && fRes.value && Array.isArray(fRes.value.formations)) {
         const dyn = (fRes.value.formations as (Formation & { actif?: boolean; deletedAt?: string })[])
           .filter((f) => f.actif !== false && !f.deletedAt);
         setAllFormations((prev) => [
@@ -376,7 +380,7 @@ export default function GlobalSearch() {
                     ))}
                   </div>
                   <p className="text-xs text-gray-300 mt-4">
-                    Recherche dans {allEbooks.length} ebooks · {allFormations.length} formations · {staticServices.length} services
+                    Recherche dans {allEbooks.length} guides{allFormations.length > 0 ? ` · ${allFormations.length} formations` : ""} · {staticServices.length} services
                   </p>
                 </div>
               )}

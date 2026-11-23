@@ -51,7 +51,7 @@ export default function PacksPage() {
           Économisez avec nos <span className="text-[#E8B800]">packs</span>
         </h1>
         <p className="text-gray-600 max-w-xl mx-auto">
-          Combinez plusieurs guides et formations à prix réduit. Tout ce qu'il vous faut pour réussir, regroupé en un seul pack.
+          Combinez plusieurs guides à prix réduit. Tout ce qu'il vous faut pour réussir, regroupé en un seul pack.
         </p>
       </div>
 

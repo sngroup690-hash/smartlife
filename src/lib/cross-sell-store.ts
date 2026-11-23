@@ -2,6 +2,7 @@ import { readFile, writeFile } from "fs/promises";
 import path from "path";
 import { ebooks } from "./data";
 import { FORMATIONS } from "./formations-data";
+import { formationsActives } from "./reglages-site";
 
 export type CrossSellMode = "auto" | "manual";
 
@@ -155,7 +156,12 @@ export async function getRecommendations(opts: {
   const excluded = new Set([productId, ...excludeIds]);
   const mode = productCfg?.mode ?? cfg.defaultMode;
 
-  const [allEbooks, allFormations] = await Promise.all([getAllEbooks(), getAllFormations()]);
+  // Formations masquées depuis l'administration : on ne propose que des guides.
+  const avecFormations = await formationsActives();
+  const [allEbooks, allFormations] = await Promise.all([
+    getAllEbooks(),
+    avecFormations ? getAllFormations() : Promise.resolve([] as Awaited<ReturnType<typeof getAllFormations>>),
+  ]);
 
   // ── Mode Manuel ────────────────────────────────────────────────────────────
   if (mode === "manual" && productCfg?.manualIds?.length) {
@@ -226,6 +232,16 @@ export async function getRecommendations(opts: {
     const best = pool.filter(f => f.badge === "Bestseller");
     const source = best.length > 0 ? best : pool;
     fallback.push(...source.slice(0, maxResults).map(f => formationToReco(f, discountPercent)));
+  }
+
+  // Formations masquées : compléter avec les guides les plus vendus des autres catégories
+  if (!avecFormations && productType === "ebook" && fallback.length < maxResults) {
+    const deja = new Set(fallback.map(r => r.id));
+    const autres = allEbooks
+      // Seulement les vrais guides de la boutique (pas les anciens exemples sans image)
+      .filter(e => !excluded.has(e.id) && !deja.has(e.id) && e.id.startsWith("eb-admin") && !!e.cover)
+      .sort((a, b) => (b.ventes ?? 0) - (a.ventes ?? 0));
+    fallback.push(...autres.slice(0, maxResults - fallback.length).map(e => ebookToReco(e, discountPercent)));
   }
 
   // Compléter avec l'autre type si besoin

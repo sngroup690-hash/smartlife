@@ -86,12 +86,12 @@ const DEFAULT_CONFIG: AutomationsConfig = {
       {
         delayHours: 0,
         subject: "Bienvenue sur SMART LIFE ! 🎉",
-        body: "<p>Bonjour <strong>{{firstName}}</strong>,</p><p>Bienvenue dans la communauté SMART LIFE ! Votre compte est prêt.</p><p>Découvrez nos ebooks et formations pour booster votre business.</p><p><a href='{{siteUrl}}/ebooks' style='background:#E8B800;color:#000;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block'>Explorer le catalogue →</a></p>",
+        body: "<p>Bonjour <strong>{{firstName}}</strong>,</p><p>Bienvenue dans la communauté SMART LIFE ! Votre compte est prêt.</p><p>Découvrez nos guides pratiques pour lancer et développer votre business.</p><p><a href='{{siteUrl}}/ebooks' style='background:#E8B800;color:#000;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block'>Explorer le catalogue →</a></p>",
       },
       {
         delayHours: 24,
-        subject: "Découvrez nos formations 🎓",
-        body: "<p>Bonjour <strong>{{firstName}}</strong>,</p><p>Avez-vous jeté un œil à nos formations ? Des dizaines d'heures de contenu pour développer vos compétences.</p><p><a href='{{siteUrl}}/formation' style='background:#27A827;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block'>Voir les formations →</a></p>",
+        subject: "Nos conseils gratuits pour bien vous lancer 💡",
+        body: "<p>Bonjour <strong>{{firstName}}</strong>,</p><p>Avez-vous lu nos conseils gratuits ? Métier par métier, ils vous montrent comment bien démarrer votre activité.</p><p><a href='{{siteUrl}}/conseils' style='background:#27A827;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block'>Lire les conseils →</a></p>",
       },
       {
         delayHours: 72,

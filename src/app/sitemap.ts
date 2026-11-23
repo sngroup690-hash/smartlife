@@ -6,6 +6,7 @@ import { services as STATIC_SERVICES } from "@/lib/data";
 import { espaces as STATIC_ESPACES } from "@/lib/accompagnement-data";
 import type { Ebook } from "@/lib/data";
 import { tousLesConseils } from "@/lib/conseils";
+import { formationsActives } from "@/lib/reglages-site";
 
 const BASE = "https://smartlifecm.com";
 
@@ -115,8 +116,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entries.push({ url: `${BASE}/conseils/${c.slug}`, priority: 0.8, changeFrequency: "monthly" as const });
   }
 
-  // Formations
-  const formationsData = await readJson<{ formations?: Array<{ id: string; actif?: boolean }> }>("formations-data.json");
+  // Formations (seulement si elles sont activées dans l'administration)
+  const avecFormations = await formationsActives();
+  if (!avecFormations) {
+    const i = entries.findIndex((e) => e.url === `${BASE}/formation`);
+    if (i >= 0) entries.splice(i, 1);
+  }
+  const formationsData = avecFormations
+    ? await readJson<{ formations?: Array<{ id: string; actif?: boolean }> }>("formations-data.json")
+    : null;
   if (formationsData?.formations) {
     for (const f of formationsData.formations) {
       if (!f.id || f.actif === false) continue;

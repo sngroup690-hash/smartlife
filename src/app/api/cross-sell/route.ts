@@ -1,6 +1,5 @@
 ﻿import { NextRequest, NextResponse } from "next/server";
 import { readCrossSellConfig, writeCrossSellConfig, getRecommendations } from "@/lib/cross-sell-store";
-
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 
 function adminAuth(req: NextRequest): boolean {

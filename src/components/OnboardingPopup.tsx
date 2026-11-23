@@ -29,9 +29,9 @@ const STEPS: Step[] = [
     bg: "from-blue-50 to-sky-50",
   },
   {
-    emoji: "🎓",
-    title: "Formations vidéo complètes",
-    desc: "Apprenez à votre rythme avec des modules structurés, quiz de validation et suivi de progression intégré.",
+    emoji: "💡",
+    title: "Des conseils gratuits et des consultants du terrain",
+    desc: "Lisez nos conseils pour bien vous lancer, métier par métier, et échangez avec des consultants qui pratiquent déjà.",
     accent: "#8B5CF6",
     bg: "from-violet-50 to-purple-50",
   },
@@ -45,7 +45,7 @@ const STEPS: Step[] = [
   {
     emoji: "🚀",
     title: "Votre aventure commence !",
-    desc: "Votre espace personnel est prêt. Retrouvez vos achats, accédez à vos formations et suivez votre parcours.",
+    desc: "Votre espace personnel est prêt. Retrouvez vos achats, téléchargez vos guides et suivez votre parcours.",
     accent: "#E8B800",
     bg: "from-amber-50 to-yellow-50",
   },
