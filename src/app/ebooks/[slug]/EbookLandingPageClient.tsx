@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { Nunito } from "next/font/google";
 import {
   BookOpen, FileText, Files, Eye, ChevronRight,
   ChevronDown, ChevronUp, Play, X, Lock, Copy, Check, Headphones, Share2, MessageCircle,
@@ -23,7 +22,6 @@ import dynamic from "next/dynamic";
 import VideoPlayer from "@/components/VideoPlayer";
 import CrossSellWidget from "@/components/CrossSellWidget";
 
-const nunito = Nunito({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
 const PdfViewer = dynamic(
   () => import("@/components/PdfViewer").then((m) => m.PdfViewer),
@@ -401,7 +399,7 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
       ? `cta-${ebook.ctaAnimation}`
       : animations[Math.floor(graine / textes.length) % animations.length];
   const shareUrl = `${SITE_EBOOK}/ebooks/${ebook.slug}`;
-  const shareText = encodeURIComponent(`Découvrez cet ebook : ${ebook.title} — ${shareUrl}`);
+  const shareText = encodeURIComponent(`Découvrez cet ebook : ${ebook.title.replace(/\s+—\s+/g, " : ")} ${shareUrl}`);
   const dejaAchete = ebooksAchetes.includes(ebook.id);
   // Description sans mise en forme d'origine (pas de couleurs Chariow) : on lui applique le style visuel du site.
   const descriptionEnrichie = !!ebook.description && !/style=/i.test(ebook.description);
@@ -539,13 +537,13 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
   );
 
   return (
-    <div className={`${nunito.className} min-h-screen bg-white text-black`}>
+    <div className="min-h-screen bg-white text-black">
       <EnteteBoutique />
 
       {/* Bandeau du titre */}
       <div style={{ background: couleurs.bandeau }}>
         <div className="max-w-6xl mx-auto px-4 pt-16 pb-12 lg:pt-20 lg:pb-20 lg:pr-[456px]">
-          <h1 className="text-[20px] lg:text-[22px] leading-7 font-bold uppercase !text-white">{ebook.title}</h1>
+          <h1 className="text-[20px] lg:text-[22px] leading-7 font-bold uppercase !text-white">{ebook.title.replace(/\s+—\s+/g, " : ")}</h1>
           <div className="mt-3 flex items-center gap-2 text-[13px]" style={{ color: "#ffffff" }}>
             <Files size={20} strokeWidth={1.6} color="#ffffff" /> <span style={{ color: "#ffffff" }}>Fichier</span>
           </div>
@@ -704,10 +702,10 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
       <CrossSellWidget productId={ebook.id} productType="ebook" variant="light" compact />
       <PiedBoutique />
 
-      {/* Barre d'achat en bas sur téléphone : fondue dans la page, avec le repère de lecture */}
+      {/* Barre d'achat flottante sur téléphone : posée un peu plus haut que le bord, toujours visible en défilant */}
       {!checkoutModalOpen && (
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-sm border-t border-[#e8e9eb]"
-          style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
+        <div className="lg:hidden fixed left-3 right-3 z-40 bg-white rounded-2xl border border-[#e8e9eb] overflow-hidden shadow-[0_12px_32px_-8px_rgba(0,0,0,0.35)]"
+          style={{ bottom: "calc(22px + env(safe-area-inset-bottom, 0px))" }}>
           <div className="h-[3px] bg-[#f2f3f5]">
             <div className="h-full transition-[width] duration-150" style={{ width: `${Math.round(progression * 100)}%`, backgroundColor: couleurs.bouton }} />
           </div>

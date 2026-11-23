@@ -19,6 +19,12 @@ const CIBLES = [
 // Les bandes qui défilent sur le côté n'entrent jamais « dans l'écran » : elles ne doivent pas être cachées.
 const SANS_ANIM = "[data-sans-anim], .animate-marquee-left, .animate-marquee-right, .defile-gauche, .defile-droite, .animate-defilement-garanties";
 
+const DECORATIVES = [
+  ".cta-clignote", ".cta-respire", ".bouton-reflet", ".texte-brillant", ".fleche-cta", ".accueil-flotte",
+  ".garantie-boutique", ".btn-postuler", ".defile-gauche", ".defile-droite", ".animate-marquee-left",
+  ".animate-marquee-right", ".animate-defilement-garanties", ".accueil-bulle", ".animate-pulse",
+].join(",");
+
 function animerCompteur(el: HTMLElement) {
   const fin = Number(el.dataset.compteur);
   if (!fin) return;
@@ -39,6 +45,15 @@ export default function AnimationsSite() {
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    // Les animations décoratives en boucle s'arrêtent hors de l'écran : le téléphone ne travaille que pour ce qu'on voit.
+    const enPause = new Set<HTMLElement>();
+    const obsPause = new IntersectionObserver(
+      (entrees) => {
+        for (const e of entrees) (e.target as HTMLElement).classList.toggle("anim-pause", !e.isIntersecting);
+      },
+      { rootMargin: "100px 0px" },
+    );
 
     const suivis = new Set<HTMLElement>();
     const obs = new IntersectionObserver(
@@ -72,6 +87,11 @@ export default function AnimationsSite() {
         el.classList.add("anim-avant");
         suivis.add(el);
         obs.observe(el);
+      });
+      document.querySelectorAll<HTMLElement>(DECORATIVES).forEach((el) => {
+        if (enPause.has(el)) return;
+        enPause.add(el);
+        obsPause.observe(el);
       });
       document.querySelectorAll<HTMLElement>("[data-compteur]").forEach((el) => {
         if (el.dataset.animPrete) return;
@@ -114,6 +134,8 @@ export default function AnimationsSite() {
     mut.observe(document.body, { childList: true, subtree: true });
 
     return () => {
+      obsPause.disconnect();
+      enPause.forEach((el) => el.classList.remove("anim-pause"));
       window.removeEventListener("scroll", verifierDefilement);
       window.removeEventListener("hashchange", verifierDefilement);
       obs.disconnect();

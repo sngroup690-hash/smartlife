@@ -108,7 +108,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  // Conseils gratuits « comment se lancer »
+  // Analyse Smart (business d'avenir) et conseils gratuits « comment se lancer »
+  entries.push({ url: `${BASE}/analyse-smart`, priority: 0.9, changeFrequency: "monthly" as const });
   entries.push({ url: `${BASE}/conseils`, priority: 0.85, changeFrequency: "weekly" as const });
   for (const c of await tousLesConseils()) {
     entries.push({ url: `${BASE}/conseils/${c.slug}`, priority: 0.8, changeFrequency: "monthly" as const });

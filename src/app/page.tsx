@@ -251,6 +251,36 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ══════ ANALYSE SMART ══════ */}
+      <section className="px-4 py-12 sm:py-16 bg-white">
+        <Link href="/analyse-smart" className="group relative mx-auto block max-w-6xl overflow-hidden rounded-[2rem] p-6 sm:p-10 shadow-2xl"
+          style={{ background: "linear-gradient(135deg, #0f3d0f 0%, #1b7a1b 45%, #27A827 75%, #b8a000 100%)" }}>
+          <span className="accueil-bulle" style={{ top: "-160px", right: "-120px", background: "#E8B800", opacity: 0.35 }} />
+          <div className="relative grid lg:grid-cols-[1.4fr_1fr] gap-8 items-center">
+            <div>
+              <p className="inline-flex rounded-full px-3 py-1 text-[12px] font-extrabold" style={{ background: "#E8B800", color: "#fff" }}>📊 Nouveau · Analyse Smart</p>
+              <h2 className="mt-3 text-[28px] sm:text-[40px] font-black leading-tight" style={{ color: "#fff" }}>
+                Quel business lancer <span style={{ color: "#ffe066" }}>maintenant</span> au Cameroun ?
+              </h2>
+              <p className="mt-3 text-[15px] sm:text-[17px] leading-relaxed" style={{ color: "rgba(255,255,255,0.92)" }}>
+                Les business d&apos;avenir, analysés à partir des chiffres officiels et de ce que nos clients achètent : pourquoi maintenant, les risques, et pour qui.
+              </p>
+              <span className="bouton-reflet cta-respire relative overflow-hidden mt-6 inline-flex items-center gap-2 h-13 rounded-2xl px-6 py-3.5 text-[15px] font-extrabold shadow-lg" style={{ background: "#fff", color: "#1b7a1b" }}>
+                Lire l&apos;analyse <ArrowRight size={17} className="fleche-cta" />
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2.5">
+              {["🇨🇲 Cameroun", "🇧🇯 Bénin · bientôt", "🇹🇬 Togo · bientôt", "🇨🇮 Côte d'Ivoire · bientôt"].map((p, i) => (
+                <span key={p} className="rounded-2xl px-3 py-4 text-center text-[13.5px] font-bold"
+                  style={{ background: i === 0 ? "#fff" : "rgba(255,255,255,0.12)", color: i === 0 ? "#1b7a1b" : "rgba(255,255,255,0.85)", border: i === 0 ? "none" : "1px dashed rgba(255,255,255,0.4)" }}>
+                  {p}
+                </span>
+              ))}
+            </div>
+          </div>
+        </Link>
+      </section>
+
       {/* ══════ ACCOMPAGNEMENT ══════ */}
       <section className="py-12 sm:py-16 overflow-hidden" style={{ background: "linear-gradient(180deg, #fffbea 0%, #f0fdf4 100%)" }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">

@@ -21,7 +21,16 @@ import OnboardingPopup from "@/components/OnboardingPopup";
 import { Suspense } from "react";
 import MasquerSurPageProduit from "@/components/MasquerSurPageProduit";
 
-const inter = Inter({ subsets: ["latin"] });
+// Typographie façon apple.com : sur iPhone, iPad et Mac, la vraie police d'Apple
+// (San Francisco) est fournie par le système (voir globals.css). Sur Android et
+// Windows, Inter (police libre la plus proche) prend le relais, avec ses tailles
+// optiques pour que les grands titres soient dessinés plus serrés, comme chez Apple.
+const inter = Inter({
+  subsets: ["latin"],
+  axes: ["opsz"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 const APP_URL = "https://smartlifecm.com";
 const OG_IMAGE = `${APP_URL}/logo-smartlife.jpeg`;
@@ -72,8 +81,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className="h-full">
-      <body className={`${inter.className} min-h-full flex flex-col bg-[#f9f8f5] text-gray-900 overflow-x-hidden`}>
+    <html lang="fr" className={`${inter.variable} h-full`}>
+      <body className={`min-h-full flex flex-col bg-[#f9f8f5] text-gray-900 overflow-x-hidden`}>
         <MasquerSurPageProduit>
           <AnnouncementBanner />
           <Navbar />

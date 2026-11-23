@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { X, ChevronRight, Search, Home, BookOpen, Handshake, UserPlus, Users, MoreHorizontal } from "lucide-react";
+import { X, ChevronRight, Search, Home, BookOpen, Lightbulb, UserPlus, Users, MoreHorizontal } from "lucide-react";
 import { useCartStore } from "@/lib/store";
 import CurrencySelector from "@/components/CurrencySelector";
 
@@ -12,6 +12,7 @@ const DRAWER_LINKS = [
   { href: "/accompagnement",      label: "Accompagnement",      icon: "🤝", desc: "Profitez de l'expertise de professionnels du terrain" },
   { href: "/nos-consultants",     label: "Nos Consultants",     icon: "👥", desc: "Notre réseau d'experts à votre service" },
   { href: "/devenir-consultant",  label: "Devenir Consultant",  icon: "💼", desc: "Partagez votre savoir et contribuez au changement" },
+  { href: "/analyse-smart",       label: "Analyse Smart",       icon: "📊", desc: "Quel business lancer maintenant ?" },
   { href: "/conseils",            label: "Conseils gratuits",   icon: "💡", desc: "Comment se lancer, métier par métier" },
   { href: "/temoignages",         label: "Avis & Témoignages",  icon: "⭐", desc: "Ce que disent nos clients" },
   { href: "/contact",             label: "Contact",             icon: "📞", desc: "Nous contacter" },
@@ -20,7 +21,7 @@ const DRAWER_LINKS = [
 const NAV_ITEMS = [
   { href: "/", label: "Accueil", icon: Home, color: "#E8B800", activeColor: "#E8B800" },
   { href: "/ebooks", label: "Ebooks", icon: BookOpen, color: "#27A827", activeColor: "#27A827" },
-  { href: "/accompagnement", label: "Accompagnement", icon: Handshake, color: "#E8B800", activeColor: "#E8B800", center: true },
+  { href: "/conseils", label: "Conseils gratuits", icon: Lightbulb, color: "#E8B800", activeColor: "#E8B800", center: true },
   { href: "/nos-consultants", label: "Nos\nConsultants", icon: Users, color: "#27A827", activeColor: "#27A827" },
   { href: "/devenir-consultant", label: "Devenir\nConsultant", icon: UserPlus, color: "#E8B800", activeColor: "#E8B800" },
 ];
@@ -77,7 +78,7 @@ export default function BottomNav() {
                     </span>
                   </span>
                   <span className="text-[9.5px] font-extrabold mt-1 leading-tight text-center" style={{ color: active ? "#1b7a1b" : "#374151" }}>
-                    Accompagnement
+                    {item.label}
                   </span>
                 </Link>
               );

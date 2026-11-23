@@ -1,0 +1,384 @@
+{
+  "pays": "Cameroun",
+  "drapeau": "🇨🇲",
+  "edition": "Novembre 2026",
+  "miseAJour": "2026-11-22",
+  "resume": "Le Cameroun dépense chaque année des centaines de milliards de FCFA pour importer ce qu'il pourrait produire lui-même : riz, blé, poisson congelé, huile de palme. L'État a lancé un plan pour remplacer ces importations par la production locale, et les villes continuent de grossir, ce qui fait monter la demande en nourriture, en logements et en énergie. Les activités les plus accessibles aujourd'hui sont la transformation alimentaire, la pisciculture et l'élevage de volailles, à condition de bien maîtriser le coût de l'aliment et les maladies. Les coupures d'électricité, elles, ouvrent un marché pour le solaire et pour des solutions de froid fiables.",
+  "contexte": [
+    {
+      "fait": "Selon la Banque africaine de développement, l'économie camerounaise a progressé de 3,7 % en 2025, portée par le secteur non pétrolier, le barrage de Nachtigal et l'investissement public.",
+      "source": {
+        "nom": "Banque africaine de développement, page pays Cameroun",
+        "url": "https://www.afdb.org/ar/node/13355",
+        "date": "2026-10-08"
+      }
+    },
+    {
+      "fait": "Le FMI retient des chiffres plus prudents : 3,1 % de croissance en 2025 et 3,3 % prévus en 2026, une reprise tirée surtout par l'investissement public. Il juge les perspectives « prudemment favorables », avec des risques réels.",
+      "source": {
+        "nom": "FMI, communiqué de presse 26/096",
+        "url": "https://www.imf.org/en/news/articles/2026/03/30/pr-26096-cameroon-imf-executive-board-concludes-2026-article-iv-consultation",
+        "date": "2026-03-30"
+      }
+    },
+    {
+      "fait": "En 2025, le Cameroun a importé pour 5 229,2 milliards de FCFA de marchandises et son déficit commercial a atteint 2 145,2 milliards de FCFA, en hausse de 22,8 % sur un an.",
+      "source": {
+        "nom": "Institut national de la statistique (INS), Évolution du commerce extérieur en 2025, version provisoire",
+        "url": "https://ins-cameroun.cm/wp-content/uploads/2026/04/Note-sur-le-commerce-exterieur-en-2025-version-provisoire_FR.pdf",
+        "date": "2026-04"
+      }
+    },
+    {
+      "fait": "Le riz reste la plus grosse facture alimentaire : 268,7 milliards de FCFA en 2025, en baisse de 15,6 % sur un an. Le blé a coûté 187,8 milliards de FCFA. L'INS se demande si cette baisse marque le début de la politique d'import-substitution.",
+      "source": {
+        "nom": "Institut national de la statistique (INS), Évolution du commerce extérieur en 2025, version provisoire",
+        "url": "https://ins-cameroun.cm/wp-content/uploads/2026/04/Note-sur-le-commerce-exterieur-en-2025-version-provisoire_FR.pdf",
+        "date": "2026-04"
+      }
+    },
+    {
+      "fait": "Le gouvernement a lancé le Plan intégré d'import-substitution agro-pastoral et halieutique (PIISAH) 2024-2026, doté de 1 371,5 milliards de FCFA, qui vise notamment le riz, la farine panifiable et l'huile de palme.",
+      "source": {
+        "nom": "Cameroon Tribune, « Import-substitution : premiers acquis »",
+        "url": "https://www.cameroon-tribune.cm/article.html/72470/fr.html/content-detail",
+        "date": "2025-08-22"
+      }
+    },
+    {
+      "fait": "Selon la Banque mondiale, la population urbaine du Cameroun progresse d'environ 3,6 % par an : 53 % des habitants vivaient en ville en 2023, et ce sera environ 73 % en 2050.",
+      "source": {
+        "nom": "Banque mondiale, communiqué du 30 mai 2025",
+        "url": "https://www.worldbank.org/en/news/press-release/2025/05/30/new-project-boosts-infrastructure-and-land-services-in-cameroon",
+        "date": "2025-05-30"
+      }
+    },
+    {
+      "fait": "Le Bureau central des recensements et des études de population (BUCREP) estime la population à 28 856 127 habitants en 2023, contre un peu plus de 17,4 millions au recensement de 2005.",
+      "source": {
+        "nom": "EcoMatin, d'après le BUCREP",
+        "url": "https://ecomatin.net/cameroun-la-population-estimee-a-29-millions-dhabitants-selon-de-nouvelles-estimations-du-bucrep",
+        "date": "2025-08-27"
+      }
+    },
+    {
+      "fait": "Selon la FAO, le prix de détail du maïs produit localement à Yaoundé a augmenté de plus de 20 % entre octobre 2025 et janvier 2026, soit environ 40 % de plus qu'un an plus tôt, à cause notamment du coût élevé des engrais.",
+      "source": {
+        "nom": "FAO, système mondial d'information et d'alerte rapide (SMIAR), note pays Cameroun",
+        "url": "https://www.fao.org/giews/countrybrief/country.jsp?code=CMR&lang=fr",
+        "date": "2026-04-07"
+      }
+    }
+  ],
+  "signalTerrain": "Sur les 3 934 ventes de guides comptées sur la boutique Smart Life, les deux domaines qui se vendent le plus sont la création de commerces physiques (1 385 ventes) et l'élevage (1 297 ventes, avec seulement 11 guides). Nos deux meilleures ventes sont le guide du business d'épices (322) et celui du dépôt de boissons (307), suivis de près par l'élevage du silure (208) et la fabrication de provende pour porcs (191). Ce sont nos propres chiffres de vente : ils montrent ce qui intéresse nos clients, pas une étude du marché camerounais.",
+  "opportunites": [
+    {
+      "id": "transformation-alimentaire",
+      "titre": "Transformation alimentaire artisanale : épices, farines locales, jus et sauces",
+      "secteur": "Agroalimentaire",
+      "pourquoiMaintenant": [
+        {
+          "fait": "Le Cameroun a dépensé 187,8 milliards de FCFA pour importer du blé en 2025, et 268,7 milliards de FCFA pour le riz.",
+          "source": {
+            "nom": "Institut national de la statistique (INS), Évolution du commerce extérieur en 2025, version provisoire",
+            "url": "https://ins-cameroun.cm/wp-content/uploads/2026/04/Note-sur-le-commerce-exterieur-en-2025-version-provisoire_FR.pdf",
+            "date": "2026-04"
+          }
+        },
+        {
+          "fait": "Le plan d'import-substitution prévoyait un texte imposant 15 % de farines locales dans le pain, la pâtisserie et les biscuits. En août 2026, la mesure peinait encore à s'appliquer, mais certaines boulangeries vendent déjà du pain à base de maïs, de manioc et de patate.",
+          "source": {
+            "nom": "EcoMatin, « Boulangerie : pourquoi le Cameroun peine à imposer son quota de 15 % de farine locale »",
+            "url": "https://ecomatin.net/boulangerie-pourquoi-le-cameroun-peine-a-imposer-son-quota-de-15-de-farine-locale",
+            "date": "2026-08-22"
+          }
+        },
+        {
+          "fait": "Selon la Banque mondiale, la part des Camerounais vivant en ville doit passer de 53 % en 2023 à environ 73 % en 2050 : de plus en plus de familles achètent leur nourriture au lieu de la produire.",
+          "source": {
+            "nom": "Banque mondiale, communiqué du 30 mai 2025",
+            "url": "https://www.worldbank.org/en/news/press-release/2025/05/30/new-project-boosts-infrastructure-and-land-services-in-cameroon",
+            "date": "2025-05-30"
+          }
+        }
+      ],
+      "ceQuiAMarche": "Les petites unités qui transforment un produit local en produit prêt à l'emploi, bien emballé et vendu en ville (épices moulues, farines, jus, condiments) ont souvent réussi parce qu'elles vendent un gain de temps aux ménages urbains. La réussite vient en général d'une qualité régulière, d'un emballage propre et d'un réseau de revendeurs fidèles, plus que du volume.",
+      "risques": [
+        "Hygiène et conservation : un seul lot avarié peut détruire la confiance des clients",
+        "Autorisations et normes à obtenir avant de vendre en supermarché",
+        "Prix des matières premières qui varient fortement selon la saison"
+      ],
+      "pourQui": "Une personne qui démarre avec peu de moyens, aime la cuisine et sait vendre autour d'elle.",
+      "investissement": "faible",
+      "guidesLies": ["eb-admin-24", "eb-admin-7", "eb-admin-83", "eb-admin-29"]
+    },
+    {
+      "id": "pisciculture",
+      "titre": "Pisciculture : silures et tilapias pour remplacer le poisson importé",
+      "secteur": "Élevage",
+      "pourquoiMaintenant": [
+        {
+          "fait": "Selon les chiffres de l'INS repris par EcoMatin, le Cameroun a importé 267 259 tonnes de poisson congelé en 2025 pour 230,8 milliards de FCFA, soit 38 % de plus qu'en 2024.",
+          "source": {
+            "nom": "EcoMatin, d'après l'INS",
+            "url": "https://ecomatin.net/cameroun-les-importations-de-poisson-bondissent-a-plus-de-230-milliards-fcfa-38-en-2025",
+            "date": "2026-04-07"
+          }
+        },
+        {
+          "fait": "Selon le ministère de l'Élevage, des Pêches et des Industries animales (Minepia), la production de l'aquaculture a progressé de 22 % pour atteindre 13 186 tonnes à fin septembre 2025, alors que la pêche reste la source principale.",
+          "source": {
+            "nom": "EcoMatin, d'après le Minepia",
+            "url": "https://ecomatin.net/cameroun-les-importations-de-poisson-bondissent-a-plus-de-230-milliards-fcfa-38-en-2025",
+            "date": "2026-04-07"
+          }
+        }
+      ],
+      "ceQuiAMarche": "L'aquaculture camerounaise reste petite à côté des importations, mais elle grandit vite selon le Minepia. Les éleveurs qui réussissent sont en général ceux qui maîtrisent l'eau, achètent des alevins de qualité et réduisent le coût de l'aliment, qui pèse le plus lourd dans les dépenses.",
+      "risques": [
+        "Coût et disponibilité de l'aliment pour poissons",
+        "Mortalité si l'eau est mal gérée ou les alevins de mauvaise qualité",
+        "Concurrence du poisson congelé importé, souvent moins cher"
+      ],
+      "pourQui": "Une personne qui a accès à un terrain avec de l'eau et peut suivre son élevage tous les jours.",
+      "investissement": "moyen",
+      "guidesLies": ["eb-admin-31", "eb-admin-14", "eb-admin-84"]
+    },
+    {
+      "id": "volailles-oeufs",
+      "titre": "Poules pondeuses et poulets de chair pour les villes",
+      "secteur": "Élevage",
+      "pourquoiMaintenant": [
+        {
+          "fait": "Selon le bilan 2025 du Minepia présenté devant les députés, la production d'œufs de table a atteint 107 505 tonnes en 2025, en hausse de 14 % après une forte baisse en 2024.",
+          "source": {
+            "nom": "EcoMatin, d'après le Minepia",
+            "url": "https://ecomatin.net/cameroun-la-production-doeufs-et-de-lait-repart-a-la-hausse-apres-2-ans-de-recession",
+            "date": "2025-12-01"
+          }
+        },
+        {
+          "fait": "Le même bilan indique que le pays a encore dépensé 37,5 milliards de FCFA en 2025 pour importer des œufs, du lait et des produits laitiers.",
+          "source": {
+            "nom": "EcoMatin, d'après le Minepia",
+            "url": "https://ecomatin.net/cameroun-la-production-doeufs-et-de-lait-repart-a-la-hausse-apres-2-ans-de-recession",
+            "date": "2025-12-01"
+          }
+        },
+        {
+          "fait": "Selon l'Interprofession avicole du Cameroun (Ipavic), la filière a réalisé 1 170 milliards de FCFA de chiffre d'affaires en 2024 et revendique 320 000 emplois directs.",
+          "source": {
+            "nom": "EcoMatin, d'après l'Ipavic",
+            "url": "https://ecomatin.net/cameroun-la-filiere-avicole-revendique-1-170-milliards-fcfa-de-chiffre-daffaires-et-570-000-emplois",
+            "date": "2026-10-09"
+          }
+        }
+      ],
+      "ceQuiAMarche": "Selon l'Ipavic, la production de poulets est passée de 68 millions de têtes en 2011 à 102 millions en 2026. Ce sont des chiffres avancés par la profession elle-même. Les éleveurs qui tiennent dans la durée sont souvent ceux qui fabriquent une partie de leur aliment et vendent directement aux restaurants, aux dépôts d'œufs et aux familles.",
+      "risques": [
+        "Hausse du prix du maïs, principal ingrédient de l'aliment (plus 40 % sur un an à Yaoundé en janvier 2026 selon la FAO)",
+        "Maladies des volailles qui peuvent décimer une bande",
+        "Prix de vente qui chutent quand beaucoup d'éleveurs vendent en même temps, par exemple après les fêtes"
+      ],
+      "pourQui": "Une personne disciplinée, disponible tous les jours, qui commence petit et agrandit son élevage bande après bande.",
+      "investissement": "moyen",
+      "guidesLies": ["eb-admin-18", "eb-admin-32", "eb-admin-80", "eb-admin-62"]
+    },
+    {
+      "id": "elevage-porcs",
+      "titre": "Élevage de porcs et fabrication de provende",
+      "secteur": "Élevage",
+      "pourquoiMaintenant": [
+        {
+          "fait": "Selon le Minepia, la production de viande de porc a atteint 41 714 tonnes en 2025, en hausse d'environ 5 %, mais elle reste 16 % en dessous de son niveau de 2023 (49 435 tonnes) à cause de la peste porcine africaine.",
+          "source": {
+            "nom": "EcoMatin, d'après le Minepia",
+            "url": "https://ecomatin.net/elevage-le-cameroun-prevoit-54-milliards-fcfa-pour-trois-fermes-porcines-dici-2029",
+            "date": "2026-10-30"
+          }
+        },
+        {
+          "fait": "L'État prévoit 5,4 milliards de FCFA sur 2027-2029 pour construire et équiper des fermes de multiplication de porcs à Kounden, Bali et Kaélé.",
+          "source": {
+            "nom": "EcoMatin",
+            "url": "https://ecomatin.net/elevage-le-cameroun-prevoit-54-milliards-fcfa-pour-trois-fermes-porcines-dici-2029",
+            "date": "2026-10-30"
+          }
+        }
+      ],
+      "ceQuiAMarche": "La production n'a pas encore retrouvé son niveau d'avant la crise sanitaire, ce qui laisse de la place aux éleveurs capables de protéger leur troupeau. Ceux qui s'en sortent le mieux appliquent des règles strictes d'hygiène à l'entrée de la porcherie et fabriquent leur propre provende pour garder la main sur leurs coûts.",
+      "risques": [
+        "Peste porcine africaine, devenue endémique selon le ministère, qui peut tuer tout un élevage",
+        "Prix des céréales et du tourteau pour la provende",
+        "Gêne pour le voisinage (odeurs) si la porcherie est mal placée"
+      ],
+      "pourQui": "Une personne installée en zone périurbaine ou rurale, prête à appliquer des règles d'hygiène strictes.",
+      "investissement": "moyen",
+      "guidesLies": ["eb-admin-4", "eb-admin-27"]
+    },
+    {
+      "id": "solaire-energie",
+      "titre": "Installation et entretien de kits solaires pour maisons et commerces",
+      "secteur": "Énergie",
+      "pourquoiMaintenant": [
+        {
+          "fait": "Selon l'Agence de régulation du secteur de l'électricité (ARSEL), un client a subi en moyenne 125,77 heures de coupure en 2025. Le rapport annuel de l'ARSEL donne même 147,83 heures, contre 114,39 heures en 2024.",
+          "source": {
+            "nom": "EcoMatin, d'après l'ARSEL",
+            "url": "https://ecomatin.net/cameroun-coupures-delectricite-126-heures-par-client-en-2025-selon-larsel-46-heures-selon-socadel",
+            "date": "2026-10-29"
+          }
+        },
+        {
+          "fait": "La loi de finances 2026 prolonge de 12 mois l'exonération des droits et taxes de douane sur certains équipements importés pour l'énergie solaire, éolienne et la biomasse.",
+          "source": {
+            "nom": "Deloitte Société d'Avocats, loi de finances 2026 du Cameroun (loi n° 2025/012 du 17 décembre 2025)",
+            "url": "https://blog.avocats.deloitte.fr/cameroun-les-principales-innovations-de-la-loi-de-finances-pour-2026/",
+            "date": "2026-03-24"
+          }
+        }
+      ],
+      "ceQuiAMarche": "Avec des coupures fréquentes, les commerces qui dépendent du froid, de l'éclairage ou de l'internet cherchent une source d'énergie de secours. Les installateurs qui gagnent la confiance de leurs clients sont ceux qui posent du matériel de qualité, expliquent clairement ce que le kit peut alimenter et assurent le service après-vente.",
+      "risques": [
+        "Matériel contrefait ou de mauvaise qualité qui abîme la réputation",
+        "Clients qui n'ont pas les moyens de payer comptant",
+        "Amélioration du réseau électrique avec les nouveaux barrages, qui peut réduire une partie de la demande"
+      ],
+      "pourQui": "Un électricien ou un technicien qui veut se mettre à son compte, ou un commerçant qui peut s'associer à un technicien formé.",
+      "investissement": "moyen",
+      "guidesLies": ["eb-admin-50"]
+    },
+    {
+      "id": "materiaux-construction",
+      "titre": "Matériaux de construction : parpaings, pavés et quincaillerie de quartier",
+      "secteur": "Construction",
+      "pourquoiMaintenant": [
+        {
+          "fait": "Selon la Banque mondiale, la croissance attendue au Cameroun entre 2025 et 2028 s'appuie sur une meilleure production d'électricité et sur l'investissement public, en particulier dans la construction.",
+          "source": {
+            "nom": "Banque mondiale, Cahier économique du Cameroun, communiqué du 15 juillet 2025",
+            "url": "https://www.worldbank.org/en/news/press-release/2025/07/15/cameroon-economic-update-harnessing-forests-and-natural-wealth-for-sustainable-growth",
+            "date": "2025-07-15"
+          }
+        },
+        {
+          "fait": "Avec l'ouverture de l'usine Central Africa Cement à Édéa (un million de tonnes par an) en septembre 2025, la capacité de production de ciment du pays avoisine 10 millions de tonnes par an, pour une demande intérieure estimée à environ 8 millions de tonnes.",
+          "source": {
+            "nom": "EcoMatin",
+            "url": "https://ecomatin.net/cameroun-une-nouvelle-cimenterie-dun-million-de-tonnes-inauguree-a-edea",
+            "date": "2025-09-20"
+          }
+        },
+        {
+          "fait": "Selon la Banque mondiale, la population urbaine augmente d'environ 3,6 % par an, et un nouveau projet finance des infrastructures urbaines à Yaoundé et Douala.",
+          "source": {
+            "nom": "Banque mondiale, communiqué du 30 mai 2025",
+            "url": "https://www.worldbank.org/en/news/press-release/2025/05/30/new-project-boosts-infrastructure-and-land-services-in-cameroon",
+            "date": "2025-05-30"
+          }
+        }
+      ],
+      "ceQuiAMarche": "Dans les quartiers qui s'étendent autour des grandes villes, les fabricants de parpaings et les quincailleries proches des chantiers profitent du fait que chaque famille construit souvent sa maison petit à petit. Ceux qui durent vendent une qualité constante et livrent à temps.",
+      "risques": [
+        "Parpaings de mauvaise qualité (pas assez de ciment) qui font perdre la clientèle et posent des problèmes de sécurité",
+        "Ventes qui ralentissent quand l'argent des ménages ou les paiements de l'État se font attendre",
+        "Besoin d'un terrain, d'eau et d'un moyen de transport pour livrer"
+      ],
+      "pourQui": "Une personne qui connaît le milieu du bâtiment et dispose d'un espace proche d'une zone en construction.",
+      "investissement": "moyen",
+      "guidesLies": ["eb-admin-45", "eb-admin-17", "eb-admin-37", "eb-admin-15"]
+    },
+    {
+      "id": "chaine-du-froid",
+      "titre": "Chaîne du froid : chambre froide, poissonnerie et dépôt de produits frais",
+      "secteur": "Logistique",
+      "pourquoiMaintenant": [
+        {
+          "fait": "Le pays a importé 267 259 tonnes de poisson congelé en 2025, qui doivent rester congelées du port jusqu'au client.",
+          "source": {
+            "nom": "EcoMatin, d'après l'INS",
+            "url": "https://ecomatin.net/cameroun-les-importations-de-poisson-bondissent-a-plus-de-230-milliards-fcfa-38-en-2025",
+            "date": "2026-04-07"
+          }
+        },
+        {
+          "fait": "Selon l'ARSEL, un client a subi en moyenne près de 126 heures de coupure d'électricité en 2025 : conserver des produits frais demande donc un équipement de secours fiable.",
+          "source": {
+            "nom": "EcoMatin, d'après l'ARSEL",
+            "url": "https://ecomatin.net/cameroun-coupures-delectricite-126-heures-par-client-en-2025-selon-larsel-46-heures-selon-socadel",
+            "date": "2026-10-29"
+          }
+        }
+      ],
+      "ceQuiAMarche": "Le poisson congelé, la viande et les produits frais circulent en grande quantité dans les villes, et ceux qui disposent d'un froid fiable peuvent vendre ou louer de l'espace de stockage. Ce métier demande plus de capital que les autres, mais il sert à la fois les éleveurs, les commerçants et les restaurants.",
+      "risques": [
+        "Coût de l'électricité et des groupes électrogènes pendant les coupures",
+        "Pertes totales de marchandise en cas de panne prolongée",
+        "Investissement de départ élevé (chambre froide, réparations, transport)"
+      ],
+      "pourQui": "Un commerçant qui a déjà un capital, un local et un réseau de clients dans l'alimentation.",
+      "investissement": "élevé",
+      "guidesLies": ["eb-admin-50", "eb-admin-84", "eb-admin-80"]
+    },
+    {
+      "id": "huile-de-palme",
+      "titre": "Palmier à huile et petite extraction d'huile de palme",
+      "secteur": "Agroalimentaire",
+      "pourquoiMaintenant": [
+        {
+          "fait": "Selon les chiffres de l'INS repris par EcoMatin, le Cameroun a importé environ 130 000 tonnes d'huile de palme en 2025 pour plus de 92 milliards de FCFA, contre 69 000 tonnes un an plus tôt.",
+          "source": {
+            "nom": "EcoMatin, d'après l'INS",
+            "url": "https://ecomatin.net/cameroun-les-importations-dhuile-de-palme-grimpent-de-84-a-92-milliards-fcfa-en-2025",
+            "date": "2026-04-06"
+          }
+        },
+        {
+          "fait": "Selon l'Association des raffineurs des oléagineux du Cameroun (ASROC), les industriels ont besoin de près de 1,18 million de tonnes d'huile de palme brute par an, alors que la production nationale était estimée à 446 884 tonnes en 2024.",
+          "source": {
+            "nom": "EcoMatin, d'après l'ASROC",
+            "url": "https://ecomatin.net/cameroun-les-importations-dhuile-de-palme-grimpent-de-84-a-92-milliards-fcfa-en-2025",
+            "date": "2026-04-06"
+          }
+        },
+        {
+          "fait": "Le plan d'import-substitution vise environ 60 000 tonnes d'huile de palme supplémentaires en 2026, grâce à la réhabilitation de 5 000 hectares de plantations.",
+          "source": {
+            "nom": "Cameroon Tribune, « Import-substitution : premiers acquis »",
+            "url": "https://www.cameroon-tribune.cm/article.html/72470/fr.html/content-detail",
+            "date": "2025-08-22"
+          }
+        }
+      ],
+      "ceQuiAMarche": "Le manque d'huile de palme est ancien et les industriels achètent ce que les planteurs produisent. Les planteurs qui en ont profité sont généralement ceux qui ont planté des variétés améliorées et ont su attendre plusieurs années avant les premières vraies récoltes.",
+      "risques": [
+        "Plusieurs années d'attente avant que les palmiers ne produisent",
+        "Accès sécurisé à la terre (titre foncier) indispensable",
+        "Prix de l'huile qui dépendent du marché mondial et des importations"
+      ],
+      "pourQui": "Une personne qui a accès à des terres, un capital patient et peut attendre plusieurs années avant d'être rentable.",
+      "investissement": "élevé",
+      "guidesLies": ["eb-admin-40", "eb-admin-64"]
+    }
+  ],
+  "methode": "Cette analyse rassemble uniquement des chiffres publiés par des sources officielles ou reconnues (Institut national de la statistique, FMI, Banque mondiale, Banque africaine de développement, FAO, presse économique camerounaise), que nous avons lus nous-mêmes ; chaque chiffre est accompagné de sa source et de sa date. Nous y ajoutons, en le disant clairement, ce que nos clients achètent sur Smart Life. Elle est mise à jour chaque trimestre et ne constitue pas un conseil financier : avant d'investir, vérifiez votre marché local et votre capacité à supporter les risques.",
+  "sources": [
+    { "nom": "Banque africaine de développement, page pays Cameroun", "url": "https://www.afdb.org/ar/node/13355", "date": "2026-10-08" },
+    { "nom": "FMI, communiqué de presse 26/096 (consultations de 2026 au titre de l'article IV)", "url": "https://www.imf.org/en/news/articles/2026/03/30/pr-26096-cameroon-imf-executive-board-concludes-2026-article-iv-consultation", "date": "2026-03-30" },
+    { "nom": "Institut national de la statistique (INS), Évolution du commerce extérieur en 2025, version provisoire", "url": "https://ins-cameroun.cm/wp-content/uploads/2026/04/Note-sur-le-commerce-exterieur-en-2025-version-provisoire_FR.pdf", "date": "2026-04" },
+    { "nom": "Cameroon Tribune, « Import-substitution : premiers acquis »", "url": "https://www.cameroon-tribune.cm/article.html/72470/fr.html/content-detail", "date": "2025-08-22" },
+    { "nom": "Banque mondiale, communiqué du 30 mai 2025 (villes durables et foncier)", "url": "https://www.worldbank.org/en/news/press-release/2025/05/30/new-project-boosts-infrastructure-and-land-services-in-cameroon", "date": "2025-05-30" },
+    { "nom": "Banque mondiale, Cahier économique du Cameroun, communiqué du 15 juillet 2025", "url": "https://www.worldbank.org/en/news/press-release/2025/07/15/cameroon-economic-update-harnessing-forests-and-natural-wealth-for-sustainable-growth", "date": "2025-07-15" },
+    { "nom": "EcoMatin, estimations de population du BUCREP", "url": "https://ecomatin.net/cameroun-la-population-estimee-a-29-millions-dhabitants-selon-de-nouvelles-estimations-du-bucrep", "date": "2025-08-27" },
+    { "nom": "FAO, SMIAR, note pays Cameroun", "url": "https://www.fao.org/giews/countrybrief/country.jsp?code=CMR&lang=fr", "date": "2026-04-07" },
+    { "nom": "EcoMatin, quota de farine locale en boulangerie", "url": "https://ecomatin.net/boulangerie-pourquoi-le-cameroun-peine-a-imposer-son-quota-de-15-de-farine-locale", "date": "2026-08-22" },
+    { "nom": "EcoMatin, importations de poisson en 2025 (INS, Minepia)", "url": "https://ecomatin.net/cameroun-les-importations-de-poisson-bondissent-a-plus-de-230-milliards-fcfa-38-en-2025", "date": "2026-04-07" },
+    { "nom": "EcoMatin, production d'œufs et de lait (bilan 2025 du Minepia)", "url": "https://ecomatin.net/cameroun-la-production-doeufs-et-de-lait-repart-a-la-hausse-apres-2-ans-de-recession", "date": "2025-12-01" },
+    { "nom": "EcoMatin, chiffres de la filière avicole (Ipavic)", "url": "https://ecomatin.net/cameroun-la-filiere-avicole-revendique-1-170-milliards-fcfa-de-chiffre-daffaires-et-570-000-emplois", "date": "2026-10-09" },
+    { "nom": "EcoMatin, filière porcine et fermes de multiplication", "url": "https://ecomatin.net/elevage-le-cameroun-prevoit-54-milliards-fcfa-pour-trois-fermes-porcines-dici-2029", "date": "2026-10-30" },
+    { "nom": "EcoMatin, coupures d'électricité en 2025 (ARSEL)", "url": "https://ecomatin.net/cameroun-coupures-delectricite-126-heures-par-client-en-2025-selon-larsel-46-heures-selon-socadel", "date": "2026-10-29" },
+    { "nom": "Deloitte Société d'Avocats, loi de finances 2026 du Cameroun", "url": "https://blog.avocats.deloitte.fr/cameroun-les-principales-innovations-de-la-loi-de-finances-pour-2026/", "date": "2026-03-24" },
+    { "nom": "EcoMatin, nouvelle cimenterie d'Édéa", "url": "https://ecomatin.net/cameroun-une-nouvelle-cimenterie-dun-million-de-tonnes-inauguree-a-edea", "date": "2025-09-20" },
+    { "nom": "EcoMatin, importations d'huile de palme en 2025 (INS, ASROC)", "url": "https://ecomatin.net/cameroun-les-importations-dhuile-de-palme-grimpent-de-84-a-92-milliards-fcfa-en-2025", "date": "2026-04-06" }
+  ]
+}

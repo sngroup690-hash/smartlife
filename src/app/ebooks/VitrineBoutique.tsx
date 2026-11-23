@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Nunito } from "next/font/google";
 import { Search, BookOpen, X } from "lucide-react";
 import type { Ebook } from "@/lib/data";
 import { useCurrencyStore } from "@/lib/currency-store";
@@ -11,7 +10,6 @@ import { EnteteBoutique, PiedBoutique } from "./[slug]/ElementsBoutique";
 import DownloadModal from "@/components/DownloadModal";
 import TitreDefilant from "@/components/TitreDefilant";
 
-const nunito = Nunito({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
 
 type Guide = Ebook & { ventes?: number; vendusAffiche?: number };
 type Temoignage = { name: string; role: string; content: string; rating: number; avatar: string };
@@ -191,7 +189,7 @@ export default function VitrineBoutique({
   const modeListe = categorie !== "Tous" || mots.length > 0;
 
   return (
-    <div className={`${nunito.className} min-h-screen bg-white text-black`}>
+    <div className="min-h-screen bg-white text-black">
       <EnteteBoutique />
 
       {/* Bandeau de la boutique */}

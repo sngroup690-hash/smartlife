@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -95,7 +95,9 @@ function sanitizeInlineStyle(style: string): string {
     // marges/padding négatifs qui font déborder
     .replace(/\bmargin(?:-left|-right)?\s*:\s*-\d[^;]*/gi, "")
     // polices inhabituelles collées depuis Word
-    .replace(/\bfont-family\s*:[^;]+;?/gi, "");
+    .replace(/\bfont-family\s*:[^;]+;?/gi, "")
+    // tailles, interlignes et espacements imposés : la typographie du site (façon Apple) s'applique
+    .replace(/\b(?:font-size|line-height|letter-spacing|font-stretch)\s*:[^;]+;?/gi, "");
 }
 
 function sanitizeTag(tag: string): string {
@@ -103,6 +105,10 @@ function sanitizeTag(tag: string): string {
   tag = tag.replace(/\bstyle=["']([^"']*)["']/gi, (_, s) => `style="${sanitizeInlineStyle(s)}"`);
   // Supprimer width/height numériques explicites sur balises structurelles
   tag = tag.replace(/\s(?:width|height)=["']\d+[^"']*["']/gi, "");
+  // Anciennes balises <font face/size> : police et taille du site
+  if (/^<font/i.test(tag)) {
+    tag = tag.replace(/\s(?:face|size)=["'][^"']*["']/gi, "");
+  }
   // Supprimer align= et float= sur images (anciens attributs HTML)
   if (/^<img/i.test(tag)) {
     tag = tag.replace(/\s(?:align|float)=["'][^"']*["']/gi, "");
@@ -143,7 +149,106 @@ export function processDescription(html: string): string {
   // 5. Nettoyer les styles problématiques copiés-collés (Word, GDocs…)
   result = result.replace(/<([a-z][a-z0-9]*)[^>]*>/gi, sanitizeTag);
 
+  // 6. Titre ou paragraphe entièrement surligné (fond coloré) : bandeau rectangulaire
+  //    aligné, au lieu d'un surlignage en escalier ligne par ligne sur téléphone.
+  result = result.replace(
+    /<(h[1-6]|p|li)(\s[^>]*)?>(\s*)<(strong|span|b|em|mark)(\s[^>]*style="[^"]*background[^"]*"[^>]*)>((?:(?!<\/?\4[\s>])[\s\S])*?)<\/\4>(\s*)<\/\1>/gi,
+    (_, bloc, attrsBloc = "", av, inl, attrsInl, contenu, ap) =>
+      `<${bloc}${attrsBloc}>${av}<${inl} class="bandeau-surligne"${attrsInl}>${contenu}</${inl}>${ap}</${bloc}>`,
+  );
+
+  // 7. Effacer les traces d'IA du texte (émojis en rafale, longs tirets) sans toucher aux balises
+  result = result
+    .split(/(<[^>]+>)/)
+    .map((morceau) => (morceau.startsWith("<") ? morceau : nettoyerTracesIA(morceau)))
+    .join("");
+
   return result;
+}
+
+// ─── Traces d'IA ──────────────────────────────────────────────────────────────
+
+// Émojis utilisés comme puces de liste : remplacés par une coche sobre aux couleurs du site.
+const PUCES_OUI = /(?:✅|✔️|✔|☑️|☑|👉|➡️|➡|🔹|🔸|▪️|▪|▶️|▶|📌)️?\s*/gu;
+const PUCES_NON = /(?:❌|✖️|✖|⛔|🚫)️?\s*/gu;
+const EMOJI = /\p{Extended_Pictographic}/u;
+
+function nettoyerTracesIA(texte: string): string {
+  if (!texte.trim()) return texte;
+  let t = texte
+    // 1️⃣ 2️⃣ → 1. 2.
+    .replace(/([0-9])️?⃣/g, "$1.")
+    // Chaque point de liste collé dans un même paragraphe passe à la ligne.
+    .replace(PUCES_OUI, (_m, pos: number, tout: string) =>
+      `${tout.slice(0, pos).trim() ? "<br>" : ""}<span class="puce-smart" aria-hidden="true"></span>`)
+    .replace(PUCES_NON, (_m, pos: number, tout: string) =>
+      `${tout.slice(0, pos).trim() ? "<br>" : ""}<span class="puce-smart puce-non" aria-hidden="true"></span>`);
+  // Les autres émojis décoratifs disparaissent (on garde © ® ™).
+  t = Array.from(t)
+    .filter((c) => c === "©" || c === "®" || c === "™" || !EMOJI.test(c))
+    .join("")
+    .replace(/[️‍]/g, "");
+  // Longs tirets : une incise « — … — » devient des virgules, un tiret seul devient « : » ou « , ».
+  t = t.replace(/^\s*[—–]\s+/, "");
+  t = t.replace(/\s+—\s+([^—]{1,120}?)\s+—\s+/g, ", $1, ");
+  t = t.replace(/\s+—\s+(?=(et|mais|ou|car|donc|puis|sans|pas|même|surtout)\b)/gi, ", ");
+  t = t.replace(/\s+—\s+/g, " : ");
+  t = t.replace(/—/g, ", ");
+  return t.replace(/ {2,}/g, " ");
+}
+
+// ─── Lecture animée ──────────────────────────────────────────────────────────
+
+const BLOCS_LECTURE = "h1,h2,h3,h4,h5,p,li,img,blockquote,table,iframe";
+
+function animerLecture(conteneur: HTMLElement) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return () => {};
+  const hauteur = window.innerHeight;
+  const blocs = Array.from(conteneur.querySelectorAll<HTMLElement>(BLOCS_LECTURE)).filter((el) => {
+    // Un bloc déjà animé par son parent (paragraphe dans une liste…) ne s'anime pas deux fois.
+    const parent = el.parentElement?.closest(BLOCS_LECTURE);
+    return !(parent && conteneur.contains(parent)) && el.getBoundingClientRect().top > hauteur * 0.9;
+  });
+  const obs = new IntersectionObserver(
+    (entrees) => {
+      for (const e of entrees) {
+        if (!e.isIntersecting && e.boundingClientRect.top > 0) continue;
+        const el = e.target as HTMLElement;
+        obs.unobserve(el);
+        el.classList.add("lecture-visible");
+        setTimeout(() => el.classList.remove("lecture-avant", "lecture-visible"), 900);
+      }
+    },
+    { threshold: 0, rootMargin: "0px 0px -8% 0px" },
+  );
+  for (const el of blocs) {
+    if (el.tagName === "LI") {
+      const rang = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+      el.style.transitionDelay = `${Math.min(rang % 4, 3) * 70}ms`;
+    }
+    el.classList.add("lecture-avant");
+    obs.observe(el);
+  }
+  // Sécurité : un saut brusque dans la page révèle tout ce qui est déjà passé.
+  const verifier = () => {
+    for (const el of blocs) {
+      if (el.classList.contains("lecture-avant") && el.getBoundingClientRect().top < window.innerHeight) {
+        el.classList.add("lecture-visible");
+      }
+    }
+  };
+  const minuterie = { id: 0 as ReturnType<typeof setTimeout> | 0 };
+  const auDefilement = () => {
+    if (minuterie.id) return;
+    minuterie.id = setTimeout(() => { minuterie.id = 0; verifier(); }, 200);
+  };
+  window.addEventListener("scroll", auDefilement, { passive: true });
+  return () => {
+    obs.disconnect();
+    window.removeEventListener("scroll", auDefilement);
+    if (minuterie.id) clearTimeout(minuterie.id);
+    for (const el of blocs) el.classList.remove("lecture-avant", "lecture-visible");
+  };
 }
 
 // ─── Composant ────────────────────────────────────────────────────────────────
@@ -155,9 +260,17 @@ interface Props {
 
 export function DescriptionRenderer({ html, className = "" }: Props) {
   const processed = useMemo(() => processDescription(html), [html]);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    return animerLecture(ref.current);
+  }, [processed]);
 
   return (
     <div
+      ref={ref}
+      data-sans-anim
       className={[
         // Conteneur : jamais de débordement horizontal
         "overflow-x-hidden max-w-full w-full",

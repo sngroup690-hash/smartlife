@@ -23,6 +23,7 @@ const PILIERS = [
   { href: "/ebooks", label: "Ebooks & guides pratiques" },
   { href: "/accompagnement", label: "Accompagnement" },
   { href: "/devenir-consultant", label: "Devenir consultant" },
+  { href: "/analyse-smart", label: "Analyse Smart : business d'avenir" },
   { href: "/conseils", label: "Conseils gratuits pour se lancer" },
   { href: "/temoignages", label: "Avis & témoignages" },
   { href: "/contact", label: "Contact" },
