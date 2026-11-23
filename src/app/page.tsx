@@ -1,6 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Star, ArrowRight, Check } from "lucide-react";
+import { Star, ArrowRight, Check, Users, ShoppingBag, ThumbsUp, BookOpen, Compass, Zap } from "lucide-react";
+
+// Une icône par chiffre, dans le même ordre que la liste des chiffres
+const ICONES_CHIFFRES = [Users, ShoppingBag, ThumbsUp, BookOpen, Compass, Zap];
 import { testimonials } from "@/lib/data";
 import { PriceTag } from "@/components/PriceTag";
 import PhotosQuiDefilent from "@/components/PhotosQuiDefilent";
@@ -61,10 +64,12 @@ export default async function HomePage() {
   ];
 
   const chiffres = [
+    { n: 14960, s: "", l: "clients en Afrique et dans la diaspora" },
     { n: 33204, s: "", l: "clients sur notre boutique Chariow" },
     { n: 82, s: " %", l: "d'avis positifs, sur 248 avis" },
     { n: nbGuides || 85, s: "", l: "guides pratiques" },
     { n: nbEspaces || 77, s: "", l: "domaines d'accompagnement" },
+    { n: 0, s: "", l: "pour recevoir votre guide après paiement", texte: "Quelques secondes" },
   ];
 
   const pointsAccompagnement = [
@@ -79,29 +84,70 @@ export default async function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(ETIQUETTES_SITE) }} />
 
       {/* ══════ EN-TÊTE ══════ */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16">
-        <h1 className="text-[40px] sm:text-[60px] lg:text-[76px] font-semibold leading-[1.02] tracking-[-0.035em] max-w-[15ch]">
-          Votre business en Afrique, de l&apos;idée au <span className="g-surligne">succès.</span>
+      <section className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16" data-sans-anim>
+        {/* Deux halos doux jaune et vert qui flottent lentement derrière le titre */}
+        <span aria-hidden="true" className="hero-tache hero-tache-jaune" />
+        <span aria-hidden="true" className="hero-tache hero-tache-verte" />
+        {/* Décor « avenir meilleur » : soleil levant, activité qui grandit, flèche de croissance */}
+        <svg aria-hidden="true" className="hero-avenir" viewBox="0 0 300 280" fill="none">
+          <defs>
+            <radialGradient id="avenir-soleil" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#FFD84D" />
+              <stop offset="70%" stopColor="#E8B800" />
+              <stop offset="100%" stopColor="#E8B800" stopOpacity="0.85" />
+            </radialGradient>
+            <linearGradient id="avenir-barre" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#27A827" />
+              <stop offset="100%" stopColor="#1e7a1e" />
+            </linearGradient>
+          </defs>
+          <g className="avenir-rayons" stroke="#E8B800" strokeWidth="4" strokeLinecap="round" opacity="0.55">
+            {Array.from({ length: 12 }).map((_, i) => {
+              const a = (i * Math.PI) / 6;
+              return <line key={i} x1={190 + Math.cos(a) * 86} y1={120 + Math.sin(a) * 86} x2={190 + Math.cos(a) * 104} y2={120 + Math.sin(a) * 104} />;
+            })}
+          </g>
+          <circle className="avenir-soleil" cx="190" cy="120" r="66" fill="url(#avenir-soleil)" />
+          <line x1="14" y1="250" x2="290" y2="250" stroke="#1E2B5E" strokeOpacity="0.18" strokeWidth="3" strokeLinecap="round" />
+          {[34, 60, 90, 122, 158].map((h, i) => (
+            <rect key={i} className="avenir-barre" style={{ ["--i" as string]: i }} x={38 + i * 46} y={250 - h} width="30" height={h} rx="7" fill="url(#avenir-barre)" />
+          ))}
+          <path className="avenir-fleche" d="M22 222 C 90 214, 150 170, 196 120 S 262 52, 276 40" stroke="#101410" strokeWidth="5" strokeLinecap="round" />
+          <path className="avenir-pointe" d="M256 36 L 280 36 L 280 60" stroke="#101410" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+          <g className="avenir-etincelles" fill="#E8B800">
+            <path d="M58 70 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4z" />
+            <path d="M118 30 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z" />
+          </g>
+        </svg>
+        <p className="hero-apparait relative inline-flex items-center gap-2 rounded-full bg-white/90 border border-[var(--g-ligne)] px-3.5 py-1.5 text-[13.5px] font-medium" style={{ ["--d" as string]: "0ms" }}>
+          <span className="point-vivant" aria-hidden="true" />
+          14 960+ clients nous font confiance
+        </p>
+        <h1 className="relative mt-5 text-[40px] sm:text-[60px] lg:text-[76px] font-semibold leading-[1.02] tracking-[-0.035em] max-w-[15ch]">
+          {"Votre business en Afrique, de l'idée au".split(" ").map((mot, i) => (
+            <span key={i} className="mot-entre" style={{ ["--i" as string]: i }}>{mot} </span>
+          ))}
+          <span className="mot-entre" style={{ ["--i" as string]: 7 }}><span className="g-surligne surligne-anime">succès.</span></span>
         </h1>
-        <div className="mt-7 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-          <p className="text-[18px] sm:text-[20px] leading-[1.45] text-[var(--g-gris)] max-w-[44ch]">
+        <div className="relative mt-7 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+          <p className="hero-apparait text-[18px] sm:text-[20px] leading-[1.45] text-[var(--g-gris)] max-w-[44ch]" style={{ ["--d" as string]: "650ms" }}>
             Des guides pratiques, une communauté de visionnaires et des consultants du terrain pour vous accompagner pas à pas.
           </p>
-          <div className="flex flex-wrap gap-2.5">
-            <Link href="/ebooks" className="g-btn">Voir les guides</Link>
-            <Link href="/accompagnement" className="g-btn-ghost">Être accompagné <ArrowRight size={17} /></Link>
+          <div className="hero-apparait flex flex-wrap gap-2.5" style={{ ["--d" as string]: "800ms" }}>
+            <Link href="/ebooks" className="g-btn bouton-reflet relative overflow-hidden">Voir les guides <ArrowRight size={17} className="fleche-cta" /></Link>
+            <Link href="/accompagnement" className="g-btn g-btn-vert">Être accompagné <ArrowRight size={17} /></Link>
           </div>
         </div>
-        <p className="mt-5 text-[14.5px] text-[var(--g-gris)]">
+        <p className="hero-apparait relative mt-5 text-[14.5px] text-[var(--g-gris)]" style={{ ["--d" as string]: "950ms" }}>
           Paiement Mobile Money · Guide reçu en quelques secondes · Aide sur WhatsApp
         </p>
       </section>
 
       {grandePhoto && (
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-9">
+        <div className="hero-apparait max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-9" style={{ ["--d" as string]: "1000ms" }} data-sans-anim>
           <figure className="relative overflow-hidden rounded-t-[18px] aspect-[4/3] sm:aspect-[21/9]">
-            <Image src={grandePhoto.src} alt={grandePhoto.titre} fill priority sizes="(max-width: 1200px) 100vw, 1150px" className="object-cover" style={{ objectPosition: "50% 30%" }} />
-            <figcaption className="absolute left-4 bottom-4 rounded-lg bg-white/95 px-3 py-1.5 text-[13.5px] font-medium">
+            <Image src={grandePhoto.src} alt={grandePhoto.titre} fill priority sizes="(max-width: 1200px) 100vw, 1150px" className="object-cover photo-lente" style={{ objectPosition: "50% 30%" }} />
+            <figcaption className="legende-glisse absolute left-4 bottom-4 rounded-lg bg-white/95 px-3 py-1.5 text-[13.5px] font-medium">
               Guide · {grandePhoto.titre === grandePhoto.titre.toUpperCase()
                 ? grandePhoto.titre.charAt(0) + grandePhoto.titre.slice(1).toLowerCase()
                 : grandePhoto.titre}
@@ -111,34 +157,29 @@ export default async function HomePage() {
         </div>
       )}
 
-      {/* ══════ CHIFFRES ══════
-          Un grand chiffre vedette (les clients), puis quatre chiffres réguliers séparés par des filets.
-          Couleurs en style en ligne : globals.css force .text-white en gris foncé. */}
-      <section className="mt-14 bg-[var(--g-vert-profond)]">
-        <div className="bande-wax h-[12px]" aria-hidden="true" />
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid gap-10 lg:grid-cols-[1fr_1.35fr] lg:gap-16 lg:items-end">
-          <div>
-            <p className="text-[14px] font-semibold" style={{ color: "var(--g-jaune)" }}>Smart Life en chiffres</p>
-            <p className="mt-3 text-[64px] sm:text-[88px] font-semibold leading-[0.95] tracking-[-0.045em] tabular-nums" style={{ color: "#fff" }}>
-              <span data-compteur="14960" data-suffixe="">14 960</span>
-            </p>
-            <p className="mt-3 text-[17px] sm:text-[18px] leading-snug max-w-[26ch]" style={{ color: "rgba(255,255,255,0.86)" }}>
-              clients en Afrique et dans la diaspora
-            </p>
-            <p className="mt-6 flex items-center gap-2 text-[14.5px]" style={{ color: "rgba(255,255,255,0.86)" }}>
-              <Check size={16} strokeWidth={2.6} style={{ color: "var(--g-jaune)" }} className="shrink-0" />
-              Guide reçu en quelques secondes après paiement
-            </p>
-          </div>
-          <div className="grid grid-cols-2 gap-x-6 sm:gap-x-10 gap-y-8">
-            {chiffres.map((c) => (
-              <div key={c.l} className="border-t pt-4" style={{ borderColor: "rgba(255,255,255,0.22)" }}>
-                <p className="text-[34px] sm:text-[44px] font-semibold leading-none tracking-[-0.035em] tabular-nums" style={{ color: "#fff" }}>
-                  <span data-compteur={c.n} data-suffixe={c.s}>{c.n.toLocaleString("fr-FR")}{c.s}</span>
-                </p>
-                <p className="mt-2 text-[14px] sm:text-[15px] leading-snug" style={{ color: "rgba(255,255,255,0.78)" }}>{c.l}</p>
-              </div>
-            ))}
+      {/* ══════ CHIFFRES ══════ */}
+      <section className="bloc-chiffres relative mt-14 overflow-hidden bg-[var(--g-vert-profond)]">
+        {/* Lumière jaune douce dans un coin, pour donner de la profondeur au vert */}
+        <span aria-hidden="true" className="chiffres-lumiere" />
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.14em]" style={{ color: "var(--g-jaune)" }}>Smart Life en chiffres</p>
+          <h2 className="mt-2 text-[26px] sm:text-[34px] font-semibold leading-[1.12] tracking-[-0.025em] max-w-[22ch]" style={{ color: "#fff" }}>
+            Des milliers d&apos;entrepreneurs avancent déjà avec nous
+          </h2>
+          <div className="mt-8 grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            {chiffres.map((c, i) => {
+              const Icone = ICONES_CHIFFRES[i % ICONES_CHIFFRES.length];
+              return (
+                <div key={c.l} className="carte-chiffre rounded-[16px] p-4 sm:p-6">
+                  <span className="chiffre-icone" aria-hidden="true"><Icone size={20} strokeWidth={2.2} /></span>
+                  <p className="mt-4 g-chiffre" style={{ color: i % 2 === 0 ? "#fff" : "var(--g-jaune)" }}>
+                    {c.texte ?? <span data-compteur={c.n} data-suffixe={c.s}>{c.n.toLocaleString("fr-FR")}{c.s}</span>}
+                  </p>
+                  <span className="barre-chiffre mt-3 block h-[3px] w-8 rounded-full bg-[var(--g-jaune)]" aria-hidden="true" />
+                  <p className="mt-3 text-[13.5px] sm:text-[14.5px] leading-snug" style={{ color: "rgba(255,255,255,0.85)" }}>{c.l}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -156,8 +197,8 @@ export default async function HomePage() {
           {populaires.map((g) => {
             const remise = g.originalPrice && g.originalPrice > g.price ? Math.round((1 - g.price / g.originalPrice) * 100) : 0;
             return (
-              <Link key={g.id} href={`/ebooks/${g.slug}`} className="group flex flex-col">
-                <div className="relative overflow-hidden rounded-[14px] aspect-square bg-[var(--g-doux)]">
+              <Link key={g.id} href={`/ebooks/${g.slug}`} className="group carte-guide flex flex-col">
+                <div className="carte-guide-image relative overflow-hidden rounded-[14px] aspect-square bg-[var(--g-doux)]">
                   <Image src={g.cover!} alt={g.title} fill quality={90} sizes="(max-width: 1024px) 50vw, 380px" className="object-contain transition-transform duration-500 group-hover:scale-[1.03]" />
                 </div>
                 <h3 className="mt-3.5 text-[15px] sm:text-[17.5px] font-semibold leading-snug tracking-[-0.01em] line-clamp-2">{g.title}</h3>
@@ -181,7 +222,7 @@ export default async function HomePage() {
         <h2 className="g-titre-section mb-8">Trois façons d&apos;avancer avec Smart Life</h2>
         <div className="border-t border-[var(--g-ligne)]">
           {parcours.map((p) => (
-            <Link key={p.href} href={p.href} className="group grid gap-2 sm:gap-6 sm:grid-cols-[1fr_1.4fr_auto] items-baseline py-7 border-b border-[var(--g-ligne)]">
+            <Link key={p.href} href={p.href} className="group ligne-parcours grid gap-2 sm:gap-6 sm:grid-cols-[1fr_1.4fr_auto] items-baseline py-7 border-b border-[var(--g-ligne)]">
               <h3 className="text-[22px] sm:text-[26px] font-semibold tracking-[-0.02em]">{p.titre}</h3>
               <p className="text-[16.5px] leading-[1.5] text-[var(--g-gris)]">{p.texte}</p>
               <span className="g-lien whitespace-nowrap">{p.bouton} <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" /></span>
@@ -225,8 +266,9 @@ export default async function HomePage() {
           {pointsAccompagnement.map((b) => (
             <div key={b.titre}>
               {b.photo && (
-                <div className="relative aspect-[4/3] overflow-hidden rounded-[12px] bg-[var(--g-doux)]">
-                  <Image src={b.photo.src} alt="" fill sizes="(max-width: 640px) 92vw, 280px" className="object-cover" style={{ objectPosition: "50% 25%" }} />
+                <div className="carte-photo relative aspect-[4/3] overflow-hidden rounded-[12px] bg-[var(--g-doux)]">
+                  {/* Photos larges recadrées en 4/3 : on demande une version assez grande pour rester nette (sinon floue en 2 colonnes) */}
+                  <Image src={b.photo.src} alt="" fill sizes="(max-width: 640px) 92vw, (max-width: 1024px) 62vw, 480px" className="object-cover" style={{ objectPosition: "50% 25%" }} />
                 </div>
               )}
               <h3 className="mt-4 text-[17.5px] font-semibold leading-snug tracking-[-0.01em]">{b.titre}</h3>

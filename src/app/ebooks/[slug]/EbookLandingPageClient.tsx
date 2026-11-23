@@ -234,7 +234,8 @@ type ServerEbookData = {
 };
 
 // Couleurs par défaut = celles de Chariow ; chacune se change guide par guide dans l'admin.
-const CHARIOW = { bouton: "#E8B800", texteBouton: "#101410", prix: "#101410" };
+// Bouton d'achat vert Smart Life (choix de Frank : le vert ressort mieux que le jaune).
+const CHARIOW = { bouton: "#27A827", texteBouton: "#ffffff", prix: "#101410" };
 const BANDEAU_SMART = "#17631a";
 
 function ajouterImageSiAbsente(html: string, image?: string): string {

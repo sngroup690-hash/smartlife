@@ -16,6 +16,12 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
+    // Navigation fluide : une page déjà vue (ou préparée à l'avance) se rouvre instantanément
+    // pendant 1 minute (pages qui changent) ou 5 minutes (pages fixes), au lieu d'être redemandée.
+    staleTimes: {
+      dynamic: 60,
+      static: 300,
+    },
     serverActions: {
       bodySizeLimit: "1300mb",
     },
