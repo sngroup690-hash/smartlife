@@ -81,29 +81,39 @@ export default async function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(ETIQUETTES_SITE) }} />
 
       {/* ══════ EN-TÊTE ══════ */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16">
-        <h1 className="text-[40px] sm:text-[60px] lg:text-[76px] font-semibold leading-[1.02] tracking-[-0.035em] max-w-[15ch]">
-          Votre business en Afrique, de l&apos;idée au <span className="g-surligne">succès.</span>
+      <section className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16" data-sans-anim>
+        {/* Deux halos doux jaune et vert qui flottent lentement derrière le titre */}
+        <span aria-hidden="true" className="hero-tache hero-tache-jaune" />
+        <span aria-hidden="true" className="hero-tache hero-tache-verte" />
+        <p className="hero-apparait relative inline-flex items-center gap-2 rounded-full bg-white/90 border border-[var(--g-ligne)] px-3.5 py-1.5 text-[13.5px] font-medium" style={{ ["--d" as string]: "0ms" }}>
+          <span className="point-vivant" aria-hidden="true" />
+          14 960+ clients nous font confiance
+        </p>
+        <h1 className="relative mt-5 text-[40px] sm:text-[60px] lg:text-[76px] font-semibold leading-[1.02] tracking-[-0.035em] max-w-[15ch]">
+          {"Votre business en Afrique, de l'idée au".split(" ").map((mot, i) => (
+            <span key={i} className="mot-entre" style={{ ["--i" as string]: i }}>{mot} </span>
+          ))}
+          <span className="mot-entre" style={{ ["--i" as string]: 7 }}><span className="g-surligne surligne-anime">succès.</span></span>
         </h1>
-        <div className="mt-7 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-          <p className="text-[18px] sm:text-[20px] leading-[1.45] text-[var(--g-gris)] max-w-[44ch]">
+        <div className="relative mt-7 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+          <p className="hero-apparait text-[18px] sm:text-[20px] leading-[1.45] text-[var(--g-gris)] max-w-[44ch]" style={{ ["--d" as string]: "650ms" }}>
             Des guides pratiques, une communauté de visionnaires et des consultants du terrain pour vous accompagner pas à pas.
           </p>
-          <div className="flex flex-wrap gap-2.5">
-            <Link href="/ebooks" className="g-btn">Voir les guides</Link>
+          <div className="hero-apparait flex flex-wrap gap-2.5" style={{ ["--d" as string]: "800ms" }}>
+            <Link href="/ebooks" className="g-btn bouton-reflet relative overflow-hidden">Voir les guides <ArrowRight size={17} className="fleche-cta" /></Link>
             <Link href="/accompagnement" className="g-btn-ghost">Être accompagné <ArrowRight size={17} /></Link>
           </div>
         </div>
-        <p className="mt-5 text-[14.5px] text-[var(--g-gris)]">
+        <p className="hero-apparait relative mt-5 text-[14.5px] text-[var(--g-gris)]" style={{ ["--d" as string]: "950ms" }}>
           Paiement Mobile Money · Guide reçu en quelques secondes · Aide sur WhatsApp
         </p>
       </section>
 
       {grandePhoto && (
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-9">
+        <div className="hero-apparait max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-9" style={{ ["--d" as string]: "1000ms" }} data-sans-anim>
           <figure className="relative overflow-hidden rounded-t-[18px] aspect-[4/3] sm:aspect-[21/9]">
-            <Image src={grandePhoto.src} alt={grandePhoto.titre} fill priority sizes="(max-width: 1200px) 100vw, 1150px" className="object-cover" style={{ objectPosition: "50% 30%" }} />
-            <figcaption className="absolute left-4 bottom-4 rounded-lg bg-white/95 px-3 py-1.5 text-[13.5px] font-medium">
+            <Image src={grandePhoto.src} alt={grandePhoto.titre} fill priority sizes="(max-width: 1200px) 100vw, 1150px" className="object-cover photo-lente" style={{ objectPosition: "50% 30%" }} />
+            <figcaption className="legende-glisse absolute left-4 bottom-4 rounded-lg bg-white/95 px-3 py-1.5 text-[13.5px] font-medium">
               Guide · {grandePhoto.titre === grandePhoto.titre.toUpperCase()
                 ? grandePhoto.titre.charAt(0) + grandePhoto.titre.slice(1).toLowerCase()
                 : grandePhoto.titre}
@@ -119,7 +129,7 @@ export default async function HomePage() {
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-y-2">
             {chiffres.map((c, i) => (
               <div key={c.l} className={`py-5 pr-4 ${i % 2 === 1 ? "pl-4 border-l border-white/20 lg:border-l-0 lg:pl-0" : ""} lg:[&:not(:nth-child(3n+1))]:pl-6 lg:[&:not(:nth-child(3n+1))]:border-l lg:[&:not(:nth-child(3n+1))]:border-white/20`}>
-                <span className="block h-[3px] w-7 rounded-full bg-[var(--g-jaune)] mb-4" aria-hidden="true" />
+                <span className="barre-chiffre block h-[3px] w-7 rounded-full bg-[var(--g-jaune)] mb-4" aria-hidden="true" />
                 <p className="g-chiffre" style={{ color: "#fff" }}>
                   {c.texte ?? <span data-compteur={c.n} data-suffixe={c.s}>{c.n.toLocaleString("fr-FR")}{c.s}</span>}
                 </p>
@@ -143,8 +153,8 @@ export default async function HomePage() {
           {populaires.map((g) => {
             const remise = g.originalPrice && g.originalPrice > g.price ? Math.round((1 - g.price / g.originalPrice) * 100) : 0;
             return (
-              <Link key={g.id} href={`/ebooks/${g.slug}`} className="group flex flex-col">
-                <div className="relative overflow-hidden rounded-[14px] aspect-square bg-[var(--g-doux)]">
+              <Link key={g.id} href={`/ebooks/${g.slug}`} className="group carte-guide flex flex-col">
+                <div className="carte-guide-image relative overflow-hidden rounded-[14px] aspect-square bg-[var(--g-doux)]">
                   <Image src={g.cover!} alt={g.title} fill quality={90} sizes="(max-width: 1024px) 50vw, 380px" className="object-contain transition-transform duration-500 group-hover:scale-[1.03]" />
                 </div>
                 <h3 className="mt-3.5 text-[15px] sm:text-[17.5px] font-semibold leading-snug tracking-[-0.01em] line-clamp-2">{g.title}</h3>
@@ -168,7 +178,7 @@ export default async function HomePage() {
         <h2 className="g-titre-section mb-8">Trois façons d&apos;avancer avec Smart Life</h2>
         <div className="border-t border-[var(--g-ligne)]">
           {parcours.map((p) => (
-            <Link key={p.href} href={p.href} className="group grid gap-2 sm:gap-6 sm:grid-cols-[1fr_1.4fr_auto] items-baseline py-7 border-b border-[var(--g-ligne)]">
+            <Link key={p.href} href={p.href} className="group ligne-parcours grid gap-2 sm:gap-6 sm:grid-cols-[1fr_1.4fr_auto] items-baseline py-7 border-b border-[var(--g-ligne)]">
               <h3 className="text-[22px] sm:text-[26px] font-semibold tracking-[-0.02em]">{p.titre}</h3>
               <p className="text-[16.5px] leading-[1.5] text-[var(--g-gris)]">{p.texte}</p>
               <span className="g-lien whitespace-nowrap">{p.bouton} <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" /></span>
@@ -212,7 +222,7 @@ export default async function HomePage() {
           {pointsAccompagnement.map((b) => (
             <div key={b.titre}>
               {b.photo && (
-                <div className="relative aspect-[4/3] overflow-hidden rounded-[12px] bg-[var(--g-doux)]">
+                <div className="carte-photo relative aspect-[4/3] overflow-hidden rounded-[12px] bg-[var(--g-doux)]">
                   {/* Photos larges recadrées en 4/3 : on demande une version assez grande pour rester nette (sinon floue en 2 colonnes) */}
                   <Image src={b.photo.src} alt="" fill sizes="(max-width: 640px) 92vw, (max-width: 1024px) 62vw, 480px" className="object-cover" style={{ objectPosition: "50% 25%" }} />
                 </div>
