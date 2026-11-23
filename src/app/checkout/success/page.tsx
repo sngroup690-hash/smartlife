@@ -11,6 +11,7 @@ import { FORMATIONS } from "@/lib/formations-data";
 import type { DEFAULT_CONFIG } from "@/app/api/admin/workflow-config/route";
 import PostPurchaseCrossSell from "@/components/PostPurchaseCrossSell";
 import { lienGroupeWhatsApp } from "@/lib/groupe-whatsapp";
+import NouveautesAbonnement from "@/components/NouveautesAbonnement";
 
 type WorkflowConfig = typeof DEFAULT_CONFIG;
 
@@ -146,6 +147,12 @@ function MotivationForm({ onSubmit, cfg, currentUser, ebookIds, formationIds }: 
       </div>
 
       <GroupeWhatsApp ebookIds={ebookIds} />
+
+      <NouveautesAbonnement
+        produits={[...ebookIds, ...formationIds]}
+        email={currentUser?.email}
+        prenom={currentUser?.firstName}
+      />
 
       <div className="p-6 bg-white border border-[var(--g-ligne)] rounded-[16px]">
         <form onSubmit={handleSubmit} className="space-y-5">

@@ -56,3 +56,8 @@ static_deploy.zip
 # Logs
 *.log
 nul
+
+# Nouveautés aux clients : adresses des téléphones et clés secrètes d'envoi
+private/notifications.json
+private/notifications.json.tmp
+private/notifications-cles.json

@@ -16,6 +16,7 @@ const NETWORK_ONLY = [
   "/api/demandes/",
   "/api/candidatures/",
   "/api/reviews",
+  "/api/notifications",
   "/checkout",
 ];
 
@@ -139,5 +140,50 @@ self.addEventListener("fetch", (event) => {
         return res;
       })
       .catch(() => caches.match(request))
+  );
+});
+
+/* ─── Nouveautés envoyées aux clients (notifications sur le téléphone) ─── */
+
+self.addEventListener("push", (event) => {
+  let d = {};
+  try { d = event.data ? event.data.json() : {}; } catch { d = { message: event.data ? event.data.text() : "" }; }
+  const titre = d.titre || "Smart Life";
+  event.waitUntil(
+    self.registration.showNotification(titre, {
+      body: d.message || "Une nouveauté vous attend sur Smart Life.",
+      icon: "/logo-smartlife.jpeg",
+      badge: "/logo-smartlife.jpeg",
+      tag: "sl-nouveaute",
+      renotify: true,
+      data: { lien: d.lien || "/", jeton: d.jeton || "" },
+      actions: [
+        { action: "voir", title: "Voir" },
+        { action: "arreter", title: "Ne plus recevoir" },
+      ],
+    })
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const data = event.notification.data || {};
+  const cible =
+    event.action === "arreter"
+      ? "/notifications/arreter?j=" + encodeURIComponent(data.jeton || "")
+      : (data.lien || "/");
+  const url = new URL(cible, self.location.origin);
+  if (event.action !== "arreter") url.searchParams.set("utm_source", "notification");
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((fenetres) => {
+      for (const f of fenetres) {
+        if (f.url.startsWith(self.location.origin) && "navigate" in f) {
+          return f.navigate(url.href)
+            .then((c) => (c || f).focus())
+            .catch(() => self.clients.openWindow(url.href));
+        }
+      }
+      return self.clients.openWindow(url.href);
+    })
   );
 });

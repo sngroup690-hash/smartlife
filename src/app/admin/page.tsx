@@ -4535,6 +4535,7 @@ export default function AdminPanelPage() {
           <Link href="/admin/packs" className="px-4 py-2 bg-amber-50 border border-amber-200 hover:bg-amber-100 text-amber-700 rounded-xl text-sm font-medium flex items-center gap-1.5"><Package size={15} /> Packs</Link>
           <Link href="/admin/analytics" className="px-4 py-2 bg-blue-50 border border-blue-200 hover:bg-blue-100 text-blue-600 rounded-xl text-sm font-medium flex items-center gap-1.5"><BarChart2 size={15} /> Analytique</Link>
           <Link href="/admin/automations" className="px-4 py-2 bg-yellow-50 border border-yellow-200 hover:bg-yellow-100 text-yellow-700 rounded-xl text-sm font-medium flex items-center gap-1.5">⚡ Automations</Link>
+          <Link href="/admin/nouveautes" className="px-4 py-2 bg-green-50 border border-green-200 hover:bg-green-100 text-green-700 rounded-xl text-sm font-medium flex items-center gap-1.5">Nouveautés aux clients</Link>
           <Link href="/admin/popups" className="px-4 py-2 bg-purple-50 border border-purple-200 hover:bg-purple-100 text-purple-700 rounded-xl text-sm font-medium flex items-center gap-1.5">📣 Popups</Link>
           <Link href="/admin/services" className="px-4 py-2 bg-teal-50 border border-teal-200 hover:bg-teal-100 text-teal-700 rounded-xl text-sm font-medium flex items-center gap-1.5">🛠️ Services</Link>
           <Link href="/admin/pixels" className="px-4 py-2 bg-orange-50 border border-orange-200 hover:bg-orange-100 text-orange-700 rounded-xl text-sm font-medium flex items-center gap-1.5">📊 Pixels</Link>

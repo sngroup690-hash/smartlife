@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
+import { annoncerNouveauxGuides } from "@/lib/notifications-nouveautes";
 import { readFile, writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { isValidAdminPassword } from "@/lib/admin-auth";
@@ -43,5 +44,7 @@ export async function POST(req: NextRequest) {
 
   await mkdir(path.dirname(FILE), { recursive: true });
   await writeFile(FILE, JSON.stringify(body, null, 2), "utf-8");
+  // Nouveau guide visible : prévenir les clients abonnés à sa catégorie, après la réponse.
+  after(() => annoncerNouveauxGuides().catch((e) => console.warn("[nouveautés] annonce des guides :", (e as Error).message)));
   return NextResponse.json({ success: true });
 }

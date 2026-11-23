@@ -10,6 +10,7 @@ import {
   PenLine, ClipboardList,
 } from "lucide-react";
 import PwaInstallPrompt from "@/components/PwaInstallPrompt";
+import NouveautesAbonnement from "@/components/NouveautesAbonnement";
 import EspaceMarketing, { BienvenueEspace } from "./EspaceMarketing";
 import {
   savePdfOffline,
@@ -1112,6 +1113,14 @@ export default function MonEspacePage() {
       </div>
 
       <BienvenueEspace prenom={currentUser.firstName} achetes={ebooksPurchased} nbFormations={formationsPurchased.length} />
+
+      {/* Nouveautés des catégories achetées (notification sur le téléphone, sinon e-mail) */}
+      <NouveautesAbonnement
+        produits={[...ebooksAchetesIds, ...formationsAchetesIds]}
+        email={currentUser.email}
+        prenom={currentUser.firstName}
+        variante="espace"
+      />
 
       {/* Rappel notation */}
       {nonNotees.length > 0 && (
