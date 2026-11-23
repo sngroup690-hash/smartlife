@@ -27,7 +27,7 @@ const DECORATIVES = [
   ".cta-clignote", ".cta-respire", ".bouton-reflet", ".texte-brillant", ".fleche-cta", ".accueil-flotte",
   ".garantie-boutique", ".btn-postuler", ".defile-gauche", ".defile-droite", ".animate-marquee-left",
   ".animate-marquee-right", ".animate-defilement-garanties", ".accueil-bulle", ".animate-pulse",
-  ".hero-tache", ".photo-lente", ".point-vivant",
+  ".hero-tache", ".photo-lente", ".point-vivant", ".hero-avenir",
 ].join(",");
 
 function animerCompteur(el: HTMLElement) {
@@ -81,10 +81,29 @@ export default function AnimationsSite() {
       { threshold: 0, rootMargin: "0px 0px 0px 0px" },
     );
 
+    // Une page arrivée par l'écran d'attente (loading.tsx) est mise dans le document avant que React
+    // l'ait prise en main. La modifier à ce moment-là oblige React à la redessiner entièrement :
+    // on attend donc que chaque bloc soit « pris en main », puis on repasse.
+    let enAttente = false;
+    let essais = 0;
+    const estPret = (el: HTMLElement): boolean => {
+      for (let n: HTMLElement | null = el; n; n = n.parentElement) {
+        const cle = Object.keys(n).find((k) => k.startsWith("__reactProps$"));
+        if (!cle) continue;
+        // Bloc géré par React, ou texte HTML libre inséré par un bloc React (descriptions) : prêt.
+        if (n === el) return true;
+        const props = (n as unknown as Record<string, { dangerouslySetInnerHTML?: unknown } | undefined>)[cle];
+        return !!props?.dangerouslySetInnerHTML;
+      }
+      return false;
+    };
+
     const preparer = () => {
       const hauteur = window.innerHeight;
+      enAttente = false;
       document.querySelectorAll<HTMLElement>(CIBLES).forEach((el) => {
         if (el.dataset.animPrete || el.closest(SANS_ANIM) || el.closest(".anim-avant")) return;
+        if (!estPret(el)) { enAttente = true; return; }
         // Une section qui contient une grille, une liste ou une photo ne s'anime pas en bloc :
         // ses éléments arrivent un par un (effet cascade).
         if (el.tagName === "SECTION" && el.querySelector(":scope .grid, :scope ul, :scope figure")) return;
@@ -99,15 +118,19 @@ export default function AnimationsSite() {
       });
       document.querySelectorAll<HTMLElement>(DECORATIVES).forEach((el) => {
         if (enPause.has(el)) return;
+        if (!estPret(el)) { enAttente = true; return; }
         enPause.add(el);
         obsPause.observe(el);
       });
       document.querySelectorAll<HTMLElement>("[data-compteur]").forEach((el) => {
         if (el.dataset.animPrete) return;
+        if (!estPret(el)) { enAttente = true; return; }
         el.dataset.animPrete = "1";
         suivis.add(el);
         obs.observe(el);
       });
+      if (!enAttente) essais = 0;
+      else if (essais++ < 40) setTimeout(preparer, 120);
     };
 
     // Sécurité : après un saut (sommaire, lien d'ancre, défilement très rapide), l'observateur peut ne rien signaler.
@@ -131,7 +154,6 @@ export default function AnimationsSite() {
     window.addEventListener("scroll", verifierDefilement, { passive: true });
     window.addEventListener("hashchange", verifierDefilement);
 
-    preparer();
     let attente: ReturnType<typeof setTimeout> | null = null;
     const mut = new MutationObserver(() => {
       if (attente) return;
@@ -140,9 +162,29 @@ export default function AnimationsSite() {
         preparer();
       }, 150);
     });
-    mut.observe(document.body, { childList: true, subtree: true });
+
+    // Premier passage seulement quand la page est entièrement installée par React
+    // (chargement fini, puis un moment de calme) : sinon la page arrivée par l'écran
+    // d'attente est modifiée trop tôt et React doit la redessiner.
+    let annule = false;
+    let idCalme: number | null = null;
+    const demarrer = () => {
+      if (annule) return;
+      preparer();
+      mut.observe(document.body, { childList: true, subtree: true });
+    };
+    const quandCalme = () => {
+      if (annule) return;
+      if ("requestIdleCallback" in window) idCalme = window.requestIdleCallback(demarrer, { timeout: 1500 });
+      else attente = setTimeout(demarrer, 300);
+    };
+    // Pas d'attente du chargement complet des photos (trop long sur une connexion lente) :
+    // React installe la page en priorité, le « moment de calme » arrive juste après.
+    quandCalme();
 
     return () => {
+      annule = true;
+      if (idCalme !== null && "cancelIdleCallback" in window) window.cancelIdleCallback(idCalme);
       obsPause.disconnect();
       enPause.forEach((el) => el.classList.remove("anim-pause"));
       window.removeEventListener("scroll", verifierDefilement);

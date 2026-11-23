@@ -18,7 +18,8 @@ import ExitIntentPopup from "@/components/ExitIntentPopup";
 import BottomNav from "@/components/BottomNav";
 import CartAbandonmentBanner from "@/components/CartAbandonmentBanner";
 import OnboardingPopup from "@/components/OnboardingPopup";
-import { Suspense } from "react";
+import { Suspense, ViewTransition } from "react";
+import BarreChargement from "@/components/BarreChargement";
 import MasquerSurPageProduit from "@/components/MasquerSurPageProduit";
 
 // Typographie façon apple.com (choix de Frank, 23/11/2026, gardée avec les couleurs « Galerie ») :
@@ -90,9 +91,15 @@ export default function RootLayout({
         </MasquerSurPageProduit>
         <AnalyticsTracker />
         <CurrencyProvider />
-        <main className="flex-1 pb-24 lg:pb-0">{children}</main>
+        <Suspense fallback={null}><BarreChargement /></Suspense>
+        <main className="flex-1 pb-24 lg:pb-0">
+          <ViewTransition default="fondu-page">{children}</ViewTransition>
+        </main>
         <MasquerSurPageProduit>
           <Footer />
+        </MasquerSurPageProduit>
+        {/* Le menu du bas reste visible sur la vitrine des guides : on ne se retrouve jamais sans repères. */}
+        <MasquerSurPageProduit seulementFiche>
           <BottomNav />
         </MasquerSurPageProduit>
         <PopupManager />

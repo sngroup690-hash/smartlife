@@ -4,66 +4,82 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X, ShoppingBag, Check } from "lucide-react";
 import CurrencySelector from "@/components/CurrencySelector";
+import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
+import { LienNav, useCheminVise } from "@/components/LienNav";
+import { estFicheProduit } from "@/components/MasquerSurPageProduit";
+import { RUBRIQUES, AUTRES_PAGES, EVENEMENT_MENU, estActif } from "@/lib/navigation";
 
+// Mêmes rubriques que le reste du site (voir src/lib/navigation.ts) : mêmes repères partout.
 const LIENS = [
-  { href: "/", label: "Accueil" },
-  { href: "/ebooks", label: "Produits" },
-  { href: "/packs", label: "Packs" },
-  { href: "/accompagnement", label: "Accompagnement" },
-  { href: "/devenir-consultant", label: "Devenir consultant" },
-  { href: "/temoignages", label: "Avis" },
-  { href: "/contact", label: "Contact" },
-];
-
-// Raccourcis toujours visibles, même sur téléphone : on ne reste jamais « coincé » dans la boutique.
-const RACCOURCIS = [
-  { href: "/", label: "Accueil" },
-  { href: "/accompagnement", label: "Se faire accompagner", fort: true },
-  { href: "/devenir-consultant", label: "Devenir consultant" },
-  { href: "/packs", label: "Packs à prix réduit" },
-  { href: "/nos-consultants", label: "Nos consultants" },
+  ...RUBRIQUES.filter((r) => r.href !== "/"),
+  ...AUTRES_PAGES.map((p) => ({ href: p.href, label: p.label })),
 ];
 
 export function EnteteBoutique() {
   const [menu, setMenu] = useState(false);
+  const cheminReel = usePathname();
+  const chemin = useCheminVise();
+  useEffect(() => { setMenu(false); }, [cheminReel]);
+  const ouvrirMenu = () => {
+    // Sur la vitrine, le menu du bas est là : on ouvre son panneau. Sur la fiche d'un guide, menu local.
+    if (estFicheProduit(cheminReel)) setMenu((v) => !v);
+    else window.dispatchEvent(new Event(EVENEMENT_MENU));
+  };
   return (
-    <header className="sticky top-0 z-40 bg-white">
+    <header className="sticky top-0 z-40 bg-white" style={{ viewTransitionName: "entete-site" }}>
       <div className="max-w-6xl mx-auto h-[65px] px-4 flex items-center justify-between gap-3">
-        <Link href="/" className="flex items-center gap-2 min-w-0">
+        <LienNav href="/" className="flex items-center gap-2 min-w-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-smartlife.jpeg" alt="Smart Life" className="w-8 h-8 rounded-lg object-cover" />
           <span className="font-semibold text-[17px] tracking-[-0.01em] text-[var(--g-encre)] truncate">Smart Life</span>
-        </Link>
-        <nav className="hidden lg:flex items-center gap-6 text-[14.5px] text-[var(--g-gris)]">
-          {LIENS.filter((l) => l.href !== "/" && l.href !== "/devenir-consultant").map((l) => <Link key={l.href} href={l.href} className="hover:text-[var(--g-encre)] transition-colors">{l.label}</Link>)}
+        </LienNav>
+        <nav className="hidden lg:flex items-center gap-1 text-[14.5px]">
+          {RUBRIQUES.filter((r) => r.href !== "/" && !r.fort).map((r) => {
+            const actif = estActif(r.href, chemin);
+            return (
+              <LienNav key={r.href} href={r.href} aria-current={actif ? "page" : undefined}
+                className={`relative px-3 py-2 rounded-[8px] transition-colors hover:bg-[var(--g-doux)] ${actif ? "text-[var(--g-encre)] font-semibold" : "text-[var(--g-gris)] hover:text-[var(--g-encre)]"}`}>
+                {r.label}
+                {actif && <motion.span layoutId="nav-boutique-trait" className="absolute left-3 right-3 -bottom-[3px] h-[2.5px] rounded-full bg-[var(--g-jaune)]" transition={{ type: "spring", stiffness: 520, damping: 38 }} />}
+              </LienNav>
+            );
+          })}
         </nav>
         <div className="flex items-center gap-3">
-          <Link href="/mon-espace" className="hidden lg:flex items-center gap-1.5 text-sm text-[#20252b] hover:opacity-70">
+          <LienNav href="/mon-espace" className="hidden lg:flex items-center gap-1.5 text-sm text-[#20252b] hover:opacity-70">
             <ShoppingBag size={16} /> Mes achats
-          </Link>
+          </LienNav>
           <div className="rounded-full border border-[#d4d6d7] px-1"><CurrencySelector /></div>
-          <button onClick={() => setMenu((v) => !v)} className="lg:hidden p-1 text-[#20252b]" aria-label="Menu">
+          <button onClick={ouvrirMenu} className="lg:hidden p-1 text-[#20252b]" aria-label="Menu">
             {menu ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
-      <div className="border-t border-[var(--g-ligne)] bg-white">
+      {/* Raccourcis seulement sur la fiche d'un guide : ailleurs, le menu (haut ou bas) les montre déjà. */}
+      <div className={`border-t border-[var(--g-ligne)] bg-white ${estFicheProduit(cheminReel) ? "" : "hidden"}`}>
         <div className="max-w-6xl mx-auto px-4 py-2 flex gap-2 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
-          {RACCOURCIS.map((r) => (
-            <Link key={r.href} href={r.href}
-              className={`flex-shrink-0 px-3.5 py-1.5 rounded-[8px] text-[13px] font-medium transition-colors ${r.fort ? "bg-[var(--g-jaune)] text-[var(--g-encre)] font-semibold" : "border border-[var(--g-ligne)] text-[var(--g-encre)] hover:border-[var(--g-encre)]"}`}>
-              {r.label}
-            </Link>
-          ))}
+          {RUBRIQUES.map((r) => {
+            const actif = estActif(r.href, chemin);
+            return (
+              <LienNav key={r.href} href={r.href} aria-current={actif ? "page" : undefined}
+                className={`flex-shrink-0 px-3.5 py-1.5 rounded-[8px] text-[13px] font-medium transition-colors active:scale-[0.97] ${
+                  actif ? "bg-[var(--g-encre)] text-white font-semibold"
+                  : r.fort ? "bg-[var(--g-jaune)] text-[var(--g-encre)] font-semibold"
+                  : "border border-[var(--g-ligne)] text-[var(--g-encre)] hover:border-[var(--g-encre)]"}`}>
+                {r.label}
+              </LienNav>
+            );
+          })}
         </div>
       </div>
       <div className="bande-wax h-[10px]" aria-hidden="true" />
       {menu && (
         <div className="lg:hidden border-t border-[#e8e9eb] bg-white px-4 py-2">
           {[...LIENS, { href: "/mon-espace", label: "Mes achats" }].map((l) => (
-            <Link key={l.href} href={l.href} onClick={() => setMenu(false)} className="block py-3 text-[15px] text-[#20252b] border-b border-[#f1f2f3] last:border-0">
+            <LienNav key={l.href} href={l.href} onClick={() => setMenu(false)} className="block py-3 text-[15px] text-[#20252b] border-b border-[#f1f2f3] last:border-0">
               {l.label}
-            </Link>
+            </LienNav>
           ))}
         </div>
       )}
