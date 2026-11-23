@@ -157,6 +157,18 @@ export function processDescription(html: string): string {
       `<${bloc}${attrsBloc}>${av}<${inl} class="bandeau-surligne"${attrsInl}>${contenu}</${inl}>${ap}</${bloc}>`,
   );
 
+  // 6 bis. Titre surligné en plusieurs morceaux (texte + image, deux surlignages…) :
+  //        si tout son texte est surligné, c'est le titre entier qui devient le bandeau.
+  result = result.replace(
+    /<(h[1-6])(\s[^>]*)?>([\s\S]*?)<\/\1>/gi,
+    (bloc, balise: string, attrs = "", contenu: string) => {
+      if (/bandeau-surligne/.test(contenu) || /\s(?:style|class)=/i.test(attrs)) return bloc;
+      const fond = titreEntierementSurligne(contenu);
+      if (!fond) return bloc;
+      return `<${balise}${attrs} class="bandeau-titre" style="background-color:${fond}">${contenu}</${balise}>`;
+    },
+  );
+
   // 7. Effacer les traces d'IA du texte (émojis en rafale, longs tirets) sans toucher aux balises
   result = result
     .split(/(<[^>]+>)/)
@@ -164,6 +176,33 @@ export function processDescription(html: string): string {
     .join("");
 
   return result;
+}
+
+// ─── Titres entièrement surlignés ─────────────────────────────────────────────
+
+const BALISES_VIDES = /^<(img|br|hr|source|embed|wbr|input)\b/i;
+
+// Renvoie la couleur de fond si TOUT le texte du titre est dans des morceaux surlignés, sinon null.
+function titreEntierementSurligne(contenu: string): string | null {
+  const pile: boolean[] = [];
+  let fond: string | null = null;
+  let texteSurligne = false;
+  for (const morceau of contenu.split(/(<[^>]+>)/)) {
+    if (!morceau) continue;
+    if (morceau.startsWith("</")) { pile.pop(); continue; }
+    if (morceau.startsWith("<")) {
+      if (BALISES_VIDES.test(morceau) || morceau.endsWith("/>")) continue;
+      const couleur = morceau.match(/background(?:-color)?\s*:\s*([^;"]+)/i)?.[1]?.trim() ?? null;
+      if (couleur && !fond) fond = couleur;
+      pile.push(!!couleur);
+      continue;
+    }
+    const texte = morceau.replace(/&nbsp;/g, " ").trim();
+    if (!texte) continue;
+    if (!pile.some(Boolean)) return null;
+    texteSurligne = true;
+  }
+  return texteSurligne ? fond : null;
 }
 
 // ─── Traces d'IA ──────────────────────────────────────────────────────────────
