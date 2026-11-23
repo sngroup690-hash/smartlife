@@ -213,7 +213,8 @@ export default async function HomePage() {
             <div key={b.titre}>
               {b.photo && (
                 <div className="relative aspect-[4/3] overflow-hidden rounded-[12px] bg-[var(--g-doux)]">
-                  <Image src={b.photo.src} alt="" fill sizes="(max-width: 640px) 92vw, 280px" className="object-cover" style={{ objectPosition: "50% 25%" }} />
+                  {/* Photos larges recadrées en 4/3 : on demande une version assez grande pour rester nette (sinon floue en 2 colonnes) */}
+                  <Image src={b.photo.src} alt="" fill sizes="(max-width: 640px) 92vw, (max-width: 1024px) 62vw, 480px" className="object-cover" style={{ objectPosition: "50% 25%" }} />
                 </div>
               )}
               <h3 className="mt-4 text-[17.5px] font-semibold leading-snug tracking-[-0.01em]">{b.titre}</h3>
