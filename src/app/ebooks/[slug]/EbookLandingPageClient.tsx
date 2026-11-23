@@ -234,8 +234,8 @@ type ServerEbookData = {
 };
 
 // Couleurs par défaut = celles de Chariow ; chacune se change guide par guide dans l'admin.
-const CHARIOW = { bouton: "#008f51", texteBouton: "#ffffff", prix: "#e30026" };
-const BANDEAU_SMART = "linear-gradient(135deg, #1b7a1b 0%, #27A827 55%, #1f8f1f 100%)";
+const CHARIOW = { bouton: "#E8B800", texteBouton: "#101410", prix: "#101410" };
+const BANDEAU_SMART = "#17631a";
 
 function ajouterImageSiAbsente(html: string, image?: string): string {
   if (!html || !image || /<img\s/i.test(html)) return html;
@@ -247,17 +247,17 @@ function ajouterImageSiAbsente(html: string, image?: string): string {
 function FaqBoutique({ faq }: { faq: { q: string; a: string }[] }) {
   const [ouvert, setOuvert] = useState<number | null>(null);
   return (
-    <section className="mt-12 -mx-4 px-4 py-8 bg-[#f3fbf6] border-y border-[#008f51]/10 lg:mx-0 lg:rounded-2xl lg:border">
-      <p className="text-[12px] font-bold uppercase tracking-wider text-[#008f51]">Vous vous demandez…</p>
+    <section className="mt-12 -mx-4 px-4 py-8 bg-[var(--g-doux)] lg:mx-0 lg:rounded-[18px]">
+      <p className="text-[12px] font-bold uppercase tracking-wider text-[#1e7a1e]">Vous vous demandez…</p>
       <h2 className="mt-1 text-[22px] font-extrabold text-black mb-5">Questions fréquentes</h2>
       <div className="flex flex-col gap-2.5">
         {faq.map((f, i) => {
           const actif = ouvert === i;
           return (
-            <div key={i} className={`rounded-xl bg-white border transition-colors ${actif ? "border-[#008f51]/40 shadow-sm" : "border-[#e8e9eb]"}`}>
+            <div key={i} className={`rounded-xl bg-white border transition-colors ${actif ? "border-[#1e7a1e]/40 shadow-sm" : "border-[#e8e9eb]"}`}>
               <button onClick={() => setOuvert(actif ? null : i)} className="w-full flex items-center justify-between gap-3 p-4 text-left">
                 <span className="text-[15px] font-bold text-black leading-snug">{f.q}</span>
-                <span className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-[18px] font-bold transition-transform duration-200 ${actif ? "rotate-45 bg-[#008f51]" : "bg-[#f2f3f5] text-black"}`}
+                <span className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-[18px] font-bold transition-transform duration-200 ${actif ? "rotate-45 bg-[#1e7a1e]" : "bg-[#f2f3f5] text-black"}`}
                   style={actif ? { color: "#fff" } : {}}>+</span>
               </button>
               {actif && <p className="px-4 pb-4 -mt-1 text-[14px] leading-relaxed text-[#393c41]">{f.a}</p>}
@@ -356,7 +356,7 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
   if (!ebook && serverLoading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-[#008f51] border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-[#1e7a1e] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -364,7 +364,7 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center gap-4">
         <p className="text-gray-500">Ebook introuvable.</p>
-        <Link href="/ebooks" className="text-[#008f51] underline text-sm">Voir tous les ebooks</Link>
+        <Link href="/ebooks" className="text-[#1e7a1e] underline text-sm">Voir tous les ebooks</Link>
       </div>
     );
   }
@@ -419,7 +419,7 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
       )}
       <span className={`${grand ? "text-[25px]" : "text-[22px]"} font-bold`} style={{ color: couleurs.prix }}>{convert(ebook.price)}</span>
       {ebook.originalPrice && ebook.originalPrice > ebook.price && (
-        <span className="self-center px-2 py-0.5 rounded-md bg-[#fde8eb] text-[12px] font-bold text-[#e30026]">
+        <span className="self-center px-2 py-0.5 rounded-md bg-[var(--g-vert-doux)] text-[12.5px] font-semibold text-[var(--g-vert)]">
           -{Math.round((1 - ebook.price / ebook.originalPrice) * 100)} %
         </span>
       )}
@@ -429,10 +429,10 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
     <button
       onClick={openCheckout}
       data-principal={refBouton ? "1" : undefined}
-      className={`bouton-reflet relative overflow-hidden w-full ${refBouton ? "h-14 text-[17px]" : "h-12 text-[15px]"} rounded-2xl font-extrabold active:scale-[0.98] flex items-center justify-center gap-2 ${ctaAnim}`}
+      className={`bouton-reflet relative overflow-hidden w-full ${refBouton ? "h-14 text-[17px]" : "h-12 text-[15px]"} rounded-[10px] font-semibold active:scale-[0.98] flex items-center justify-center gap-2 ${ctaAnim}`}
       style={{ backgroundColor: couleurs.bouton, color: couleurs.texteBouton, boxShadow: `0 8px 22px -8px ${couleurs.bouton}` }}
     >
-      <span aria-hidden>⚡</span> {ctaLabel} <span aria-hidden className="fleche-cta">→</span>
+      {ctaLabel} <span aria-hidden className="fleche-cta">→</span>
     </button>
   );
 
@@ -444,14 +444,14 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
     return Math.max(2, depart - Math.floor(heure / 3));
   })();
   const blocRestants = ebook.originalPrice && e.placesRestantesBloquees == null && (
-    <div className="-mt-2 mx-auto w-full max-w-sm rounded-xl px-3 py-2.5" style={{ background: "#fff5f5", border: "1.5px solid #fecaca" }}>
+    <div className="-mt-2 mx-auto w-full max-w-sm rounded-xl px-3 py-2.5" style={{ background: "var(--g-jaune-doux)" }}>
       <p className="text-center text-[13.5px] font-bold text-[#b91c1c]">
-        <span className="cta-clignote inline-block rounded-full px-1.5" style={{ background: "transparent" }}>🔥</span>{" "}
+        
         Plus que <span className="text-[16px] font-black">{restantsDuJour}</span> exemplaires à ce prix
       </p>
       <div className="mt-1.5 h-2 rounded-full bg-[#fee2e2] overflow-hidden">
         <div className="barre-se-vide h-full rounded-full"
-          style={{ ["--cible" as string]: `${Math.max(8, restantsDuJour * 4)}%`, width: `${Math.max(8, restantsDuJour * 4)}%`, background: "linear-gradient(90deg, #f97316, #e30026)" }} />
+          style={{ ["--cible" as string]: `${Math.max(8, restantsDuJour * 4)}%`, width: `${Math.max(8, restantsDuJour * 4)}%`, background: "#101410" }} />
       </div>
     </div>
   );
@@ -462,16 +462,16 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
     .sort((a, b) => (b.originalValeur - b.prix) - (a.originalValeur - a.prix))[0];
   const offrePack = packDuGuide && (
     <Link href={`/packs/${packDuGuide.slug}`}
-      className="block rounded-xl border-2 border-dashed border-[#E8B800] bg-[#fffbeb] p-3.5 active:scale-[0.99] transition-transform">
-      <p className="text-[12px] font-bold uppercase tracking-wide text-[#b45309]">📦 Meilleure affaire</p>
+      className="block rounded-[12px] bg-[var(--g-jaune-doux)] p-4 active:scale-[0.99] transition-transform">
+      <p className="text-[12px] font-bold uppercase tracking-wide text-[#8a6a00]">Meilleure affaire</p>
       <p className="mt-1 text-[14px] font-bold text-black leading-snug">
         Économise {convert(packDuGuide.originalValeur - packDuGuide.prix)} avec le {packDuGuide.nom}
       </p>
       <p className="mt-0.5 text-[13px] text-[#393c41]">
-        Ce guide + {(packDuGuide.items?.length ?? 1) - 1} autres pour <strong className="text-[#e30026]">{convert(packDuGuide.prix)}</strong>{" "}
+        Ce guide + {(packDuGuide.items?.length ?? 1) - 1} autres pour <strong className="text-[var(--g-encre)]">{convert(packDuGuide.prix)}</strong>{" "}
         <span className="line-through text-[#a9aeb5]">{convert(packDuGuide.originalValeur)}</span>
       </p>
-      <p className="mt-2 text-[13px] font-semibold text-[#008f51]">Voir le pack →</p>
+      <p className="mt-2 text-[13px] font-semibold text-[#1e7a1e]">Voir le pack →</p>
     </Link>
   );
 
@@ -481,7 +481,7 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
       {blocRestants}
       {ventes > 0 && (
         <p className="-mt-3 text-center text-[13px] text-[#717882]">
-          🔥 <strong className="text-[#0e0f10]">{ventes.toLocaleString("fr-FR")}</strong> {ventes === 1 ? "vente" : "ventes"}
+          <strong className="text-[#0e0f10]">{ventes.toLocaleString("fr-FR")}</strong> {ventes === 1 ? "vente" : "ventes"}
         </p>
       )}
       {e.promoEndDate && <CompteARebours fin={e.promoEndDate} cyclique={e.promoCyclique} dureeHeures={e.promoDureeHeures} />}
@@ -497,8 +497,8 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
       {offrePack}
       {conseil && (
         <Link href={`/conseils/${conseil.slug}`}
-          className="block rounded-xl border border-[#27A827]/40 bg-[#f0fdf4] p-3.5 active:scale-[0.99] transition-transform">
-          <p className="text-[12px] font-bold uppercase tracking-wide text-[#1e7a1e]">💡 Conseil gratuit</p>
+          className="block rounded-[12px] bg-[var(--g-vert-doux)] p-4 active:scale-[0.99] transition-transform">
+          <p className="text-[12px] font-bold uppercase tracking-wide text-[#1e7a1e]">Conseil gratuit</p>
           <p className="mt-1 text-[14px] font-bold text-black leading-snug">{conseil.titre}</p>
           <p className="mt-1.5 text-[13px] font-semibold text-[#1e7a1e]">Lire l&apos;article →</p>
         </Link>
@@ -554,7 +554,7 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
         <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-12">
           {/* Carte d'achat : ordinateur = à droite, fixe, par-dessus le bandeau */}
           <aside className="hidden lg:block lg:col-start-2 lg:row-start-1 self-start sticky top-[89px] -mt-[200px] mb-10 z-10">
-            <div className="bg-white rounded-xl border border-[#e8e9eb] shadow-[0_8px_30px_rgba(0,0,0,0.08)] overflow-hidden">
+            <div className="bg-white rounded-[14px] border border-[var(--g-ligne)] overflow-hidden">
               {imagePrincipale && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={imagePrincipale} alt={ebook.title} className="w-full h-auto block" />
@@ -576,9 +576,9 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
             </div>
 
             {/* Tout ce que l'acheteur reçoit */}
-            <section className="mt-10 lg:mt-12 rounded-2xl border border-[#008f51]/20 bg-[#f3fbf6] p-5">
-              <p className="text-[12px] font-bold uppercase tracking-wider text-[#008f51]">Plus qu&apos;un guide</p>
-              <h2 className="mt-0.5 text-[19px] font-extrabold text-black">🎁 Tu rejoins l&apos;écosystème Smart Life</h2>
+            <section className="mt-10 lg:mt-12 rounded-[18px] bg-[var(--g-vert-doux)] p-6">
+              <p className="text-[12px] font-bold uppercase tracking-wider text-[#1e7a1e]">Plus qu&apos;un guide</p>
+              <h2 className="mt-1 text-[22px] font-semibold tracking-[-0.02em] text-black">Tu rejoins l&apos;écosystème Smart Life</h2>
               <p className="mt-1 text-[14px] text-[#393c41] leading-snug">Le guide te donne la méthode. La communauté et nos consultants t&apos;aident à passer à l&apos;action.</p>
               <ul className="mt-4 flex flex-col gap-3">
                 {[
@@ -589,7 +589,7 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
                   { t: "Un accompagnement possible pour lancer ton business", d: "Si tu veux aller plus vite, un consultant du terrain peut t'accompagner pas à pas (en option)." },
                 ].map((b) => (
                   <li key={b.t} className="flex gap-3">
-                    <span className="mt-0.5 w-6 h-6 rounded-full bg-[#008f51] flex items-center justify-center flex-shrink-0 text-[13px] font-bold" style={{ color: "#fff" }}>✓</span>
+                    <span className="mt-0.5 w-6 h-6 rounded-full bg-[#1e7a1e] flex items-center justify-center flex-shrink-0 text-[13px] font-bold" style={{ color: "#fff" }}>✓</span>
                     <span>
                       <span className="block text-[15px] font-bold text-black">{b.t}</span>
                       <span className="block text-[13px] text-[#393c41] leading-snug">{b.d}</span>
@@ -704,7 +704,7 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
 
       {/* Barre d'achat flottante sur téléphone : posée un peu plus haut que le bord, toujours visible en défilant */}
       {!checkoutModalOpen && (
-        <div className="lg:hidden fixed left-3 right-3 z-40 bg-white rounded-2xl border border-[#e8e9eb] overflow-hidden shadow-[0_12px_32px_-8px_rgba(0,0,0,0.35)]"
+        <div className="lg:hidden fixed left-3 right-3 z-40 bg-white rounded-[14px] border border-[var(--g-ligne)] overflow-hidden shadow-[0_12px_32px_-8px_rgba(0,0,0,0.35)]"
           style={{ bottom: "calc(22px + env(safe-area-inset-bottom, 0px))" }}>
           <div className="h-[3px] bg-[#f2f3f5]">
             <div className="h-full transition-[width] duration-150" style={{ width: `${Math.round(progression * 100)}%`, backgroundColor: couleurs.bouton }} />

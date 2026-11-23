@@ -237,8 +237,8 @@ function NotifToast({ notif }: { notif: Notif }) {
   return (
     <div
       style={{
-        background: isAccomp ? "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)" : "#ffffff",
-        border: isAccomp ? "1px solid #86efac" : "1px solid #e5e7eb",
+        background: isAccomp ? "#EAF6E8" : "#ffffff",
+        border: "1px solid #e3e7e3",
         borderRadius: "10px",
         padding: "8px 12px",
         boxShadow: "0 4px 20px rgba(0,0,0,0.15), 0 1px 4px rgba(0,0,0,0.1)",
@@ -252,7 +252,7 @@ function NotifToast({ notif }: { notif: Notif }) {
           width: "24px",
           height: "24px",
           borderRadius: "50%",
-          background: isPurchase ? "#dcfce7" : isAccomp ? "#dcfce7" : "#dbeafe",
+          background: "#EAF6E8",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -260,7 +260,7 @@ function NotifToast({ notif }: { notif: Notif }) {
           fontSize: "14px",
         }}
       >
-        {notif.type === "accompagnement" ? "🤝" : notif.type === "checkout" ? "⏳" : isPurchase ? "🛒" : "📥"}
+        <span aria-hidden style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#1e7a1e", display: "block" }} />
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <p
@@ -272,7 +272,7 @@ function NotifToast({ notif }: { notif: Notif }) {
             lineHeight: 1.4,
           }}
         >
-          <span style={{ color: "#27A827" }}>{notif.prenom}</span>
+          <span style={{ color: "#1e7a1e" }}>{notif.prenom}</span>
           {notif.ville ? <> depuis <span style={{ color: "#2563eb" }}>{notif.ville}</span></> : null} {actionDe(notif)}
         </p>
         <p
