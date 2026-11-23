@@ -37,7 +37,8 @@ const PRESET_BTN_BG: Record<string, string> = {
   blue:   "#2563eb",
 };
 
-const ROTATE_INTERVAL = 5000;
+// Temps laissé à chaque annonce avant que la suivante monte (le texte qui défile a le temps d'être lu)
+const ROTATE_INTERVAL = 8000;
 
 // Texte sur une ligne : s'il ne tient pas, il défile lentement de droite à gauche.
 function TexteDefilant({ texte }: { texte: string }) {
@@ -142,7 +143,7 @@ export default function AnnouncementBanner() {
   // Bannière fine, sur une seule ligne : un texte trop long défile doucement au lieu de passer à la ligne.
   return (
     <div
-      className="relative border-b border-black/5"
+      className="relative overflow-hidden border-b border-black/5"
       style={{ backgroundColor: bg, color: txt }}
     >
       <div key={animKey} className="animate-ann-slide flex items-center gap-2 h-[30px] pl-3 pr-8 sm:justify-center text-[12px] sm:text-[12.5px] font-medium">

@@ -402,12 +402,13 @@ main article:hover img, main a[class*="rounded-2xl"]:hover img { transform: scal
 }
 
 /* ── Annonce banner slide ───────────────────────────────────────────── */
+/* Chaque annonce arrive du bas vers le haut */
 @keyframes ann-slide-in {
-  0%   { opacity: 0; transform: translateY(-12px); }
+  0%   { opacity: 0; transform: translateY(100%); }
   100% { opacity: 1; transform: translateY(0); }
 }
 .animate-ann-slide {
-  animation: ann-slide-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: ann-slide-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* ── Étapes animées ─────────────────────────────────────────────────── */
