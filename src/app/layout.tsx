@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Hanken_Grotesk } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -21,12 +21,15 @@ import OnboardingPopup from "@/components/OnboardingPopup";
 import { Suspense } from "react";
 import MasquerSurPageProduit from "@/components/MasquerSurPageProduit";
 
-// Style « Galerie » : Hanken Grotesk partout (titres et texte), une police nette
-// et un peu plus chaleureuse que la police système, chargée par Next depuis Google Fonts.
-const hanken = Hanken_Grotesk({
+// Typographie façon apple.com (choix de Frank, 23/11/2026, gardée avec les couleurs « Galerie ») :
+// sur iPhone, iPad et Mac, la vraie police d'Apple est fournie par le système (rien à télécharger,
+// voir globals.css). Sur Android et Windows, Inter (police libre la plus proche) prend le relais,
+// avec ses tailles optiques pour que les grands titres soient dessinés plus serrés.
+const inter = Inter({
   subsets: ["latin"],
+  axes: ["opsz"],
   display: "swap",
-  variable: "--font-hanken",
+  variable: "--font-inter",
 });
 
 const APP_URL = "https://smartlifecm.com";
@@ -78,7 +81,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className={`${hanken.variable} h-full`}>
+    <html lang="fr" className={`${inter.variable} h-full`}>
       <body className={`min-h-full flex flex-col bg-[#f9f8f5] text-gray-900 overflow-x-hidden`}>
         <MasquerSurPageProduit>
           <AnnouncementBanner />
