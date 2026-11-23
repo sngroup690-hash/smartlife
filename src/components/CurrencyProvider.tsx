@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useCurrencyStore, GEO_CACHE_KEY, COUNTRY_CURRENCY, type CurrencyCode } from "@/lib/currency-store";
+import { demanderPays } from "@/lib/pays-visiteur";
 
 const GEO_TTL_MS = 30_000; // 30s — re-détecte si l'IP change (VPN)
 
@@ -51,8 +52,7 @@ export default function CurrencyProvider() {
 
       isFetching.current = true;
       try {
-        const res = await fetch("/api/geo");
-        const d = await res.json() as { countryCode?: string | null };
+        const d = { countryCode: await demanderPays(GEO_TTL_MS) };
         const cache: GeoCache = { ts: Date.now(), countryCode: d.countryCode ?? null };
         try { sessionStorage.setItem(GEO_CACHE_KEY, JSON.stringify(cache)); } catch { /* ignore */ }
         if (!d.countryCode) return;

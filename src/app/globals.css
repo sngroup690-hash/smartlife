@@ -535,11 +535,11 @@ main article:hover img, main a[class*="rounded-2xl"]:hover img { transform: scal
 /* ══ Accueil animé (style Galerie) ══════════════════════════════════
    Uniquement opacité et déplacement : fluide sur téléphone. */
 @keyframes mot-entre { from { opacity: 0; transform: translateY(0.45em); } to { opacity: 1; transform: none; } }
-.mot-entre { display: inline-block; white-space: pre; animation: mot-entre 0.75s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 70ms + 80ms); }
+.mot-entre { display: inline-block; white-space: pre; animation: mot-entre 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 35ms); }
 @keyframes surligne-passe { from { background-size: 0% 100%; } to { background-size: 100% 100%; } }
-.surligne-anime { background-repeat: no-repeat; background-size: 0% 100%; animation: surligne-passe 0.7s cubic-bezier(0.6, 0, 0.2, 1) 0.85s forwards; }
+.surligne-anime { background-repeat: no-repeat; background-size: 0% 100%; animation: surligne-passe 0.6s cubic-bezier(0.6, 0, 0.2, 1) 0.4s forwards; }
 @keyframes hero-apparait { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
-.hero-apparait { animation: hero-apparait 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: var(--d, 0ms); }
+.hero-apparait { animation: hero-apparait 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: var(--d, 0ms); }
 
 /* Halos doux derrière le titre (dégradés, sans flou : rien à recalculer) */
 .hero-tache { position: absolute; z-index: 0; pointer-events: none; border-radius: 50%; will-change: transform; }
@@ -557,7 +557,7 @@ main article:hover img, main a[class*="rounded-2xl"]:hover img { transform: scal
 @keyframes photo-lente { from { transform: scale(1); } to { transform: scale(1.07); } }
 .photo-lente { animation: photo-lente 22s ease-in-out infinite alternate; will-change: transform; }
 @keyframes legende-glisse { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
-.legende-glisse { animation: legende-glisse 0.7s ease-out 1.6s both; }
+.legende-glisse { animation: legende-glisse 0.6s ease-out 0.5s both; }
 
 /* Cartes des guides : se soulèvent au survol, s'enfoncent au toucher */
 .carte-guide { transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1); }

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
+import { demanderPays } from "@/lib/pays-visiteur";
 
 const GEO_KEY = "_sl_geo";
 const GEO_TTL = 7 * 24 * 60 * 60 * 1000; // 7 jours
@@ -53,9 +54,9 @@ async function fetchClientGeo(): Promise<GeoData> {
   if (cached) return cached;
 
   if (!_geoPending) {
-    _geoPending = fetch("/api/geo", { signal: AbortSignal.timeout(3000) })
-      .then(async (res) => {
-        const d = await res.json();
+    _geoPending = demanderPays()
+      .then((countryCode) => {
+        const d = { countryCode };
         if (d.countryCode) {
           const geo: GeoData = { country: d.countryCode, countryCode: d.countryCode, city: d.countryCode, ts: Date.now() };
           setCachedGeo(geo);

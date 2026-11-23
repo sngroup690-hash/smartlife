@@ -63,7 +63,7 @@ export default function PixelManager() {
     <>
       {fbEnabled && (
         <>
-          <Script id="fb-pixel" strategy="afterInteractive">{`
+          <Script id="fb-pixel" strategy="lazyOnload">{`
             !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
             n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
             n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
@@ -82,7 +82,7 @@ export default function PixelManager() {
       )}
 
       {ttEnabled && (
-        <Script id="tiktok-pixel" strategy="afterInteractive">{`
+        <Script id="tiktok-pixel" strategy="lazyOnload">{`
           !function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];
           ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie"];
           ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};
@@ -102,9 +102,9 @@ export default function PixelManager() {
         <>
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${config.googleAds.conversionId}`}
-            strategy="afterInteractive"
+            strategy="lazyOnload"
           />
-          <Script id="google-ads-init" strategy="afterInteractive">{`
+          <Script id="google-ads-init" strategy="lazyOnload">{`
             window.dataLayer=window.dataLayer||[];
             function gtag(){dataLayer.push(arguments);}
             gtag('js',new Date());

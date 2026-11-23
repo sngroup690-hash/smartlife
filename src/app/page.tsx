@@ -11,7 +11,9 @@ import { ETIQUETTES_SITE, jsonLd } from "@/lib/seo";
 import { readFile, readdir } from "fs/promises";
 import path from "path";
 
-export const dynamic = "force-dynamic";
+// Accueil servi instantanément depuis une copie prête, renouvelée au plus toutes les 5 minutes
+// (les guides populaires et les photos changent rarement : inutile de tout recalculer à chaque visite).
+export const revalidate = 300;
 
 // Page d'accueil, style « Galerie » + touche wax (nov. 2026) :
 // fond blanc, une grande photo, des lignes fines au lieu de cartes qui flottent,
@@ -130,21 +132,22 @@ export default async function HomePage() {
           <span className="mot-entre" style={{ ["--i" as string]: 7 }}><span className="g-surligne surligne-anime">succès.</span></span>
         </h1>
         <div className="relative mt-7 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-          <p className="hero-apparait text-[18px] sm:text-[20px] leading-[1.45] text-[var(--g-gris)] max-w-[44ch]" style={{ ["--d" as string]: "650ms" }}>
+          <p className="hero-apparait text-[18px] sm:text-[20px] leading-[1.45] text-[var(--g-gris)] max-w-[44ch]" style={{ ["--d" as string]: "300ms" }}>
             Des guides pratiques, une communauté de visionnaires et des consultants du terrain pour vous accompagner pas à pas.
           </p>
-          <div className="hero-apparait flex flex-wrap gap-2.5" style={{ ["--d" as string]: "800ms" }}>
+          <div className="hero-apparait flex flex-wrap gap-2.5" style={{ ["--d" as string]: "380ms" }}>
             <Link href="/ebooks" className="g-btn bouton-reflet relative overflow-hidden">Voir les guides <ArrowRight size={17} className="fleche-cta" /></Link>
             <Link href="/accompagnement" className="g-btn g-btn-vert">Être accompagné <ArrowRight size={17} /></Link>
           </div>
         </div>
-        <p className="hero-apparait relative mt-5 text-[14.5px] text-[var(--g-gris)]" style={{ ["--d" as string]: "950ms" }}>
+        <p className="hero-apparait relative mt-5 text-[14.5px] text-[var(--g-gris)]" style={{ ["--d" as string]: "460ms" }}>
           Paiement Mobile Money · Guide reçu en quelques secondes · Aide sur WhatsApp
         </p>
       </section>
 
+      {/* La grande photo s'affiche tout de suite (c'est le plus grand élément de l'écran : elle décide de la vitesse ressentie) */}
       {grandePhoto && (
-        <div className="hero-apparait max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-9" style={{ ["--d" as string]: "1000ms" }} data-sans-anim>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-9" data-sans-anim>
           <figure className="relative overflow-hidden rounded-t-[18px] aspect-[4/3] sm:aspect-[21/9]">
             <Image src={grandePhoto.src} alt={grandePhoto.titre} fill priority sizes="(max-width: 1200px) 100vw, 1150px" className="object-cover photo-lente" style={{ objectPosition: "50% 30%" }} />
             <figcaption className="legende-glisse absolute left-4 bottom-4 rounded-lg bg-white/95 px-3 py-1.5 text-[13.5px] font-medium">
