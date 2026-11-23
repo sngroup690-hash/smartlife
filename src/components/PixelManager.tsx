@@ -16,7 +16,26 @@ export default function PixelManager() {
   const [config, setConfig] = useState<PixelsConfig | null>(null);
   const currentUser = useUserStore((s) => s.currentUser);
 
+  // Les outils de suivi (Facebook, TikTok, Google) pèsent lourd sur un téléphone :
+  // on les charge au premier geste du visiteur (toucher, défilement, clavier),
+  // ou au plus tard 5 secondes après l'affichage. La visite est quand même comptée.
+  const [pret, setPret] = useState(false);
   useEffect(() => {
+    let fait = false;
+    const go = () => {
+      if (fait) return;
+      fait = true;
+      setPret(true);
+      evts.forEach((e) => window.removeEventListener(e, go));
+    };
+    const evts = ["pointerdown", "scroll", "keydown", "touchstart"];
+    evts.forEach((e) => window.addEventListener(e, go, { once: true, passive: true }));
+    const t = setTimeout(go, 5000);
+    return () => { clearTimeout(t); evts.forEach((e) => window.removeEventListener(e, go)); };
+  }, []);
+
+  useEffect(() => {
+    if (!pret) return;
     fetch("/api/pixels")
       .then((r) => r.json())
       .then((c: PixelsConfig) => {
@@ -25,7 +44,7 @@ export default function PixelManager() {
         if (typeof window !== "undefined") window._pixelConfig = c;
       })
       .catch(() => {});
-  }, []);
+  }, [pret]);
 
   // PageView à chaque changement de route (hors premier chargement géré par les scripts)
   useEffect(() => {

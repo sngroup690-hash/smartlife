@@ -6,21 +6,17 @@ import Footer from "@/components/Footer";
 import BuyerRecognitionBanner from "@/components/BuyerRecognitionBanner";
 import AnnouncementBanner from "@/components/AnnouncementBanner";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
-import PopupManager from "@/components/PopupManager";
 import PixelManager from "@/components/PixelManager";
 import CurrencyProvider from "@/components/CurrencyProvider";
 import ServiceWorkerRegistrar from "@/components/ServiceWorkerRegistrar";
-import SocialProofToast from "@/components/SocialProofToast";
 import AnimationsSite from "@/components/AnimationsSite";
 import { DESCRIPTION_SITE } from "@/lib/seo";
 import ReferralTracker from "@/components/ReferralTracker";
-import ExitIntentPopup from "@/components/ExitIntentPopup";
 import BottomNav from "@/components/BottomNav";
-import CartAbandonmentBanner from "@/components/CartAbandonmentBanner";
-import OnboardingPopup from "@/components/OnboardingPopup";
 import { Suspense, ViewTransition } from "react";
 import BarreChargement from "@/components/BarreChargement";
 import MasquerSurPageProduit from "@/components/MasquerSurPageProduit";
+import ElementsDifferes from "@/components/ElementsDifferes";
 
 // Typographie façon apple.com (choix de Frank, 23/11/2026, gardée avec les couleurs « Galerie ») :
 // sur iPhone, iPad et Mac, la vraie police d'Apple est fournie par le système (rien à télécharger,
@@ -102,17 +98,13 @@ export default function RootLayout({
         <MasquerSurPageProduit seulementFiche>
           <BottomNav />
         </MasquerSurPageProduit>
-        <PopupManager />
         <PixelManager />
         <ServiceWorkerRegistrar />
-        <SocialProofToast />
         <AnimationsSite />
         <Suspense fallback={null}><ReferralTracker /></Suspense>
-        <ExitIntentPopup />
-        <MasquerSurPageProduit>
-          <CartAbandonmentBanner />
-          <OnboardingPopup />
-        </MasquerSurPageProduit>
+        {/* Fenêtres surgissantes, notifications d'achat, fenêtre de sortie, rappel du panier :
+            chargées juste après l'affichage, quand le téléphone est libre */}
+        <ElementsDifferes />
       </body>
     </html>
   );
