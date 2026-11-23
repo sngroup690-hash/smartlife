@@ -3750,6 +3750,60 @@ const ABOUT_DEFAULTS: AboutConfig = {
   whatsappNumber: "+237694176642",
 };
 
+// Interrupteur général : montrer ou masquer les formations sur tout le site.
+function InterrupteurFormations({ adminPassword }: { adminPassword: string }) {
+  const [actives, setActives] = useState<boolean | null>(null);
+  const [enCours, setEnCours] = useState(false);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    fetch("/api/admin/site-settings", { headers: { "x-admin-password": adminPassword } })
+      .then((r) => r.json())
+      .then((d) => setActives(!!d.formationsActives))
+      .catch(() => setActives(false));
+  }, [adminPassword]);
+
+  async function basculer() {
+    if (actives === null) return;
+    setEnCours(true);
+    setMessage("");
+    try {
+      const res = await fetch("/api/admin/site-settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": adminPassword },
+        body: JSON.stringify({ formationsActives: !actives }),
+      });
+      const d = await res.json();
+      if (d.success) {
+        setActives(!!d.reglages.formationsActives);
+        setMessage(d.reglages.formationsActives ? "Les formations sont de nouveau visibles sur le site." : "Les formations sont masquées sur le site.");
+      } else setMessage(d.error ?? "Erreur");
+    } catch { setMessage("Erreur réseau"); }
+    setEnCours(false);
+  }
+
+  return (
+    <div className="mb-6 rounded-2xl border-2 p-5 flex flex-col sm:flex-row sm:items-center gap-4"
+      style={{ borderColor: actives ? "#27A827" : "#E8B800", background: actives ? "#f0fbf0" : "#fffbea" }}>
+      <div className="flex-1">
+        <p className="font-bold text-gray-900">
+          {actives === null ? "Chargement…" : actives ? "Formations visibles sur le site" : "Formations masquées sur le site"}
+        </p>
+        <p className="text-sm text-gray-600 mt-1">
+          Quand elles sont masquées, les formations n&apos;apparaissent plus dans « Souvent achetés ensemble », la recherche,
+          le catalogue ni le plan du site. Les clients qui en ont déjà acheté une gardent l&apos;accès à leurs vidéos.
+        </p>
+        {message && <p className="text-sm font-semibold mt-2" style={{ color: "#1b7a1b" }}>{message}</p>}
+      </div>
+      <button onClick={basculer} disabled={enCours || actives === null}
+        className="px-5 py-3 rounded-xl font-bold text-sm disabled:opacity-50"
+        style={{ background: actives ? "#E8B800" : "#27A827", color: actives ? "#111" : "#fff" }}>
+        {enCours ? "Enregistrement…" : actives ? "Masquer les formations" : "Réactiver les formations"}
+      </button>
+    </div>
+  );
+}
+
 function AboutConfigPanel({ adminPassword }: { adminPassword: string }) {
   const [cfg, setCfg] = useState<AboutConfig>(ABOUT_DEFAULTS);
   const [loading, setLoading] = useState(true);
@@ -5281,6 +5335,7 @@ export default function AdminPanelPage() {
       {/* ══ ONGLET FORMATIONS ══ */}
       {onglet === "formations" && (
         <div>
+          {adminSession?.password && <InterrupteurFormations adminPassword={adminSession.password} />}
           {!showFormationForm && !editFormationId && (
             <button onClick={() => setShowFormationForm(true)}
               className="w-full mb-6 py-4 border-2 border-dashed border-green-300 hover:border-green-500 hover:bg-green-50 text-green-600 rounded-2xl flex items-center justify-center gap-2 font-bold transition-all">

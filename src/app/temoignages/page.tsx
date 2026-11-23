@@ -384,16 +384,16 @@ export default function TemoignagesPage() {
           <div className="mt-10 text-center border border-[#E8B800]/20 rounded-2xl p-8 bg-gradient-to-br from-[#E8B800]/5 to-[#27A827]/5">
             <h2 className="text-2xl font-black text-gray-900 mb-3">Prêt à rejoindre nos clients satisfaits ?</h2>
             <p className="text-gray-600 text-sm mb-6 max-w-md mx-auto">
-              Accédez à nos guides, formations et accompagnements et commencez à transformer votre situation.
+              Accédez à nos guides, à l&apos;accompagnement et à nos consultants, et commencez à transformer votre situation.
             </p>
             <div className="flex items-center justify-center gap-3 flex-wrap">
               <Link href="/ebooks"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-[#E8B800] hover:bg-[#27A827] text-black font-black rounded-xl transition-all">
                 Voir les guides <ArrowRight size={16} />
               </Link>
-              <Link href="/formation"
+              <Link href="/accompagnement"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-gray-50 text-gray-900 font-bold rounded-xl border border-gray-200 transition-colors">
-                Voir les formations <ArrowRight size={16} />
+                Se faire accompagner <ArrowRight size={16} />
               </Link>
             </div>
           </div>

@@ -31,7 +31,7 @@ type Step = "survey" | "response" | "closed";
 
 const CHOICES: { id: Choice; label: string }[] = [
   { id: 1, label: "Le prix est trop élevé pour le moment." },
-  { id: 2, label: "Je ne sais pas si cette formation / cet ebook me convient." },
+  { id: 2, label: "Je ne sais pas si ce guide me convient." },
   { id: 3, label: "Je repasserai plus tard / j'ai un problème de paiement." },
   { id: 4, label: "Autre" },
 ];
@@ -55,7 +55,7 @@ const RESPONSES: Record<Choice, {
   2: {
     icon: "💬",
     title: "Besoin d'un conseil pour faire le bon choix ?",
-    desc: "Notre équipe est disponible maintenant pour vous guider vers la bonne formation.",
+    desc: "Notre équipe est disponible maintenant pour vous guider vers le bon guide.",
     btnLabel: "Discuter avec nous sur WhatsApp",
     btnHref: WA_URL,
   },
