@@ -595,9 +595,10 @@ main article:hover img, main a[class*="rounded-2xl"]:hover img { transform: scal
 .hero-avenir { position: absolute; z-index: 0; pointer-events: none; right: 4px; top: 92px; width: 132px; opacity: 0.72; }
 @media (min-width: 640px) { .hero-avenir { width: 250px; top: 70px; right: 16px; opacity: 0.85; } }
 @media (min-width: 1024px) { .hero-avenir { width: 360px; top: 40px; right: 32px; opacity: 1; } }
-.avenir-rayons { transform-origin: 190px 120px; animation: avenir-tourne 40s linear infinite; }
+/* Décor fixe une fois arrivé : un dessin qui tourne sans fin oblige le téléphone à le redessiner sans arrêt */
+.avenir-rayons { transform-origin: 190px 120px; }
 @keyframes avenir-tourne { to { transform: rotate(360deg); } }
-.avenir-soleil { transform-box: fill-box; transform-origin: center; animation: avenir-respire 5s ease-in-out infinite alternate, avenir-leve 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both; }
+.avenir-soleil { transform-box: fill-box; transform-origin: center; animation: avenir-leve 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both; }
 @keyframes avenir-respire { from { transform: scale(1); } to { transform: scale(1.06); } }
 @keyframes avenir-leve { from { opacity: 0; translate: 0 40px; } to { opacity: 1; translate: 0 0; } }
 .avenir-barre { transform-box: fill-box; transform-origin: bottom; animation: avenir-barre 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 120ms + 500ms); }
@@ -605,7 +606,7 @@ main article:hover img, main a[class*="rounded-2xl"]:hover img { transform: scal
 .avenir-fleche { stroke-dasharray: 360; stroke-dashoffset: 360; animation: avenir-trace 1.3s ease-out 1.2s forwards; }
 @keyframes avenir-trace { to { stroke-dashoffset: 0; } }
 .avenir-pointe { opacity: 0; animation: hero-apparait 0.4s ease-out 2.4s forwards; }
-.avenir-etincelles path { transform-box: fill-box; transform-origin: center; animation: avenir-scintille 2.6s ease-in-out infinite; }
+.avenir-etincelles path { transform-box: fill-box; transform-origin: center; animation: avenir-scintille 2.6s ease-in-out 2; }
 .avenir-etincelles path:nth-child(2) { animation-delay: 1.3s; }
 @keyframes avenir-scintille { 0%, 100% { opacity: 0.25; transform: scale(0.7); } 50% { opacity: 1; transform: scale(1.1); } }
 
