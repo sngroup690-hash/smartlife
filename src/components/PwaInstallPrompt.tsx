@@ -62,7 +62,7 @@ export default function PwaInstallPrompt() {
   if (!visible) return null;
 
   return (
-    <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-xl">
+    <div className="flex items-start gap-3 p-4 bg-[var(--g-jaune-doux)] rounded-[12px]">
       <div className="w-9 h-9 rounded-lg bg-[#E8B800] flex items-center justify-center flex-shrink-0">
         <Smartphone size={18} className="text-black" />
       </div>

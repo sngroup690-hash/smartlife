@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import {
   BookOpen, Play, ArrowRight, Package, ShoppingCart,
-  Tag, Zap, Copy, Check, Share2, ArrowLeft,
+  Copy, Check, Share2, ArrowLeft,
 } from "lucide-react";
 import { useUserStore } from "@/lib/user-store";
 import { PriceTag } from "@/components/PriceTag";
@@ -54,9 +54,9 @@ export default function PackDetailClient({ pack }: { pack: PackData }) {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-[var(--g-encre)]">
       <Link href="/packs"
-        className="inline-flex items-center gap-1.5 text-gray-500 hover:text-gray-900 text-sm mb-8 transition-colors">
+        className="inline-flex items-center gap-1.5 text-[var(--g-gris)] hover:text-[var(--g-encre)] text-[14px] mb-8 transition-colors">
         <ArrowLeft size={14} /> Tous les packs
       </Link>
 
@@ -65,26 +65,26 @@ export default function PackDetailClient({ pack }: { pack: PackData }) {
         <div className="lg:col-span-3 space-y-8">
           {/* Bannière */}
           {pack.image ? (
-            <div className="relative w-full rounded-2xl overflow-hidden" style={{ aspectRatio: "4/3", background: "linear-gradient(135deg, #fffbea 0%, #f0fdf4 100%)" }}>
+            <div className="relative w-full rounded-[16px] overflow-hidden bg-[var(--g-doux)]" style={{ aspectRatio: "4/3" }}>
               <img src={pack.image} alt={pack.nom} loading="lazy" decoding="async" className="w-full h-full object-contain pt-10 pb-10" />
               <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
-                <span className="px-2.5 py-1 text-xs font-bold rounded-full flex items-center gap-1 backdrop-blur-sm" style={{ background: "#27A827", color: "#fff" }}>
-                  <Package size={10} /> {pack.items.length} contenu{pack.items.length > 1 ? "s" : ""}
+                <span className="px-2 py-0.5 rounded-md bg-white text-[12px] font-semibold text-[var(--g-encre)] flex items-center gap-1">
+                  <Package size={11} /> {pack.items.length} contenu{pack.items.length > 1 ? "s" : ""}
                 </span>
                 {discountPct > 0 && (
-                  <span className="px-2.5 py-1 bg-red-500 text-white text-xs font-black rounded-full flex items-center gap-1">
-                    <Zap size={10} /> -{discountPct}%
+                  <span className="px-2 py-0.5 rounded-md bg-white text-[12px] font-semibold text-[var(--g-vert)]">
+                    -{discountPct}%
                   </span>
                 )}
               </div>
               <BandeGuides items={ebookItems} taille="text-[11px]" />
             </div>
           ) : (
-            <div className="h-40 bg-gradient-to-br from-[#E8B800]/10 via-[#27A827]/5 to-[#E8B800]/10 flex items-center justify-center rounded-2xl relative">
-              <Package size={56} className="text-[#E8B800]" />
+            <div className="h-40 bg-[var(--g-doux)] flex items-center justify-center rounded-[16px] relative">
+              <Package size={48} className="text-[var(--g-vert)]" />
               {discountPct > 0 && (
-                <span className="absolute top-3 right-3 px-2.5 py-1 bg-red-500 text-white text-xs font-black rounded-full flex items-center gap-1">
-                  <Zap size={10} /> -{discountPct}%
+                <span className="absolute top-3 right-3 px-2 py-0.5 rounded-md bg-white text-[12px] font-semibold text-[var(--g-vert)]">
+                  -{discountPct}%
                 </span>
               )}
             </div>
@@ -92,12 +92,10 @@ export default function PackDetailClient({ pack }: { pack: PackData }) {
 
           {/* Titre + description */}
           <div>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#E8B800]/10 border border-[#E8B800]/30 rounded-full text-[#E8B800] text-xs font-bold mb-3">
-              <Tag size={11} /> PACK EXCLUSIF
-            </span>
-            <h1 className="text-3xl sm:text-4xl font-black text-gray-900 mb-3 leading-tight">{pack.nom}</h1>
+            <p className="text-[14px] font-semibold text-[var(--g-vert)] mb-2">Pack exclusif</p>
+            <h1 className="text-[32px] sm:text-[40px] font-semibold tracking-[-0.03em] leading-[1.08] mb-3">{pack.nom}</h1>
             {pack.description && (
-              <p className="text-gray-600 leading-relaxed text-base whitespace-pre-line">{pack.description}</p>
+              <p className="text-[var(--g-gris)] leading-relaxed text-[16px] whitespace-pre-line">{pack.description}</p>
             )}
           </div>
 
@@ -107,19 +105,17 @@ export default function PackDetailClient({ pack }: { pack: PackData }) {
           )}
 
           {/* Contenus inclus */}
-          <div className="bg-gray-50 rounded-2xl p-6 space-y-5">
-            <h2 className="text-gray-900 font-black text-lg">Ce qui est inclus</h2>
+          <div className="bg-[var(--g-doux)] rounded-[16px] p-6 space-y-5">
+            <h2 className="text-[20px] font-semibold tracking-[-0.02em]">Ce qui est inclus</h2>
             {ebookItems.length > 0 && (
               <div>
-                <p className="text-xs font-bold text-blue-600 uppercase tracking-wide mb-3 flex items-center gap-1.5">
-                  <BookOpen size={12} /> Guides ({ebookItems.length})
+                <p className="text-[14px] font-semibold text-[var(--g-vert)] mb-3 flex items-center gap-1.5">
+                  <BookOpen size={14} /> Guides ({ebookItems.length})
                 </p>
                 <ul className="space-y-2">
                   {ebookItems.map((item) => (
-                    <li key={item.id} className="flex items-start gap-3 text-sm text-gray-700">
-                      <span className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <BookOpen size={10} className="text-blue-500" />
-                      </span>
+                    <li key={item.id} className="flex items-start gap-3 text-[15px] text-[#2c322e]">
+                      <BookOpen size={15} className="text-[var(--g-vert)] flex-shrink-0 mt-0.5" />
                       {item.title}
                     </li>
                   ))}
@@ -128,15 +124,13 @@ export default function PackDetailClient({ pack }: { pack: PackData }) {
             )}
             {formationItems.length > 0 && (
               <div>
-                <p className="text-xs font-bold text-purple-600 uppercase tracking-wide mb-3 flex items-center gap-1.5">
-                  <Play size={12} /> Formations ({formationItems.length})
+                <p className="text-[14px] font-semibold text-[var(--g-vert)] mb-3 flex items-center gap-1.5">
+                  <Play size={14} /> Formations ({formationItems.length})
                 </p>
                 <ul className="space-y-2">
                   {formationItems.map((item) => (
-                    <li key={item.id} className="flex items-start gap-3 text-sm text-gray-700">
-                      <span className="w-5 h-5 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Play size={10} className="text-purple-500" />
-                      </span>
+                    <li key={item.id} className="flex items-start gap-3 text-[15px] text-[#2c322e]">
+                      <Play size={15} className="text-[var(--g-vert)] flex-shrink-0 mt-0.5" />
                       {item.title}
                     </li>
                   ))}
@@ -146,23 +140,23 @@ export default function PackDetailClient({ pack }: { pack: PackData }) {
           </div>
 
           {/* Partage */}
-          <div className="border border-gray-200 rounded-2xl p-5">
-            <p className="text-gray-700 font-bold text-sm mb-3 flex items-center gap-2">
-              <Share2 size={14} className="text-[#E8B800]" /> Partager ce pack
+          <div className="border border-[var(--g-ligne)] rounded-[16px] p-5">
+            <p className="text-[15px] font-semibold mb-3 flex items-center gap-2">
+              <Share2 size={15} className="text-[var(--g-vert)]" /> Partager ce pack
             </p>
             <div className="flex flex-wrap gap-2">
               <a href={`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`}
                 target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 bg-[#25D366] hover:bg-[#20b858] text-white text-sm font-bold rounded-xl transition-colors">
+                className="flex items-center gap-2 px-4 py-2 bg-[#25D366] hover:bg-[#20b858] text-white text-[14px] font-semibold rounded-[10px] transition-colors">
                 {WA_SVG} WhatsApp
               </a>
               <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
                 target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 bg-[#1877F2] hover:bg-[#1565d8] text-white text-sm font-bold rounded-xl transition-colors">
+                className="flex items-center gap-2 px-4 py-2 bg-[#1877F2] hover:bg-[#1565d8] text-white text-[14px] font-semibold rounded-[10px] transition-colors">
                 {FB_SVG} Facebook
               </a>
               <button onClick={copyLink}
-                className={`flex items-center gap-2 px-4 py-2 border text-sm font-bold rounded-xl transition-colors ${copied ? "bg-emerald-50 border-emerald-300 text-emerald-700" : "bg-gray-50 border-gray-200 text-gray-700 hover:border-[#E8B800] hover:text-[#E8B800]"}`}>
+                className={`flex items-center gap-2 px-4 py-2 border text-[14px] font-semibold rounded-[10px] transition-colors ${copied ? "bg-[var(--g-vert-doux)] border-[var(--g-vert)] text-[var(--g-vert)]" : "bg-white border-[var(--g-ligne)] text-[var(--g-encre)] hover:border-[var(--g-encre)]"}`}>
                 {copied ? <Check size={14} /> : <Copy size={14} />}
                 {copied ? "Lien copié !" : "Copier le lien"}
               </button>
@@ -172,51 +166,50 @@ export default function PackDetailClient({ pack }: { pack: PackData }) {
 
         {/* ── Colonne droite ── */}
         <div className="lg:col-span-2">
-          <div className="sticky top-24 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-5">
+          <div className="sticky top-24 bg-white border border-[var(--g-ligne)] rounded-[16px] p-6 space-y-5">
             <div>
               {hasOriginal && (
-                <p className="text-sm text-gray-400 line-through mb-1">
+                <p className="text-[14px] text-[var(--g-gris)] line-through mb-1 tabular-nums">
                   Valeur totale : <PriceTag amount={pack.originalValeur!} />
                 </p>
               )}
-              <p className="text-4xl font-black text-[#27A827] leading-none">
+              <p className="text-[36px] font-semibold tracking-[-0.03em] text-[var(--g-encre)] leading-none tabular-nums">
                 <PriceTag amount={pack.prix} />
               </p>
               {hasOriginal && (
-                <span className="inline-flex items-center gap-1 mt-2 px-3 py-1.5 bg-green-50 border border-green-200 text-green-700 text-xs font-black rounded-xl">
-                  <Zap size={11} /> Vous économisez <PriceTag amount={economy} />
-                </span>
+                <p className="mt-2 text-[14px] font-semibold text-[var(--g-vert)]">
+                  Vous économisez <PriceTag amount={economy} />
+                </p>
               )}
             </div>
 
-            <ul className="space-y-2 text-sm text-gray-700">
+            <ul className="space-y-2 text-[14.5px] text-[#2c322e]">
               {ebookItems.length > 0 && (
                 <li className="flex items-center gap-2">
-                  <BookOpen size={14} className="text-blue-500 flex-shrink-0" />
+                  <BookOpen size={15} className="text-[var(--g-vert)] flex-shrink-0" />
                   {ebookItems.length} guide{ebookItems.length > 1 ? "s" : ""} PDF
                 </li>
               )}
               {formationItems.length > 0 && (
                 <li className="flex items-center gap-2">
-                  <Play size={14} className="text-purple-500 flex-shrink-0" />
+                  <Play size={15} className="text-[var(--g-vert)] flex-shrink-0" />
                   {formationItems.length} formation{formationItems.length > 1 ? "s" : ""} vidéo
                 </li>
               )}
               <li className="flex items-center gap-2">
-                <ArrowRight size={14} className="text-[#E8B800] flex-shrink-0" />
+                <ArrowRight size={15} className="text-[var(--g-vert)] flex-shrink-0" />
                 Accès immédiat après paiement
               </li>
             </ul>
 
-            <Link href={href}
-              className="flex items-center justify-center gap-2 w-full py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] hover:from-[#27A827] hover:to-[#E8B800] text-black font-black rounded-xl text-base transition-all shadow-sm">
+            <Link href={href} className="g-btn w-full !h-[52px]">
               <ShoppingCart size={18} /> Obtenir ce pack
             </Link>
 
-            <p className="text-gray-400 text-xs text-center">Paiement sécurisé · Accès instantané</p>
+            <p className="text-[var(--g-gris)] text-[12.5px] text-center">Paiement sécurisé · Accès instantané</p>
 
-            <div className="pt-3 border-t border-gray-100">
-              <p className="text-gray-500 text-xs font-semibold mb-2 text-center">Partager</p>
+            <div className="pt-3 border-t border-[var(--g-ligne)]">
+              <p className="text-[var(--g-gris)] text-[12.5px] font-semibold mb-2 text-center">Partager</p>
               <div className="flex justify-center gap-2">
                 <a href={`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`}
                   target="_blank" rel="noopener noreferrer"
@@ -229,7 +222,7 @@ export default function PackDetailClient({ pack }: { pack: PackData }) {
                   {FB_SVG}
                 </a>
                 <button onClick={copyLink}
-                  className={`p-2 rounded-lg transition-colors ${copied ? "bg-emerald-50 text-emerald-600" : "bg-gray-100 hover:bg-gray-200 text-gray-600"}`}>
+                  className={`p-2 rounded-lg transition-colors ${copied ? "bg-[var(--g-vert-doux)] text-[var(--g-vert)]" : "bg-[var(--g-doux)] hover:bg-[var(--g-ligne)] text-[var(--g-gris)]"}`}>
                   {copied ? <Check size={16} /> : <Copy size={16} />}
                 </button>
               </div>

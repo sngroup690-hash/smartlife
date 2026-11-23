@@ -75,36 +75,36 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-600 to-green-700 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-[10px] bg-[var(--g-vert)] flex items-center justify-center">
               <Zap size={20} className="text-white" />
             </div>
-            <span className="text-2xl font-bold">
-              <span className="text-gray-900">SMART </span>
+            <span className="text-2xl font-semibold tracking-[-0.02em]">
+              <span className="text-[var(--g-encre)]">SMART </span>
               <span className="text-[#E8B800]">LIFE</span>
             </span>
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">Bienvenue</h1>
-          <p className="text-gray-600 mt-2">Connectez-vous à votre espace client</p>
+          <h1 className="text-3xl font-semibold tracking-[-0.02em] text-[var(--g-encre)]">Bienvenue</h1>
+          <p className="text-[var(--g-gris)] mt-2">Connectez-vous à votre espace client</p>
         </div>
 
-        <div className="p-8 bg-white border border-gray-200 rounded-2xl shadow-sm">
+        <div className="p-8 bg-white border border-[var(--g-ligne)] rounded-[16px]">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-gray-700 text-sm mb-2">Adresse email</label>
+              <label className="block text-[var(--g-encre)] text-sm font-medium mb-2">Adresse email</label>
               <input
                 type="email"
                 required
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full px-4 py-3 bg-gray-50 border border-green-500 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-600 focus:bg-white transition-colors"
+                className="w-full px-4 py-3 bg-white border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] placeholder-[var(--g-gris)]/60 focus:outline-none focus:border-[var(--g-encre)] transition-colors"
                 placeholder="email@exemple.com"
               />
             </div>
 
             <div>
               <div className="flex justify-between mb-2">
-                <label className="text-gray-700 text-sm">Mot de passe</label>
-                <Link href="/contact" className="text-green-600 text-sm hover:text-green-700">
+                <label className="text-[var(--g-encre)] text-sm font-medium">Mot de passe</label>
+                <Link href="/contact" className="text-[var(--g-vert)] text-sm font-medium hover:underline underline-offset-4">
                   Mot de passe oublié ?
                 </Link>
               </div>
@@ -114,13 +114,13 @@ export default function LoginPage() {
                   required
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
-                  className="w-full px-4 py-3 pr-12 bg-gray-50 border border-green-500 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-600 focus:bg-white transition-colors"
+                  className="w-full px-4 py-3 pr-12 bg-white border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] placeholder-[var(--g-gris)]/60 focus:outline-none focus:border-[var(--g-encre)] transition-colors"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPwd(!showPwd)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--g-gris)] hover:text-[var(--g-encre)]"
                 >
                   {showPwd ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -128,7 +128,7 @@ export default function LoginPage() {
             </div>
 
             {error && (
-              <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm">
+              <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-[10px] text-red-600 text-sm">
                 <AlertCircle size={15} className="flex-shrink-0" />
                 {error}
               </div>
@@ -137,10 +137,10 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] hover:from-[#27A827] hover:to-[#E8B800] text-black font-bold rounded-xl transition-all disabled:opacity-60 flex items-center justify-center gap-2"
+              className="g-btn w-full disabled:opacity-60"
             >
               {loading ? (
-                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
               ) : (
                 <>
                   <LogIn size={18} />
@@ -152,16 +152,16 @@ export default function LoginPage() {
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-white/10" />
+              <div className="w-full border-t border-[var(--g-ligne)]" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-white px-4 text-gray-500 text-sm">ou</span>
+              <span className="bg-white px-4 text-[var(--g-gris)] text-sm">ou</span>
             </div>
           </div>
 
-          <p className="text-center text-gray-600 text-sm">
+          <p className="text-center text-[var(--g-gris)] text-sm">
             Pas encore de compte ?{" "}
-            <Link href="/register" className="text-green-600 hover:text-green-700 font-medium">
+            <Link href="/register" className="text-[var(--g-vert)] font-semibold hover:underline underline-offset-4">
               Créer un compte
             </Link>
           </p>

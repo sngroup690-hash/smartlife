@@ -93,7 +93,7 @@ export default function PostPurchaseCrossSell({
       </div>
 
       {/* Offer card */}
-      <div className="relative bg-gradient-to-br from-[#E8B800]/8 to-[#27A827]/8 border border-[#E8B800]/30 rounded-2xl p-5 overflow-hidden shadow-sm">
+      <div className="relative bg-[var(--g-jaune-doux)] rounded-[16px] p-5 overflow-hidden">
         <button
           onClick={onSkip}
           className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-colors"
@@ -149,10 +149,10 @@ export default function PostPurchaseCrossSell({
         <button
           onClick={handleAccept}
           disabled={added}
-          className={`w-full mt-5 py-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.99] ${
+          className={`w-full mt-5 py-3.5 rounded-[10px] font-semibold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.99] ${
             added
-              ? "bg-emerald-500 text-white cursor-not-allowed"
-              : "bg-gradient-to-r from-[#E8B800] to-[#27A827] hover:from-[#27A827] hover:to-[#E8B800] text-black shadow-md"
+              ? "bg-[var(--g-vert)] text-white cursor-not-allowed"
+              : "bg-[var(--g-encre)] hover:bg-black text-white"
           }`}
         >
           {added ? <Check size={15} /> : <ShoppingCart size={15} />}

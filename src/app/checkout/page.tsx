@@ -9,7 +9,8 @@ import { PriceTag } from "@/components/PriceTag";
 import { useCurrencyStore } from "@/lib/currency-store";
 import {
   Lock, ShoppingCart, AlertCircle, CreditCard, Monitor,
-  CheckCircle, Clock, Trash2, Tag, X as XIcon, ChevronDown, ChevronRight
+  CheckCircle, Clock, Trash2, Tag, X as XIcon, ChevronDown, ChevronRight,
+  BookOpen, Package, Film, Star
 } from "lucide-react";
 import { PaymentBadges } from "@/components/PaymentBadges";
 import Link from "next/link";
@@ -554,12 +555,12 @@ function CheckoutContent() {
   if (!isDirect && items.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
-        <div className="w-20 h-20 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center mb-6">
-          <ShoppingCart size={36} className="text-gray-400" />
+        <div className="w-20 h-20 rounded-[16px] bg-[var(--g-doux)] flex items-center justify-center mb-6">
+          <ShoppingCart size={36} className="text-[var(--g-gris)]" />
         </div>
-        <h1 className="text-gray-900 text-2xl font-bold mb-2">Votre panier est vide</h1>
-        <p className="text-gray-500 mb-6">Ajoutez des produits avant de passer commande.</p>
-        <Link href="/ebooks" className="px-6 py-3 bg-[#E8B800] text-black font-bold rounded-xl">
+        <h1 className="text-[var(--g-encre)] text-2xl font-semibold tracking-[-0.02em] mb-2">Votre panier est vide</h1>
+        <p className="text-[var(--g-gris)] mb-6">Ajoutez des produits avant de passer commande.</p>
+        <Link href="/ebooks" className="g-btn">
           Découvrir les Ebooks
         </Link>
       </div>
@@ -592,68 +593,68 @@ function CheckoutContent() {
 
     return (
       <div className="max-w-md mx-auto px-4 py-16 flex flex-col items-center text-center gap-6">
-        <div className="w-20 h-20 rounded-full bg-emerald-50 border-2 border-emerald-200 flex items-center justify-center">
-          <Clock size={36} className="text-emerald-500 animate-pulse" />
+        <div className="w-20 h-20 rounded-full bg-[var(--g-vert-doux)] flex items-center justify-center">
+          <Clock size={36} className="text-[var(--g-vert)] animate-pulse" />
         </div>
         <div>
-          <h2 className="text-gray-900 text-2xl font-bold mb-2">Confirme sur ton téléphone</h2>
-          <p className="text-gray-600 text-sm leading-relaxed">
+          <h2 className="text-[var(--g-encre)] text-2xl font-semibold tracking-[-0.02em] mb-2">Confirme sur ton téléphone</h2>
+          <p className="text-[var(--g-gris)] text-sm leading-relaxed">
             Une demande de paiement a été envoyée au<br />
-            <strong className="text-gray-900">{phone}</strong> via <strong className="text-gray-900">{operatorLabel}</strong>.
+            <strong className="text-[var(--g-encre)]">{phone}</strong> via <strong className="text-[var(--g-encre)]">{operatorLabel}</strong>.
           </p>
         </div>
-        <div className="w-full p-4 bg-amber-50 border border-amber-200 rounded-xl text-left space-y-2">
-          <p className="text-amber-800 font-bold text-sm">Comment confirmer :</p>
-          <ol className="text-amber-700 text-sm space-y-1 list-decimal pl-4">
+        <div className="w-full p-4 bg-[var(--g-jaune-doux)] rounded-[12px] text-left space-y-2">
+          <p className="text-[var(--g-encre)] font-semibold text-sm">Comment confirmer :</p>
+          <ol className="text-[#4a4a3a] text-sm space-y-1 list-decimal pl-4">
             <li>Attends la notification ou le message USSD</li>
             <li>Saisis ton code PIN {operatorLabel} pour confirmer</li>
             <li>Ton accès sera livré par email immédiatement</li>
           </ol>
         </div>
         {!showHelp && (
-          <div className="flex items-center gap-2 text-emerald-600 text-sm font-medium">
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            Vérification en cours… <span className="text-gray-400 text-xs tabular-nums ml-2">{mm}:{ss}</span>
+          <div className="flex items-center gap-2 text-[var(--g-vert)] text-sm font-medium">
+            <div className="w-2 h-2 rounded-full bg-[var(--g-vert)] animate-pulse" />
+            Vérification en cours… <span className="text-[var(--g-gris)] text-xs tabular-nums ml-2">{mm}:{ss}</span>
           </div>
         )}
-        <p className="text-gray-400 text-xs">
-          Montant : <strong><PriceTag amount={finalTotal} /></strong> · Réf. : <strong>{sebpayRef}</strong>
+        <p className="text-[var(--g-gris)] text-xs">
+          Montant : <strong className="text-[var(--g-encre)]"><PriceTag amount={finalTotal} /></strong> · Réf. : <strong>{sebpayRef}</strong>
         </p>
         {sebpayElapsed >= 20 && !showHelp && (
           <button onClick={handleManualCheck} disabled={sebpayChecking}
-            className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl transition-all disabled:opacity-60">
+            className="px-6 py-2.5 bg-[var(--g-vert)] hover:bg-[var(--g-vert-profond)] text-white font-semibold text-sm rounded-[10px] transition-colors disabled:opacity-60">
             {sebpayChecking ? <span className="flex items-center gap-2"><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Vérification…</span> : "J'ai confirmé mon paiement →"}
           </button>
         )}
         {showHelp && (
-          <div className="w-full rounded-2xl border-2 border-orange-300 bg-orange-50 p-5 text-left space-y-4">
+          <div className="w-full rounded-[14px] border border-[var(--g-ligne)] bg-[var(--g-doux)] p-5 text-left space-y-4">
             <div className="flex items-start gap-3">
-              <span className="text-2xl flex-shrink-0">⚠️</span>
+              <AlertCircle size={22} className="flex-shrink-0 text-[var(--g-encre)]" />
               <div>
-                <p className="text-orange-800 font-bold text-sm">Vous n&apos;avez pas reçu l&apos;invite ?</p>
-                <p className="text-orange-700 text-xs mt-1 leading-relaxed">Cela peut arriver en cas de réseau instable. Notre équipe est disponible pour vous aider.</p>
+                <p className="text-[var(--g-encre)] font-semibold text-sm">Vous n&apos;avez pas reçu l&apos;invite ?</p>
+                <p className="text-[var(--g-gris)] text-xs mt-1 leading-relaxed">Cela peut arriver en cas de réseau instable. Notre équipe est disponible pour vous aider.</p>
               </div>
             </div>
             <div className="space-y-2">
               <a href={`https://wa.me/${supportWhatsApp}?text=${waMessage}`} target="_blank" rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2.5 w-full py-3 px-4 bg-[#25D366] hover:bg-[#1ebe5c] text-white font-bold text-sm rounded-xl transition-colors">
+                className="flex items-center justify-center gap-2.5 w-full py-3 px-4 bg-[#25D366] hover:bg-[#1ebe5c] text-white font-semibold text-sm rounded-[10px] transition-colors">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                 Contacter le support WhatsApp
               </a>
               <a href={`mailto:${supportEmail}?subject=${mailSubject}&body=${mailBody}`}
-                className="flex items-center justify-center gap-2.5 w-full py-3 px-4 bg-white hover:bg-gray-50 text-gray-700 font-bold text-sm rounded-xl border border-gray-200 transition-colors">
+                className="flex items-center justify-center gap-2.5 w-full py-3 px-4 bg-white text-[var(--g-encre)] font-semibold text-sm rounded-[10px] border border-[var(--g-ligne)] hover:border-[var(--g-encre)] transition-colors">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                 Envoyer un e-mail de support
               </a>
             </div>
             <button onClick={handleManualCheck} disabled={sebpayChecking}
-              className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl transition-all disabled:opacity-60">
+              className="w-full py-2.5 bg-[var(--g-vert)] hover:bg-[var(--g-vert-profond)] text-white font-semibold text-sm rounded-[10px] transition-colors disabled:opacity-60">
               {sebpayChecking ? <span className="flex items-center justify-center gap-2"><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Vérification…</span> : "J'ai quand même confirmé →"}
             </button>
-            <p className="text-orange-600 text-xs text-center">Référence : <strong>{sebpayRef}</strong></p>
+            <p className="text-[var(--g-gris)] text-xs text-center">Référence : <strong>{sebpayRef}</strong></p>
           </div>
         )}
-        <button onClick={() => { setSebpayPending(false); setLoading(false); }} className="text-gray-500 text-xs hover:text-gray-700 underline">
+        <button onClick={() => { setSebpayPending(false); setLoading(false); }} className="text-[var(--g-gris)] text-xs hover:text-[var(--g-encre)] underline">
           ← Annuler et réessayer
         </button>
       </div>
@@ -667,62 +668,62 @@ function CheckoutContent() {
     : "";
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7]">
+    <div className="min-h-screen bg-[var(--g-doux)]">
       <div className="max-w-lg mx-auto px-4 pt-4 pb-10 space-y-3">
 
         {/* ── 1. Header accordion — résumé commande ── */}
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-[14px] border border-[var(--g-ligne)] overflow-hidden">
           <button
             type="button"
             onClick={() => setHeaderOpen((v) => !v)}
-            className="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50/50 transition-colors"
+            className="w-full flex items-center justify-between px-5 py-4 hover:bg-[var(--g-doux)]/50 transition-colors"
           >
             <div className="flex items-center gap-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo-smartlife.jpeg" alt="SmartLife" className="h-8 w-8 rounded-lg object-cover flex-shrink-0" />
-              <span className="font-bold text-gray-900 text-sm">Smart life</span>
+              <span className="font-semibold text-[var(--g-encre)] text-sm">Smart life</span>
             </div>
             <div className="flex items-center gap-2">
               {(promoDiscount > 0 || referralDiscount > 0) && (
-                <span className="text-gray-400 text-xs line-through"><PriceTag amount={total} /></span>
+                <span className="text-[var(--g-gris)] text-xs line-through"><PriceTag amount={total} /></span>
               )}
-              <span className="text-gray-900 font-bold text-sm"><PriceTag amount={finalTotal} /></span>
-              <ChevronDown size={15} className={`text-gray-400 transition-transform duration-200 flex-shrink-0 ${headerOpen ? "rotate-180" : ""}`} />
+              <span className="text-[var(--g-encre)] font-semibold text-sm"><PriceTag amount={finalTotal} /></span>
+              <ChevronDown size={15} className={`text-[var(--g-gris)] transition-transform duration-200 flex-shrink-0 ${headerOpen ? "rotate-180" : ""}`} />
             </div>
           </button>
 
           {headerOpen && (
-            <div className="px-5 pb-5 pt-4 border-t border-gray-100 space-y-3">
+            <div className="px-5 pb-5 pt-4 border-t border-[var(--g-ligne)] space-y-3">
               {isDirectPack ? (
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-[#E8B800]/10 flex items-center justify-center flex-shrink-0 text-base">📦</div>
+                  <div className="w-9 h-9 rounded-[10px] bg-[var(--g-doux)] flex items-center justify-center flex-shrink-0"><Package size={17} className="text-[var(--g-vert)]" /></div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-gray-900 font-semibold text-sm">{directTitre}</p>
-                    <p className="text-gray-400 text-xs">{packItems.length} contenu{packItems.length > 1 ? "s" : ""} inclus</p>
+                    <p className="text-[var(--g-encre)] font-semibold text-sm">{directTitre}</p>
+                    <p className="text-[var(--g-gris)] text-xs">{packItems.length} contenu{packItems.length > 1 ? "s" : ""} inclus</p>
                   </div>
-                  <p className="text-gray-900 font-bold text-sm flex-shrink-0"><PriceTag amount={directPrix} /></p>
+                  <p className="text-[var(--g-encre)] font-semibold text-sm flex-shrink-0"><PriceTag amount={directPrix} /></p>
                 </div>
               ) : isDirect ? (
                 <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#1A1200] to-[#2D1A00] flex items-center justify-center flex-shrink-0 text-base">
-                    {isDirectEbook ? "📖" : <Monitor size={18} className="text-[#E8B800]" />}
+                  <div className="w-9 h-9 rounded-[10px] bg-[var(--g-doux)] flex items-center justify-center flex-shrink-0">
+                    {isDirectEbook ? <BookOpen size={17} className="text-[var(--g-vert)]" /> : <Monitor size={18} className="text-[var(--g-vert)]" />}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-gray-900 font-semibold text-sm leading-snug">{directTitre}</p>
-                    <p className="text-gray-400 text-xs">{isDirectEbook ? "Ebook · Livraison par email" : "Formation · Accès immédiat"}</p>
+                    <p className="text-[var(--g-encre)] font-semibold text-sm leading-snug">{directTitre}</p>
+                    <p className="text-[var(--g-gris)] text-xs">{isDirectEbook ? "Ebook · Livraison par email" : "Formation · Accès immédiat"}</p>
                   </div>
-                  <p className="text-gray-900 font-bold text-sm flex-shrink-0"><PriceTag amount={directPrix} /></p>
+                  <p className="text-[var(--g-encre)] font-semibold text-sm flex-shrink-0"><PriceTag amount={directPrix} /></p>
                 </div>
               ) : (
                 <div className="space-y-2.5">
                   {items.map((item) => (
                     <div key={item.id} className="flex items-start gap-2.5">
-                      <div className="w-7 h-7 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0 text-sm">
-                        {item.type === "ebook" ? "📖" : "🎬"}
+                      <div className="w-7 h-7 rounded-[8px] bg-[var(--g-doux)] flex items-center justify-center flex-shrink-0">
+                        {item.type === "ebook" ? <BookOpen size={14} className="text-[var(--g-vert)]" /> : <Film size={14} className="text-[var(--g-vert)]" />}
                       </div>
-                      <p className="flex-1 text-gray-700 text-sm leading-snug">{item.title}</p>
-                      <p className="text-gray-900 font-semibold text-sm flex-shrink-0">{formatPrice(item.price * item.quantity)}</p>
-                      <button onClick={() => removeItem(item.id)} className="p-1 text-gray-300 hover:text-red-500 transition-colors flex-shrink-0">
+                      <p className="flex-1 text-[var(--g-encre)] text-sm leading-snug">{item.title}</p>
+                      <p className="text-[var(--g-encre)] font-semibold text-sm flex-shrink-0">{formatPrice(item.price * item.quantity)}</p>
+                      <button onClick={() => removeItem(item.id)} className="p-1 text-[var(--g-gris)]/60 hover:text-red-500 transition-colors flex-shrink-0">
                         <Trash2 size={13} />
                       </button>
                     </div>
@@ -730,22 +731,22 @@ function CheckoutContent() {
                 </div>
               )}
 
-              <div className="pt-3 border-t border-gray-100 space-y-1.5">
+              <div className="pt-3 border-t border-[var(--g-ligne)] space-y-1.5">
                 {referralDiscount > 0 && (
                   <div className="flex justify-between items-center">
-                    <span className="text-green-700 text-xs font-bold">🤝 Parrainage {referralParrainName ? `(${referralParrainName})` : ""} -10%</span>
-                    <span className="text-green-700 font-bold text-xs">-<PriceTag amount={referralDiscount} /></span>
+                    <span className="text-[var(--g-vert)] text-xs font-semibold">Parrainage {referralParrainName ? `(${referralParrainName})` : ""} -10%</span>
+                    <span className="text-[var(--g-vert)] font-semibold text-xs">-<PriceTag amount={referralDiscount} /></span>
                   </div>
                 )}
                 {promoDiscount > 0 && (
                   <div className="flex justify-between items-center">
-                    <span className="text-green-700 text-xs font-bold flex items-center gap-1">🎁 {promoLabel}</span>
-                    <span className="text-green-700 font-bold text-xs">-<PriceTag amount={promoDiscount} /></span>
+                    <span className="text-[var(--g-vert)] text-xs font-semibold flex items-center gap-1">{promoLabel}</span>
+                    <span className="text-[var(--g-vert)] font-semibold text-xs">-<PriceTag amount={promoDiscount} /></span>
                   </div>
                 )}
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-700 font-bold text-sm">Total</span>
-                  <span className="text-gray-900 font-bold text-base"><PriceTag amount={finalTotal} /></span>
+                  <span className="text-[var(--g-encre)] font-semibold text-sm">Total</span>
+                  <span className="text-[var(--g-encre)] font-semibold text-base"><PriceTag amount={finalTotal} /></span>
                 </div>
               </div>
             </div>
@@ -754,23 +755,23 @@ function CheckoutContent() {
 
         {/* ── 2. Anti-doublon ── */}
         {ownershipChecking && (
-          <div className="flex items-center gap-2 px-4 py-3 bg-white border border-gray-200 rounded-2xl text-gray-500 text-sm shadow-sm">
-            <span className="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin flex-shrink-0" />
+          <div className="flex items-center gap-2 px-4 py-3 bg-white rounded-[14px] border border-[var(--g-ligne)] text-[var(--g-gris)] text-sm">
+            <span className="w-4 h-4 border-2 border-[var(--g-ligne)] border-t-[var(--g-gris)] rounded-full animate-spin flex-shrink-0" />
             Vérification de votre compte…
           </div>
         )}
         {alreadyOwnedNames.length > 0 && (
-          <div className="p-4 bg-amber-50 border-2 border-amber-300 rounded-2xl shadow-sm">
+          <div className="p-4 bg-[var(--g-jaune-doux)] rounded-[14px]">
             <div className="flex items-start gap-3">
-              <AlertCircle size={18} className="text-amber-600 flex-shrink-0 mt-0.5" />
+              <AlertCircle size={18} className="text-[var(--g-encre)] flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-amber-900 font-bold text-sm">
+                <p className="text-[var(--g-encre)] font-semibold text-sm">
                   Vous possédez déjà {alreadyOwnedNames.length === 1 ? "ce produit" : "ces produits"} !
                 </p>
-                <p className="text-amber-800 text-xs mt-1">
+                <p className="text-[#4a4a3a] text-xs mt-1">
                   <span className="font-semibold">{alreadyOwnedNames.join(", ")}</span> est déjà dans votre bibliothèque.
                 </p>
-                <Link href="/mon-espace" className="inline-flex items-center gap-1 mt-2 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl transition-all">
+                <Link href="/mon-espace" className="inline-flex items-center gap-1 mt-2 px-3 py-1.5 bg-[var(--g-encre)] hover:bg-black text-white font-semibold text-xs rounded-[8px] transition-colors">
                   Accéder à Mon Espace →
                 </Link>
               </div>
@@ -780,14 +781,14 @@ function CheckoutContent() {
 
         {/* ── 3. Points fidélité ── */}
         {isLoggedIn && loyaltyLoaded && loyaltyPoints >= 100 && !activePromoCode && (
-          <div className="p-4 bg-white border border-purple-200 rounded-2xl shadow-sm">
+          <div className="p-4 bg-white rounded-[14px] border border-[var(--g-ligne)]">
             <div className="flex items-center justify-between gap-3 flex-wrap">
               <div>
-                <p className="text-purple-800 font-bold text-sm flex items-center gap-1.5">⭐ {loyaltyPoints} points fidélité</p>
-                <p className="text-purple-600 text-xs">Valeur : {Math.min(50, Math.floor(loyaltyPoints / 100) * 10)}% de réduction</p>
+                <p className="text-[var(--g-encre)] font-semibold text-sm flex items-center gap-1.5"><Star size={14} className="text-[var(--g-jaune)] fill-[var(--g-jaune)]" /> {loyaltyPoints} points fidélité</p>
+                <p className="text-[var(--g-vert)] text-xs">Valeur : {Math.min(50, Math.floor(loyaltyPoints / 100) * 10)}% de réduction</p>
               </div>
               <button type="button" onClick={applyLoyaltyPoints} disabled={loyaltyGenerating}
-                className="px-3 py-1.5 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white font-bold text-xs rounded-xl flex-shrink-0">
+                className="px-3 py-1.5 bg-[var(--g-vert)] hover:bg-[var(--g-vert-profond)] disabled:opacity-50 text-white font-semibold text-xs rounded-[8px] flex-shrink-0">
                 {loyaltyGenerating ? "…" : "Utiliser"}
               </button>
             </div>
@@ -796,38 +797,38 @@ function CheckoutContent() {
 
         {/* ── 4. Code promo accordion ── */}
         {activePromoCode ? (
-          <div className="flex items-center justify-between px-4 py-3 bg-white border border-green-200 rounded-2xl shadow-sm">
+          <div className="flex items-center justify-between px-4 py-3 bg-white border border-[var(--g-ligne)] rounded-[14px]">
             <div className="flex items-center gap-2">
-              <CheckCircle size={15} className="text-green-600 flex-shrink-0" />
+              <CheckCircle size={15} className="text-[var(--g-vert)] flex-shrink-0" />
               <div>
-                <p className="text-green-800 font-bold text-sm">{activePromoCode} ✓</p>
-                <p className="text-green-600 text-xs">{promoLabel}</p>
+                <p className="text-[var(--g-encre)] font-semibold text-sm">{activePromoCode} ✓</p>
+                <p className="text-[var(--g-vert)] text-xs">{promoLabel}</p>
               </div>
             </div>
-            <button onClick={removePromoCode} className="p-1 text-gray-400 hover:text-red-500 transition-colors">
+            <button onClick={removePromoCode} className="p-1 text-[var(--g-gris)] hover:text-red-500 transition-colors">
               <XIcon size={14} />
             </button>
           </div>
         ) : (
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="bg-white rounded-[14px] border border-[var(--g-ligne)] overflow-hidden">
             <button type="button" onClick={() => setPromoOpen((v) => !v)}
-              className="w-full flex items-center justify-between px-5 py-3.5 hover:bg-gray-50/50 transition-colors">
-              <span className="flex items-center gap-2 text-gray-500 text-sm">
-                <Tag size={13} className="text-[#E8B800]" />
+              className="w-full flex items-center justify-between px-5 py-3.5 hover:bg-[var(--g-doux)]/50 transition-colors">
+              <span className="flex items-center gap-2 text-[var(--g-gris)] text-sm">
+                <Tag size={13} className="text-[var(--g-vert)]" />
                 Code promo ou parrainage
               </span>
-              <span className="text-gray-400 text-base font-bold leading-none">{promoOpen ? "−" : "+"}</span>
+              <span className="text-[var(--g-gris)] text-base font-semibold leading-none">{promoOpen ? "−" : "+"}</span>
             </button>
             {promoOpen && (
-              <div className="px-5 pb-4 border-t border-gray-100">
+              <div className="px-5 pb-4 border-t border-[var(--g-ligne)]">
                 <div className="flex gap-2 mt-3">
                   <input type="text" value={promoInput}
                     onChange={(e) => { setPromoInput(e.target.value.toUpperCase()); setPromoError(""); }}
                     onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); validatePromoCode(); } }}
                     placeholder="Ex: TCHOP10"
-                    className="flex-1 px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-[#E8B800] uppercase" />
+                    className="flex-1 px-3 py-2.5 bg-white border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] text-sm placeholder-[var(--g-gris)]/60 focus:outline-none focus:border-[var(--g-encre)] uppercase" />
                   <button type="button" onClick={validatePromoCode} disabled={promoValidating || !promoInput.trim()}
-                    className="px-4 py-2.5 bg-[#E8B800] hover:bg-[#D4A017] disabled:opacity-50 text-black font-bold text-sm rounded-xl flex-shrink-0">
+                    className="px-4 py-2.5 bg-[var(--g-jaune)] hover:bg-[var(--g-jaune-fonce)] disabled:opacity-50 text-[var(--g-encre)] font-semibold text-sm rounded-[10px] flex-shrink-0">
                     {promoValidating ? <span className="w-3.5 h-3.5 border-2 border-black/30 border-t-black rounded-full animate-spin inline-block" /> : "Appliquer"}
                   </button>
                 </div>
@@ -839,32 +840,32 @@ function CheckoutContent() {
 
         {/* ── 5. Infos si non connecté ── */}
         {!isLoggedIn && (
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm px-5 py-4 space-y-3">
-            <p className="text-gray-400 text-xs font-medium uppercase tracking-wide">Vos informations</p>
+          <div className="bg-white rounded-[14px] border border-[var(--g-ligne)] px-5 py-4 space-y-3">
+            <p className="text-[14px] font-semibold text-[var(--g-vert)]">Vos informations</p>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-gray-600 text-xs font-medium mb-1">Prénom *</label>
+                <label className="block text-[var(--g-encre)] text-xs font-medium mb-1">Prénom *</label>
                 <input type="text" value={regFirstName} onChange={(e) => setRegFirstName(e.target.value)}
                   placeholder="Jean"
-                  className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-[#E8B800]" />
+                  className="w-full px-3 py-2.5 bg-white border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] text-sm placeholder-[var(--g-gris)]/60 focus:outline-none focus:border-[var(--g-encre)]" />
               </div>
               <div>
-                <label className="block text-gray-600 text-xs font-medium mb-1">Nom *</label>
+                <label className="block text-[var(--g-encre)] text-xs font-medium mb-1">Nom *</label>
                 <input type="text" value={regLastName} onChange={(e) => setRegLastName(e.target.value)}
                   placeholder="Dupont"
-                  className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-[#E8B800]" />
+                  className="w-full px-3 py-2.5 bg-white border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] text-sm placeholder-[var(--g-gris)]/60 focus:outline-none focus:border-[var(--g-encre)]" />
               </div>
             </div>
             <div>
-              <label className="block text-gray-600 text-xs font-medium mb-1">Email *</label>
+              <label className="block text-[var(--g-encre)] text-xs font-medium mb-1">Email *</label>
               <input type="email" value={regEmail}
                 onChange={(e) => { setRegEmail(e.target.value); setAlreadyOwnedNames([]); }}
                 onBlur={() => { if (regEmail.includes("@") && regEmail.includes(".")) checkOwnershipByEmail(regEmail); }}
                 placeholder="jean@example.com"
-                className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-[#E8B800]" />
+                className="w-full px-3 py-2.5 bg-white border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] text-sm placeholder-[var(--g-gris)]/60 focus:outline-none focus:border-[var(--g-encre)]" />
             </div>
             {regError && (
-              <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-xl">
+              <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-[10px]">
                 <AlertCircle size={14} className="text-red-500 flex-shrink-0 mt-0.5" />
                 <p className="text-red-600 text-xs">{regError}</p>
               </div>
@@ -873,12 +874,12 @@ function CheckoutContent() {
         )}
 
         {/* ── 6. Pays ── */}
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm px-5 py-4">
-          <p className="text-gray-400 text-xs font-medium uppercase tracking-wide mb-2">Pays</p>
+        <div className="bg-white rounded-[14px] border border-[var(--g-ligne)] px-5 py-4">
+          <p className="text-[14px] font-semibold text-[var(--g-vert)] mb-2">Pays</p>
           <select
             value={sebpayCountry}
             onChange={(e) => { setSebpayCountry(e.target.value); setSebpayOperator(""); setCountryManual(true); setSelectedMethod(null); }}
-            className="w-full bg-transparent text-gray-900 font-medium text-sm focus:outline-none cursor-pointer"
+            className="w-full bg-transparent text-[var(--g-encre)] font-medium text-sm focus:outline-none cursor-pointer"
           >
             {SEBPAY_COUNTRIES.map((c) => (
               <option key={c.code} value={c.code}>{c.name}</option>
@@ -887,14 +888,14 @@ function CheckoutContent() {
         </div>
 
         {/* ── 7. Moyens de paiement ── */}
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-          <p className="text-gray-900 font-bold text-sm px-5 pt-4 pb-3">Choisissez un moyen de paiement</p>
+        <div className="bg-white rounded-[14px] border border-[var(--g-ligne)] overflow-hidden">
+          <p className="text-[var(--g-encre)] font-semibold tracking-[-0.01em] text-sm px-5 pt-4 pb-3">Choisissez un moyen de paiement</p>
 
           {/* Utilisé récemment */}
           {isLoggedIn && currentUser?.phone && recentOpId && (
             <>
-              <p className="text-gray-400 text-xs px-5 mb-2 font-medium">Utilisé récemment</p>
-              <div className="flex items-center px-5 py-3 gap-3 border-t border-gray-100">
+              <p className="text-[var(--g-gris)] text-xs px-5 mb-2 font-medium">Utilisé récemment</p>
+              <div className="flex items-center px-5 py-3 gap-3 border-t border-[var(--g-ligne)]">
                 {OPERATOR_LOGOS[recentOpId] ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={OPERATOR_LOGOS[recentOpId]} alt={recentOpId} className="h-7 w-auto object-contain flex-shrink-0" style={{ maxWidth: 56 }} />
@@ -904,14 +905,14 @@ function CheckoutContent() {
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className="text-gray-900 font-medium text-sm leading-snug">{OPERATOR_LABELS[recentOpId] ?? recentOpId}</p>
-                  <p className="text-gray-400 text-xs">{maskPhone(currentUser.phone)}</p>
+                  <p className="text-[var(--g-encre)] font-medium text-sm leading-snug">{OPERATOR_LABELS[recentOpId] ?? recentOpId}</p>
+                  <p className="text-[var(--g-gris)] text-xs">{maskPhone(currentUser.phone)}</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => handleMethodPay(recentOpId, currentUser.phone!)}
                   disabled={loading || alreadyOwnedNames.length > 0}
-                  className="px-4 py-2 bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white text-sm font-bold rounded-xl flex-shrink-0 flex items-center gap-1.5 transition-colors"
+                  className="px-4 py-2 bg-[var(--g-vert)] hover:bg-[var(--g-vert-profond)] disabled:opacity-50 text-white text-sm font-semibold rounded-[10px] flex-shrink-0 flex items-center gap-1.5 transition-colors"
                 >
                   {loading
                     ? <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -920,20 +921,20 @@ function CheckoutContent() {
                 </button>
               </div>
               <div className="flex items-center gap-3 px-5 py-2.5">
-                <div className="flex-1 h-px bg-gray-100" />
-                <span className="text-gray-400 text-xs">ou payer avec</span>
-                <div className="flex-1 h-px bg-gray-100" />
+                <div className="flex-1 h-px bg-[var(--g-ligne)]" />
+                <span className="text-[var(--g-gris)] text-xs">ou payer avec</span>
+                <div className="flex-1 h-px bg-[var(--g-ligne)]" />
               </div>
             </>
           )}
 
           {/* Lignes opérateurs Sebpay (dynamiques selon pays) */}
           {currentCountryOps.map((op) => (
-            <div key={op.id} className="border-t border-gray-100">
+            <div key={op.id} className="border-t border-[var(--g-ligne)]">
               <button
                 type="button"
                 onClick={() => { setSelectedMethod(selectedMethod === op.id ? null : op.id); setMethodPhone(""); setPaymentError(""); }}
-                className="w-full flex items-center px-5 py-4 gap-3 hover:bg-gray-50/70 transition-colors"
+                className="w-full flex items-center px-5 py-4 gap-3 hover:bg-[var(--g-doux)]/70 transition-colors"
               >
                 {OPERATOR_LOGOS[op.id] ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -943,21 +944,21 @@ function CheckoutContent() {
                     {op.label[0]}
                   </div>
                 )}
-                <span className="flex-1 text-left font-medium text-gray-900 text-sm">
+                <span className="flex-1 text-left font-medium text-[var(--g-encre)] text-sm">
                   {OPERATOR_LABELS[op.id] ?? `${op.label} Mobile Money`}
                 </span>
-                <ChevronRight size={15} className={`text-gray-400 flex-shrink-0 transition-transform duration-200 ${selectedMethod === op.id ? "rotate-90" : ""}`} />
+                <ChevronRight size={15} className={`text-[var(--g-gris)] flex-shrink-0 transition-transform duration-200 ${selectedMethod === op.id ? "rotate-90" : ""}`} />
               </button>
 
               {selectedMethod === op.id && (
-                <div className="px-5 pb-4 pt-1 space-y-3 border-t border-gray-50 bg-gray-50/40">
+                <div className="px-5 pb-4 pt-1 space-y-3 border-t border-[var(--g-ligne)] bg-[var(--g-doux)]/50">
                   <input
                     type="tel"
                     value={methodPhone}
                     onChange={(e) => { setMethodPhone(e.target.value); setPaymentError(""); }}
                     placeholder="+237 6XX XXX XXX"
                     autoFocus
-                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-emerald-400 transition-colors"
+                    className="w-full px-4 py-3 bg-white border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] text-sm placeholder-[var(--g-gris)]/60 focus:outline-none focus:border-[var(--g-encre)] transition-colors"
                   />
                   {paymentError && (
                     <p className="text-red-500 text-xs flex items-center gap-1.5">
@@ -968,7 +969,7 @@ function CheckoutContent() {
                     type="button"
                     onClick={() => handleMethodPay(op.id, methodPhone)}
                     disabled={loading || !methodPhone.trim() || alreadyOwnedNames.length > 0}
-                    className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-colors"
+                    className="w-full py-3.5 bg-[var(--g-vert)] hover:bg-[var(--g-vert-profond)] disabled:opacity-50 text-white font-semibold rounded-[10px] flex items-center justify-center gap-2 transition-colors"
                   >
                     {loading
                       ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -982,11 +983,11 @@ function CheckoutContent() {
 
           {/* Carte bancaire via CinetPay */}
           {gatewayCfg.cinetpay && (
-            <div className="border-t border-gray-100">
+            <div className="border-t border-[var(--g-ligne)]">
               <button
                 type="button"
                 onClick={() => { setSelectedMethod(selectedMethod === "card" ? null : "card"); setMethodPhone(""); setPaymentError(""); }}
-                className="w-full flex items-center px-5 py-4 gap-3 hover:bg-gray-50/70 transition-colors"
+                className="w-full flex items-center px-5 py-4 gap-3 hover:bg-[var(--g-doux)]/70 transition-colors"
               >
                 <div className="flex gap-1 items-center flex-shrink-0">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -994,19 +995,19 @@ function CheckoutContent() {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src="/payment-logos/mastercard.svg" alt="Mastercard" className="h-5 w-auto" />
                 </div>
-                <span className="flex-1 text-left font-medium text-gray-900 text-sm">Carte bancaire</span>
-                <ChevronRight size={15} className={`text-gray-400 flex-shrink-0 transition-transform duration-200 ${selectedMethod === "card" ? "rotate-90" : ""}`} />
+                <span className="flex-1 text-left font-medium text-[var(--g-encre)] text-sm">Carte bancaire</span>
+                <ChevronRight size={15} className={`text-[var(--g-gris)] flex-shrink-0 transition-transform duration-200 ${selectedMethod === "card" ? "rotate-90" : ""}`} />
               </button>
 
               {selectedMethod === "card" && (
-                <div className="px-5 pb-4 pt-1 space-y-3 border-t border-gray-50 bg-gray-50/40">
+                <div className="px-5 pb-4 pt-1 space-y-3 border-t border-[var(--g-ligne)] bg-[var(--g-doux)]/50">
                   <input
                     type="tel"
                     value={methodPhone}
                     onChange={(e) => { setMethodPhone(e.target.value); setPaymentError(""); }}
                     placeholder="+237 6XX XXX XXX"
                     autoFocus
-                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-[#E8B800] transition-colors"
+                    className="w-full px-4 py-3 bg-white border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] text-sm placeholder-[var(--g-gris)]/60 focus:outline-none focus:border-[var(--g-encre)] transition-colors"
                   />
                   {paymentError && (
                     <p className="text-red-500 text-xs flex items-center gap-1.5">
@@ -1017,7 +1018,7 @@ function CheckoutContent() {
                     type="button"
                     onClick={() => handleMethodPay("card", methodPhone)}
                     disabled={loading || !methodPhone.trim() || alreadyOwnedNames.length > 0}
-                    className="w-full py-3.5 bg-[#E8B800] hover:bg-[#D4A017] disabled:opacity-50 text-black font-bold rounded-xl flex items-center justify-center gap-2 transition-colors"
+                    className="w-full py-3.5 bg-[var(--g-jaune)] hover:bg-[var(--g-jaune-fonce)] disabled:opacity-50 text-[var(--g-encre)] font-semibold rounded-[10px] flex items-center justify-center gap-2 transition-colors"
                   >
                     {loading
                       ? <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
@@ -1030,16 +1031,16 @@ function CheckoutContent() {
           )}
 
           {/* Cryptomonnaies — bientôt */}
-          <div className="border-t border-gray-100">
+          <div className="border-t border-[var(--g-ligne)]">
             <div className="flex items-center px-5 py-4 gap-3 opacity-40 cursor-not-allowed">
-              <div className="h-7 w-7 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 text-sm font-bold flex-shrink-0">₿</div>
-              <span className="flex-1 font-medium text-gray-900 text-sm">Cryptomonnaies</span>
-              <span className="text-gray-400 text-xs bg-gray-100 px-2 py-0.5 rounded-full flex-shrink-0">Bientôt</span>
+              <div className="h-7 w-7 rounded-full bg-[var(--g-doux)] flex items-center justify-center text-[var(--g-encre)] text-sm font-semibold flex-shrink-0">₿</div>
+              <span className="flex-1 font-medium text-[var(--g-encre)] text-sm">Cryptomonnaies</span>
+              <span className="text-[var(--g-gris)] text-xs bg-[var(--g-doux)] px-2 py-0.5 rounded-[6px] flex-shrink-0">Bientôt</span>
             </div>
           </div>
 
           {/* Badges */}
-          <div className="px-5 pb-4 pt-2 border-t border-gray-100">
+          <div className="px-5 pb-4 pt-2 border-t border-[var(--g-ligne)]">
             <PaymentBadges size="xs" />
           </div>
         </div>
@@ -1053,7 +1054,7 @@ export default function CheckoutPage() {
   return (
     <Suspense fallback={
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-8 h-8 border-2 border-[#E8B800] border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-[var(--g-vert)] border-t-transparent rounded-full animate-spin" />
       </div>
     }>
       <CheckoutContent />

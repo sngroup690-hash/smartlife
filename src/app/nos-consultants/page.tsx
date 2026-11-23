@@ -7,7 +7,9 @@ import {
   Users, Star, CheckCircle, ArrowRight, Briefcase,
   MapPin, TrendingUp, Award, Shield, X, Clock, ExternalLink,
   Filter, Send, MessageSquare, ChevronDown, ChevronUp, Loader2,
-  Sparkles,
+  Lock, Check, Sprout, Egg, Store, Wrench, UtensilsCrossed, Scissors, Croissant,
+  HeartPulse, Hammer, HardHat, Laptop, GraduationCap, Car, Landmark, Building2,
+  type LucideIcon,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import AnimateOnScroll, { StaggerContainer, StaggerItem } from "@/components/AnimateOnScroll";
@@ -75,13 +77,36 @@ function getSecteurConfig(categorie: string): SecteurConfig {
   );
 }
 
+// Style Galerie : une icône sobre par secteur à la place de l'émoji (l'émoji reste dans les données, il n'est plus affiché).
+const ICONES_SECTEUR: Record<string, LucideIcon> = {
+  "Agriculture": Sprout,
+  "Élevage": Egg,
+  "Commerce": Store,
+  "Services": Wrench,
+  "Restauration": UtensilsCrossed,
+  "Beauté": Scissors,
+  "Alimentaire": Croissant,
+  "Santé & Bien-être": HeartPulse,
+  "Artisanat": Hammer,
+  "BTP": HardHat,
+  "Numérique": Laptop,
+  "Éducation": GraduationCap,
+  "Transport": Car,
+  "Autre": Landmark,
+};
+
+function IconeSecteur({ categorie, size = 18, className = "" }: { categorie: string; size?: number; className?: string }) {
+  const Icone = ICONES_SECTEUR[categorie] ?? Building2;
+  return <Icone size={size} strokeWidth={1.8} className={`text-[var(--g-vert)] ${className}`} aria-hidden="true" />;
+}
+
 // ── Stars ──────────────────────────────────────────────────────────────────────
 
 function StarDisplay({ note, size = 13 }: { note: number; size?: number }) {
   return (
     <div className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((i) => (
-        <Star key={i} size={size} className={i <= note ? "text-[#E8B800] fill-[#E8B800]" : "text-gray-300"} />
+        <Star key={i} size={size} className={i <= note ? "text-[var(--g-jaune)] fill-[var(--g-jaune)]" : "text-[var(--g-ligne)]"} />
       ))}
     </div>
   );
@@ -95,9 +120,9 @@ function StarRatingInput({ value, onChange }: { value: number; onChange: (n: num
         <button
           key={i} type="button" onClick={() => onChange(i)}
           onMouseEnter={() => setHovered(i)} onMouseLeave={() => setHovered(0)}
-          className="transition-transform hover:scale-110"
+          className="p-0.5"
         >
-          <Star size={28} className={i <= (hovered || value) ? "text-[#E8B800] fill-[#E8B800]" : "text-gray-300"} />
+          <Star size={28} className={i <= (hovered || value) ? "text-[var(--g-jaune)] fill-[var(--g-jaune)]" : "text-[var(--g-ligne)]"} />
         </button>
       ))}
     </div>
@@ -109,13 +134,15 @@ function StarRatingInput({ value, onChange }: { value: number; onChange: (n: num
 function AvisRestrictionModal({ onClose }: { onClose: () => void }) {
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="bg-white rounded-2xl w-full max-w-sm shadow-2xl p-8 text-center">
-        <div className="w-16 h-16 mx-auto rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-4xl mb-5">🔒</div>
-        <h3 className="text-gray-900 font-bold text-xl mb-3">Avis réservé aux clients</h3>
-        <p className="text-gray-600 text-sm leading-relaxed mb-6">
+      <div className="bg-white rounded-[18px] w-full max-w-sm p-8 text-center text-[var(--g-encre)]">
+        <div className="w-14 h-14 mx-auto rounded-[12px] bg-[var(--g-doux)] flex items-center justify-center mb-5">
+          <Lock size={24} strokeWidth={1.8} className="text-[var(--g-vert)]" aria-hidden="true" />
+        </div>
+        <h3 className="font-semibold tracking-[-0.02em] text-xl mb-3">Avis réservé aux clients</h3>
+        <p className="text-[var(--g-gris)] text-sm leading-relaxed mb-6">
           Pour laisser un avis sur cet expert, vous devez être connecté(e) et avoir bénéficié
           d&apos;un accompagnement validé avec lui.
           <br /><br />
@@ -125,13 +152,13 @@ function AvisRestrictionModal({ onClose }: { onClose: () => void }) {
           <Link
             href="/login"
             onClick={onClose}
-            className="w-full py-3 bg-[#E8B800] text-black font-bold rounded-xl text-sm hover:bg-[#27A827] transition-colors"
+            className="g-btn w-full"
           >
             Se connecter
           </Link>
           <button
             onClick={onClose}
-            className="w-full py-3 border border-gray-200 text-gray-600 rounded-xl text-sm hover:bg-gray-50 transition-colors"
+            className="g-btn-ghost w-full"
           >
             Fermer
           </button>
@@ -210,29 +237,31 @@ function DemandeConsultantModal({
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="bg-white rounded-2xl w-full max-w-md max-h-[92vh] overflow-y-auto shadow-2xl">
-        <div className="p-6 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white z-10">
+      <div className="bg-white rounded-[18px] w-full max-w-md max-h-[92vh] overflow-y-auto">
+        <div className="p-6 border-b border-[var(--g-ligne)] flex items-center justify-between sticky top-0 bg-white z-10">
           <div>
-            <h2 className="text-gray-900 font-bold text-lg">Demander un accompagnement</h2>
-            <p className="text-gray-500 text-sm">Avec <span className="font-semibold text-[#E8B800]">{consultant.prenom}</span></p>
+            <h2 className="text-[var(--g-encre)] font-semibold tracking-[-0.02em] text-lg">Demander un accompagnement</h2>
+            <p className="text-[var(--g-gris)] text-sm">Avec <span className="font-semibold text-[var(--g-vert)]">{consultant.prenom}</span></p>
           </div>
-          <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all">
+          <button onClick={onClose} className="p-2 text-[var(--g-gris)] hover:text-[var(--g-encre)] hover:bg-[var(--g-doux)] rounded-lg transition-colors">
             <X size={18} />
           </button>
         </div>
 
         {sent ? (
           <div className="p-8 text-center">
-            <div className="text-5xl mb-4">✅</div>
-            <h3 className="text-gray-900 font-bold text-xl mb-3">Demande envoyée !</h3>
-            <p className="text-gray-600 text-sm mb-6">
+            <div className="w-14 h-14 mx-auto rounded-[12px] bg-[var(--g-vert-doux)] flex items-center justify-center mb-4">
+              <CheckCircle size={26} strokeWidth={1.8} className="text-[var(--g-vert)]" aria-hidden="true" />
+            </div>
+            <h3 className="text-[var(--g-encre)] font-semibold tracking-[-0.02em] text-xl mb-3">Demande envoyée !</h3>
+            <p className="text-[var(--g-gris)] text-sm mb-6">
               Votre demande d&apos;accompagnement avec {consultant.prenom} a bien été reçue.
               Notre équipe vous contactera sous 48h.
             </p>
-            <button onClick={onClose} className="w-full py-3 bg-[#E8B800] text-black font-bold rounded-xl text-sm hover:bg-[#27A827] transition-colors">
+            <button onClick={onClose} className="g-btn w-full">
               Fermer
             </button>
           </div>
@@ -240,76 +269,76 @@ function DemandeConsultantModal({
           <form onSubmit={handleSubmit} className="p-6 space-y-5">
             {/* Nom */}
             <div>
-              <label className="block text-gray-700 text-sm font-medium mb-1.5">
+              <label className="block text-[var(--g-encre)] text-sm font-medium mb-1.5">
                 Prénom &amp; Nom <span className="text-red-500">*</span>
               </label>
               <input
                 type="text" value={form.nom}
                 onChange={(e) => setForm((f) => ({ ...f, nom: e.target.value }))}
                 placeholder="Ex: Jean Dupont"
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 text-sm focus:outline-none focus:border-[#E8B800] transition-colors placeholder:text-gray-400"
+                className="w-full px-4 py-3 border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] text-sm focus:outline-none focus:border-[var(--g-vert)] transition-colors placeholder:text-gray-400"
               />
             </div>
 
             {/* Email */}
             <div>
-              <label className="block text-gray-700 text-sm font-medium mb-1.5">
+              <label className="block text-[var(--g-encre)] text-sm font-medium mb-1.5">
                 Email <span className="text-red-500">*</span>
               </label>
               <input
                 type="email" value={form.email}
                 onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
                 placeholder="votre@email.com"
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 text-sm focus:outline-none focus:border-[#E8B800] transition-colors placeholder:text-gray-400"
+                className="w-full px-4 py-3 border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] text-sm focus:outline-none focus:border-[var(--g-vert)] transition-colors placeholder:text-gray-400"
               />
             </div>
 
             {/* Téléphone */}
             <div>
-              <label className="block text-gray-700 text-sm font-medium mb-1.5">Téléphone</label>
+              <label className="block text-[var(--g-encre)] text-sm font-medium mb-1.5">Téléphone</label>
               <input
                 type="tel" value={form.telephone}
                 onChange={(e) => setForm((f) => ({ ...f, telephone: e.target.value }))}
                 placeholder="+237 6XX XXX XXX"
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 text-sm focus:outline-none focus:border-[#E8B800] transition-colors placeholder:text-gray-400"
+                className="w-full px-4 py-3 border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] text-sm focus:outline-none focus:border-[var(--g-vert)] transition-colors placeholder:text-gray-400"
               />
             </div>
 
             {/* Ville + Profession */}
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-gray-700 text-sm font-medium mb-1.5">
+                <label className="block text-[var(--g-encre)] text-sm font-medium mb-1.5">
                   Ville <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text" value={form.ville}
                   onChange={(e) => setForm((f) => ({ ...f, ville: e.target.value }))}
                   placeholder="Ex: Douala"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 text-sm focus:outline-none focus:border-[#E8B800] transition-colors placeholder:text-gray-400"
+                  className="w-full px-4 py-3 border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] text-sm focus:outline-none focus:border-[var(--g-vert)] transition-colors placeholder:text-gray-400"
                 />
               </div>
               <div>
-                <label className="block text-gray-700 text-sm font-medium mb-1.5">
+                <label className="block text-[var(--g-encre)] text-sm font-medium mb-1.5">
                   Profession <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text" value={form.profession}
                   onChange={(e) => setForm((f) => ({ ...f, profession: e.target.value }))}
                   placeholder="Ex: Commerçant"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 text-sm focus:outline-none focus:border-[#E8B800] transition-colors placeholder:text-gray-400"
+                  className="w-full px-4 py-3 border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] text-sm focus:outline-none focus:border-[var(--g-vert)] transition-colors placeholder:text-gray-400"
                 />
               </div>
             </div>
 
             {/* Capital */}
             <div>
-              <label className="block text-gray-700 text-sm font-medium mb-1.5">
+              <label className="block text-[var(--g-encre)] text-sm font-medium mb-1.5">
                 Fourchette de capital disponible <span className="text-red-500">*</span>
               </label>
               <select
                 value={form.capital}
                 onChange={(e) => setForm((f) => ({ ...f, capital: e.target.value }))}
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 text-sm focus:outline-none focus:border-[#E8B800] transition-colors bg-white"
+                className="w-full px-4 py-3 border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] text-sm focus:outline-none focus:border-[var(--g-vert)] transition-colors bg-white"
               >
                 <option value="">Sélectionner une fourchette...</option>
                 <option value="moins-500k">- de 500 000 FCFA</option>
@@ -322,15 +351,15 @@ function DemandeConsultantModal({
 
             {/* Domaine */}
             <div>
-              <label className="block text-gray-700 text-sm font-medium mb-2">
+              <label className="block text-[var(--g-encre)] text-sm font-medium mb-2">
                 Domaine d&apos;accompagnement souhaité
               </label>
 
               {/* Spécialités prioritaires du consultant */}
               {consultantDomaines.length > 0 && (
                 <div className="mb-3">
-                  <p className="text-xs text-gray-500 mb-2 flex items-center gap-1">
-                    <Star size={11} className="text-[#E8B800]" />
+                  <p className="text-xs text-[var(--g-gris)] mb-2 flex items-center gap-1">
+                    <Star size={11} className="text-[var(--g-vert)]" />
                     Spécialités de {consultant.prenom}
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -338,13 +367,13 @@ function DemandeConsultantModal({
                       <button
                         key={d.id} type="button"
                         onClick={() => setForm((f) => ({ ...f, domaineId: d.id }))}
-                        className={`px-3 py-2 rounded-xl border text-xs font-medium transition-all ${
+                        className={`inline-flex items-center gap-1 px-3 py-2 rounded-[8px] border text-xs font-medium transition-colors ${
                           form.domaineId === d.id
-                            ? "bg-[#E8B800] border-[#E8B800] text-black shadow-sm"
-                            : "border-[#E8B800]/40 text-[#E8B800] hover:border-[#E8B800] hover:bg-[#E8B800]/5"
+                            ? "bg-[var(--g-vert)] border-[var(--g-vert)] text-[#FFFFFF]"
+                            : "border-[var(--g-ligne)] text-[var(--g-encre)] hover:border-[var(--g-vert)]"
                         }`}
                       >
-                        {form.domaineId === d.id && "✓ "}{d.titre}
+                        {form.domaineId === d.id && <Check size={12} strokeWidth={2.5} aria-hidden="true" />}{d.titre}
                       </button>
                     ))}
                   </div>
@@ -357,7 +386,7 @@ function DemandeConsultantModal({
                   <button
                     type="button"
                     onClick={() => setShowOtherDomaines((v) => !v)}
-                    className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700 transition-colors mt-1"
+                    className="flex items-center gap-1.5 text-xs text-[var(--g-gris)] hover:text-[var(--g-encre)] transition-colors mt-1"
                   >
                     {showOtherDomaines ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
                     Autre domaine non listé ci-dessus
@@ -369,13 +398,13 @@ function DemandeConsultantModal({
                         <button
                           key={d.id} type="button"
                           onClick={() => setForm((f) => ({ ...f, domaineId: d.id }))}
-                          className={`px-3 py-1.5 rounded-xl border text-xs font-medium transition-all ${
+                          className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-[8px] border text-xs font-medium transition-colors ${
                             form.domaineId === d.id
-                              ? "bg-gray-800 border-gray-800 text-white"
-                              : "border-gray-200 text-gray-600 hover:border-gray-400"
+                              ? "bg-[var(--g-encre)] border-[var(--g-encre)] text-[#FFFFFF]"
+                              : "border-[var(--g-ligne)] text-[var(--g-gris)] hover:border-[var(--g-gris)]"
                           }`}
                         >
-                          {form.domaineId === d.id && "✓ "}{d.titre}
+                          {form.domaineId === d.id && <Check size={12} strokeWidth={2.5} aria-hidden="true" />}{d.titre}
                         </button>
                       ))}
                     </div>
@@ -386,7 +415,7 @@ function DemandeConsultantModal({
 
             {/* Message */}
             <div>
-              <label className="block text-gray-700 text-sm font-medium mb-1.5">
+              <label className="block text-[var(--g-encre)] text-sm font-medium mb-1.5">
                 Votre projet &amp; motivations <span className="text-red-500">*</span>
               </label>
               <textarea
@@ -394,17 +423,17 @@ function DemandeConsultantModal({
                 onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
                 rows={4}
                 placeholder="Décrivez votre projet, vos objectifs et pourquoi vous souhaitez être accompagné par cet expert..."
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 text-sm focus:outline-none focus:border-[#E8B800] transition-colors placeholder:text-gray-400 resize-none"
+                className="w-full px-4 py-3 border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] text-sm focus:outline-none focus:border-[var(--g-vert)] transition-colors placeholder:text-gray-400 resize-none"
               />
             </div>
 
             {error && (
-              <p className="text-red-500 text-xs bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>
+              <p className="text-red-600 text-xs bg-red-50 border border-red-200 rounded-[10px] px-4 py-3">{error}</p>
             )}
 
             <button
               type="submit" disabled={sending}
-              className="w-full py-3 bg-[#E8B800] hover:bg-[#27A827] text-black font-bold rounded-xl text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+              className="g-btn w-full disabled:opacity-50"
             >
               {sending ? <Loader2 size={15} className="animate-spin" /> : <Send size={15} />}
               Envoyer ma demande
@@ -459,28 +488,30 @@ function AvisModal({ consultant, onClose }: { consultant: ConsultantPublic; onCl
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl">
-        <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+      <div className="bg-white rounded-[18px] w-full max-w-md">
+        <div className="p-6 border-b border-[var(--g-ligne)] flex items-center justify-between">
           <div>
-            <h2 className="text-gray-900 font-bold text-lg">Laisser un avis</h2>
-            <p className="text-gray-500 text-sm">Expérience avec <span className="font-semibold text-[#E8B800]">{consultant.prenom}</span></p>
+            <h2 className="text-[var(--g-encre)] font-semibold tracking-[-0.02em] text-lg">Laisser un avis</h2>
+            <p className="text-[var(--g-gris)] text-sm">Expérience avec <span className="font-semibold text-[var(--g-vert)]">{consultant.prenom}</span></p>
           </div>
-          <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all">
+          <button onClick={onClose} className="p-2 text-[var(--g-gris)] hover:text-[var(--g-encre)] hover:bg-[var(--g-doux)] rounded-lg transition-colors">
             <X size={18} />
           </button>
         </div>
 
         {sent ? (
           <div className="p-8 text-center">
-            <div className="text-5xl mb-4">🙏</div>
-            <h3 className="text-gray-900 font-bold text-xl mb-3">Merci pour votre avis !</h3>
-            <p className="text-gray-600 text-sm mb-6">
+            <div className="w-14 h-14 mx-auto rounded-[12px] bg-[var(--g-vert-doux)] flex items-center justify-center mb-4">
+              <CheckCircle size={26} strokeWidth={1.8} className="text-[var(--g-vert)]" aria-hidden="true" />
+            </div>
+            <h3 className="text-[var(--g-encre)] font-semibold tracking-[-0.02em] text-xl mb-3">Merci pour votre avis !</h3>
+            <p className="text-[var(--g-gris)] text-sm mb-6">
               Votre avis est en cours de vérification. Il sera publié sous 24-48h après validation par notre équipe.
             </p>
-            <button onClick={onClose} className="w-full py-3 bg-[#E8B800] text-black font-bold rounded-xl text-sm hover:bg-[#27A827] transition-colors">
+            <button onClick={onClose} className="g-btn w-full">
               Fermer
             </button>
           </div>
@@ -488,33 +519,33 @@ function AvisModal({ consultant, onClose }: { consultant: ConsultantPublic; onCl
           <form onSubmit={handleSubmit} className="p-6 space-y-5">
             {/* Note */}
             <div>
-              <label className="block text-gray-700 text-sm font-medium mb-2">
+              <label className="block text-[var(--g-encre)] text-sm font-medium mb-2">
                 Votre note <span className="text-red-500">*</span>
               </label>
               <div className="flex items-center gap-3">
                 <StarRatingInput value={form.note} onChange={(n) => setForm((f) => ({ ...f, note: n }))} />
                 {form.note > 0 && (
-                  <span className="text-sm text-gray-500 font-medium">{NOTE_LABELS[form.note]}</span>
+                  <span className="text-sm text-[var(--g-gris)] font-medium">{NOTE_LABELS[form.note]}</span>
                 )}
               </div>
             </div>
 
             {/* Auteur */}
             <div>
-              <label className="block text-gray-700 text-sm font-medium mb-1.5">
+              <label className="block text-[var(--g-encre)] text-sm font-medium mb-1.5">
                 Votre prénom <span className="text-red-500">*</span>
               </label>
               <input
                 type="text" value={form.auteur}
                 onChange={(e) => setForm((f) => ({ ...f, auteur: e.target.value }))}
                 placeholder="Ex: Jean D."
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 text-sm focus:outline-none focus:border-[#E8B800] transition-colors placeholder:text-gray-400"
+                className="w-full px-4 py-3 border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] text-sm focus:outline-none focus:border-[var(--g-vert)] transition-colors placeholder:text-gray-400"
               />
             </div>
 
             {/* Contenu */}
             <div>
-              <label className="block text-gray-700 text-sm font-medium mb-1.5">
+              <label className="block text-[var(--g-encre)] text-sm font-medium mb-1.5">
                 Votre avis <span className="text-red-500">*</span>
               </label>
               <textarea
@@ -522,19 +553,19 @@ function AvisModal({ consultant, onClose }: { consultant: ConsultantPublic; onCl
                 onChange={(e) => setForm((f) => ({ ...f, contenu: e.target.value }))}
                 rows={4}
                 placeholder="Décrivez votre expérience avec cet expert, les résultats obtenus, ce que vous recommanderiez..."
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl text-gray-900 text-sm focus:outline-none focus:border-[#E8B800] transition-colors placeholder:text-gray-400 resize-none"
+                className="w-full px-4 py-3 border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] text-sm focus:outline-none focus:border-[var(--g-vert)] transition-colors placeholder:text-gray-400 resize-none"
               />
             </div>
 
-            <p className="text-xs text-gray-400">Votre avis sera soumis à validation avant publication.</p>
+            <p className="text-xs text-[var(--g-gris)]">Votre avis sera soumis à validation avant publication.</p>
 
             {error && (
-              <p className="text-red-500 text-xs bg-red-50 border border-red-200 rounded-xl px-4 py-3">{error}</p>
+              <p className="text-red-600 text-xs bg-red-50 border border-red-200 rounded-[10px] px-4 py-3">{error}</p>
             )}
 
             <button
               type="submit" disabled={sending || form.note === 0}
-              className="w-full py-3 bg-[#E8B800] hover:bg-[#27A827] text-black font-bold rounded-xl text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+              className="g-btn w-full disabled:opacity-50"
             >
               {sending ? <Loader2 size={15} className="animate-spin" /> : <Star size={15} />}
               Publier mon avis
@@ -565,47 +596,47 @@ function ProfilModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
-      <div className="bg-white border border-gray-200 rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div className="bg-white rounded-[18px] w-full max-w-lg max-h-[90vh] overflow-y-auto text-[var(--g-encre)]">
         {/* Header */}
-        <div className="p-6 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white z-10">
+        <div className="p-6 border-b border-[var(--g-ligne)] flex items-center justify-between sticky top-0 bg-white z-10">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl overflow-hidden border border-[#E8B800]/30 flex-shrink-0">
+            <div className="w-16 h-16 rounded-[12px] overflow-hidden bg-[var(--g-doux)] flex-shrink-0">
               {consultant.photoUrl ? (
                 <Image src={consultant.photoUrl} alt={consultant.prenom} width={64} height={64} className="w-full h-full object-cover" unoptimized />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-[#E8B800]/30 to-[#27A827]/10 flex items-center justify-center text-[#E8B800] font-black text-3xl">
+                <div className="w-full h-full bg-[var(--g-vert-doux)] flex items-center justify-center text-[var(--g-vert)] font-semibold text-3xl">
                   {consultant.prenom.charAt(0).toUpperCase()}
                 </div>
               )}
             </div>
             <div>
-              <h2 className="text-gray-900 font-bold text-xl">
+              <h2 className="font-semibold tracking-[-0.02em] text-xl">
                 {consultant.prenom}
                 {consultant.nom && (
-                  <span className="ml-2 text-gray-500 font-normal text-sm align-middle" style={{ filter: "blur(4px)", userSelect: "none" }}>
+                  <span className="ml-2 text-[var(--g-gris)] font-normal text-sm align-middle" style={{ filter: "blur(4px)", userSelect: "none" }}>
                     {consultant.nom}
                   </span>
                 )}
               </h2>
               <div className="flex items-center gap-3 mt-0.5 flex-wrap">
                 {consultant.ville && (
-                  <p className="text-gray-500 text-sm flex items-center gap-1">
+                  <p className="text-[var(--g-gris)] text-sm flex items-center gap-1">
                     <MapPin size={12} /> {consultant.ville}
                   </p>
                 )}
                 {reviews.length > 0 && (
                   <div className="flex items-center gap-1">
                     <StarDisplay note={Math.round(avgNote)} size={12} />
-                    <span className="text-xs text-gray-500">{avgNote}/5 ({reviews.length} avis)</span>
+                    <span className="text-xs text-[var(--g-gris)]">{avgNote}/5 ({reviews.length} avis)</span>
                   </div>
                 )}
               </div>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all">
+          <button onClick={onClose} className="p-2 text-[var(--g-gris)] hover:text-[var(--g-encre)] hover:bg-[var(--g-doux)] rounded-lg transition-colors">
             <X size={18} />
           </button>
         </div>
@@ -615,22 +646,22 @@ function ProfilModal({
           {(consultant.clientsAccompa > 0 || consultant.entreprisesAccompa > 0) && (
             <div className="flex gap-3">
               {consultant.clientsAccompa > 0 && (
-                <div className="flex-1 text-center p-3 bg-emerald-50 border border-emerald-200 rounded-xl">
-                  <div className="text-2xl font-bold text-emerald-700">{consultant.clientsAccompa}</div>
-                  <div className="text-xs text-gray-600 mt-0.5">client{consultant.clientsAccompa > 1 ? "s" : ""} accompagné{consultant.clientsAccompa > 1 ? "s" : ""}</div>
+                <div className="flex-1 text-center p-3 bg-[var(--g-doux)] rounded-[12px]">
+                  <div className="text-2xl font-semibold tracking-[-0.02em] tabular-nums">{consultant.clientsAccompa}</div>
+                  <div className="text-xs text-[var(--g-gris)] mt-0.5">client{consultant.clientsAccompa > 1 ? "s" : ""} accompagné{consultant.clientsAccompa > 1 ? "s" : ""}</div>
                 </div>
               )}
               {consultant.entreprisesAccompa > 0 && (
-                <div className="flex-1 text-center p-3 bg-[#E8B800]/10 border border-[#E8B800]/20 rounded-xl">
-                  <div className="text-2xl font-bold text-[#E8B800]">{consultant.entreprisesAccompa}</div>
-                  <div className="text-xs text-gray-600 mt-0.5">entreprise{consultant.entreprisesAccompa > 1 ? "s" : ""}</div>
+                <div className="flex-1 text-center p-3 bg-[var(--g-doux)] rounded-[12px]">
+                  <div className="text-2xl font-semibold tracking-[-0.02em] tabular-nums">{consultant.entreprisesAccompa}</div>
+                  <div className="text-xs text-[var(--g-gris)] mt-0.5">entreprise{consultant.entreprisesAccompa > 1 ? "s" : ""}</div>
                 </div>
               )}
               {reviews.length > 0 && (
-                <div className="flex-1 text-center p-3 bg-amber-50 border border-amber-200 rounded-xl">
-                  <div className="text-2xl font-bold text-amber-600">{avgNote}</div>
-                  <div className="text-xs text-gray-600 mt-0.5 flex items-center justify-center gap-0.5">
-                    <Star size={10} className="text-amber-500 fill-amber-500" /> note moy.
+                <div className="flex-1 text-center p-3 bg-[var(--g-doux)] rounded-[12px]">
+                  <div className="text-2xl font-semibold tracking-[-0.02em] tabular-nums">{avgNote}</div>
+                  <div className="text-xs text-[var(--g-gris)] mt-0.5 flex items-center justify-center gap-0.5">
+                    <Star size={10} className="text-[var(--g-jaune)] fill-[var(--g-jaune)]" /> note moy.
                   </div>
                 </div>
               )}
@@ -639,11 +670,11 @@ function ProfilModal({
 
           {/* Expérience */}
           {consultant.anneesExperience && (
-            <div className="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-xl">
-              <Clock size={15} className="text-[#E8B800] flex-shrink-0" />
+            <div className="flex items-center gap-3 p-3 border border-[var(--g-ligne)] rounded-[12px]">
+              <Clock size={15} className="text-[var(--g-vert)] flex-shrink-0" />
               <div>
-                <p className="text-gray-500 text-xs">Expérience</p>
-                <p className="text-gray-900 text-sm font-medium">{consultant.anneesExperience}</p>
+                <p className="text-[var(--g-gris)] text-xs">Expérience</p>
+                <p className="text-sm font-medium">{consultant.anneesExperience}</p>
               </div>
             </div>
           )}
@@ -651,10 +682,10 @@ function ProfilModal({
           {/* Domaines */}
           {domaines.length > 0 && (
             <div>
-              <p className="text-gray-500 text-xs mb-2 uppercase tracking-wider">Secteurs d&apos;expertise</p>
+              <p className="text-[14px] font-semibold text-[var(--g-vert)] mb-2">Secteurs d&apos;expertise</p>
               <div className="flex flex-wrap gap-2">
                 {domaines.map((d) => (
-                  <span key={d} className="text-xs px-3 py-1.5 bg-[#E8B800]/10 text-[#E8B800] border border-[#E8B800]/20 rounded-full">{d}</span>
+                  <span key={d} className="text-xs px-2.5 py-1.5 bg-[var(--g-doux)] rounded-[8px]">{d}</span>
                 ))}
               </div>
             </div>
@@ -663,9 +694,9 @@ function ProfilModal({
           {/* Motivation */}
           {consultant.motivation && (
             <div>
-              <p className="text-gray-500 text-xs mb-2 uppercase tracking-wider">Son parcours, en ses mots</p>
-              <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl">
-                <p className="text-gray-600 text-sm leading-relaxed">{consultant.motivation}</p>
+              <p className="text-[14px] font-semibold text-[var(--g-vert)] mb-2">Son parcours, en ses mots</p>
+              <div className="p-4 bg-[var(--g-doux)] rounded-[12px]">
+                <p className="text-[var(--g-gris)] text-sm leading-relaxed">{consultant.motivation}</p>
               </div>
             </div>
           )}
@@ -673,34 +704,37 @@ function ProfilModal({
           {/* Portfolio */}
           {consultant.portfolioUrl && (
             <a href={consultant.portfolioUrl} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm text-[#E8B800] hover:underline">
+              className="g-lien text-sm">
               <ExternalLink size={14} /> Voir le portfolio
             </a>
           )}
 
           {/* Pourquoi il fait partie du réseau — uniquement à partir de ses vraies données */}
-          <div className="rounded-2xl p-4" style={{ background: "linear-gradient(135deg, #f0fdf4, #fffbea)", border: "1.5px solid #27A827" }}>
-            <p className="text-[13px] font-extrabold text-[#1e7a1e] mb-2.5">🏅 Pourquoi {consultant.prenom} fait partie de nos consultants</p>
-            <ul className="space-y-2 text-[13px] text-[#393c41] leading-snug">
+          <div className="rounded-[14px] p-4 bg-[var(--g-vert-doux)]">
+            <p className="text-[14px] font-semibold tracking-[-0.01em] text-[var(--g-encre)] mb-2.5 flex items-center gap-2">
+              <Award size={16} strokeWidth={1.8} className="text-[var(--g-vert)] flex-shrink-0" aria-hidden="true" />
+              Pourquoi {consultant.prenom} fait partie de nos consultants
+            </p>
+            <ul className="space-y-2 text-[13px] text-[var(--g-encre)] leading-snug">
               {consultant.anneesExperience && (
-                <li className="flex gap-2"><CheckCircle size={14} className="text-[#27A827] flex-shrink-0 mt-0.5" /> Une expérience de terrain : {consultant.anneesExperience}.</li>
+                <li className="flex gap-2"><CheckCircle size={14} className="text-[var(--g-vert)] flex-shrink-0 mt-0.5" /> Une expérience de terrain : {consultant.anneesExperience}.</li>
               )}
               {domaines.length > 0 && (
-                <li className="flex gap-2"><CheckCircle size={14} className="text-[#27A827] flex-shrink-0 mt-0.5" /> Maîtrise concrète {domaines.length > 1 ? `de ces ${domaines.length} domaines` : "de ce domaine"} : {domaines.slice(0, 3).join(", ")}{domaines.length > 3 ? "…" : ""}.</li>
+                <li className="flex gap-2"><CheckCircle size={14} className="text-[var(--g-vert)] flex-shrink-0 mt-0.5" /> Maîtrise concrète {domaines.length > 1 ? `de ces ${domaines.length} domaines` : "de ce domaine"} : {domaines.slice(0, 3).join(", ")}{domaines.length > 3 ? "…" : ""}.</li>
               )}
               {(consultant.clientsAccompa > 0 || consultant.entreprisesAccompa > 0) && (
-                <li className="flex gap-2"><CheckCircle size={14} className="text-[#27A827] flex-shrink-0 mt-0.5" /> A déjà accompagné {consultant.clientsAccompa > 0 ? `${consultant.clientsAccompa} porteur${consultant.clientsAccompa > 1 ? "s" : ""} de projet` : ""}{consultant.clientsAccompa > 0 && consultant.entreprisesAccompa > 0 ? " et " : ""}{consultant.entreprisesAccompa > 0 ? `${consultant.entreprisesAccompa} entreprise${consultant.entreprisesAccompa > 1 ? "s" : ""}` : ""}.</li>
+                <li className="flex gap-2"><CheckCircle size={14} className="text-[var(--g-vert)] flex-shrink-0 mt-0.5" /> A déjà accompagné {consultant.clientsAccompa > 0 ? `${consultant.clientsAccompa} porteur${consultant.clientsAccompa > 1 ? "s" : ""} de projet` : ""}{consultant.clientsAccompa > 0 && consultant.entreprisesAccompa > 0 ? " et " : ""}{consultant.entreprisesAccompa > 0 ? `${consultant.entreprisesAccompa} entreprise${consultant.entreprisesAccompa > 1 ? "s" : ""}` : ""}.</li>
               )}
               {reviews.length > 0 && (
-                <li className="flex gap-2"><CheckCircle size={14} className="text-[#27A827] flex-shrink-0 mt-0.5" /> Note des clients accompagnés : {avgNote}/5 ({reviews.length} avis).</li>
+                <li className="flex gap-2"><CheckCircle size={14} className="text-[var(--g-vert)] flex-shrink-0 mt-0.5" /> Note des clients accompagnés : {avgNote}/5 ({reviews.length} avis).</li>
               )}
-              <li className="flex gap-2"><CheckCircle size={14} className="text-[#27A827] flex-shrink-0 mt-0.5" /> Connaissance des réalités du marché africain : coûts, clients, fournisseurs, pièges à éviter.</li>
+              <li className="flex gap-2"><CheckCircle size={14} className="text-[var(--g-vert)] flex-shrink-0 mt-0.5" /> Connaissance des réalités du marché africain : coûts, clients, fournisseurs, pièges à éviter.</li>
             </ul>
           </div>
 
           {/* Comment nous sélectionnons nos consultants */}
           <div>
-            <p className="text-gray-500 text-xs mb-3 uppercase tracking-wider">Comment nous sélectionnons nos consultants</p>
+            <p className="text-[14px] font-semibold text-[var(--g-vert)] mb-3">Comment nous sélectionnons nos consultants</p>
             <ol className="space-y-2.5">
               {[
                 ["Candidature détaillée", "Chaque consultant présente son parcours, ses années d'expérience et les projets déjà menés."],
@@ -709,10 +743,10 @@ function ProfilModal({
                 ["Suivi après chaque accompagnement", "Les clients accompagnés laissent un avis : un consultant mal noté n'est plus mis en avant."],
               ].map(([titre, texte], i) => (
                 <li key={titre} className="flex gap-3">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-[12px] font-black" style={{ background: i % 2 === 0 ? "#E8B800" : "#27A827", color: "#fff" }}>{i + 1}</span>
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-[12px] font-semibold tabular-nums bg-[var(--g-vert-doux)] text-[var(--g-vert)]">{i + 1}</span>
                   <div>
-                    <p className="text-[13px] font-bold text-[#111827]">{titre}</p>
-                    <p className="text-[12px] text-[#5c5e62] leading-snug">{texte}</p>
+                    <p className="text-[13px] font-semibold text-[var(--g-encre)]">{titre}</p>
+                    <p className="text-[12px] text-[var(--g-gris)] leading-snug">{texte}</p>
                   </div>
                 </li>
               ))}
@@ -722,17 +756,17 @@ function ProfilModal({
           {/* Avis clients */}
           {reviews.length > 0 && (
             <div>
-              <p className="text-gray-500 text-xs mb-3 uppercase tracking-wider flex items-center gap-1.5">
+              <p className="text-[14px] font-semibold text-[var(--g-vert)] mb-3 flex items-center gap-1.5">
                 <MessageSquare size={12} /> Avis clients ({reviews.length})
               </p>
               <div className="space-y-3">
                 {reviews.slice(0, 3).map((r) => (
-                  <div key={r.id} className="p-3 bg-gray-50 border border-gray-100 rounded-xl">
+                  <div key={r.id} className="p-3 bg-[var(--g-doux)] rounded-[12px]">
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-gray-900 font-semibold text-sm">{r.auteur}</span>
+                      <span className="text-[var(--g-encre)] font-semibold text-sm">{r.auteur}</span>
                       <StarDisplay note={r.note} size={12} />
                     </div>
-                    <p className="text-gray-600 text-xs leading-relaxed">{r.contenu}</p>
+                    <p className="text-[var(--g-gris)] text-xs leading-relaxed">{r.contenu}</p>
                   </div>
                 ))}
               </div>
@@ -741,18 +775,17 @@ function ProfilModal({
         </div>
 
         {/* Boutons d'action */}
-        <div className="p-6 pt-0 space-y-3 border-t border-gray-100 mt-2">
+        <div className="p-6 pt-5 space-y-3 border-t border-[var(--g-ligne)]">
           <button
             onClick={onDemander}
-            className="cta-clignote w-full flex items-center justify-center gap-2 py-3 font-bold rounded-xl text-sm shadow-lg"
-            style={{ background: "linear-gradient(135deg, #E8B800, #27A827)", color: "#fff" }}
+            className="g-btn w-full"
           >
             Demander un accompagnement <ArrowRight size={16} />
           </button>
           <button
             onClick={onAvis}
             disabled={avisChecking}
-            className="w-full flex items-center justify-center gap-2 py-2.5 border border-gray-200 hover:bg-gray-50 text-gray-600 font-medium rounded-xl transition-all text-sm disabled:opacity-60"
+            className="g-btn-ghost w-full text-[15px] disabled:opacity-60"
           >
             {avisChecking ? <Loader2 size={14} className="animate-spin" /> : <MessageSquare size={14} />}
             {avisChecking ? "Vérification…" : "Laisser un avis sur mon expérience"}
@@ -778,12 +811,10 @@ function SecteurCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ delay: index * 0.08, duration: 0.5, ease: "easeOut" }}
-      whileHover={{ y: -6, scale: 1.02 }}
-      whileTap={{ scale: 0.97 }}
-      className={`relative w-full text-left rounded-3xl overflow-hidden transition-shadow duration-300 group ${
+      className={`relative w-full text-left rounded-[16px] overflow-hidden bg-white border transition-colors group ${
         isActive
-          ? "ring-3 ring-[#E8B800] shadow-xl shadow-[#E8B800]/20"
-          : "shadow-md hover:shadow-xl"
+          ? "border-[var(--g-vert)] ring-2 ring-[var(--g-vert)]"
+          : "border-[var(--g-ligne)] hover:border-[var(--g-gris)]"
       }`}
     >
       {/* Photo de fond */}
@@ -792,43 +823,38 @@ function SecteurCard({
           src={secteur.photo}
           alt={secteur.categorie}
           loading="lazy"
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+        {/* Voile sombre sur la photo : seule exception tolérée, il rend le titre blanc lisible */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
 
         {/* Badge actif */}
         {isActive && (
-          <motion.span
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            className="absolute top-3 right-3 w-8 h-8 bg-[#E8B800] rounded-full flex items-center justify-center text-black text-sm font-bold shadow-lg"
-          >
-            ✓
-          </motion.span>
+          <span className="absolute top-3 right-3 w-8 h-8 bg-[var(--g-vert)] rounded-full flex items-center justify-center text-[#FFFFFF]">
+            <Check size={16} strokeWidth={2.5} aria-hidden="true" />
+          </span>
         )}
-
-        {/* Emoji flottant */}
-        <span className="absolute top-3 left-3 text-3xl drop-shadow-lg select-none">{secteur.emoji}</span>
 
         {/* Contenu en bas */}
         <div className="absolute bottom-0 left-0 right-0 p-4">
           {/* text-[#FFFFFF] et non text-white : globals.css force .text-white en gris foncé sur tout le site */}
-          <h3 className="font-black text-lg text-[#FFFFFF] leading-tight mb-1 drop-shadow-md">{secteur.categorie}</h3>
+          <h3 className="font-semibold tracking-[-0.02em] text-lg text-[#FFFFFF] leading-tight mb-1">{secteur.categorie}</h3>
           <p className="text-white/80 text-xs leading-relaxed">{secteur.desc}</p>
         </div>
       </div>
 
-      {/* Badges en dessous */}
-      <div className="flex items-center gap-2 px-4 py-3 bg-white">
-        <span className="text-xs font-bold px-3 py-1 bg-[#E8B800]/10 text-[#E8B800] rounded-full border border-[#E8B800]/20">
+      {/* Chiffres en dessous */}
+      <div className="flex items-center gap-2 px-4 py-3 text-[13px] text-[var(--g-gris)]">
+        <IconeSecteur categorie={secteur.categorie} size={15} className="flex-shrink-0" />
+        <span>
           {nbEspaces} espace{nbEspaces > 1 ? "s" : ""}
         </span>
         {nbConsultants > 0 && (
-          <span className="text-xs font-bold px-3 py-1 bg-[#27A827]/10 text-[#27A827] rounded-full border border-[#27A827]/20">
-            {nbConsultants} expert{nbConsultants > 1 ? "s" : ""}
+          <span className="font-semibold text-[var(--g-vert)]">
+            · {nbConsultants} expert{nbConsultants > 1 ? "s" : ""}
           </span>
         )}
-        <ArrowRight size={14} className="ml-auto text-gray-300 group-hover:text-[#E8B800] group-hover:translate-x-1 transition-all" />
+        <ArrowRight size={14} className="ml-auto text-[var(--g-gris)] group-hover:text-[var(--g-vert)] group-hover:translate-x-1 transition-all" />
       </div>
     </motion.button>
   );
@@ -957,139 +983,102 @@ export default function NosConsultantsPage() {
     : [];
 
   return (
-    <div className="overflow-hidden bg-white">
+    <div className="overflow-hidden bg-white text-[var(--g-encre)]">
 
-      {/* ════════ HERO PREMIUM ════════ */}
-      <section className="relative py-14 sm:py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#f0fdf0] via-white to-[#fef9e7]" />
-        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
+      {/* ════════ EN-TÊTE ════════ */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16 pb-12 sm:pb-14">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1, duration: 0.4 }}
+          className="text-[14px] font-semibold text-[var(--g-vert)] mb-3"
+        >
+          Réseau d&apos;experts SMART LIFE
+        </motion.p>
 
-        {/* Formes flottantes */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div
-            animate={{ y: [-20, 20, -20], x: [-8, 12, -8], rotate: [0, 90, 180, 270, 360] }}
-            transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-[10%] right-[6%] w-16 h-16 rounded-3xl bg-gradient-to-br from-[#E8B800]/12 to-[#E8B800]/4 border border-[#E8B800]/10"
-          />
-          <motion.div
-            animate={{ y: [15, -20, 15], x: [8, -8, 8] }}
-            transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute bottom-[15%] left-[4%] w-14 h-14 rounded-full bg-gradient-to-br from-[#27A827]/12 to-[#27A827]/4 border border-[#27A827]/10"
-          />
-          <motion.div
-            animate={{ scale: [1, 1.3, 1], rotate: [0, 45, 0] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-[45%] left-[12%] w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-200/15 to-transparent border border-amber-200/10"
-          />
-        </div>
+        <motion.h1
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.5 }}
+          className="text-[36px] sm:text-[52px] lg:text-[64px] font-semibold leading-[1.04] tracking-[-0.035em] mb-6 max-w-[18ch]"
+        >
+          Nos{" "}
+          <span className="g-surligne">Consultants</span>
+          <br className="hidden sm:block" />
+          {" "}& Secteurs d&apos;expertise
+        </motion.h1>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, type: "spring" }}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/70 backdrop-blur-md border border-[#E8B800]/20 rounded-full text-sm text-gray-700 mb-8 shadow-lg shadow-[#E8B800]/5"
-          >
-            <motion.span
-              animate={{ rotate: [0, 15, -15, 0] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <Sparkles size={16} className="text-[#E8B800]" />
-            </motion.span>
-            Réseau d&apos;experts SMART LIFE
-          </motion.div>
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="text-[var(--g-gris)] max-w-[46ch] text-[18px] sm:text-[20px] leading-[1.45]"
+        >
+          Des experts passionnés qui accompagnent entrepreneurs et entreprises
+          à chaque étape de leur développement en Afrique.
+        </motion.p>
+      </section>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-[2rem] sm:text-[2.6rem] md:text-[3.5rem] font-extrabold leading-[1.1] mb-6 text-gray-900"
-          >
-            Nos{" "}
-            <span className="bg-gradient-to-r from-[#E8B800] to-amber-500 bg-clip-text text-transparent">Consultants</span>
-            <br className="hidden sm:block" />
-            {" "}& Secteurs d&apos;
-            <span className="bg-gradient-to-r from-[#27A827] to-emerald-500 bg-clip-text text-transparent">expertise</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-            className="text-gray-500 max-w-xl mx-auto text-base sm:text-lg leading-relaxed mb-10 font-medium"
-          >
-            Des experts passionnés qui accompagnent entrepreneurs et entreprises
-            à chaque étape de leur développement en Afrique.
-          </motion.p>
-
-          {/* Stats animées */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5 mb-6">
+      {/* ════════ CHIFFRES ════════ */}
+      <section className="bg-[var(--g-vert-profond)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-2">
             {[
-              { value: consultants.length, label: "Consultants actifs", icon: Users, gradient: "from-[#E8B800] to-amber-500" },
-              { value: totalClients || 47, label: "Clients accompagnés", icon: CheckCircle, gradient: "from-[#27A827] to-emerald-500" },
-              { value: totalEntreprises || 20, label: "Entreprises suivies", icon: Briefcase, gradient: "from-amber-500 to-[#E8B800]" },
-              { value: categories.length || espacesActifs.length, label: "Secteurs couverts", icon: Award, gradient: "from-green-500 to-[#27A827]" },
+              { value: consultants.length, label: "Consultants actifs", icon: Users },
+              { value: totalClients || 47, label: "Clients accompagnés", icon: CheckCircle },
+              { value: totalEntreprises || 20, label: "Entreprises suivies", icon: Briefcase },
+              { value: categories.length || espacesActifs.length, label: "Secteurs couverts", icon: Award },
             ].map((stat, i) => (
-              <motion.div
+              <div
                 key={stat.label}
-                initial={{ opacity: 0, y: 25 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 + i * 0.1, duration: 0.5 }}
-                className="text-center p-4 sm:p-5 bg-white/80 backdrop-blur-sm border border-gray-100 rounded-3xl shadow-lg shadow-gray-100/50"
+                className={`py-4 pr-4 ${i % 2 === 1 ? "pl-4 border-l border-white/20" : ""} lg:[&:not(:first-child)]:pl-6 lg:[&:not(:first-child)]:border-l lg:[&:not(:first-child)]:border-white/20`}
               >
-                <div className={`inline-flex items-center justify-center w-10 h-10 rounded-2xl bg-gradient-to-br ${stat.gradient} mb-2.5 shadow-lg`}>
-                  <stat.icon size={18} className="text-white" />
-                </div>
-                <div className="text-2xl sm:text-3xl font-black text-gray-900 mb-0.5">{stat.value}+</div>
-                <div className="text-gray-500 text-xs sm:text-sm font-medium leading-tight">{stat.label}</div>
-              </motion.div>
+                <stat.icon size={20} strokeWidth={1.8} className="text-[var(--g-jaune)] mb-3" aria-hidden="true" />
+                <p className="g-chiffre" style={{ color: "#fff" }}>{stat.value}+</p>
+                <p className="mt-2 text-[14.5px] leading-snug" style={{ color: "rgba(255,255,255,0.82)" }}>{stat.label}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
+      <div className="bande-wax h-[14px]" aria-hidden="true" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20">
 
-      {/* ════════ CONSULTANTS PREMIUM ════════ */}
-      <div className="mb-20">
-        <AnimateOnScroll variant="fadeUp" className="flex items-center justify-between flex-wrap gap-4 mb-8">
+      {/* ════════ CONSULTANTS ════════ */}
+      <div className="mb-24">
+        <AnimateOnScroll variant="fadeUp" className="flex items-end justify-between flex-wrap gap-4 mb-8">
           <div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
+            <h2 className="g-titre-section mb-2">
               {filtreCategorie
-                ? <>Experts en <span className="bg-gradient-to-r from-[#E8B800] to-amber-500 bg-clip-text text-transparent">{filtreCategorie}</span></>
-                : <>L&apos;équipe <span className="bg-gradient-to-r from-[#27A827] to-emerald-500 bg-clip-text text-transparent">SMART LIFE</span></>
+                ? <>Experts en <span className="g-surligne">{filtreCategorie}</span></>
+                : <>L&apos;équipe <span className="g-surligne">SMART LIFE</span></>
               }
             </h2>
-            <p className="text-gray-500 text-sm font-medium">
+            <p className="text-[var(--g-gris)] text-[16px]">
               {consultantsFiltres.length} consultant{consultantsFiltres.length > 1 ? "s" : ""}
               {filtreCategorie ? ` dans ce secteur` : ` au total`}
             </p>
           </div>
           {filtreCategorie && (
-            <motion.span
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className={`px-5 py-2.5 bg-gradient-to-r ${getSecteurConfig(filtreCategorie).gradientClass} border ${getSecteurConfig(filtreCategorie).borderClass} ${getSecteurConfig(filtreCategorie).textClass} rounded-xl text-sm font-bold flex items-center gap-2 shadow-sm`}
-            >
-              {getSecteurConfig(filtreCategorie).emoji} {filtreCategorie}
-            </motion.span>
+            <span className="px-4 py-2.5 bg-[var(--g-vert-doux)] text-[var(--g-vert)] rounded-[10px] text-sm font-semibold flex items-center gap-2">
+              <IconeSecteur categorie={filtreCategorie} size={16} /> {filtreCategorie}
+            </span>
           )}
         </AnimateOnScroll>
 
         {consultantsFiltres.length === 0 ? (
-          <AnimateOnScroll variant="scaleUp">
-            <div className="text-center py-16 sm:py-20 bg-gradient-to-br from-green-50/80 via-white to-yellow-50/80 border border-gray-100 rounded-3xl shadow-sm">
-              <motion.div
-                animate={{ y: [-5, 5, -5] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="text-6xl mb-5"
-              >
-                {filtreCategorie ? getSecteurConfig(filtreCategorie).emoji : "👥"}
-              </motion.div>
-              <h3 className="text-gray-900 font-extrabold text-2xl mb-3">
+          <AnimateOnScroll variant="fadeUp">
+            <div className="text-center py-14 sm:py-16 px-6 bg-[var(--g-doux)] rounded-[18px]">
+              <div className="w-14 h-14 mx-auto rounded-[12px] bg-white flex items-center justify-center mb-5">
+                {filtreCategorie
+                  ? <IconeSecteur categorie={filtreCategorie} size={26} />
+                  : <Users size={26} strokeWidth={1.8} className="text-[var(--g-vert)]" aria-hidden="true" />}
+              </div>
+              <h3 className="font-semibold tracking-[-0.02em] text-2xl mb-3">
                 {filtreCategorie ? `Aucun consultant en ${filtreCategorie}` : "Équipe en cours de constitution"}
               </h3>
-              <p className="text-gray-500 max-w-md mx-auto text-sm mb-6 leading-relaxed">
+              <p className="text-[var(--g-gris)] max-w-md mx-auto text-[15px] mb-7 leading-relaxed">
                 {filtreCategorie
                   ? "Nos experts dans ce secteur seront bientôt disponibles. Contactez-nous pour être accompagné."
                   : "Notre équipe de consultants se constitue. Contactez-nous pour être mis en relation avec un expert ou pour devenir consultant."}
@@ -1097,21 +1086,21 @@ export default function NosConsultantsPage() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 {filtreCategorie && (
                   <button onClick={() => setFiltreCategorie(null)}
-                    className="px-6 py-3 border border-gray-200 hover:bg-gray-50 text-gray-700 rounded-xl text-sm font-bold transition-all">
+                    className="g-btn-ghost bg-white">
                     Voir tous les secteurs
                   </button>
                 )}
                 <Link
                   href="/devenir-consultant"
-                  className="px-6 py-3 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-black rounded-xl text-sm font-bold shadow-lg shadow-[#E8B800]/20 hover:shadow-xl transition-all flex items-center gap-2"
+                  className="g-btn"
                 >
-                  Devenir consultant <ArrowRight size={14} />
+                  Devenir consultant <ArrowRight size={16} />
                 </Link>
               </div>
             </div>
           </AnimateOnScroll>
         ) : (
-          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" staggerDelay={0.1}>
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" staggerDelay={0.1}>
             {consultantsFiltres.map((c) => {
               const domaines = domainesNoms(c.domainesIds);
               const categoriesPrincipales = [...new Set(
@@ -1122,44 +1111,42 @@ export default function NosConsultantsPage() {
 
               return (
                 <StaggerItem key={c.id}>
-                <motion.div
-                  whileHover={{ y: -4, scale: 1.02 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                  className="bg-white border border-gray-100 rounded-3xl shadow-md hover:shadow-xl hover:border-[#E8B800]/30 transition-shadow flex flex-col overflow-hidden">
+                <div
+                  className="h-full bg-white border border-[var(--g-ligne)] rounded-[16px] hover:border-[var(--g-gris)] transition-colors flex flex-col overflow-hidden">
                   {mainConfig && (
-                    <div className={`bg-gradient-to-r ${mainConfig.gradientClass} px-4 py-2.5 flex items-center gap-2`}>
-                      <span className="text-base">{mainConfig.emoji}</span>
-                      <span className={`text-xs font-bold ${mainConfig.textClass}`}>{mainConfig.categorie}</span>
+                    <div className="border-b border-[var(--g-ligne)] px-4 py-2.5 flex items-center gap-2">
+                      <IconeSecteur categorie={mainConfig.categorie} size={15} />
+                      <span className="text-[13px] font-semibold text-[var(--g-vert)]">{mainConfig.categorie}</span>
                     </div>
                   )}
 
                   <div className="p-6 flex flex-col flex-1 text-center">
-                    <div className="w-20 h-20 mx-auto rounded-2xl overflow-hidden border border-[#E8B800]/30 mb-4 flex-shrink-0">
+                    <div className="w-20 h-20 mx-auto rounded-[14px] overflow-hidden bg-[var(--g-doux)] mb-4 flex-shrink-0">
                       {c.photoUrl ? (
                         <Image src={c.photoUrl} alt={c.prenom} width={80} height={80} className="w-full h-full object-cover" unoptimized />
                       ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-[#E8B800]/30 to-[#27A827]/10 flex items-center justify-center text-[#E8B800] font-black text-4xl">
+                        <div className="w-full h-full bg-[var(--g-vert-doux)] flex items-center justify-center text-[var(--g-vert)] font-semibold text-4xl">
                           {c.prenom.charAt(0).toUpperCase()}
                         </div>
                       )}
                     </div>
 
-                    <h3 className="text-gray-900 font-bold text-xl mb-1">
+                    <h3 className="font-semibold tracking-[-0.02em] text-xl mb-1">
                       {c.prenom}
                       {c.nom && (
-                        <span className="ml-2 text-gray-500 font-normal text-sm align-middle" style={{ filter: "blur(4px)", userSelect: "none" }}>
+                        <span className="ml-2 text-[var(--g-gris)] font-normal text-sm align-middle" style={{ filter: "blur(4px)", userSelect: "none" }}>
                           {c.nom}
                         </span>
                       )}
                     </h3>
 
                     {c.ville && (
-                      <p className="text-gray-500 text-xs flex items-center justify-center gap-1 mb-0.5">
+                      <p className="text-[var(--g-gris)] text-xs flex items-center justify-center gap-1 mb-0.5">
                         <MapPin size={10} /> {c.ville}
                       </p>
                     )}
                     {c.anneesExperience && (
-                      <p className="text-gray-500 text-xs flex items-center justify-center gap-1">
+                      <p className="text-[var(--g-gris)] text-xs flex items-center justify-center gap-1">
                         <Clock size={10} /> {c.anneesExperience}
                       </p>
                     )}
@@ -1167,32 +1154,32 @@ export default function NosConsultantsPage() {
                     {cReviews.length > 0 && (
                       <div className="flex items-center justify-center gap-1 mt-1.5">
                         <StarDisplay note={Math.round(cReviews.reduce((s, r) => s + r.note, 0) / cReviews.length)} size={11} />
-                        <span className="text-xs text-gray-500">({cReviews.length})</span>
+                        <span className="text-xs text-[var(--g-gris)]">({cReviews.length})</span>
                       </div>
                     )}
 
                     <div className="my-4 space-y-2">
                       {c.clientsAccompa > 0 && (
-                        <div className="flex items-center justify-center gap-2 text-sm text-gray-400">
-                          <CheckCircle size={13} className="text-emerald-400" />
-                          <span><strong className="text-gray-900 text-base">{c.clientsAccompa}</strong> client{c.clientsAccompa > 1 ? "s" : ""}</span>
+                        <div className="flex items-center justify-center gap-2 text-sm text-[var(--g-gris)]">
+                          <CheckCircle size={13} className="text-[var(--g-vert)]" />
+                          <span><strong className="text-[var(--g-encre)] font-semibold text-base tabular-nums">{c.clientsAccompa}</strong> client{c.clientsAccompa > 1 ? "s" : ""}</span>
                         </div>
                       )}
                       {c.entreprisesAccompa > 0 && (
-                        <div className="flex items-center justify-center gap-2 text-sm text-gray-400">
-                          <Briefcase size={13} className="text-[#E8B800]" />
-                          <span><strong className="text-gray-900 text-base">{c.entreprisesAccompa}</strong> entreprise{c.entreprisesAccompa > 1 ? "s" : ""}</span>
+                        <div className="flex items-center justify-center gap-2 text-sm text-[var(--g-gris)]">
+                          <Briefcase size={13} className="text-[var(--g-vert)]" />
+                          <span><strong className="text-[var(--g-encre)] font-semibold text-base tabular-nums">{c.entreprisesAccompa}</strong> entreprise{c.entreprisesAccompa > 1 ? "s" : ""}</span>
                         </div>
                       )}
                     </div>
 
                     {domaines.length > 0 && (
-                      <div className="flex flex-wrap justify-center gap-1.5 mb-4">
+                      <div className="flex flex-wrap justify-center gap-1.5 mb-5">
                         {domaines.slice(0, 2).map((d) => (
-                          <span key={d} className="text-xs px-2.5 py-1 bg-[#E8B800]/10 text-[#E8B800] border border-[#E8B800]/20 rounded-full">{d}</span>
+                          <span key={d} className="text-xs px-2.5 py-1 bg-[var(--g-doux)] rounded-[8px]">{d}</span>
                         ))}
                         {domaines.length > 2 && (
-                          <span className="text-xs px-2.5 py-1 bg-gray-50 text-gray-500 rounded-full">+{domaines.length - 2}</span>
+                          <span className="text-xs px-2.5 py-1 text-[var(--g-gris)]">+{domaines.length - 2}</span>
                         )}
                       </div>
                     )}
@@ -1200,13 +1187,13 @@ export default function NosConsultantsPage() {
                     <div className="mt-auto">
                       <button
                         onClick={() => setSelectedConsultant(c)}
-                        className="w-full py-3 px-4 bg-gradient-to-r from-[#E8B800] to-amber-500 hover:from-[#27A827] hover:to-emerald-500 text-black text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
+                        className="g-btn w-full"
                       >
-                        Voir le profil <ArrowRight size={14} />
+                        Voir le profil <ArrowRight size={16} />
                       </button>
                     </div>
                   </div>
-                </motion.div>
+                </div>
                 </StaggerItem>
               );
             })}
@@ -1214,22 +1201,22 @@ export default function NosConsultantsPage() {
         )}
       </div>
 
-      {/* ════════ SECTEURS PREMIUM ════════ */}
-      <div className="mb-16">
-        <AnimateOnScroll variant="fadeUp" className="flex items-center justify-between flex-wrap gap-4 mb-8">
+      {/* ════════ SECTEURS ════════ */}
+      <div className="mb-24">
+        <AnimateOnScroll variant="fadeUp" className="flex items-end justify-between flex-wrap gap-4 mb-8">
           <div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">
+            <h2 className="g-titre-section mb-2">
               Secteurs d&apos;
-              <span className="bg-gradient-to-r from-[#E8B800] to-amber-500 bg-clip-text text-transparent">accompagnement</span>
+              <span className="g-surligne">accompagnement</span>
             </h2>
-            <p className="text-gray-500 text-sm font-medium">{categories.length} secteur{categories.length > 1 ? "s" : ""} couverts par nos experts</p>
+            <p className="text-[var(--g-gris)] text-[16px]">{categories.length} secteur{categories.length > 1 ? "s" : ""} couverts par nos experts</p>
           </div>
           {filtreCategorie && (
             <motion.button
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               onClick={() => setFiltreCategorie(null)}
-              className="flex items-center gap-2 px-5 py-2.5 bg-[#E8B800]/10 hover:bg-[#E8B800]/20 text-[#E8B800] border border-[#E8B800]/20 rounded-xl text-sm font-bold transition-all"
+              className="g-btn-ghost text-[15px]"
             >
               <Filter size={14} /> Tous les secteurs <X size={14} />
             </motion.button>
@@ -1254,14 +1241,14 @@ export default function NosConsultantsPage() {
       </div>
 
       {/* ════════ ESPACES PAR SECTEUR ════════ */}
-      <div className="mb-20">
-        <AnimateOnScroll variant="fadeUp" className="text-center mb-10">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3">
+      <div className="mb-24">
+        <AnimateOnScroll variant="fadeUp" className="mb-10">
+          <h2 className="g-titre-section mb-2">
             Domaines d&apos;
-            <span className="bg-gradient-to-r from-[#27A827] to-emerald-500 bg-clip-text text-transparent">expertise</span>
+            <span className="g-surligne">expertise</span>
             {" "}& projets accompagnés
           </h2>
-          <p className="text-gray-500 text-sm font-medium">
+          <p className="text-[var(--g-gris)] text-[16px]">
             {espacesActifs.length} espace{espacesActifs.length > 1 ? "s" : ""} disponible{espacesActifs.length > 1 ? "s" : ""}
           </p>
         </AnimateOnScroll>
@@ -1271,63 +1258,64 @@ export default function NosConsultantsPage() {
           const espaces_cat = espacesDuSecteur(cat);
           if (espaces_cat.length === 0) return null;
           return (
-            <AnimateOnScroll key={cat} variant="fadeUp" className="mb-10">
-              <div className={`flex items-center gap-3 px-5 py-3.5 bg-gradient-to-r ${config.gradientClass} border ${config.borderClass} rounded-2xl mb-5 shadow-sm`}>
-                <span className="text-2xl">{config.emoji}</span>
+            <AnimateOnScroll key={cat} variant="fadeUp" className="mb-12">
+              <div className="flex items-center gap-3 pb-3.5 mb-5 border-b border-[var(--g-ligne)]">
+                <span className="w-10 h-10 rounded-[10px] bg-[var(--g-vert-doux)] flex items-center justify-center flex-shrink-0">
+                  <IconeSecteur categorie={config.categorie} size={19} />
+                </span>
                 <div>
-                  <h3 className={`font-bold text-base ${config.textClass}`}>{config.categorie}</h3>
-                  <p className="text-gray-500 text-xs">{config.desc}</p>
+                  <h3 className="font-semibold tracking-[-0.02em] text-[19px] leading-tight">{config.categorie}</h3>
+                  <p className="text-[var(--g-gris)] text-[13px]">{config.desc}</p>
                 </div>
-                <span className={`ml-auto text-xs font-bold px-3 py-1.5 ${config.accentClass} text-white rounded-full shadow-sm`}>
+                <span className="ml-auto text-[14px] font-semibold text-[var(--g-vert)] whitespace-nowrap">
                   {espaces_cat.length} espace{espaces_cat.length > 1 ? "s" : ""}
                 </span>
               </div>
 
-              <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" staggerDelay={0.08}>
+              <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5" staggerDelay={0.08}>
                 {espaces_cat.map((espace) => (
                   <StaggerItem key={espace.id}>
                   <Link href={`/accompagnement/${espace.id}`}
-                    className="group block overflow-hidden bg-white border border-gray-100 rounded-2xl shadow-sm hover:border-[#E8B800]/40 hover:shadow-lg transition-all hover:-translate-y-1">
-                    <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16/9" }}>
+                    className="group block h-full overflow-hidden bg-white border border-[var(--g-ligne)] rounded-[14px] hover:border-[var(--g-gris)] transition-colors">
+                    <div className="relative w-full overflow-hidden bg-[var(--g-doux)]" style={{ aspectRatio: "16/9" }}>
                       {espace.visuel || espace.image ? (
                         <img src={espace.visuel || espace.image} alt={espace.titre} loading="lazy" decoding="async"
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                           style={{ objectPosition: "50% 20%", transformOrigin: "50% 100%" }} />
                       ) : (
-                        <div className={`w-full h-full bg-gradient-to-br ${config.gradientClass} flex items-center justify-center`}>
-                          <span className="text-5xl">{config.emoji}</span>
+                        <div className="w-full h-full bg-[var(--g-vert-doux)] flex items-center justify-center">
+                          <IconeSecteur categorie={config.categorie} size={40} />
                         </div>
                       )}
-                      <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.45), transparent 55%)" }} />
-                      <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-[10px] font-bold shadow-sm" style={{ background: "#27A827", color: "#fff" }}>
-                        {config.emoji} {config.categorie}
+                      <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-[6px] text-[11px] font-semibold" style={{ background: "var(--g-vert)", color: "#fff" }}>
+                        {config.categorie}
                       </span>
                       {espace.placesDisponibles <= 2 && (
-                        <span className="cta-clignote absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full text-[10px] font-bold" style={{ background: "#ef4444", color: "#fff" }}>
+                        <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-[6px] text-[11px] font-semibold" style={{ background: "var(--g-jaune)", color: "var(--g-encre)" }}>
                           Plus que {espace.placesDisponibles} place{espace.placesDisponibles > 1 ? "s" : ""}
                         </span>
                       )}
                     </div>
                     <div className="p-4">
-                    <h4 className="text-gray-900 font-bold text-sm leading-snug group-hover:text-[#E8B800] transition-colors mb-1.5">{espace.titre}</h4>
-                    <p className="text-[11.5px] text-[#393c41] leading-snug mb-2.5">
+                    <h4 className="font-semibold tracking-[-0.01em] text-[15px] leading-snug mb-1.5">{espace.titre}</h4>
+                    <p className="text-[12.5px] text-[var(--g-gris)] leading-snug mb-3">
                       Soumettez votre projet et faites-vous accompagner par un expert à vos côtés pour réussir le lancement de votre activité, ou optimiser celle qui tourne déjà.
                     </p>
                     <div className="space-y-1.5">
                       {espace.clientsSatisfaits > 0 && (
-                        <div className="flex items-center gap-1.5 text-xs text-gray-400">
-                          <CheckCircle size={11} className="text-emerald-400" />
-                          <span><strong className="text-gray-900">{espace.clientsSatisfaits}</strong> projet{espace.clientsSatisfaits > 1 ? "s" : ""} accompagné{espace.clientsSatisfaits > 1 ? "s" : ""}</span>
+                        <div className="flex items-center gap-1.5 text-xs text-[var(--g-gris)]">
+                          <CheckCircle size={11} className="text-[var(--g-vert)]" />
+                          <span><strong className="text-[var(--g-encre)] font-semibold">{espace.clientsSatisfaits}</strong> projet{espace.clientsSatisfaits > 1 ? "s" : ""} accompagné{espace.clientsSatisfaits > 1 ? "s" : ""}</span>
                         </div>
                       )}
-                      <div className="flex items-center gap-1.5 text-xs text-gray-400">
-                        <Users size={11} className={espace.placesDisponibles <= 2 ? "text-orange-400" : "text-[#E8B800]"} />
-                        <span><strong className={espace.placesDisponibles <= 2 ? "text-orange-500" : "text-gray-900"}>{espace.placesDisponibles}</strong> place{espace.placesDisponibles > 1 ? "s" : ""} dispo</span>
+                      <div className="flex items-center gap-1.5 text-xs text-[var(--g-gris)]">
+                        <Users size={11} className="text-[var(--g-vert)]" />
+                        <span><strong className={`font-semibold ${espace.placesDisponibles <= 2 ? "text-[var(--g-orange)]" : "text-[var(--g-encre)]"}`}>{espace.placesDisponibles}</strong> place{espace.placesDisponibles > 1 ? "s" : ""} dispo</span>
                       </div>
                     </div>
-                    <div className="flex items-center justify-end mt-3 pt-3 border-t border-gray-100">
-                      <span className="flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-[#E8B800] to-amber-500 text-black text-xs font-bold rounded-lg group-hover:from-[#27A827] group-hover:to-emerald-500 transition-all shadow-sm">
-                        Postuler <ArrowRight size={10} />
+                    <div className="flex items-center justify-end mt-3 pt-3 border-t border-[var(--g-ligne)]">
+                      <span className="g-lien text-[14px]">
+                        Postuler <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
                       </span>
                     </div>
                     </div>
@@ -1341,51 +1329,37 @@ export default function NosConsultantsPage() {
       </div>
 
       {/* ════════ ATOUTS ════════ */}
-      <StaggerContainer className="grid md:grid-cols-3 gap-6 mb-20" staggerDelay={0.15}>
+      <StaggerContainer className="grid md:grid-cols-3 gap-x-8 gap-y-8 mb-24" staggerDelay={0.15}>
         {[
-          { icon: TrendingUp, titre: "Résultats mesurables", desc: "Chaque accompagnement est axé sur des objectifs concrets et des résultats quantifiables pour votre activité.", gradient: "from-[#E8B800] to-amber-500" },
-          { icon: Star, titre: "Expertise terrain", desc: "Nos consultants ont une expérience directe du marché africain et comprennent les réalités locales.", gradient: "from-[#27A827] to-emerald-500" },
-          { icon: MapPin, titre: "Présence locale", desc: "Disponibles en présentiel au Cameroun et en ligne pour toute l'Afrique francophone et la diaspora.", gradient: "from-amber-500 to-[#E8B800]" },
+          { icon: TrendingUp, titre: "Résultats mesurables", desc: "Chaque accompagnement est axé sur des objectifs concrets et des résultats quantifiables pour votre activité." },
+          { icon: Star, titre: "Expertise terrain", desc: "Nos consultants ont une expérience directe du marché africain et comprennent les réalités locales." },
+          { icon: MapPin, titre: "Présence locale", desc: "Disponibles en présentiel au Cameroun et en ligne pour toute l'Afrique francophone et la diaspora." },
         ].map((item) => (
           <StaggerItem key={item.titre}>
-            <motion.div
-              whileHover={{ y: -4 }}
-              className="p-7 bg-white border border-gray-100 rounded-3xl shadow-md hover:shadow-xl transition-shadow"
-            >
-              <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center mb-5 shadow-lg`}>
-                <item.icon size={20} className="text-white" />
-              </div>
-              <h3 className="text-gray-900 font-extrabold text-lg mb-2">{item.titre}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
-            </motion.div>
+            <div className="pt-6 border-t border-[var(--g-ligne)]">
+              <item.icon size={22} strokeWidth={1.8} className="text-[var(--g-vert)] mb-4" aria-hidden="true" />
+              <h3 className="font-semibold tracking-[-0.02em] text-[20px] mb-2">{item.titre}</h3>
+              <p className="text-[var(--g-gris)] text-[15px] leading-[1.5]">{item.desc}</p>
+            </div>
           </StaggerItem>
         ))}
       </StaggerContainer>
 
-      {/* ════════ CTA PREMIUM ════════ */}
-      <AnimateOnScroll variant="scaleUp" className="mb-16">
-        <div className="text-center p-10 sm:p-14 rounded-3xl bg-gradient-to-br from-green-50/80 via-white to-yellow-50/80 border border-gray-100 shadow-sm">
-          <motion.div
-            animate={{ y: [-5, 5, -5] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="text-5xl mb-5"
-          >
-            🚀
-          </motion.div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">Rejoindre l&apos;équipe SMART LIFE ?</h2>
-          <p className="text-gray-500 mb-8 max-w-lg mx-auto text-sm sm:text-base leading-relaxed">
+      {/* ════════ APPEL FINAL ════════ */}
+      <AnimateOnScroll variant="fadeUp" className="mb-16">
+        <div className="text-center p-8 sm:p-14 rounded-[18px] bg-[var(--g-vert-doux)]">
+          <h2 className="g-titre-section mb-4">Rejoindre l&apos;équipe SMART LIFE ?</h2>
+          <p className="text-[var(--g-gris)] mb-8 max-w-lg mx-auto text-[16px] sm:text-[17px] leading-[1.5]">
             Vous êtes expert dans votre domaine et souhaitez accompagner des entrepreneurs ?
             Candidatez pour rejoindre notre réseau de consultants.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-              <Link href="/devenir-consultant"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-black font-bold rounded-2xl transition-all shadow-xl shadow-[#E8B800]/20 text-base">
-                Devenir consultant <ArrowRight size={18} />
-              </Link>
-            </motion.div>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link href="/devenir-consultant"
+              className="g-btn">
+              Devenir consultant <ArrowRight size={17} />
+            </Link>
             <Link href="/accompagnement"
-              className="inline-flex items-center gap-2 px-8 py-4 border border-gray-200 hover:border-[#E8B800]/40 text-gray-700 hover:text-gray-900 rounded-2xl transition-all text-base font-medium">
+              className="g-btn-ghost bg-white">
               Voir les espaces
             </Link>
           </div>

@@ -37,16 +37,16 @@ function GroupeWhatsApp({ ebookIds }: { ebookIds: string[] }) {
 
   if (liens.length === 0) return null;
   return (
-    <div className="mb-6 rounded-2xl border-2 border-[#25D366] bg-[#25D366]/5 p-5 text-center">
-      <p className="text-[12px] font-extrabold tracking-wide text-[#b45309]">⚠️ CE N&apos;EST PAS ENCORE FINI !</p>
-      <p className="mt-1 text-[17px] font-bold text-gray-900">👥 Rejoins maintenant le groupe WhatsApp des visionnaires</p>
-      <p className="mt-1 text-[13px] text-gray-700">
+    <div className="mb-6 rounded-[16px] bg-[var(--g-vert-doux)] p-5 text-center">
+      <p className="text-[14px] font-semibold text-[var(--g-vert)]">Ce n&apos;est pas encore fini !</p>
+      <p className="mt-1 text-[17px] font-semibold tracking-[-0.01em] text-[var(--g-encre)]">Rejoins maintenant le groupe WhatsApp des visionnaires</p>
+      <p className="mt-1 text-[13px] text-[var(--g-gris)]">
         Tu as rejoint l&apos;écosystème Smart Life : le guide, la communauté WhatsApp des visionnaires et la possibilité d&apos;être accompagné(e) par un consultant du terrain pour lancer ton activité.
       </p>
       <div className="mt-4 flex flex-col gap-2">
         {liens.map((l) => (
           <a key={l.url} href={l.url} target="_blank" rel="noopener noreferrer"
-            className="cta-respire flex items-center justify-center gap-2 h-12 rounded-xl bg-[#25D366] font-bold text-[15px]"
+            className="flex items-center justify-center gap-2 h-12 rounded-[10px] bg-[#25D366] hover:bg-[#1ebe5c] transition-colors font-semibold text-[15px]"
             style={{ color: "#fff" }}>
             Rejoindre le groupe WhatsApp{liens.length > 1 ? ` — ${l.titre.slice(0, 30)}` : ""}
           </a>
@@ -131,54 +131,54 @@ function MotivationForm({ onSubmit, cfg, currentUser, ebookIds, formationIds }: 
   }
 
   const selectCls =
-    "w-full px-4 py-3 bg-gray-50 border border-green-500 rounded-xl text-gray-900 focus:outline-none focus:border-green-600 focus:bg-white transition-colors text-sm";
+    "w-full px-4 py-3 bg-white border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] focus:outline-none focus:border-[var(--g-encre)] transition-colors text-sm";
   const inputCls =
-    "w-full px-4 py-3 bg-gray-50 border border-green-500 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-600 focus:bg-white transition-colors text-sm resize-none";
+    "w-full px-4 py-3 bg-white border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] focus:outline-none focus:border-[var(--g-encre)] transition-colors text-sm placeholder-[var(--g-gris)]/60 resize-none";
 
   return (
     <div className="max-w-xl mx-auto px-4 py-16">
       <div className="text-center mb-10">
-        <div className="w-16 h-16 mx-auto rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center mb-4">
-          <CheckCircle size={32} className="text-emerald-600" />
+        <div className="w-16 h-16 mx-auto rounded-full bg-[var(--g-vert-doux)] flex items-center justify-center mb-4">
+          <CheckCircle size={32} className="text-[var(--g-vert)]" />
         </div>
-        <h1 className="text-gray-900 text-2xl font-bold mb-2">{cfg.congratsTitle}</h1>
-        <p className="text-gray-600 text-sm">{cfg.congratsSubtitle}</p>
+        <h1 className="text-[var(--g-encre)] text-2xl font-semibold tracking-[-0.02em] mb-2">{cfg.congratsTitle}</h1>
+        <p className="text-[var(--g-gris)] text-sm">{cfg.congratsSubtitle}</p>
       </div>
 
       <GroupeWhatsApp ebookIds={ebookIds} />
 
-      <div className="p-6 bg-white border border-gray-200 rounded-2xl shadow-sm">
+      <div className="p-6 bg-white border border-[var(--g-ligne)] rounded-[16px]">
         <form onSubmit={handleSubmit} className="space-y-5">
 
           <div>
-            <label className="block text-gray-700 text-sm font-medium mb-2">
-              {cfg.motivationObjectifLabel} <span className="text-[#E8B800]">*</span>
+            <label className="block text-[var(--g-encre)] text-sm font-medium mb-2">
+              {cfg.motivationObjectifLabel} <span className="text-[var(--g-vert)]">*</span>
             </label>
             <select required value={form.objectif} onChange={(e) => setForm({ ...form, objectif: e.target.value })}
               className={selectCls}>
-              <option value="" className="bg-[#0e0e1a]">Choisir un objectif…</option>
+              <option value="" className="bg-white">Choisir un objectif…</option>
               {OBJECTIFS.map((o) => (
-                <option key={o} value={o} className="bg-[#0e0e1a]">{o}</option>
+                <option key={o} value={o} className="bg-white">{o}</option>
               ))}
             </select>
           </div>
 
           <div>
-            <label className="block text-gray-700 text-sm font-medium mb-2">
-              {cfg.motivationSituationLabel} <span className="text-[#E8B800]">*</span>
+            <label className="block text-[var(--g-encre)] text-sm font-medium mb-2">
+              {cfg.motivationSituationLabel} <span className="text-[var(--g-vert)]">*</span>
             </label>
             <select required value={form.situation} onChange={(e) => setForm({ ...form, situation: e.target.value })}
               className={selectCls}>
-              <option value="" className="bg-[#0e0e1a]">Choisir une situation…</option>
+              <option value="" className="bg-white">Choisir une situation…</option>
               {SITUATIONS.map((s) => (
-                <option key={s} value={s} className="bg-[#0e0e1a]">{s}</option>
+                <option key={s} value={s} className="bg-white">{s}</option>
               ))}
             </select>
           </div>
 
           <div>
-            <label className="block text-gray-700 text-sm font-medium mb-2">
-              {cfg.motivationTexteLabel} <span className="text-[#E8B800]">*</span>
+            <label className="block text-[var(--g-encre)] text-sm font-medium mb-2">
+              {cfg.motivationTexteLabel} <span className="text-[var(--g-vert)]">*</span>
             </label>
             <textarea
               required
@@ -192,16 +192,16 @@ function MotivationForm({ onSubmit, cfg, currentUser, ebookIds, formationIds }: 
 
           {cfg.accompagnementEnabled && (
             <div>
-              <label className="block text-gray-700 text-sm font-medium mb-2">
+              <label className="block text-[var(--g-encre)] text-sm font-medium mb-2">
                 {cfg.motivationAccompagnementLabel}
               </label>
               <div className="space-y-2">
                 {INTERET_ACCOMPAGNEMENT.map((option) => (
                   <label key={option}
-                    className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
+                    className={`flex items-center gap-3 p-3 rounded-[10px] border cursor-pointer transition-colors ${
                       form.interetAccompagnement === option
-                        ? "border-[#E8B800]/60 bg-[#E8B800]/10"
-                        : "border-gray-200 hover:border-gray-300"
+                        ? "border-[var(--g-encre)] bg-[var(--g-doux)]"
+                        : "border-[var(--g-ligne)] hover:border-[var(--g-gris)]"
                     }`}>
                     <input
                       type="radio"
@@ -209,9 +209,9 @@ function MotivationForm({ onSubmit, cfg, currentUser, ebookIds, formationIds }: 
                       value={option}
                       checked={form.interetAccompagnement === option}
                       onChange={() => setForm({ ...form, interetAccompagnement: option })}
-                      className="accent-[#E8B800]"
+                      className="accent-[var(--g-vert)]"
                     />
-                    <span className="text-gray-700 text-sm">{option}</span>
+                    <span className="text-[var(--g-encre)] text-sm">{option}</span>
                   </label>
                 ))}
               </div>
@@ -221,7 +221,7 @@ function MotivationForm({ onSubmit, cfg, currentUser, ebookIds, formationIds }: 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] hover:from-[#27A827] hover:to-[#E8B800] text-black font-bold rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-60"
+            className="g-btn w-full disabled:opacity-60"
           >
             {loading ? (
               <span className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
@@ -231,7 +231,7 @@ function MotivationForm({ onSubmit, cfg, currentUser, ebookIds, formationIds }: 
           </button>
 
           <button type="button" onClick={onSubmit}
-            className="w-full text-center text-gray-600 text-xs hover:text-gray-400 transition-colors py-2">
+            className="w-full text-center text-[var(--g-gris)] text-xs hover:text-[var(--g-encre)] transition-colors py-2">
             {cfg.motivationSkipLabel}
           </button>
         </form>
@@ -451,7 +451,7 @@ function SuccessContent() {
     if (!wfConfig.motivationEnabled) {
       return (
         <div className="flex items-center justify-center min-h-[70vh]">
-          <div className="w-10 h-10 border-2 border-green-500/30 border-t-green-500 rounded-full animate-spin" />
+          <div className="w-10 h-10 border-2 border-[var(--g-ligne)] border-t-[var(--g-vert)] rounded-full animate-spin" />
         </div>
       );
     }
@@ -468,7 +468,7 @@ export default function CheckoutSuccessPage() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center min-h-[70vh]">
-          <div className="w-10 h-10 border-2 border-green-500/30 border-t-green-500 rounded-full animate-spin" />
+          <div className="w-10 h-10 border-2 border-[var(--g-ligne)] border-t-[var(--g-vert)] rounded-full animate-spin" />
         </div>
       }
     >

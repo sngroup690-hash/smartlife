@@ -6,7 +6,7 @@ import Link from "next/link";
 import {
   CheckCircle, ArrowRight, Users, AlertCircle, Send, Mail,
   TrendingUp, Clock, Wallet, Shield, Star, ChevronRight,
-  MapPin, Phone, Briefcase, MessageSquare,
+  MapPin, Phone, Briefcase, MessageSquare, XCircle,
 } from "lucide-react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useAccompagnementStore, EspacePersonnalise } from "@/lib/accompagnement-store";
@@ -155,10 +155,10 @@ function getImageAvantage(texte: string): string {
 }
 
 const inputCls =
-  "w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#27A827] focus:ring-2 focus:ring-[#27A827]/10 focus:bg-white transition-all text-sm";
+  "w-full px-4 py-3 bg-white border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] placeholder-[var(--g-gris-clair)] focus:outline-none focus:border-[var(--g-vert)] focus:ring-2 focus:ring-[var(--g-vert)]/10 transition-colors text-sm";
 const selectCls =
-  "w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:border-[#27A827] focus:ring-2 focus:ring-[#27A827]/10 focus:bg-white transition-all text-sm";
-const labelCls = "block text-gray-700 text-sm font-medium mb-1.5";
+  "w-full px-4 py-3 bg-white border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] focus:outline-none focus:border-[var(--g-vert)] focus:ring-2 focus:ring-[var(--g-vert)]/10 transition-colors text-sm";
+const labelCls = "block text-[var(--g-encre)] text-sm font-medium mb-1.5";
 
 const PHOTOS_SECTIONS: { mots: string[]; url: string }[] = [
   { mots: ["comprendre", "fonctionnement", "découvrir", "explorer"], url: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?w=800&h=400&fit=crop&q=80" },
@@ -187,7 +187,7 @@ function enrichirDescription(html: string): string {
         if (ps.mots.some((m) => avant.includes(m))) {
           compteur++;
           if (compteur <= 4) {
-            return `${match}<img src="${ps.url}" alt="" style="width:100%;height:auto;border-radius:16px;margin:16px 0;box-shadow:0 4px 15px rgba(0,0,0,0.1)" loading="lazy" />`;
+            return `${match}<img src="${ps.url}" alt="" style="width:100%;height:auto;border-radius:14px;margin:16px 0" loading="lazy" />`;
           }
           return match;
         }
@@ -216,16 +216,16 @@ function TimelineStep({ step, index, total }: { step: string; index: number; tot
           initial={{ scale: 0 }}
           animate={isInView ? { scale: 1 } : {}}
           transition={{ type: "spring", stiffness: 300, delay: index * 0.1 + 0.1 }}
-          className="w-9 h-9 rounded-full bg-gradient-to-br from-[#E8B800] to-[#27A827] flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-md"
+          className="w-9 h-9 rounded-full bg-[var(--g-vert)] flex items-center justify-center text-white font-semibold text-sm tabular-nums flex-shrink-0"
         >
           {index + 1}
         </motion.div>
         {index < total - 1 && (
-          <div className="w-0.5 flex-1 bg-gradient-to-b from-[#27A827]/30 to-transparent mt-1" />
+          <div className="w-px flex-1 bg-[var(--g-ligne)] mt-1" />
         )}
       </div>
       <div className="pb-6">
-        <p className="text-gray-800 text-base font-medium leading-relaxed pt-2">{step}</p>
+        <p className="text-[var(--g-encre)] text-base leading-relaxed pt-2">{step}</p>
       </div>
     </motion.div>
   );
@@ -298,7 +298,7 @@ export default function EspaceDetailPage() {
   if (serverLoading && !espace) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-10 h-10 border-3 border-[#E8B800] border-t-transparent rounded-full animate-spin" />
+        <div className="w-10 h-10 border-3 border-[var(--g-vert)] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -306,10 +306,10 @@ export default function EspaceDetailPage() {
   if (!espace) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
-        <div className="text-6xl mb-4">😔</div>
-        <h1 className="text-gray-900 text-2xl font-bold mb-2">Espace introuvable</h1>
-        <p className="text-gray-600 mb-6">Cet espace n&apos;existe pas ou a été désactivé.</p>
-        <Link href="/accompagnement" className="px-6 py-3 bg-[#E8B800] text-black rounded-xl font-bold">
+        <AlertCircle size={40} strokeWidth={1.6} className="mb-5 text-[var(--g-vert)]" aria-hidden="true" />
+        <h1 className="text-[var(--g-encre)] text-2xl font-semibold tracking-[-0.02em] mb-2">Espace introuvable</h1>
+        <p className="text-[var(--g-gris)] mb-6">Cet espace n&apos;existe pas ou a été désactivé.</p>
+        <Link href="/accompagnement" className="g-btn">
           Voir tous les espaces
         </Link>
       </div>
@@ -327,7 +327,6 @@ export default function EspaceDetailPage() {
   const photoPro = getPhotoPro(espace.titre);
   const heroImage = photoPro || coverImage;
   const imagesContenu = getImagesContenu(espace.titre);
-  const icone = staticEspace?.icone;
   const duree = staticEspace?.dureeAccompagnement;
   const investMin = staticEspace?.investissementMin;
   const investMax = staticEspace?.investissementMax;
@@ -393,9 +392,9 @@ export default function EspaceDetailPage() {
   }
 
   const statutBadgeCls = (s: string) =>
-    s === "validee" ? "bg-[#27A827]/10 border-[#27A827]/30 text-[#1a7a1a]"
-    : s === "rejetee" ? "bg-red-50 border-red-200 text-red-600"
-    : "bg-yellow-50 border-yellow-200 text-yellow-600";
+    s === "validee" ? "bg-[var(--g-vert-doux)] border-[var(--g-vert)]/25 text-[var(--g-vert)]"
+    : s === "rejetee" ? "bg-red-50 border-red-200 text-red-700"
+    : "bg-[var(--g-jaune-doux)] border-[var(--g-jaune)]/40 text-[var(--g-encre)]";
 
   const statutLabel = (s: string) =>
     s === "validee" ? "Demande validée" : s === "rejetee" ? "Demande rejetée" : "En attente de validation";
@@ -418,57 +417,38 @@ export default function EspaceDetailPage() {
     <div className="min-h-screen">
 
       {/* ═══ HERO AVEC IMAGE ═══ */}
-      <section className="relative overflow-hidden">
-        {heroImage && !imgError ? (
-          <>
-            <img
-              src={heroImage}
-              alt={espace.titre}
-              className="absolute inset-0 w-full h-full object-cover"
-              onError={() => setImgError(true)}
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-white/50 to-white" />
-          </>
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-white to-yellow-50" />
-        )}
-
-        <div className="relative px-4 sm:px-6 lg:px-8 pt-6 pb-10 sm:pb-14">
+      <section className="relative overflow-hidden bg-white text-[var(--g-encre)]">
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-10 sm:pb-12">
           {/* Breadcrumb */}
           <motion.nav
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-1.5 text-xs text-gray-500 mb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex items-center gap-1.5 text-[13px] text-[var(--g-gris)] mb-7"
           >
-            <Link href="/accompagnement" className="hover:text-[#27A827] transition-colors">
+            <Link href="/accompagnement" className="hover:text-[var(--g-vert)] transition-colors">
               Accompagnement
             </Link>
             <ChevronRight size={12} />
-            <span className="text-gray-700 font-medium">{espace.titre}</span>
+            <span className="text-[var(--g-encre)] font-medium">{espace.titre}</span>
           </motion.nav>
 
           {/* Badges */}
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className="flex flex-wrap gap-2 mb-4"
+            className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4 text-[14px] font-semibold"
           >
-            {icone && (
-              <span className="text-2xl">{icone}</span>
-            )}
-            <span className="px-3 py-1 bg-white/80 backdrop-blur-sm border border-gray-200/60 text-gray-600 rounded-full text-xs font-medium">
+            <span className="text-[var(--g-vert)]">
               {espace.domaine}
             </span>
-            <span className={`px-3 py-1 rounded-full text-xs font-bold border backdrop-blur-sm ${
+            <span className={`inline-flex items-center ${
               espace.placesDisponibles <= 2
-                ? "bg-orange-50/80 border-orange-200 text-orange-600"
-                : "bg-[#27A827]/10 border-[#27A827]/30 text-[#1a7a1a]"
+                ? "text-[var(--g-orange)]"
+                : "text-[var(--g-gris)]"
             }`}>
-              <motion.span
-                animate={espace.placesDisponibles <= 2 ? { scale: [1, 1.2, 1] } : {}}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="inline-block w-1.5 h-1.5 rounded-full bg-current mr-1.5 align-middle"
+              <span
+                className="inline-block w-1.5 h-1.5 rounded-full bg-current mr-1.5"
               />
               {espace.placesDisponibles} place{espace.placesDisponibles > 1 ? "s" : ""} disponible{espace.placesDisponibles > 1 ? "s" : ""}
             </span>
@@ -479,7 +459,7 @@ export default function EspaceDetailPage() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15, duration: 0.5 }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 mb-4 leading-[1.05]"
+            className="text-[2.3rem] sm:text-[3.2rem] lg:text-[4rem] font-semibold tracking-[-0.035em] text-[var(--g-encre)] mb-5 leading-[1.03] max-w-[18ch]"
           >
             {espace.titre}
           </motion.h1>
@@ -489,28 +469,28 @@ export default function EspaceDetailPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.25 }}
-            className="text-gray-600 text-lg sm:text-xl leading-relaxed max-w-xl mb-6"
+            className="text-[var(--g-gris)] text-[18px] sm:text-[20px] leading-[1.45] max-w-[46ch] mb-6"
           >
             {espace.descriptionCourte || espace.descriptionLongue?.slice(0, 150)}
           </motion.p>
 
           {/* Stats rapides */}
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="flex flex-wrap gap-3 mb-6"
+            className="flex flex-wrap gap-x-6 gap-y-2 mb-7 text-[14.5px]"
           >
             {duree && (
-              <div className="flex items-center gap-2 px-3 py-2 bg-white/70 backdrop-blur-sm rounded-xl border border-gray-100 text-xs">
-                <Clock size={14} className="text-[#E8B800]" />
-                <span className="text-gray-700 font-medium">{duree}</span>
+              <div className="flex items-center gap-2">
+                <Clock size={15} className="text-[var(--g-vert)]" />
+                <span className="text-[var(--g-encre)] font-medium">{duree}</span>
               </div>
             )}
             {investMin && investMax && (
-              <div className="flex items-center gap-2 px-3 py-2 bg-white/70 backdrop-blur-sm rounded-xl border border-gray-100 text-xs">
-                <Wallet size={14} className="text-[#27A827]" />
-                <span className="text-gray-700 font-medium">
+              <div className="flex items-center gap-2">
+                <Wallet size={15} className="text-[var(--g-vert)]" />
+                <span className="text-[var(--g-encre)] font-medium tabular-nums">
                   {(investMin / 1000).toFixed(0)}k – {(investMax / 1000000) >= 1 ? `${(investMax / 1000000).toFixed(0)}M` : `${(investMax / 1000).toFixed(0)}k`} FCFA
                 </span>
               </div>
@@ -519,45 +499,57 @@ export default function EspaceDetailPage() {
 
           {/* CTA hero */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            <motion.button
+            <button
               onClick={scrollToPostuler}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
-              className="px-6 py-3.5 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-white font-bold rounded-xl shadow-lg shadow-[#27A827]/20 flex items-center gap-2 text-sm"
+              className="g-btn"
             >
               Je veux être accompagné
-              <ArrowRight size={16} />
-            </motion.button>
+              <ArrowRight size={17} />
+            </button>
           </motion.div>
         </div>
+
+        {heroImage && !imgError && (
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <figure className="relative overflow-hidden rounded-t-[18px] aspect-[4/3] sm:aspect-[21/9] bg-[var(--g-doux)]">
+              <img
+                src={heroImage}
+                alt={espace.titre}
+                className="absolute inset-0 w-full h-full object-cover"
+                onError={() => setImgError(true)}
+              />
+            </figure>
+            <div className="bande-wax h-[16px] rounded-b-[18px]" aria-hidden="true" />
+          </div>
+        )}
       </section>
 
       {/* ═══ BANDE D'ACCROCHE ═══ */}
-      <section className="bg-gradient-to-r from-[#27A827]/5 via-[#E8B800]/5 to-[#27A827]/5 border-y border-[#E8B800]/10">
+      <section className="mt-10 bg-[var(--g-doux)]">
         <div className="max-w-5xl mx-auto px-4 py-5 sm:py-6">
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-center">
             <div className="flex items-center gap-2">
-              <Shield size={18} className="text-[#27A827]" />
-              <span className="text-gray-800 text-sm sm:text-base font-semibold">100% Gratuit</span>
+              <Shield size={18} className="text-[var(--g-vert)]" />
+              <span className="text-[var(--g-encre)] text-sm sm:text-base font-semibold">100% Gratuit</span>
             </div>
-            <div className="hidden sm:block w-px h-5 bg-[#E8B800]/30" />
+            <div className="hidden sm:block w-px h-5 bg-[var(--g-ligne)]" />
             <div className="flex items-center gap-2">
-              <Star size={18} className="text-[#E8B800]" />
-              <span className="text-gray-800 text-sm sm:text-base font-semibold">Expert dédié à votre projet</span>
+              <Star size={18} className="text-[var(--g-vert)]" />
+              <span className="text-[var(--g-encre)] text-sm sm:text-base font-semibold">Expert dédié à votre projet</span>
             </div>
-            <div className="hidden sm:block w-px h-5 bg-[#E8B800]/30" />
+            <div className="hidden sm:block w-px h-5 bg-[var(--g-ligne)]" />
             <div className="flex items-center gap-2">
-              <Clock size={18} className="text-[#27A827]" />
-              <span className="text-gray-800 text-sm sm:text-base font-semibold">Réponse sous 48h</span>
+              <Clock size={18} className="text-[var(--g-vert)]" />
+              <span className="text-[var(--g-encre)] text-sm sm:text-base font-semibold">Réponse sous 48h</span>
             </div>
-            <div className="hidden sm:block w-px h-5 bg-[#E8B800]/30" />
+            <div className="hidden sm:block w-px h-5 bg-[var(--g-ligne)]" />
             <div className="flex items-center gap-2">
-              <Users size={18} className="text-[#E8B800]" />
-              <span className="text-gray-800 text-sm sm:text-base font-semibold">Réseau d&apos;entrepreneurs</span>
+              <Users size={18} className="text-[var(--g-vert)]" />
+              <span className="text-[var(--g-encre)] text-sm sm:text-base font-semibold">Réseau d&apos;entrepreneurs</span>
             </div>
           </div>
         </div>
@@ -576,14 +568,14 @@ export default function EspaceDetailPage() {
                 <div className="prose prose-gray max-w-none">
                   <DescriptionRenderer
                     html={enrichirDescription(espace.descriptionLongue)}
-                    className="text-gray-700 text-lg sm:text-xl leading-relaxed
-                      [&_img]:rounded-xl [&_img]:my-4 [&_img]:shadow-lg
+                    className="text-[var(--g-encre)] text-lg sm:text-xl leading-relaxed
+                      [&_img]:rounded-[14px] [&_img]:my-4
                       [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_ul]:text-lg
-                      [&_li]:text-gray-700
-                      [&_b]:text-[#E8B800] [&_b]:font-extrabold [&_b]:text-xl [&_b]:sm:text-2xl
-                      [&_strong]:text-[#E8B800] [&_strong]:font-extrabold [&_strong]:text-xl [&_strong]:sm:text-2xl
-                      [&_h2]:text-3xl [&_h2]:sm:text-4xl [&_h2]:font-black [&_h2]:text-[#E8B800] [&_h2]:mt-10 [&_h2]:mb-5 [&_h2]:border-l-4 [&_h2]:border-[#E8B800] [&_h2]:pl-4
-                      [&_h3]:text-2xl [&_h3]:sm:text-3xl [&_h3]:font-bold [&_h3]:text-[#E8B800] [&_h3]:mt-8 [&_h3]:mb-4
+                      [&_li]:text-[var(--g-encre)]
+                      [&_b]:text-[var(--g-encre)] [&_b]:font-semibold
+                      [&_strong]:text-[var(--g-encre)] [&_strong]:font-semibold
+                      [&_h2]:text-3xl [&_h2]:sm:text-4xl [&_h2]:font-semibold [&_h2]:tracking-[-0.025em] [&_h2]:text-[var(--g-encre)] [&_h2]:mt-10 [&_h2]:mb-5
+                      [&_h3]:text-2xl [&_h3]:sm:text-[1.7rem] [&_h3]:font-semibold [&_h3]:tracking-[-0.02em] [&_h3]:text-[var(--g-encre)] [&_h3]:mt-8 [&_h3]:mb-4
                       [&_p]:mb-4
                       [&_i]:italic [&_em]:italic"
                   />
@@ -596,17 +588,17 @@ export default function EspaceDetailPage() {
               <AnimateOnScroll variant="fadeUp">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {imagesContenu.map((img, i) => (
-                    <div key={i} className="rounded-2xl overflow-hidden border border-gray-100 shadow-lg group">
-                      <img
-                        src={img.url}
-                        alt={img.legende}
-                        className="w-full h-48 sm:h-56 object-cover group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                        onError={(ev) => { (ev.target as HTMLImageElement).closest('.group')!.remove(); }}
-                      />
-                      <div className="bg-[#E8B800] px-4 py-3">
-                        <p className="text-white text-base sm:text-lg font-extrabold tracking-wide">{img.legende}</p>
+                    <div key={i} className="group">
+                      <div className="rounded-[14px] overflow-hidden bg-[var(--g-doux)]">
+                        <img
+                          src={img.url}
+                          alt={img.legende}
+                          className="w-full h-48 sm:h-56 object-cover"
+                          loading="lazy"
+                          onError={(ev) => { (ev.target as HTMLImageElement).closest('.group')!.remove(); }}
+                        />
                       </div>
+                      <p className="mt-2.5 text-[var(--g-gris)] text-[14.5px] leading-snug">{img.legende}</p>
                     </div>
                   ))}
                 </div>
@@ -616,7 +608,7 @@ export default function EspaceDetailPage() {
             {/* Affiche admin dans le contenu */}
             {coverImage && photoPro && !imgError && (
               <AnimateOnScroll variant="fadeUp">
-                <div className="rounded-2xl overflow-hidden border-2 border-[#E8B800]/20 shadow-xl bg-white">
+                <div className="rounded-[14px] overflow-hidden border border-[var(--g-ligne)] bg-white">
                   <img
                     src={coverImage}
                     alt={espace.titre}
@@ -631,30 +623,34 @@ export default function EspaceDetailPage() {
             {/* Chiffres clés */}
             <AnimateOnScroll variant="fadeUp">
               <div className="grid grid-cols-2 gap-3">
-                <div className="p-5 bg-gradient-to-br from-[#E8B800]/5 to-[#E8B800]/10 border border-[#E8B800]/15 rounded-2xl text-center">
-                  <div className="text-3xl sm:text-4xl font-black text-[#E8B800] mb-1">
+                <div className="p-5 bg-[var(--g-doux)] rounded-[14px]">
+                  <span className="block h-[3px] w-7 rounded-full bg-[var(--g-jaune)] mb-4" aria-hidden="true" />
+                  <div className="g-chiffre mb-1.5">
                     <AnimatedCounter value={espace.placesDisponibles} />
                   </div>
-                  <div className="text-gray-600 text-sm font-medium">place{espace.placesDisponibles > 1 ? "s" : ""} restante{espace.placesDisponibles > 1 ? "s" : ""}</div>
+                  <div className="text-[var(--g-gris)] text-[14px]">place{espace.placesDisponibles > 1 ? "s" : ""} restante{espace.placesDisponibles > 1 ? "s" : ""}</div>
                 </div>
                 {espace.clientsSatisfaits > 0 && (
-                  <div className="p-5 bg-gradient-to-br from-[#27A827]/5 to-[#27A827]/10 border border-[#27A827]/15 rounded-2xl text-center">
-                    <div className="text-3xl sm:text-4xl font-black text-[#27A827] mb-1">
+                  <div className="p-5 bg-[var(--g-doux)] rounded-[14px]">
+                    <span className="block h-[3px] w-7 rounded-full bg-[var(--g-jaune)] mb-4" aria-hidden="true" />
+                    <div className="g-chiffre mb-1.5">
                       <AnimatedCounter value={espace.clientsSatisfaits} />
                     </div>
-                    <div className="text-gray-600 text-sm font-medium">client{espace.clientsSatisfaits > 1 ? "s" : ""} satisfait{espace.clientsSatisfaits > 1 ? "s" : ""}</div>
+                    <div className="text-[var(--g-gris)] text-[14px]">client{espace.clientsSatisfaits > 1 ? "s" : ""} satisfait{espace.clientsSatisfaits > 1 ? "s" : ""}</div>
                   </div>
                 )}
                 {validees > 0 && (
-                  <div className="p-5 bg-emerald-50 border border-emerald-100 rounded-2xl text-center">
-                    <div className="text-3xl sm:text-4xl font-black text-emerald-600 mb-1">{validees}</div>
-                    <div className="text-gray-600 text-sm font-medium">candidature{validees > 1 ? "s" : ""} validée{validees > 1 ? "s" : ""}</div>
+                  <div className="p-5 bg-[var(--g-doux)] rounded-[14px]">
+                    <span className="block h-[3px] w-7 rounded-full bg-[var(--g-jaune)] mb-4" aria-hidden="true" />
+                    <div className="g-chiffre mb-1.5">{validees}</div>
+                    <div className="text-[var(--g-gris)] text-[14px]">candidature{validees > 1 ? "s" : ""} validée{validees > 1 ? "s" : ""}</div>
                   </div>
                 )}
                 {enAttente > 0 && (
-                  <div className="p-5 bg-yellow-50 border border-yellow-100 rounded-2xl text-center">
-                    <div className="text-3xl sm:text-4xl font-black text-yellow-600 mb-1">{enAttente}</div>
-                    <div className="text-gray-600 text-sm font-medium">en cours d&apos;examen</div>
+                  <div className="p-5 bg-[var(--g-doux)] rounded-[14px]">
+                    <span className="block h-[3px] w-7 rounded-full bg-[var(--g-jaune)] mb-4" aria-hidden="true" />
+                    <div className="g-chiffre mb-1.5">{enAttente}</div>
+                    <div className="text-[var(--g-gris)] text-[14px]">en cours d&apos;examen</div>
                   </div>
                 )}
               </div>
@@ -663,33 +659,28 @@ export default function EspaceDetailPage() {
             {/* Avantages du secteur */}
             {espace.avantages?.filter(Boolean).length > 0 && (
               <AnimateOnScroll variant="fadeUp">
-                <div className="p-5 sm:p-8 bg-gradient-to-br from-[#E8B800]/5 via-white to-[#27A827]/5 border-2 border-[#E8B800]/20 rounded-2xl">
-                  <h3 className="text-gray-900 font-black text-2xl sm:text-3xl mb-8 flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#E8B800] to-[#27A827] flex items-center justify-center shadow-lg">
-                      <TrendingUp size={24} className="text-white" />
-                    </div>
+                <div>
+                  <h3 className="text-[var(--g-encre)] font-semibold tracking-[-0.025em] text-2xl sm:text-3xl mb-6 flex items-center gap-3">
+                    <TrendingUp size={24} className="text-[var(--g-vert)] flex-shrink-0" />
                     Pourquoi ce secteur ?
                   </h3>
-                  <StaggerContainer className="space-y-4">
+                  <StaggerContainer className="space-y-3">
                     {espace.avantages.filter(Boolean).map((a, i) => (
                       <StaggerItem key={i}>
-                        <div className="rounded-2xl overflow-hidden border border-gray-100 shadow-md bg-white group">
+                        <div className="rounded-[14px] overflow-hidden border border-[var(--g-ligne)] bg-white">
                           <div className="flex flex-col sm:flex-row">
-                            <div className="sm:w-32 sm:min-w-[8rem] h-28 sm:h-auto relative overflow-hidden">
+                            <div className="sm:w-32 sm:min-w-[8rem] h-28 sm:h-auto relative overflow-hidden bg-[var(--g-doux)]">
                               <img
                                 src={getImageAvantage(a)}
                                 alt=""
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                className="w-full h-full object-cover"
                                 loading="lazy"
                                 onError={(ev) => { (ev.target as HTMLImageElement).style.display = "none"; }}
                               />
-                              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/20" />
                             </div>
                             <div className="flex items-start gap-3 p-4 sm:p-5 flex-1">
-                              <div className="w-8 h-8 rounded-full bg-[#27A827] flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
-                                <CheckCircle size={18} className="text-white" />
-                              </div>
-                              <p className="text-gray-900 text-lg sm:text-xl font-bold leading-snug">{a}</p>
+                              <CheckCircle size={20} className="text-[var(--g-vert)] flex-shrink-0 mt-1" />
+                              <p className="text-[var(--g-encre)] text-lg sm:text-[19px] font-semibold tracking-[-0.01em] leading-snug">{a}</p>
                             </div>
                           </div>
                         </div>
@@ -702,11 +693,9 @@ export default function EspaceDetailPage() {
 
             {/* Étapes de l'accompagnement */}
             <AnimateOnScroll variant="fadeUp">
-              <div className="p-5 sm:p-7 bg-white border border-gray-100 rounded-2xl shadow-sm">
-                <h3 className="text-gray-900 font-bold text-xl sm:text-2xl mb-6 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#27A827]/10 flex items-center justify-center">
-                    <CheckCircle size={20} className="text-[#27A827]" />
-                  </div>
+              <div className="p-5 sm:p-7 bg-white border border-[var(--g-ligne)] rounded-[16px]">
+                <h3 className="text-[var(--g-encre)] font-semibold tracking-[-0.02em] text-xl sm:text-2xl mb-6 flex items-center gap-3">
+                  <CheckCircle size={22} className="text-[var(--g-vert)] flex-shrink-0" />
                   Ce que comprend l&apos;accompagnement
                 </h3>
                 <div className="pl-1">
@@ -720,20 +709,20 @@ export default function EspaceDetailPage() {
             {/* Consultants spécialisés */}
             {store.consultants.filter((c) => c.actif && c.domainesIds.includes(espace.id)).length > 0 && (
               <AnimateOnScroll variant="fadeUp">
-                <div className="p-5 sm:p-6 bg-[#E8B800]/5 border border-[#E8B800]/15 rounded-2xl">
-                  <h3 className="text-gray-900 font-bold text-lg mb-4 flex items-center gap-2">
-                    <Users size={18} className="text-[#E8B800]" />
+                <div className="p-5 sm:p-6 bg-[var(--g-doux)] rounded-[16px]">
+                  <h3 className="text-[var(--g-encre)] font-semibold tracking-[-0.02em] text-lg mb-4 flex items-center gap-2">
+                    <Users size={18} className="text-[var(--g-vert)]" />
                     Vos consultants pour cet espace
                   </h3>
                   <div className="flex flex-wrap gap-4">
                     {store.consultants.filter((c) => c.actif && c.domainesIds.includes(espace.id)).map((c) => (
-                      <div key={c.id} className="flex items-center gap-3 p-3 bg-white/70 rounded-xl border border-[#E8B800]/10">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#E8B800] to-[#27A827] flex items-center justify-center text-white font-bold text-sm">
+                      <div key={c.id} className="flex items-center gap-3 p-3 bg-white rounded-[12px] border border-[var(--g-ligne)]">
+                        <div className="w-10 h-10 rounded-full bg-[var(--g-vert-doux)] flex items-center justify-center text-[var(--g-vert)] font-semibold text-sm">
                           {c.prenom.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="text-gray-900 font-semibold text-sm">{c.prenom}</p>
-                          <p className="text-gray-500 text-xs">{c.clientsAccompa} client{c.clientsAccompa > 1 ? "s" : ""} · {c.entreprisesAccompa} entreprise{c.entreprisesAccompa > 1 ? "s" : ""}</p>
+                          <p className="text-[var(--g-encre)] font-semibold text-sm">{c.prenom}</p>
+                          <p className="text-[var(--g-gris)] text-xs">{c.clientsAccompa} client{c.clientsAccompa > 1 ? "s" : ""} · {c.entreprisesAccompa} entreprise{c.entreprisesAccompa > 1 ? "s" : ""}</p>
                         </div>
                       </div>
                     ))}
@@ -748,19 +737,19 @@ export default function EspaceDetailPage() {
 
             {/* Bande de confiance */}
             <AnimateOnScroll variant="fadeUp">
-              <div className="flex items-center justify-center gap-4 mb-4 p-3 bg-gradient-to-r from-green-50 to-yellow-50 rounded-xl border border-gray-100">
-                <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                  <Shield size={12} className="text-[#27A827]" />
+              <div className="flex items-center justify-center gap-4 mb-4 p-3 bg-[var(--g-doux)] rounded-[12px]">
+                <div className="flex items-center gap-1.5 text-[13px] text-[var(--g-gris)]">
+                  <Shield size={13} className="text-[var(--g-vert)]" />
                   <span>Gratuit</span>
                 </div>
-                <div className="w-px h-3 bg-gray-200" />
-                <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                  <Clock size={12} className="text-[#E8B800]" />
+                <div className="w-px h-3 bg-[var(--g-ligne)]" />
+                <div className="flex items-center gap-1.5 text-[13px] text-[var(--g-gris)]">
+                  <Clock size={13} className="text-[var(--g-vert)]" />
                   <span>Réponse 48h</span>
                 </div>
-                <div className="w-px h-3 bg-gray-200" />
-                <div className="flex items-center gap-1.5 text-xs text-gray-500">
-                  <Star size={12} className="text-[#E8B800]" />
+                <div className="w-px h-3 bg-[var(--g-ligne)]" />
+                <div className="flex items-center gap-1.5 text-[13px] text-[var(--g-gris)]">
+                  <Star size={13} className="text-[var(--g-vert)]" />
                   <span>Expert dédié</span>
                 </div>
               </div>
@@ -768,26 +757,30 @@ export default function EspaceDetailPage() {
 
             {/* Demande existante */}
             {demandeExistante && !submitted ? (
-              <AnimateOnScroll variant="scaleUp">
-                <div className={`p-6 sm:p-8 border rounded-2xl ${statutBadgeCls(demandeExistante.statut)}`}>
-                  <div className="text-4xl mb-4 text-center">
-                    {demandeExistante.statut === "validee" ? "✅" : demandeExistante.statut === "rejetee" ? "❌" : "⏳"}
+              <AnimateOnScroll variant="fadeUp">
+                <div className={`p-6 sm:p-8 border rounded-[16px] ${statutBadgeCls(demandeExistante.statut)}`}>
+                  <div className="mb-4 flex justify-center">
+                    {demandeExistante.statut === "validee"
+                      ? <CheckCircle size={40} strokeWidth={1.6} className="text-[var(--g-vert)]" />
+                      : demandeExistante.statut === "rejetee"
+                        ? <XCircle size={40} strokeWidth={1.6} className="text-red-600" />
+                        : <Clock size={40} strokeWidth={1.6} className="text-[var(--g-vert)]" />}
                   </div>
-                  <h3 className="text-gray-900 text-xl font-bold mb-2 text-center">{statutLabel(demandeExistante.statut)}</h3>
-                  <p className="text-sm text-center mb-6 text-gray-400">
+                  <h3 className="text-[var(--g-encre)] text-xl font-semibold tracking-[-0.02em] mb-2 text-center">{statutLabel(demandeExistante.statut)}</h3>
+                  <p className="text-sm text-center mb-6 text-[var(--g-gris)]">
                     Soumise le {new Date(demandeExistante.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}
                   </p>
                   {demandeExistante.noteAdmin && (
-                    <div className="p-4 bg-white/60 rounded-xl mb-4">
-                      <p className="text-gray-500 text-xs mb-1">Note de l&apos;administrateur :</p>
-                      <p className="text-gray-900 text-sm">{demandeExistante.noteAdmin}</p>
+                    <div className="p-4 bg-white/70 rounded-[12px] mb-4">
+                      <p className="text-[var(--g-gris)] text-xs mb-1">Note de l&apos;administrateur :</p>
+                      <p className="text-[var(--g-encre)] text-sm">{demandeExistante.noteAdmin}</p>
                     </div>
                   )}
                   <div className="flex gap-3">
-                    <Link href="/mon-espace" className="flex-1 text-center py-3 border border-gray-200 hover:bg-gray-50 text-gray-700 rounded-xl text-sm font-medium">
+                    <Link href="/mon-espace" className="flex-1 text-center py-3 bg-white border border-[var(--g-ligne)] hover:border-[var(--g-encre)] text-[var(--g-encre)] rounded-[10px] text-sm font-semibold transition-colors">
                       Mon espace
                     </Link>
-                    <button onClick={store.deconnecterClient} className="flex-1 py-3 bg-gray-100 text-gray-600 rounded-xl text-sm hover:bg-gray-200">
+                    <button onClick={store.deconnecterClient} className="flex-1 py-3 bg-white/60 text-[var(--g-gris)] rounded-[10px] text-sm hover:bg-white transition-colors">
                       Changer de compte
                     </button>
                   </div>
@@ -798,26 +791,26 @@ export default function EspaceDetailPage() {
               <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="p-6 sm:p-8 bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200 rounded-2xl text-center"
+                className="p-6 sm:p-8 bg-[var(--g-vert-doux)] rounded-[16px] text-center"
               >
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", stiffness: 300, delay: 0.2 }}
-                  className="text-5xl mb-4"
+                  className="mb-4 flex justify-center"
                 >
-                  ✅
+                  <CheckCircle size={44} strokeWidth={1.6} className="text-[var(--g-vert)]" />
                 </motion.div>
-                <h3 className="text-gray-900 text-xl font-bold mb-3">Candidature envoyée !</h3>
-                <p className="text-gray-600 mb-6 text-sm leading-relaxed">
-                  Votre demande pour <strong className="text-gray-900">{espace.titre}</strong> a bien été reçue.
-                  Notre équipe vous contactera sous <strong className="text-gray-900">48–72h</strong>.
+                <h3 className="text-[var(--g-encre)] text-xl font-semibold tracking-[-0.02em] mb-3">Candidature envoyée !</h3>
+                <p className="text-[var(--g-gris)] mb-6 text-sm leading-relaxed">
+                  Votre demande pour <strong className="text-[var(--g-encre)]">{espace.titre}</strong> a bien été reçue.
+                  Notre équipe vous contactera sous <strong className="text-[var(--g-encre)]">48–72h</strong>.
                 </p>
                 <div className="flex gap-3">
-                  <Link href="/mon-espace" className="flex-1 text-center py-3 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-white font-bold rounded-xl text-sm">
+                  <Link href="/mon-espace" className="flex-1 text-center py-3 bg-[var(--g-vert)] hover:bg-[var(--g-vert-profond)] text-white font-semibold rounded-[10px] text-sm transition-colors">
                     Suivre ma demande
                   </Link>
-                  <Link href="/accompagnement" className="flex-1 text-center py-3 border border-gray-200 text-gray-700 rounded-xl text-sm hover:bg-gray-50">
+                  <Link href="/accompagnement" className="flex-1 text-center py-3 bg-white border border-[var(--g-ligne)] text-[var(--g-encre)] font-semibold rounded-[10px] text-sm hover:border-[var(--g-encre)] transition-colors">
                     Autres espaces
                   </Link>
                 </div>
@@ -825,22 +818,22 @@ export default function EspaceDetailPage() {
 
             ) : clientConnecte ? (
               <AnimateOnScroll variant="fadeUp">
-                <div className="p-6 sm:p-8 bg-white border border-gray-100 rounded-2xl shadow-lg shadow-gray-100/50">
-                  <div className="flex items-center justify-between mb-6 p-3 bg-gray-50 rounded-xl">
+                <div className="p-6 sm:p-8 bg-white border border-[var(--g-ligne)] rounded-[16px]">
+                  <div className="flex items-center justify-between mb-6 p-3 bg-[var(--g-doux)] rounded-[12px]">
                     <div>
-                      <p className="text-gray-400 text-xs mb-0.5">Connecté</p>
-                      <p className="text-gray-900 font-bold text-sm">{clientConnecte.nom}</p>
-                      <p className="text-gray-500 text-xs">{clientConnecte.email}</p>
+                      <p className="text-[var(--g-gris)] text-xs mb-0.5">Connecté</p>
+                      <p className="text-[var(--g-encre)] font-semibold text-sm">{clientConnecte.nom}</p>
+                      <p className="text-[var(--g-gris)] text-xs">{clientConnecte.email}</p>
                     </div>
-                    <button onClick={store.deconnecterClient} className="text-xs text-gray-500 hover:text-gray-700 border border-gray-200 px-3 py-1.5 rounded-lg transition-colors">
+                    <button onClick={store.deconnecterClient} className="text-xs text-[var(--g-gris)] hover:text-[var(--g-encre)] bg-white border border-[var(--g-ligne)] px-3 py-1.5 rounded-[8px] transition-colors">
                       Changer
                     </button>
                   </div>
-                  <h3 className="text-gray-900 text-lg font-bold mb-1">Postuler pour cet espace</h3>
-                  <p className="text-gray-500 text-sm mb-5">Expliquez votre projet et votre motivation.</p>
+                  <h3 className="text-[var(--g-encre)] text-lg font-semibold tracking-[-0.02em] mb-1">Postuler pour cet espace</h3>
+                  <p className="text-[var(--g-gris)] text-sm mb-5">Expliquez votre projet et votre motivation.</p>
                   <form onSubmit={handleDemandeClientConnecte} className="space-y-4">
                     <div>
-                      <label className={labelCls}>Votre motivation <span className="text-[#E8B800]">*</span></label>
+                      <label className={labelCls}>Votre motivation <span className="text-[var(--g-vert)]">*</span></label>
                       <textarea
                         required rows={5} value={message}
                         onChange={(e) => setMessage(e.target.value)}
@@ -850,45 +843,44 @@ export default function EspaceDetailPage() {
                     </div>
                     <motion.button
                       type="submit"
-                      whileHover={{ scale: 1.01 }}
                       whileTap={{ scale: 0.98 }}
-                      className="w-full py-4 bg-gradient-to-r from-[#27A827] to-[#1f8c1f] text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#27A827]/20"
+                      className="w-full py-4 bg-[var(--g-vert)] hover:bg-[var(--g-vert-profond)] text-white font-semibold rounded-[10px] transition-colors flex items-center justify-center gap-2"
                     >
                       <Send size={16} /> Envoyer ma candidature
                     </motion.button>
-                    <p className="text-gray-400 text-xs text-center">Réponse sous 48–72h</p>
+                    <p className="text-[var(--g-gris)] text-xs text-center">Réponse sous 48–72h</p>
                   </form>
                 </div>
               </AnimateOnScroll>
 
             ) : mode === "info" ? (
               <AnimateOnScroll variant="fadeUp">
-                <div className="p-6 sm:p-8 bg-white border border-gray-100 rounded-2xl shadow-lg shadow-gray-100/50">
+                <div className="p-6 sm:p-8 bg-white border border-[var(--g-ligne)] rounded-[16px]">
                   <div className="text-center mb-6">
                     {heroImage ? (
                       <motion.div
-                        initial={{ scale: 0, rotate: -10 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-                        className="w-16 h-16 mx-auto rounded-2xl overflow-hidden border-2 border-[#E8B800]/20 mb-4"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                        className="w-16 h-16 mx-auto rounded-[14px] overflow-hidden bg-[var(--g-doux)] mb-4"
                       >
                         <img src={heroImage} alt="" className="w-full h-full object-cover" style={{ objectPosition: "50% 20%" }} />
                       </motion.div>
                     ) : (
                       <motion.div
-                        initial={{ scale: 0, rotate: -10 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
-                        className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-[#E8B800]/20 to-[#27A827]/10 border border-[#E8B800]/20 flex items-center justify-center mb-4"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                        className="w-16 h-16 mx-auto rounded-full bg-[var(--g-vert-doux)] flex items-center justify-center mb-4"
                       >
-                        <span className="text-[#E8B800] font-black text-2xl">{icone || espace.titre.charAt(0).toUpperCase()}</span>
+                        <Briefcase size={26} className="text-[var(--g-vert)]" aria-hidden="true" />
                       </motion.div>
                     )}
                     <motion.h3
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
-                      className="text-gray-900 text-lg font-bold mb-1"
+                      className="text-[var(--g-encre)] text-xl font-semibold tracking-[-0.02em] mb-1"
                     >
                       Bénéficier de l&apos;accompagnement
                     </motion.h3>
@@ -896,7 +888,7 @@ export default function EspaceDetailPage() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.5 }}
-                      className="text-gray-500 text-sm"
+                      className="text-[var(--g-gris)] text-sm"
                     >
                       Faites votre demande en quelques clics.
                     </motion.p>
@@ -906,29 +898,22 @@ export default function EspaceDetailPage() {
                       onClick={() => setMode("inscription")}
                       initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.6, type: "spring" }}
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                      className="w-full py-4 bg-gradient-to-r from-[#27A827] to-[#1f8c1f] text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-[#27A827]/20 transition-all relative overflow-hidden"
+                      transition={{ delay: 0.6 }}
+                      className="g-btn w-full"
                     >
-                      <motion.span
-                        className="absolute inset-0 bg-white/10 rounded-xl"
-                        animate={{ opacity: [0, 0.3, 0] }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                      />
-                      <ArrowRight size={18} /> Je veux être accompagné
+                      Je veux être accompagné <ArrowRight size={18} />
                     </motion.button>
                   </div>
-                  <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="grid grid-cols-2 gap-2 text-[13px]">
                     {espace.clientsSatisfaits > 0 && (
-                      <div className="flex items-center justify-between p-2.5 bg-gray-50 rounded-lg">
-                        <span className="text-gray-500">Satisfaits</span>
-                        <span className="text-gray-900 font-bold">{espace.clientsSatisfaits}</span>
+                      <div className="flex items-center justify-between p-2.5 bg-[var(--g-doux)] rounded-[8px]">
+                        <span className="text-[var(--g-gris)]">Satisfaits</span>
+                        <span className="text-[var(--g-encre)] font-semibold tabular-nums">{espace.clientsSatisfaits}</span>
                       </div>
                     )}
-                    <div className="flex items-center justify-between p-2.5 bg-gray-50 rounded-lg">
-                      <span className="text-gray-500">Places</span>
-                      <span className={`font-bold ${espace.placesDisponibles <= 2 ? "text-orange-500" : "text-[#27A827]"}`}>
+                    <div className="flex items-center justify-between p-2.5 bg-[var(--g-doux)] rounded-[8px]">
+                      <span className="text-[var(--g-gris)]">Places</span>
+                      <span className={`font-semibold tabular-nums ${espace.placesDisponibles <= 2 ? "text-[var(--g-orange)]" : "text-[var(--g-encre)]"}`}>
                         {espace.placesDisponibles}
                       </span>
                     </div>
@@ -938,15 +923,15 @@ export default function EspaceDetailPage() {
 
             ) : mode === "login" ? (
               <AnimateOnScroll variant="fadeUp">
-                <div className="p-6 sm:p-8 bg-white border border-gray-100 rounded-2xl shadow-lg shadow-gray-100/50">
-                  <button onClick={() => setMode("info")} className="text-gray-500 text-xs mb-5 hover:text-gray-700 flex items-center gap-1 transition-colors">
+                <div className="p-6 sm:p-8 bg-white border border-[var(--g-ligne)] rounded-[16px]">
+                  <button onClick={() => setMode("info")} className="text-[var(--g-gris)] text-xs mb-5 hover:text-[var(--g-encre)] flex items-center gap-1 transition-colors">
                     <ChevronRight size={12} className="rotate-180" /> Retour
                   </button>
-                  <h3 className="text-gray-900 text-lg font-bold mb-1">Me connecter</h3>
-                  <p className="text-gray-500 text-sm mb-5">Entrez l&apos;email de votre compte.</p>
+                  <h3 className="text-[var(--g-encre)] text-lg font-semibold tracking-[-0.02em] mb-1">Me connecter</h3>
+                  <p className="text-[var(--g-gris)] text-sm mb-5">Entrez l&apos;email de votre compte.</p>
                   <form onSubmit={handleLogin} className="space-y-4">
                     <div>
-                      <label className={labelCls}>Email <span className="text-[#E8B800]">*</span></label>
+                      <label className={labelCls}>Email <span className="text-[var(--g-vert)]">*</span></label>
                       <input required type="email" value={loginEmail}
                         onChange={(e) => { setLoginEmail(e.target.value); setLoginError(""); }}
                         className={inputCls} placeholder="jean@exemple.com" />
@@ -954,13 +939,11 @@ export default function EspaceDetailPage() {
                     </div>
                     <motion.button
                       type="submit"
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-white font-bold rounded-xl shadow-lg"
+                      className="g-btn w-full"
                     >
                       Continuer
                     </motion.button>
-                    <button type="button" onClick={() => setMode("inscription")} className="w-full text-center text-gray-500 text-sm hover:text-gray-700 transition-colors">
+                    <button type="button" onClick={() => setMode("inscription")} className="w-full text-center text-[var(--g-gris)] text-sm hover:text-[var(--g-encre)] transition-colors">
                       Pas de compte ? S&apos;inscrire
                     </button>
                   </form>
@@ -969,22 +952,22 @@ export default function EspaceDetailPage() {
 
             ) : (
               <AnimateOnScroll variant="fadeUp">
-                <div className="p-5 sm:p-7 bg-white border border-gray-100 rounded-2xl shadow-lg shadow-gray-100/50">
-                  <button onClick={() => { setMode("info"); setStep(1); setStepError(""); }} className="text-gray-500 text-xs mb-4 hover:text-gray-700 flex items-center gap-1 transition-colors">
+                <div className="p-5 sm:p-7 bg-white border border-[var(--g-ligne)] rounded-[16px]">
+                  <button onClick={() => { setMode("info"); setStep(1); setStepError(""); }} className="text-[var(--g-gris)] text-xs mb-4 hover:text-[var(--g-encre)] flex items-center gap-1 transition-colors">
                     <ChevronRight size={12} className="rotate-180" /> Retour
                   </button>
 
                   <div className="mb-5">
-                    <h3 className="text-gray-900 text-lg font-bold mb-1">Demander mon accompagnement</h3>
-                    <p className="text-gray-500 text-sm mb-4">
-                      Candidature pour : <strong className="text-gray-900">{espace.titre}</strong>
+                    <h3 className="text-[var(--g-encre)] text-lg font-semibold tracking-[-0.02em] mb-1">Demander mon accompagnement</h3>
+                    <p className="text-[var(--g-gris)] text-sm mb-4">
+                      Candidature pour : <strong className="text-[var(--g-encre)] font-semibold">{espace.titre}</strong>
                     </p>
                     <div className="flex items-center gap-1.5 mb-1">
                       {[1, 2, 3].map((s) => (
                         <div key={s} className="flex-1">
-                          <div className="h-1.5 rounded-full bg-gray-100 overflow-hidden">
+                          <div className="h-1.5 rounded-full bg-[var(--g-doux)] overflow-hidden">
                             <motion.div
-                              className="h-full rounded-full bg-gradient-to-r from-[#E8B800] to-[#27A827]"
+                              className="h-full rounded-full bg-[var(--g-vert)]"
                               initial={{ width: "0%" }}
                               animate={{ width: step >= s ? "100%" : "0%" }}
                               transition={{ duration: 0.4, ease: "easeOut" }}
@@ -994,8 +977,8 @@ export default function EspaceDetailPage() {
                       ))}
                     </div>
                     <div className="flex items-center justify-between">
-                      <p className="text-gray-400 text-xs">Étape {step} sur 3</p>
-                      <p className="text-gray-400 text-xs">{step === 1 ? "Coordonnées" : step === 2 ? "Votre profil" : "Votre projet"}</p>
+                      <p className="text-[var(--g-gris)] text-xs">Étape {step} sur 3</p>
+                      <p className="text-[var(--g-gris)] text-xs">{step === 1 ? "Coordonnées" : step === 2 ? "Votre profil" : "Votre projet"}</p>
                     </div>
                   </div>
 
@@ -1016,20 +999,20 @@ export default function EspaceDetailPage() {
                           transition={{ duration: 0.25 }}
                           className="space-y-3"
                         >
-                          <div className="flex items-center gap-2 p-2.5 bg-green-50/70 rounded-xl border border-green-100/50">
-                            <div className="w-6 h-6 rounded-full bg-[#27A827] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">1</div>
-                            <span className="text-gray-700 text-sm font-medium">Vos coordonnées</span>
+                          <div className="flex items-center gap-2 p-2.5 bg-[var(--g-vert-doux)] rounded-[10px]">
+                            <div className="w-6 h-6 rounded-full bg-[var(--g-vert)] text-white flex items-center justify-center text-xs font-semibold flex-shrink-0">1</div>
+                            <span className="text-[var(--g-encre)] text-sm font-medium">Vos coordonnées</span>
                           </div>
                           <div>
-                            <label className={labelCls}>Nom complet <span className="text-[#E8B800]">*</span></label>
+                            <label className={labelCls}>Nom complet <span className="text-[var(--g-vert)]">*</span></label>
                             <input type="text" value={form.nom} onChange={(e) => { setForm({ ...form, nom: e.target.value }); setStepError(""); }} className={inputCls} placeholder="Jean Dupont" />
                           </div>
                           <div>
-                            <label className={labelCls}>Email <span className="text-[#E8B800]">*</span></label>
+                            <label className={labelCls}>Email <span className="text-[var(--g-vert)]">*</span></label>
                             <input type="email" value={form.email} onChange={(e) => { setForm({ ...form, email: e.target.value }); setStepError(""); }} className={inputCls} placeholder="jean@exemple.com" />
                           </div>
                           <div>
-                            <label className={labelCls}>Téléphone <span className="text-[#E8B800]">*</span></label>
+                            <label className={labelCls}>Téléphone <span className="text-[var(--g-vert)]">*</span></label>
                             <input type="tel" value={form.telephone} onChange={(e) => { setForm({ ...form, telephone: e.target.value }); setStepError(""); }} className={inputCls} placeholder="+237 6XX..." />
                           </div>
                           <motion.button
@@ -1042,9 +1025,8 @@ export default function EspaceDetailPage() {
                               setStepError("");
                               setStep(2);
                             }}
-                            whileHover={{ scale: 1.01 }}
                             whileTap={{ scale: 0.98 }}
-                            className="w-full py-3.5 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-white font-bold rounded-xl flex items-center justify-center gap-2 mt-1 shadow-lg shadow-[#27A827]/20"
+                            className="g-btn w-full mt-1"
                           >
                             Continuer <ArrowRight size={16} />
                           </motion.button>
@@ -1060,12 +1042,12 @@ export default function EspaceDetailPage() {
                           transition={{ duration: 0.25 }}
                           className="space-y-3"
                         >
-                          <div className="flex items-center gap-2 p-2.5 bg-green-50/70 rounded-xl border border-green-100/50">
-                            <div className="w-6 h-6 rounded-full bg-[#27A827] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">2</div>
-                            <span className="text-gray-700 text-sm font-medium">Votre situation</span>
+                          <div className="flex items-center gap-2 p-2.5 bg-[var(--g-vert-doux)] rounded-[10px]">
+                            <div className="w-6 h-6 rounded-full bg-[var(--g-vert)] text-white flex items-center justify-center text-xs font-semibold flex-shrink-0">2</div>
+                            <span className="text-[var(--g-encre)] text-sm font-medium">Votre situation</span>
                           </div>
                           <div>
-                            <label className={labelCls}>Profession <span className="text-[#E8B800]">*</span></label>
+                            <label className={labelCls}>Profession <span className="text-[var(--g-vert)]">*</span></label>
                             <input type="text" value={form.profession} onChange={(e) => { setForm({ ...form, profession: e.target.value }); setStepError(""); }} className={inputCls} placeholder="Ex: Commerçant, Étudiant..." />
                           </div>
                           {secteurs.length > 0 && (
@@ -1094,12 +1076,12 @@ export default function EspaceDetailPage() {
                           )}
                           <div className="grid grid-cols-2 gap-3">
                             <div>
-                              <label className={labelCls}>Ville <span className="text-[#E8B800]">*</span></label>
+                              <label className={labelCls}>Ville <span className="text-[var(--g-vert)]">*</span></label>
                               <input type="text" value={form.ville} onChange={(e) => { setForm({ ...form, ville: e.target.value }); setStepError(""); }} className={inputCls} placeholder="Yaoundé" />
                             </div>
                             <div>
-                              <label className={labelCls}>Capital <span className="text-[#E8B800]">*</span></label>
-                              <select value={form.capital} onChange={(e) => { setForm({ ...form, capital: e.target.value }); setStepError(""); }} className={`${selectCls} bg-[#E8B800]/10 border-[#E8B800]/30 font-semibold`}>
+                              <label className={labelCls}>Capital <span className="text-[var(--g-vert)]">*</span></label>
+                              <select value={form.capital} onChange={(e) => { setForm({ ...form, capital: e.target.value }); setStepError(""); }} className={`${selectCls} font-semibold`}>
                                 <option value="">Fourchette...</option>
                                 <option value="moins-500k">- de 500k FCFA</option>
                                 <option value="500k-1m">500k – 1M FCFA</option>
@@ -1110,7 +1092,7 @@ export default function EspaceDetailPage() {
                             </div>
                           </div>
                           <div className="flex gap-3 mt-1">
-                            <button type="button" onClick={() => { setStep(1); setStepError(""); }} className="flex-1 py-3.5 border border-gray-200 hover:bg-gray-50 text-gray-700 rounded-xl text-sm font-medium transition-colors">
+                            <button type="button" onClick={() => { setStep(1); setStepError(""); }} className="flex-1 py-3.5 border border-[var(--g-ligne)] hover:border-[var(--g-encre)] text-[var(--g-encre)] rounded-[10px] text-sm font-semibold transition-colors">
                               Précédent
                             </button>
                             <motion.button
@@ -1123,9 +1105,8 @@ export default function EspaceDetailPage() {
                                 setStepError("");
                                 setStep(3);
                               }}
-                              whileHover={{ scale: 1.01 }}
                               whileTap={{ scale: 0.98 }}
-                              className="flex-1 py-3.5 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-[#27A827]/20"
+                              className="g-btn flex-1"
                             >
                               Continuer <ArrowRight size={16} />
                             </motion.button>
@@ -1142,16 +1123,16 @@ export default function EspaceDetailPage() {
                           transition={{ duration: 0.25 }}
                           className="space-y-3"
                         >
-                          <div className="flex items-center gap-2 p-2.5 bg-green-50/70 rounded-xl border border-green-100/50">
-                            <div className="w-6 h-6 rounded-full bg-[#27A827] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">3</div>
-                            <span className="text-gray-700 text-sm font-medium">Votre projet</span>
+                          <div className="flex items-center gap-2 p-2.5 bg-[var(--g-vert-doux)] rounded-[10px]">
+                            <div className="w-6 h-6 rounded-full bg-[var(--g-vert)] text-white flex items-center justify-center text-xs font-semibold flex-shrink-0">3</div>
+                            <span className="text-[var(--g-encre)] text-sm font-medium">Votre projet</span>
                           </div>
-                          <div className="p-3 bg-gray-50 rounded-xl text-xs text-gray-500 space-y-1.5">
-                            <div className="flex items-center gap-2"><CheckCircle size={12} className="text-[#27A827] flex-shrink-0" /> <span className="truncate">{form.nom} · {form.email}</span></div>
-                            <div className="flex items-center gap-2"><CheckCircle size={12} className="text-[#27A827] flex-shrink-0" /> <span className="truncate">{form.profession} · {form.ville}</span></div>
+                          <div className="p-3 bg-[var(--g-doux)] rounded-[10px] text-xs text-[var(--g-gris)] space-y-1.5">
+                            <div className="flex items-center gap-2"><CheckCircle size={12} className="text-[var(--g-vert)] flex-shrink-0" /> <span className="truncate">{form.nom} · {form.email}</span></div>
+                            <div className="flex items-center gap-2"><CheckCircle size={12} className="text-[var(--g-vert)] flex-shrink-0" /> <span className="truncate">{form.profession} · {form.ville}</span></div>
                           </div>
                           <div>
-                            <label className={labelCls}>Décrivez votre projet et votre motivation <span className="text-[#E8B800]">*</span></label>
+                            <label className={labelCls}>Décrivez votre projet et votre motivation <span className="text-[var(--g-vert)]">*</span></label>
                             <textarea
                               required rows={5} value={message}
                               onChange={(e) => setMessage(e.target.value)}
@@ -1160,19 +1141,18 @@ export default function EspaceDetailPage() {
                             />
                           </div>
                           <div className="flex gap-3 mt-1">
-                            <button type="button" onClick={() => { setStep(2); setStepError(""); }} className="flex-1 py-3.5 border border-gray-200 hover:bg-gray-50 text-gray-700 rounded-xl text-sm font-medium transition-colors">
+                            <button type="button" onClick={() => { setStep(2); setStepError(""); }} className="flex-1 py-3.5 border border-[var(--g-ligne)] hover:border-[var(--g-encre)] text-[var(--g-encre)] rounded-[10px] text-sm font-semibold transition-colors">
                               Précédent
                             </button>
                             <motion.button
                               type="submit"
-                              whileHover={{ scale: 1.01 }}
                               whileTap={{ scale: 0.98 }}
-                              className="flex-1 py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-[#27A827]/20"
+                              className="g-btn flex-1"
                             >
                               <Send size={16} /> Envoyer
                             </motion.button>
                           </div>
-                          <p className="text-gray-400 text-xs text-center">Vous serez contacté dans les 48–72h.</p>
+                          <p className="text-[var(--g-gris)] text-xs text-center">Vous serez contacté dans les 48–72h.</p>
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -1185,7 +1165,7 @@ export default function EspaceDetailPage() {
       </div>
 
       {/* ═══ AVIS CLIENTS ═══ */}
-      <div className="py-10 sm:py-14 border-t border-gray-100 bg-gradient-to-br from-gray-50/50 via-white to-green-50/30">
+      <div className="py-10 sm:py-14 border-t border-[var(--g-ligne)] bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ReviewSection
             productId={espace.id}
@@ -1208,43 +1188,37 @@ export default function EspaceDetailPage() {
         return (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
             <AnimateOnScroll variant="fadeUp">
-              <h3 className="text-gray-900 font-bold text-2xl sm:text-3xl mb-8 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#E8B800]/10 flex items-center justify-center">
-                  <ArrowRight size={20} className="text-[#E8B800]" />
-                </div>
+              <h3 className="g-titre-section mb-8">
                 {similaires.length > 0 ? "Domaines similaires" : "Autres domaines disponibles"}
               </h3>
             </AnimateOnScroll>
             <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {aAfficher.slice(0, 3).map((e) => {
                 const img = e.image || STATIC_ESPACES.find((s) => s.id === e.id)?.image;
-                const emoji = STATIC_ESPACES.find((s) => s.id === e.id)?.icone;
                 return (
                   <StaggerItem key={e.id}>
                     <Link href={`/accompagnement/${e.id}`}
-                      className="group block bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-[#E8B800]/20 transition-all">
-                      <div className="h-36 sm:h-40 overflow-hidden relative">
+                      className="group block bg-white border border-[var(--g-ligne)] rounded-[14px] overflow-hidden hover:border-[var(--g-encre)]/30 transition-colors">
+                      <div className="h-36 sm:h-40 overflow-hidden relative bg-[var(--g-doux)]">
                         {img ? (
                           <img
                             src={img}
                             alt={e.titre}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                             onError={(ev) => { (ev.target as HTMLImageElement).style.display = "none"; (ev.target as HTMLImageElement).nextElementSibling?.classList.remove("hidden"); }}
                           />
                         ) : null}
-                        <div className={`${img ? "hidden" : ""} absolute inset-0 bg-gradient-to-br from-[#E8B800]/10 to-[#27A827]/5 flex items-center justify-center`}>
-                          <span className="text-5xl">{emoji || e.titre.charAt(0)}</span>
+                        <div className={`${img ? "hidden" : ""} absolute inset-0 bg-[var(--g-vert-doux)] flex items-center justify-center`}>
+                          <span className="text-5xl font-semibold text-[var(--g-vert)]">{e.titre.charAt(0)}</span>
                         </div>
                       </div>
                       <div className="p-4">
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between gap-3">
                           <div>
-                            <p className="text-gray-900 font-bold text-sm group-hover:text-[#27A827] transition-colors">{e.titre}</p>
-                            <p className="text-gray-500 text-xs mt-0.5">{e.domaine}</p>
+                            <p className="text-[var(--g-encre)] font-semibold tracking-[-0.01em] text-[15px] group-hover:text-[var(--g-vert)] transition-colors">{e.titre}</p>
+                            <p className="text-[var(--g-gris)] text-[13px] mt-0.5">{e.domaine}</p>
                           </div>
-                          <div className="w-8 h-8 rounded-full bg-gray-50 group-hover:bg-[#27A827]/10 flex items-center justify-center transition-colors">
-                            <ArrowRight size={14} className="text-gray-400 group-hover:text-[#27A827] transition-colors" />
-                          </div>
+                          <ArrowRight size={16} className="flex-shrink-0 text-[var(--g-vert)] transition-transform group-hover:translate-x-1" />
                         </div>
                       </div>
                     </Link>
@@ -1263,33 +1237,15 @@ export default function EspaceDetailPage() {
             <motion.button
               onClick={scrollToPostuler}
               initial={{ y: 60, opacity: 0 }}
-              animate={{
-                y: 0,
-                opacity: 1,
-                scale: [1, 1.03, 1],
-                boxShadow: [
-                  "0 10px 25px -5px rgba(0,0,0,0.15)",
-                  "0 15px 35px -5px rgba(232,184,0,0.35)",
-                  "0 10px 25px -5px rgba(0,0,0,0.15)",
-                ],
-              }}
+              animate={{ y: 0, opacity: 1 }}
               transition={{
-                y: { delay: 1, type: "spring", stiffness: 200 },
+                y: { delay: 1, duration: 0.4, ease: "easeOut" },
                 opacity: { delay: 1 },
-                scale: { delay: 2, duration: 2, repeat: Infinity, ease: "easeInOut" },
-                boxShadow: { delay: 2, duration: 2, repeat: Infinity, ease: "easeInOut" },
               }}
-              whileTap={{ scale: 0.97 }}
-              className="w-full py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-white font-bold rounded-2xl flex items-center justify-center gap-2.5 text-sm shadow-xl shadow-black/15 border border-white/20"
+              className="g-btn w-full shadow-[0_4px_14px_rgba(16,20,16,0.12)]"
             >
-              <Send size={16} />
               Je veux être accompagné
-              <motion.span
-                animate={{ x: [0, 4, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <ArrowRight size={16} />
-              </motion.span>
+              <ArrowRight size={17} />
             </motion.button>
           </div>
         </div>

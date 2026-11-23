@@ -61,12 +61,10 @@ export default async function HomePage() {
   ];
 
   const chiffres = [
-    { n: 14960, s: "", l: "clients en Afrique et dans la diaspora" },
     { n: 33204, s: "", l: "clients sur notre boutique Chariow" },
     { n: 82, s: " %", l: "d'avis positifs, sur 248 avis" },
     { n: nbGuides || 85, s: "", l: "guides pratiques" },
     { n: nbEspaces || 77, s: "", l: "domaines d'accompagnement" },
-    { n: 0, s: "", l: "pour recevoir votre guide après paiement", texte: "Quelques secondes" },
   ];
 
   const pointsAccompagnement = [
@@ -113,17 +111,32 @@ export default async function HomePage() {
         </div>
       )}
 
-      {/* ══════ CHIFFRES ══════ */}
+      {/* ══════ CHIFFRES ══════
+          Un grand chiffre vedette (les clients), puis quatre chiffres réguliers séparés par des filets.
+          Couleurs en style en ligne : globals.css force .text-white en gris foncé. */}
       <section className="mt-14 bg-[var(--g-vert-profond)]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-y-2">
-            {chiffres.map((c, i) => (
-              <div key={c.l} className={`py-5 pr-4 ${i % 2 === 1 ? "pl-4 border-l border-white/20 lg:border-l-0 lg:pl-0" : ""} lg:[&:not(:nth-child(3n+1))]:pl-6 lg:[&:not(:nth-child(3n+1))]:border-l lg:[&:not(:nth-child(3n+1))]:border-white/20`}>
-                <span className="block h-[3px] w-7 rounded-full bg-[var(--g-jaune)] mb-4" aria-hidden="true" />
-                <p className="g-chiffre" style={{ color: "#fff" }}>
-                  {c.texte ?? <span data-compteur={c.n} data-suffixe={c.s}>{c.n.toLocaleString("fr-FR")}{c.s}</span>}
+        <div className="bande-wax h-[12px]" aria-hidden="true" />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 grid gap-10 lg:grid-cols-[1fr_1.35fr] lg:gap-16 lg:items-end">
+          <div>
+            <p className="text-[14px] font-semibold" style={{ color: "var(--g-jaune)" }}>Smart Life en chiffres</p>
+            <p className="mt-3 text-[64px] sm:text-[88px] font-semibold leading-[0.95] tracking-[-0.045em] tabular-nums" style={{ color: "#fff" }}>
+              <span data-compteur="14960" data-suffixe="">14 960</span>
+            </p>
+            <p className="mt-3 text-[17px] sm:text-[18px] leading-snug max-w-[26ch]" style={{ color: "rgba(255,255,255,0.86)" }}>
+              clients en Afrique et dans la diaspora
+            </p>
+            <p className="mt-6 flex items-center gap-2 text-[14.5px]" style={{ color: "rgba(255,255,255,0.86)" }}>
+              <Check size={16} strokeWidth={2.6} style={{ color: "var(--g-jaune)" }} className="shrink-0" />
+              Guide reçu en quelques secondes après paiement
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-x-6 sm:gap-x-10 gap-y-8">
+            {chiffres.map((c) => (
+              <div key={c.l} className="border-t pt-4" style={{ borderColor: "rgba(255,255,255,0.22)" }}>
+                <p className="text-[34px] sm:text-[44px] font-semibold leading-none tracking-[-0.035em] tabular-nums" style={{ color: "#fff" }}>
+                  <span data-compteur={c.n} data-suffixe={c.s}>{c.n.toLocaleString("fr-FR")}{c.s}</span>
                 </p>
-                <p className="mt-2 text-[14.5px] leading-snug" style={{ color: "rgba(255,255,255,0.82)" }}>{c.l}</p>
+                <p className="mt-2 text-[14px] sm:text-[15px] leading-snug" style={{ color: "rgba(255,255,255,0.78)" }}>{c.l}</p>
               </div>
             ))}
           </div>

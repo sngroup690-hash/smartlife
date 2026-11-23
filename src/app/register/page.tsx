@@ -69,68 +69,68 @@ export default function RegisterPage() {
           <Link href="/" className="inline-flex mb-6">
             <Image src="/logo-smartlife.jpeg" alt="SMART LIFE" width={110} height={36} className="h-9 w-auto rounded-lg" />
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900">Créer un compte</h1>
-          <p className="text-gray-600 mt-2">Rejoignez SMART LIFE gratuitement</p>
+          <h1 className="text-3xl font-semibold tracking-[-0.02em] text-[var(--g-encre)]">Créer un compte</h1>
+          <p className="text-[var(--g-gris)] mt-2">Rejoignez SMART LIFE gratuitement</p>
         </div>
 
         <div className="grid grid-cols-3 gap-3 mb-8">
           {["Ebooks illimités", "Suivi commandes", "Offres exclusives"].map((b) => (
-            <div key={b} className="text-center p-3 bg-green-50 border border-green-200 rounded-xl">
-              <CheckCircle size={16} className="text-green-600 mx-auto mb-1" />
-              <p className="text-gray-700 font-bold text-xs">{b}</p>
+            <div key={b} className="text-center p-3 bg-[var(--g-vert-doux)] rounded-[12px]">
+              <CheckCircle size={16} className="text-[var(--g-vert)] mx-auto mb-1" />
+              <p className="text-[var(--g-encre)] font-semibold text-xs">{b}</p>
             </div>
           ))}
         </div>
 
-        <div className="p-8 bg-white border border-gray-200 rounded-2xl shadow-sm">
+        <div className="p-8 bg-white border border-[var(--g-ligne)] rounded-[16px]">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-gray-700 text-sm mb-2">Prénom *</label>
+                <label className="block text-[var(--g-encre)] text-sm font-medium mb-2">Prénom *</label>
                 <input
                   required
                   type="text"
                   value={form.firstName}
                   onChange={(e) => setForm({ ...form, firstName: e.target.value })}
-                  className="w-full px-4 py-3 bg-gray-50 border border-green-500 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-600 focus:bg-white"
+                  className="w-full px-4 py-3 bg-white border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] placeholder-[var(--g-gris)]/60 focus:outline-none focus:border-[var(--g-encre)]"
                   placeholder="Jean"
                 />
               </div>
               <div>
-                <label className="block text-gray-700 text-sm mb-2">Nom *</label>
+                <label className="block text-[var(--g-encre)] text-sm font-medium mb-2">Nom *</label>
                 <input
                   required
                   type="text"
                   value={form.lastName}
                   onChange={(e) => setForm({ ...form, lastName: e.target.value })}
-                  className="w-full px-4 py-3 bg-gray-50 border border-green-500 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-600 focus:bg-white"
+                  className="w-full px-4 py-3 bg-white border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] placeholder-[var(--g-gris)]/60 focus:outline-none focus:border-[var(--g-encre)]"
                   placeholder="Dupont"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-gray-700 text-sm mb-2">Email *</label>
+              <label className="block text-[var(--g-encre)] text-sm font-medium mb-2">Email *</label>
               <input
                 required
                 type="email"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full px-4 py-3 bg-gray-50 border border-green-500 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-600 focus:bg-white"
+                className="w-full px-4 py-3 bg-white border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] placeholder-[var(--g-gris)]/60 focus:outline-none focus:border-[var(--g-encre)]"
                 placeholder="email@exemple.com"
               />
             </div>
             <div>
-              <label className="block text-gray-700 text-sm mb-2">Téléphone / WhatsApp</label>
+              <label className="block text-[var(--g-encre)] text-sm font-medium mb-2">Téléphone / WhatsApp</label>
               <input
                 type="tel"
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                className="w-full px-4 py-3 bg-gray-50 border border-green-500 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-600 focus:bg-white"
+                className="w-full px-4 py-3 bg-white border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] placeholder-[var(--g-gris)]/60 focus:outline-none focus:border-[var(--g-encre)]"
                 placeholder="+237 6XX XXX XXX"
               />
             </div>
             <div>
-              <label className="block text-gray-700 text-sm mb-2">Mot de passe *</label>
+              <label className="block text-[var(--g-encre)] text-sm font-medium mb-2">Mot de passe *</label>
               <div className="relative">
                 <input
                   required
@@ -138,13 +138,13 @@ export default function RegisterPage() {
                   minLength={8}
                   value={form.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })}
-                  className="w-full px-4 py-3 pr-12 bg-gray-50 border border-green-500 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-600 focus:bg-white"
+                  className="w-full px-4 py-3 pr-12 bg-white border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] placeholder-[var(--g-gris)]/60 focus:outline-none focus:border-[var(--g-encre)]"
                   placeholder="Min. 8 caractères"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPwd(!showPwd)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--g-gris)] hover:text-[var(--g-encre)]"
                 >
                   {showPwd ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -152,7 +152,7 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-gray-700 text-sm mb-2">Confirmer le mot de passe *</label>
+              <label className="block text-[var(--g-encre)] text-sm font-medium mb-2">Confirmer le mot de passe *</label>
               <div className="relative">
                 <input
                   required
@@ -160,19 +160,19 @@ export default function RegisterPage() {
                   minLength={8}
                   value={form.confirmPassword}
                   onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
-                  className={`w-full px-4 py-3 pr-12 bg-gray-50 border rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:bg-white transition-colors ${
+                  className={`w-full px-4 py-3 pr-12 bg-white border rounded-[10px] text-[var(--g-encre)] placeholder-[var(--g-gris)]/60 focus:outline-none transition-colors ${
                     form.confirmPassword && form.password !== form.confirmPassword
                       ? "border-red-500/60 focus:border-red-500"
                       : form.confirmPassword && form.password === form.confirmPassword
-                      ? "border-emerald-500/60 focus:border-emerald-500"
-                      : "border-green-600 focus:border-green-400"
+                      ? "border-[var(--g-vert)] focus:border-[var(--g-vert)]"
+                      : "border-[var(--g-ligne)] focus:border-[var(--g-encre)]"
                   }`}
                   placeholder="Répétez votre mot de passe"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirm(!showConfirm)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--g-gris)] hover:text-[var(--g-encre)]"
                 >
                   {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -181,30 +181,30 @@ export default function RegisterPage() {
                 <p className="text-red-500 text-xs mt-1">Les mots de passe ne correspondent pas</p>
               )}
               {form.confirmPassword && form.password === form.confirmPassword && (
-                <p className="text-emerald-400 text-xs mt-1 flex items-center gap-1"><CheckCircle size={12} /> Mots de passe identiques</p>
+                <p className="text-[var(--g-vert)] text-xs mt-1 flex items-center gap-1"><CheckCircle size={12} /> Mots de passe identiques</p>
               )}
             </div>
 
             {error && (
-              <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm">
+              <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-[10px] text-red-600 text-sm">
                 <AlertCircle size={15} className="flex-shrink-0" />
                 {error}
               </div>
             )}
 
-            <p className="text-gray-600 text-xs">
+            <p className="text-[var(--g-gris)] text-xs">
               En créant un compte, vous acceptez nos{" "}
-              <Link href="/cgv" className="text-green-400 hover:underline">CGV</Link> et notre{" "}
-              <Link href="/confidentialite" className="text-green-400 hover:underline">Politique de confidentialité</Link>.
+              <Link href="/cgv" className="text-[var(--g-vert)] font-medium hover:underline">CGV</Link> et notre{" "}
+              <Link href="/confidentialite" className="text-[var(--g-vert)] font-medium hover:underline">Politique de confidentialité</Link>.
             </p>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] hover:from-[#27A827] hover:to-[#E8B800] text-black font-bold rounded-xl transition-all disabled:opacity-60 flex items-center justify-center gap-2"
+              className="g-btn w-full disabled:opacity-60"
             >
               {loading ? (
-                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
               ) : (
                 <>
                   <UserPlus size={18} />
@@ -214,9 +214,9 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <p className="text-center text-gray-600 text-sm mt-6">
+          <p className="text-center text-[var(--g-gris)] text-sm mt-6">
             Déjà un compte ?{" "}
-            <Link href="/login" className="text-green-600 hover:text-green-700 font-medium">
+            <Link href="/login" className="text-[var(--g-vert)] font-semibold hover:underline underline-offset-4">
               Se connecter
             </Link>
           </p>

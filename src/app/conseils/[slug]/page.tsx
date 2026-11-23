@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { X } from "lucide-react";
 import { notFound } from "next/navigation";
 import { PriceTag } from "@/components/PriceTag";
 import { conseilParSlug, tousLesConseils, guideLie, photoDuConseil, espaceDuSujet } from "@/lib/conseils";
@@ -72,23 +73,22 @@ export default async function PageConseil({ params }: { params: Promise<{ slug: 
 
   const encartGuide = guide && (
     <Link href={`/ebooks/${guide.slug}`}
-      className="group flex items-center gap-4 rounded-[1.75rem] p-4 shadow-lg transition-transform hover:-translate-y-1"
-      style={{ background: "linear-gradient(135deg, #fffbea, #ffffff 60%, #f0fdf4)", border: "2px solid #E8B800" }}>
+      className="group flex items-center gap-4 rounded-[16px] p-4 bg-[var(--g-jaune-doux)]">
       {guide.cover && (
-        <div className="relative w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 overflow-hidden rounded-2xl bg-white">
+        <div className="relative w-24 h-24 sm:w-28 sm:h-28 flex-shrink-0 overflow-hidden rounded-[12px] bg-white">
           <Image src={guide.cover} alt={guide.title} fill quality={90} sizes="112px" className="object-contain" />
         </div>
       )}
       <div className="min-w-0">
-        <p className="text-[12px] font-extrabold uppercase tracking-[0.12em] text-[#b38f00]">📘 Le guide complet</p>
-        <p className="mt-1 text-[16px] font-black leading-tight text-[#111827]">{guide.title}</p>
+        <p className="text-[14px] font-semibold text-[var(--g-vert)]">Le guide complet</p>
+        <p className="mt-1 text-[16px] font-semibold tracking-[-0.01em] leading-tight text-[var(--g-encre)]">{guide.title}</p>
         <p className="mt-1 flex items-baseline gap-2">
-          <span className="text-[18px] font-black text-[#e30026]"><PriceTag amount={guide.price} /></span>
-          {remise > 0 && <span className="text-[13px] text-[#a9aeb5] line-through"><PriceTag amount={guide.originalPrice!} /></span>}
-          {(guide.ventes ?? 0) > 0 && <span className="text-[12px] font-semibold text-[#b45309]">🔥 {guide.ventes!.toLocaleString("fr-FR")} ventes</span>}
+          <span className="text-[18px] font-semibold text-[var(--g-encre)]"><PriceTag amount={guide.price} /></span>
+          {remise > 0 && <span className="text-[13px] text-[var(--g-gris)] line-through"><PriceTag amount={guide.originalPrice!} /></span>}
+          {(guide.ventes ?? 0) > 0 && <span className="text-[12px] font-semibold text-[var(--g-vert)]">{guide.ventes!.toLocaleString("fr-FR")} ventes</span>}
         </p>
-        <span className="cta-clignote mt-2 inline-flex rounded-full px-4 py-2 text-[13px] font-extrabold" style={{ background: "#27A827", color: "#fff" }}>
-          ⚡ Voir le guide →
+        <span className="mt-2 inline-flex rounded-[10px] px-4 py-2 text-[13px] font-semibold bg-[var(--g-vert)] text-white">
+          Voir le guide →
         </span>
       </div>
     </Link>
@@ -99,18 +99,18 @@ export default async function PageConseil({ params }: { params: Promise<{ slug: 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(etiquettes) }} />
 
       {/* En-tête */}
-      <header className="relative overflow-hidden" style={{ background: "linear-gradient(160deg, #fffdf3 0%, #ffffff 50%, #f1fcf3 100%)" }}>
+      <header className="relative overflow-hidden bg-white">
         <div className="max-w-3xl mx-auto px-4 pt-6 pb-8">
-          <nav className="text-[12.5px] text-[#5c5e62]">
+          <nav className="text-[12.5px] text-[var(--g-gris)]">
             <Link href="/" className="hover:underline">Accueil</Link> › <Link href="/conseils" className="hover:underline">Conseils</Link>
           </nav>
-          <p className="mt-4 inline-flex rounded-full px-3 py-1 text-[12px] font-extrabold" style={{ background: "#27A827", color: "#fff" }}>Conseil gratuit</p>
-          <h1 className="mt-3 text-[28px] sm:text-[38px] font-black leading-[1.12] text-[#111827]">{c.titre}</h1>
-          <p className="mt-4 text-[16.5px] sm:text-[18px] leading-relaxed text-[#393c41]">{c.chapeau}</p>
+          <p className="mt-4 text-[14px] font-semibold text-[var(--g-vert)]">Conseil gratuit</p>
+          <h1 className="mt-2 text-[28px] sm:text-[38px] font-semibold tracking-[-0.02em] leading-[1.12] text-[var(--g-encre)]">{c.titre}</h1>
+          <p className="mt-4 text-[16.5px] sm:text-[18px] leading-relaxed text-[var(--g-gris)]">{c.chapeau}</p>
         </div>
         {photo && (
           <div className="max-w-3xl mx-auto px-4 pb-8">
-            <div className="relative w-full overflow-hidden rounded-[1.75rem] shadow-xl" style={{ aspectRatio: "16/9" }}>
+            <div className="relative w-full overflow-hidden rounded-[16px]" style={{ aspectRatio: "16/9" }}>
               <Image src={photo} alt={c.titre} fill priority sizes="(max-width: 768px) 100vw, 768px" className="object-cover" style={{ objectPosition: "50% 25%" }} />
             </div>
           </div>
@@ -119,21 +119,21 @@ export default async function PageConseil({ params }: { params: Promise<{ slug: 
 
       <div className="max-w-3xl mx-auto px-4 pb-14">
         {/* Sommaire */}
-        <nav className="rounded-[1.5rem] border border-[#f1f2f3] bg-[#fafafa] p-5">
-          <p className="text-[14px] font-extrabold text-[#111827]">Dans cet article</p>
+        <nav className="rounded-[14px] bg-[var(--g-doux)] p-5">
+          <p className="text-[14px] font-semibold text-[var(--g-encre)]">Dans cet article</p>
           <ol className="mt-2 space-y-1.5">
             {c.sections.map((s, i) => (
-              <li key={i}><a href={`#${ancre(s.titre, i)}`} className="text-[14.5px] text-[#1e7a1e] hover:underline">{i + 1}. {s.titre}</a></li>
+              <li key={i}><a href={`#${ancre(s.titre, i)}`} className="text-[14.5px] text-[var(--g-vert)] hover:underline">{i + 1}. {s.titre}</a></li>
             ))}
-            {c.erreurs.length > 0 && <li><a href="#erreurs" className="text-[14.5px] text-[#1e7a1e] hover:underline">Les erreurs à éviter</a></li>}
-            {c.faq.length > 0 && <li><a href="#questions" className="text-[14.5px] text-[#1e7a1e] hover:underline">Questions fréquentes</a></li>}
+            {c.erreurs.length > 0 && <li><a href="#erreurs" className="text-[14.5px] text-[var(--g-vert)] hover:underline">Les erreurs à éviter</a></li>}
+            {c.faq.length > 0 && <li><a href="#questions" className="text-[14.5px] text-[var(--g-vert)] hover:underline">Questions fréquentes</a></li>}
           </ol>
         </nav>
 
         {/* Parties */}
         {c.sections.map((s, i) => (
           <section key={i} id={ancre(s.titre, i)} className="mt-10 scroll-mt-24">
-            <h2 className="text-[22px] sm:text-[26px] font-black leading-tight text-[#111827]">{s.titre}</h2>
+            <h2 className="text-[22px] sm:text-[26px] font-semibold tracking-[-0.02em] leading-tight text-[var(--g-encre)]">{s.titre}</h2>
             {s.paragraphes.map((p, j) => (
               <p key={j} className="mt-3 text-[16.5px] leading-[1.75] text-[#2b2f33]">{p}</p>
             ))}
@@ -141,7 +141,7 @@ export default async function PageConseil({ params }: { params: Promise<{ slug: 
               <ul className="mt-4 space-y-2">
                 {s.liste.map((l, j) => (
                   <li key={j} className="flex gap-2.5 text-[16px] leading-relaxed text-[#2b2f33]">
-                    <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full" style={{ background: j % 2 === 0 ? "#27A827" : "#E8B800" }} />
+                    <span className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full" style={{ background: "var(--g-vert)" }} />
                     {l}
                   </li>
                 ))}
@@ -153,11 +153,11 @@ export default async function PageConseil({ params }: { params: Promise<{ slug: 
 
         {/* Erreurs */}
         {c.erreurs.length > 0 && (
-          <section id="erreurs" className="mt-12 scroll-mt-24 rounded-[1.75rem] p-5 sm:p-6" style={{ background: "#fff5f5", border: "1.5px solid #fecaca" }}>
-            <h2 className="text-[21px] font-black text-[#991b1b]">⚠️ Les erreurs à éviter</h2>
+          <section id="erreurs" className="mt-12 scroll-mt-24 rounded-[16px] p-5 sm:p-6 bg-[var(--g-doux)]">
+            <h2 className="text-[21px] font-semibold tracking-[-0.02em] text-[var(--g-encre)]">Les erreurs à éviter</h2>
             <ul className="mt-3 space-y-2.5">
               {c.erreurs.map((e, i) => (
-                <li key={i} className="flex gap-2.5 text-[15.5px] leading-relaxed text-[#3f1d1d]"><span className="font-black text-[#dc2626]">✗</span>{e}</li>
+                <li key={i} className="flex gap-2.5 text-[15.5px] leading-relaxed text-[#2b2f33]"><X size={17} strokeWidth={2.5} className="mt-1 flex-shrink-0 text-[#b42318]" />{e}</li>
               ))}
             </ul>
           </section>
@@ -165,16 +165,15 @@ export default async function PageConseil({ params }: { params: Promise<{ slug: 
 
         {/* Accompagnement */}
         <Link href={espace ? `/accompagnement/${espace.id}` : "/accompagnement"}
-          className="group relative mt-12 block overflow-hidden rounded-[1.75rem] p-6 shadow-xl"
-          style={{ background: "linear-gradient(135deg, #1b7a1b 0%, #27A827 60%, #b8a000 100%)" }}>
-          <p className="text-[12px] font-extrabold uppercase tracking-[0.15em]" style={{ color: "#fff3b0" }}>🤝 Accompagnement</p>
-          <p className="mt-1 text-[21px] sm:text-[24px] font-black leading-tight" style={{ color: "#fff" }}>
+          className="group relative mt-12 block overflow-hidden rounded-[18px] p-6 bg-[var(--g-vert-profond)]">
+          <p className="text-[14px] font-semibold text-[var(--g-jaune)]">Accompagnement</p>
+          <p className="mt-1 text-[21px] sm:text-[24px] font-semibold tracking-[-0.02em] leading-tight" style={{ color: "#fff" }}>
             Vous voulez aller plus vite ? Un expert du terrain vous accompagne.
           </p>
           <p className="mt-2 text-[14.5px]" style={{ color: "rgba(255,255,255,0.92)" }}>
             {espace ? `Programme « ${espace.titre} » : ` : ""}soumettez votre projet, un consultant vous guide du budget au lancement. Candidature gratuite.
           </p>
-          <span className="bouton-reflet relative overflow-hidden mt-4 inline-flex rounded-2xl px-5 py-3 text-[14px] font-extrabold" style={{ background: "#E8B800", color: "#fff" }}>
+          <span className="g-btn mt-4">
             Déposer ma candidature gratuite →
           </span>
         </Link>
@@ -182,14 +181,14 @@ export default async function PageConseil({ params }: { params: Promise<{ slug: 
         {/* Questions */}
         {c.faq.length > 0 && (
           <section id="questions" className="mt-12 scroll-mt-24">
-            <h2 className="text-[22px] sm:text-[26px] font-black text-[#111827]">Questions fréquentes</h2>
+            <h2 className="text-[22px] sm:text-[26px] font-semibold tracking-[-0.02em] text-[var(--g-encre)]">Questions fréquentes</h2>
             <div className="mt-4 space-y-3">
               {c.faq.map((f, i) => (
-                <details key={i} className="group rounded-2xl border border-[#e8e9eb] bg-white p-4 open:shadow-md">
-                  <summary className="cursor-pointer list-none text-[15.5px] font-bold text-[#111827] flex justify-between gap-3">
-                    {f.q}<span className="text-[#27A827] group-open:rotate-45 transition-transform">＋</span>
+                <details key={i} className="group rounded-[12px] border border-[var(--g-ligne)] bg-white p-4">
+                  <summary className="cursor-pointer list-none text-[15.5px] font-semibold text-[var(--g-encre)] flex justify-between gap-3">
+                    {f.q}<span className="text-[var(--g-vert)] group-open:rotate-45 transition-transform">＋</span>
                   </summary>
-                  <p className="mt-2 text-[15px] leading-relaxed text-[#393c41]">{f.a}</p>
+                  <p className="mt-2 text-[15px] leading-relaxed text-[var(--g-gris)]">{f.a}</p>
                 </details>
               ))}
             </div>
@@ -201,15 +200,15 @@ export default async function PageConseil({ params }: { params: Promise<{ slug: 
         {/* Autres conseils */}
         {autres.length > 0 && (
           <section className="mt-14">
-            <h2 className="text-[19px] font-black text-[#111827]">D&apos;autres idées de business</h2>
+            <h2 className="text-[19px] font-semibold tracking-[-0.02em] text-[var(--g-encre)]">D&apos;autres idées de business</h2>
             <div className="mt-3 grid sm:grid-cols-2 gap-3">
               {autres.map((a) => (
-                <Link key={a.slug} href={`/conseils/${a.slug}`} className="rounded-2xl border border-[#e8e9eb] p-4 text-[14.5px] font-bold text-[#111827] hover:border-[#27A827] hover:bg-[#f0fdf4]">
+                <Link key={a.slug} href={`/conseils/${a.slug}`} className="rounded-[12px] border border-[var(--g-ligne)] p-4 text-[14.5px] font-semibold text-[var(--g-encre)] hover:border-[var(--g-encre)] transition-colors">
                   {a.titre} →
                 </Link>
               ))}
             </div>
-            <Link href="/conseils" className="mt-4 inline-block text-[14px] font-bold text-[#1e7a1e]">Tous les conseils →</Link>
+            <Link href="/conseils" className="g-lien mt-4 text-[14px]">Tous les conseils →</Link>
           </section>
         )}
       </div>

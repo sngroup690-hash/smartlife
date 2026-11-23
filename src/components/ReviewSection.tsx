@@ -40,7 +40,7 @@ function ReviewCard({ review, cardSize = "medium" }: { review: Review; cardSize?
     <div className={`flex-shrink-0 ${sizeCls} p-5 bg-white border border-gray-200 shadow-sm rounded-2xl flex flex-col gap-4`}>
       {/* Avatar + nom + badge vérifié */}
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#E8B800]/40 to-[#27A827]/30 flex items-center justify-center text-[#E8B800] font-bold text-base flex-shrink-0 select-none">
+        <div className="w-10 h-10 rounded-full bg-[#E8B800]/20 flex items-center justify-center text-[#E8B800] font-bold text-base flex-shrink-0 select-none">
           {review.userName.charAt(0).toUpperCase()}
         </div>
         <div className="min-w-0">
@@ -155,7 +155,7 @@ export default function ReviewSection({
                 >
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#E8B800]/30 to-[#27A827]/20 flex items-center justify-center text-[#E8B800] font-bold text-xs">
+                      <div className="w-6 h-6 rounded-full bg-[#E8B800]/20 flex items-center justify-center text-[#E8B800] font-bold text-xs">
                         {review.userName.charAt(0).toUpperCase()}
                       </div>
                       <span className="text-white font-medium text-xs truncate max-w-[80px]">{review.userName}</span>
@@ -202,7 +202,7 @@ export default function ReviewSection({
               {error && <p className="text-red-400 text-xs">{error}</p>}
               <div className="flex gap-2">
                 <button type="submit" disabled={submitting}
-                  className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-black text-xs font-bold rounded-xl disabled:opacity-60">
+                  className="flex items-center gap-1.5 px-4 py-2 bg-[#E8B800] hover:bg-[#D4A600] text-[#101410] text-xs font-semibold rounded-[10px] disabled:opacity-60">
                   <Send size={12} /> {submitting ? "Envoi…" : "Soumettre"}
                 </button>
                 <button type="button" onClick={() => setShowForm(false)}
@@ -309,7 +309,7 @@ export default function ReviewSection({
             {error && <p className="text-red-400 text-sm">{error}</p>}
             <div className="flex gap-3">
               <button type="submit" disabled={submitting}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-black font-bold rounded-xl disabled:opacity-60">
+                className="flex items-center gap-2 px-6 py-3 bg-[#E8B800] hover:bg-[#D4A600] text-[#101410] font-semibold rounded-[10px] disabled:opacity-60">
                 <Send size={16} /> {submitting ? "Envoi…" : "Soumettre mon avis"}
               </button>
               <button type="button" onClick={() => setShowForm(false)}

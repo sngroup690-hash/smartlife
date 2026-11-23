@@ -7,6 +7,7 @@ import {
   LogOut, Star, Send, MessageSquare, Lock, Eye, EyeOff,
   BookOpen, Users, Download, Shield, Mail, User,
   Play, ExternalLink, ChevronDown, ChevronUp, Headphones, WifiOff, X, Bookmark,
+  PenLine, ClipboardList,
 } from "lucide-react";
 import PwaInstallPrompt from "@/components/PwaInstallPrompt";
 import EspaceMarketing, { BienvenueEspace } from "./EspaceMarketing";
@@ -22,7 +23,7 @@ import { ebooks as TOUS_LES_EBOOKS, formatPrice } from "@/lib/data";
 import { FORMATIONS } from "@/lib/formations-data";
 
 const inputCls =
-  "w-full px-4 py-3 bg-gray-50 border border-green-500 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-600 focus:bg-white transition-colors text-sm";
+  "w-full px-4 py-3 bg-[var(--g-doux)] border border-[var(--g-ligne)] rounded-[10px] text-[var(--g-encre)] placeholder-[#a9aeb5] focus:outline-none focus:border-[var(--g-encre)] focus:bg-white transition-colors text-sm";
 
 // ─── Lecteur audio ebook ──────────────────────────────────────────────────────
 
@@ -38,7 +39,7 @@ function EbookAudioPlayer({ url, title }: { url: string; title: string }) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 w-full py-2 px-3 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-700 text-xs font-bold rounded-lg transition-colors">
+        className="flex items-center gap-2 w-full py-2 px-3 bg-[var(--g-jaune-doux)] hover:bg-[#fbeeb8] text-[#3d3a1f] text-xs font-semibold rounded-lg transition-colors">
         <Headphones size={13} />
         {open ? "Fermer la version audio" : "Écouter la version audio"}
         {open ? <ChevronUp size={11} className="ml-auto" /> : <ChevronDown size={11} className="ml-auto" />}
@@ -52,8 +53,8 @@ function EbookAudioPlayer({ url, title }: { url: string; title: string }) {
             <iframe width="100%" height="120" scrolling="no" frameBorder="no" allow="autoplay" src={scEmbed} className="rounded-lg" />
           ) : (
             <a href={url} target="_blank" rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-lg transition-colors">
-              <Headphones size={13} /> Ouvrir la version audio ↗
+              className="flex items-center justify-center gap-2 w-full py-2.5 bg-[var(--g-vert)] hover:bg-[var(--g-vert-profond)] text-white text-xs font-semibold rounded-lg transition-colors">
+              <Headphones size={13} /> Ouvrir la version audio <ExternalLink size={12} />
             </a>
           )}
         </div>
@@ -67,18 +68,18 @@ function EbookAudioPlayer({ url, title }: { url: string; title: string }) {
 function StatutBadge({ statut }: { statut: string }) {
   if (statut === "validee")
     return (
-      <span className="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold rounded-full">
+      <span className="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold rounded-md">
         <CheckCircle size={12} /> Validée
       </span>
     );
   if (statut === "rejetee")
     return (
-      <span className="flex items-center gap-1.5 px-3 py-1 bg-red-50 border border-red-200 text-red-600 text-xs font-bold rounded-full">
+      <span className="flex items-center gap-1.5 px-3 py-1 bg-red-50 border border-red-200 text-red-600 text-xs font-semibold rounded-md">
         <XCircle size={12} /> Rejetée
       </span>
     );
   return (
-    <span className="flex items-center gap-1.5 px-3 py-1 bg-yellow-50 border border-yellow-200 text-yellow-600 text-xs font-bold rounded-full">
+    <span className="flex items-center gap-1.5 px-3 py-1 bg-yellow-50 border border-yellow-200 text-yellow-600 text-xs font-semibold rounded-md">
       <Clock size={12} /> En attente
     </span>
   );
@@ -101,7 +102,7 @@ function StarRating({ value, onChange, readonly = false }: {
             onClick={() => onChange?.(star)}
             onMouseEnter={() => !readonly && setHovered(star)}
             onMouseLeave={() => !readonly && setHovered(0)}
-            className={`text-2xl transition-colors ${readonly ? "cursor-default" : "cursor-pointer"} ${filled ? "text-[#E8B800]" : "text-gray-700"}`}>
+            className={`text-2xl transition-colors ${readonly ? "cursor-default" : "cursor-pointer"} ${filled ? "text-[#E8B800]" : "text-[#cfd5cf]"}`}>
             ★
           </button>
         );
@@ -150,7 +151,7 @@ function ProductReviewForm({
       <div className="p-3 bg-gray-50 border border-gray-200 rounded-xl space-y-2">
         <div className="flex items-center gap-2">
           <StarRating value={existingReview.rating} readonly />
-          <span className="text-[#E8B800] text-xs font-medium">{NOTE_LABELS[existingReview.rating]}</span>
+          <span className="text-[var(--g-gris)] text-xs font-medium">{NOTE_LABELS[existingReview.rating]}</span>
         </div>
         {existingReview.text && <p className="text-gray-600 text-xs italic">&ldquo;{existingReview.text}&rdquo;</p>}
         {badge}
@@ -194,14 +195,14 @@ function ProductReviewForm({
     <form onSubmit={handleSubmit} className="space-y-3">
       <div className="flex items-center gap-3">
         <StarRating value={rating} onChange={setRating} />
-        {rating > 0 && <span className="text-[#E8B800] text-xs font-medium">{NOTE_LABELS[rating]}</span>}
+        {rating > 0 && <span className="text-[var(--g-gris)] text-xs font-medium">{NOTE_LABELS[rating]}</span>}
       </div>
       <textarea rows={3} value={text} onChange={(e) => setText(e.target.value)}
         className={`${inputCls} resize-none`}
         placeholder="Partagez votre expérience (optionnel)…" />
       {error && <p className="text-red-400 text-xs">{error}</p>}
       <button type="submit" disabled={rating === 0 || loading}
-        className="w-full py-2.5 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-black font-bold rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-40 text-sm">
+        className="g-btn w-full !h-11 !text-[14px] disabled:opacity-40">
         {loading ? <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> : <><Send size={13} /> Soumettre mon avis</>}
       </button>
     </form>
@@ -265,7 +266,7 @@ function ProductMotivationForm({ productId, productLabel, onSaved }: {
         className={`${inputCls} resize-none`}
         placeholder="Votre motivation, vos objectifs…" />
       <button type="submit" disabled={!text.trim()}
-        className="w-full py-2.5 bg-gray-800 hover:bg-gray-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-40 text-sm">
+        className="g-btn g-btn-noir w-full !h-11 !text-[14px] disabled:opacity-40">
         <Send size={13} /> Enregistrer
       </button>
     </form>
@@ -301,16 +302,16 @@ function AvisForm({ demandeId, espaceTitre }: { demandeId: string; espaceTitre: 
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-4 p-5 bg-[#E8B800]/5 border border-[#E8B800]/20 rounded-xl space-y-4">
+    <form onSubmit={handleSubmit} className="mt-4 p-5 bg-[var(--g-jaune-doux)] rounded-xl space-y-4">
       <div className="flex items-center gap-2 mb-1">
-        <MessageSquare size={16} className="text-[#E8B800]" />
+        <MessageSquare size={16} className="text-[var(--g-vert)]" />
         <h4 className="text-gray-900 font-semibold text-sm">Évaluez votre consultant — {espaceTitre}</h4>
       </div>
       <div>
         <p className="text-gray-500 text-xs mb-2">Votre note *</p>
         <div className="flex items-center gap-3">
           <StarRating value={note} onChange={setNote} />
-          {note > 0 && <span className="text-[#E8B800] text-sm font-medium">{NOTE_LABELS[note]}</span>}
+          {note > 0 && <span className="text-[var(--g-gris)] text-sm font-medium">{NOTE_LABELS[note]}</span>}
         </div>
       </div>
       <div>
@@ -320,7 +321,7 @@ function AvisForm({ demandeId, espaceTitre }: { demandeId: string; espaceTitre: 
           placeholder={`Comment s'est passé votre accompagnement dans le programme ${espaceTitre} ?`} />
       </div>
       <button type="submit" disabled={note === 0 || loading}
-        className="w-full py-3 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-black font-bold rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-40 text-sm">
+        className="g-btn w-full !text-[14px] disabled:opacity-40">
         {loading ? <span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> : <><Send size={14} /> Envoyer</>}
       </button>
     </form>
@@ -741,7 +742,7 @@ export default function MonEspacePage() {
   if (!userStore._hasHydrated || magicLinkLoading) {
     return (
       <div className="flex items-center justify-center min-h-[70vh]">
-        <div className="w-10 h-10 border-2 border-[#E8B800]/30 border-t-[#E8B800] rounded-full animate-spin" />
+        <div className="w-10 h-10 border-2 border-[var(--g-ligne)] border-t-[var(--g-vert)] rounded-full animate-spin" />
       </div>
     );
   }
@@ -751,21 +752,21 @@ export default function MonEspacePage() {
     return (
       <div className="max-w-md mx-auto px-4 py-24">
         <div className="text-center mb-10">
-          <div className="w-20 h-20 mx-auto rounded-full bg-[#E8B800]/10 border border-[#E8B800]/30 flex items-center justify-center text-4xl mb-6">
-            👤
+          <div className="w-16 h-16 mx-auto rounded-full bg-[var(--g-vert-doux)] flex items-center justify-center mb-6">
+            <User size={30} className="text-[var(--g-vert)]" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-3">Mon Espace</h1>
+          <h1 className="text-[34px] sm:text-[40px] font-semibold tracking-[-0.03em] leading-tight text-[var(--g-encre)] mb-3">Mon Espace</h1>
           <p className="text-gray-600 text-sm">
             Retrouvez vos ebooks achetés, vos formations, vos candidatures et nos consultants.
           </p>
         </div>
 
-        <div className="p-8 bg-white border border-gray-200 rounded-2xl shadow-sm space-y-4">
+        <div className="p-8 bg-white border border-[var(--g-ligne)] rounded-[18px] space-y-4">
 
           {showPinCreation ? (
             <form onSubmit={handleCreateLoginPin} className="space-y-4">
               <div className="text-center pb-1">
-                <Mail size={26} className="text-[#27A827] mx-auto mb-2" />
+                <Mail size={26} className="text-[var(--g-vert)] mx-auto mb-2" />
                 <h3 className="text-gray-900 font-bold text-base">Entre le code reçu par e-mail</h3>
                 <p className="text-gray-600 text-xs mt-1">
                   Nous venons d&apos;envoyer un code à 6 chiffres à <span className="font-semibold text-gray-900">{email}</span>.
@@ -807,7 +808,7 @@ export default function MonEspacePage() {
                 </p>
               )}
               <button type="submit" disabled={pinLoading}
-                className="w-full py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-black font-bold rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-60">
+                className="g-btn w-full !h-[52px] disabled:opacity-60">
                 {pinLoading
                   ? <span className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
                   : <><Lock size={16} /> Accéder à mon espace</>}
@@ -821,7 +822,7 @@ export default function MonEspacePage() {
             <form onSubmit={handleCheckEmail} className="space-y-4">
               <div>
                 <label className="block text-gray-700 text-sm mb-2">
-                  Email <span className="text-[#E8B800]">*</span>
+                  Email <span className="text-[var(--g-vert)]">*</span>
                 </label>
                 <input required type="email" value={email}
                   onChange={(e) => { setEmail(e.target.value); setLoginError(""); }}
@@ -833,7 +834,7 @@ export default function MonEspacePage() {
                 )}
               </div>
               <button type="submit" disabled={emailLoading}
-                className="w-full py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] hover:from-[#27A827] hover:to-[#E8B800] text-black font-bold rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-60">
+                className="g-btn w-full !h-[52px] disabled:opacity-60">
                 {emailLoading
                   ? <span className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
                   : <><Mail size={16} /> Accéder à mon espace</>}
@@ -846,7 +847,7 @@ export default function MonEspacePage() {
                   Connexion pour <span className="text-gray-900 font-medium">{email}</span>
                 </p>
                 <label className="block text-gray-700 text-sm mb-2">
-                  Code PIN ou mot de passe <span className="text-[#E8B800]">*</span>
+                  Code PIN ou mot de passe <span className="text-[var(--g-vert)]">*</span>
                 </label>
                 <div className="relative">
                   <input required type={showPwd ? "text" : "password"} value={password}
@@ -864,13 +865,13 @@ export default function MonEspacePage() {
                 )}
               </div>
               <button type="submit"
-                className="w-full py-4 bg-gradient-to-r from-[#E8B800] to-[#27A827] hover:from-[#27A827] hover:to-[#E8B800] text-black font-bold rounded-xl transition-all flex items-center justify-center gap-2">
+                className="g-btn w-full !h-[52px]">
                 <Lock size={16} /> Se connecter
               </button>
               <button type="button"
                 onClick={() => { setShowPasswordField(false); setPassword(""); setLoginError(""); setShowPinCreation(true); demanderCode(); }}
-                className="w-full rounded-xl border-2 border-[#27A827] py-3 text-sm font-bold text-[#1e7a1e] hover:bg-[#f0fdf4]">
-                🔑 Code oublié ? Recevoir un code par e-mail
+                className="w-full rounded-[10px] border border-[var(--g-vert)] py-3 text-sm font-semibold text-[var(--g-vert)] hover:bg-[var(--g-vert-doux)] transition-colors">
+                Code oublié ? Recevoir un code par e-mail
               </button>
               <button type="button" onClick={() => { setShowPasswordField(false); setPassword(""); setLoginError(""); }}
                 className="w-full text-center text-gray-600 text-xs hover:text-gray-400 transition-colors py-1">
@@ -882,7 +883,7 @@ export default function MonEspacePage() {
           <div className="pt-4 border-t border-gray-100 text-center">
             <p className="text-gray-600 text-xs mb-2">Pas encore de compte ?</p>
             <Link href="/ebooks"
-              className="inline-flex items-center gap-1 text-[#E8B800] text-sm hover:text-[#27A827] transition-colors">
+              className="g-lien text-sm">
               Découvrir nos produits <ArrowRight size={13} />
             </Link>
           </div>
@@ -1096,7 +1097,7 @@ export default function MonEspacePage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-1">Mon Espace</h1>
+          <h1 className="text-[34px] sm:text-[40px] font-semibold tracking-[-0.03em] leading-tight text-[var(--g-encre)] mb-1">Mon Espace</h1>
           <p className="text-gray-600">
             Bonjour, <span className="text-gray-900 font-semibold">{currentUser.firstName} {currentUser.lastName}</span>
           </p>
@@ -1114,8 +1115,8 @@ export default function MonEspacePage() {
 
       {/* Rappel notation */}
       {nonNotees.length > 0 && (
-        <div className="p-4 bg-[#E8B800]/10 border border-[#E8B800]/30 rounded-2xl flex items-start gap-3">
-          <Star size={18} className="text-[#E8B800] flex-shrink-0 mt-0.5" />
+        <div className="p-4 bg-[var(--g-jaune-doux)] rounded-2xl flex items-start gap-3">
+          <Star size={18} className="text-[var(--g-encre)] flex-shrink-0 mt-0.5" />
           <div>
             <p className="text-gray-900 text-sm font-semibold mb-0.5">
               {nonNotees.length} programme{nonNotees.length > 1 ? "s" : ""} à évaluer
@@ -1126,14 +1127,14 @@ export default function MonEspacePage() {
       )}
 
       {/* ── Mes Produits ── */}
-      <section className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6">
+      <section className="bg-white border border-[var(--g-ligne)] rounded-[18px] p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-gray-900 text-xl font-bold flex items-center gap-2">
-            <BookOpen size={20} className="text-[#E8B800]" />
+          <h2 className="text-[var(--g-encre)] text-[22px] font-semibold tracking-[-0.02em] flex items-center gap-2">
+            <BookOpen size={20} className="text-[var(--g-vert)]" />
             Mes Produits ({totalProduits})
           </h2>
           <Link href="/ebooks"
-            className="flex items-center gap-1 text-[#E8B800] text-sm hover:text-[#27A827] transition-colors">
+            className="g-lien flex-shrink-0 text-[14.5px]">
             Voir le catalogue <ArrowRight size={13} />
           </Link>
         </div>
@@ -1145,7 +1146,7 @@ export default function MonEspacePage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Rechercher parmi mes produits…"
-              className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#E8B800] focus:bg-white transition-colors"
+              className="w-full pl-10 pr-4 py-2.5 bg-[var(--g-doux)] border border-transparent rounded-[10px] text-sm text-[var(--g-encre)] placeholder-[#a9aeb5] focus:outline-none focus:border-[var(--g-encre)] focus:bg-white transition-colors"
             />
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             {searchQuery && (
@@ -1163,12 +1164,12 @@ export default function MonEspacePage() {
         )}
 
         {totalProduits === 0 ? (
-          <div className="text-center py-12 bg-gray-50 border border-gray-100 rounded-2xl">
-            <BookOpen size={40} className="text-gray-300 mx-auto mb-4" />
-            <h3 className="text-gray-900 font-bold mb-2">Aucun produit acheté</h3>
+          <div className="text-center py-12 bg-[var(--g-doux)] rounded-2xl">
+            <BookOpen size={36} className="text-[var(--g-gris)] mx-auto mb-4" />
+            <h3 className="text-[var(--g-encre)] font-semibold mb-2">Aucun produit acheté</h3>
             <p className="text-gray-600 text-sm mb-5">Vos ebooks et formations apparaîtront ici après achat.</p>
             <Link href="/ebooks"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#E8B800] text-black font-bold rounded-xl text-sm">
+              className="g-btn !text-[14px]">
               Découvrir les produits <ArrowRight size={13} />
             </Link>
           </div>
@@ -1191,8 +1192,8 @@ export default function MonEspacePage() {
             {/* Ebooks */}
             {ebooksFiltered.length > 0 && (
               <div>
-                <h3 className="text-gray-700 text-sm font-bold uppercase tracking-wide mb-3 flex items-center gap-2">
-                  <BookOpen size={14} className="text-[#E8B800]" /> Ebooks ({ebooksFiltered.length})
+                <h3 className="text-[14px] font-semibold text-[var(--g-vert)] mb-3 flex items-center gap-2">
+                  <BookOpen size={14} className="text-[var(--g-vert)]" /> Ebooks ({ebooksFiltered.length})
                 </h3>
                 <div className="space-y-3">
                   {ebooksFiltered.map((ebook) => {
@@ -1204,12 +1205,12 @@ export default function MonEspacePage() {
                       <div key={ebook.id} className="border border-gray-200 rounded-xl overflow-hidden">
                         {/* Ligne principale */}
                         <div className="flex items-center gap-4 p-4 bg-gray-50">
-                          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center flex-shrink-0">
-                            <BookOpen size={18} className="text-[#E8B800]" />
+                          <div className="w-10 h-10 rounded-lg bg-[var(--g-vert-doux)] flex items-center justify-center flex-shrink-0">
+                            <BookOpen size={18} className="text-[var(--g-vert)]" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-gray-900 text-sm font-semibold line-clamp-1">{ebook.title}</p>
-                            <p className="text-gray-500 text-xs">{ebook.category} · {ebook.pages} pages · <span className="text-[#E8B800] font-medium">{formatPrice(ebook.price)}</span></p>
+                            <p className="text-gray-500 text-xs">{ebook.category} · {ebook.pages} pages · <span className="text-[var(--g-encre)] font-medium">{formatPrice(ebook.price)}</span></p>
                           </div>
                           <div className="flex flex-col sm:flex-row gap-1.5 flex-shrink-0">
                             <Link href={`/ebooks/${ebookSlug}`}
@@ -1219,7 +1220,7 @@ export default function MonEspacePage() {
                             <button
                               onClick={() => handleDownload(ebook.id)}
                               disabled={fetchingToken === ebook.id || !isOnline}
-                              className="flex items-center gap-1 px-3 py-1.5 bg-[#E8B800] hover:bg-[#27A827] disabled:opacity-60 text-black text-xs font-bold rounded-lg transition-colors">
+                              className="flex items-center gap-1 px-3 py-1.5 bg-[var(--g-jaune)] hover:bg-[var(--g-jaune-fonce)] disabled:opacity-60 text-[var(--g-encre)] text-xs font-semibold rounded-lg transition-colors">
                               {fetchingToken === ebook.id
                                 ? <span className="w-3 h-3 border border-black/30 border-t-black rounded-full animate-spin" />
                                 : <Download size={11} />}
@@ -1279,14 +1280,14 @@ export default function MonEspacePage() {
                           <button
                             onClick={() => setMotivationOpen((prev) => ({ ...prev, [ebook.id]: !prev[ebook.id] }))}
                             className="flex-1 py-2 text-xs text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-1">
-                            ✍️ Ma motivation
+                            <PenLine size={12} /> Ma motivation
                             {motivationOpen[ebook.id] ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
                           </button>
                           <div className="w-px bg-gray-100" />
                           <button
                             onClick={() => setReviewOpen((prev) => ({ ...prev, [ebook.id]: !prev[ebook.id] }))}
                             className="flex-1 py-2 text-xs text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-1">
-                            ⭐ {existingReview ? "Mon avis" : "Donner un avis"}
+                            <Star size={12} /> {existingReview ? "Mon avis" : "Donner un avis"}
                             {reviewOpen[ebook.id] ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
                           </button>
                         </div>
@@ -1322,7 +1323,7 @@ export default function MonEspacePage() {
             {/* Formations */}
             {formationsFiltered.length > 0 && (
               <div>
-                <h3 className="text-gray-700 text-sm font-bold uppercase tracking-wide mb-3 flex items-center gap-2">
+                <h3 className="text-[14px] font-semibold text-[var(--g-vert)] mb-3 flex items-center gap-2">
                   <Play size={14} className="text-blue-600" /> Formations ({formationsFiltered.length})
                 </h3>
                 <div className="space-y-3">
@@ -1332,7 +1333,7 @@ export default function MonEspacePage() {
                       <div key={formation.id} className="border border-gray-200 rounded-xl overflow-hidden">
                         {/* Ligne principale */}
                         <div className="flex items-center gap-4 p-4 bg-blue-50/40">
-                          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center flex-shrink-0">
+                          <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
                             <Play size={18} className="text-blue-600" />
                           </div>
                           <div className="flex-1 min-w-0">
@@ -1361,14 +1362,14 @@ export default function MonEspacePage() {
                           <button
                             onClick={() => setMotivationOpen((prev) => ({ ...prev, [formation.id]: !prev[formation.id] }))}
                             className="flex-1 py-2 text-xs text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-1">
-                            ✍️ Ma motivation
+                            <PenLine size={12} /> Ma motivation
                             {motivationOpen[formation.id] ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
                           </button>
                           <div className="w-px bg-gray-100" />
                           <button
                             onClick={() => setReviewOpen((prev) => ({ ...prev, [formation.id]: !prev[formation.id] }))}
                             className="flex-1 py-2 text-xs text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-1">
-                            ⭐ {existingReview ? "Mon avis" : "Donner un avis"}
+                            <Star size={12} /> {existingReview ? "Mon avis" : "Donner un avis"}
                             {reviewOpen[formation.id] ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
                           </button>
                         </div>
@@ -1408,14 +1409,14 @@ export default function MonEspacePage() {
 
       {/* ── Mes Favoris ── */}
       {(savedEbooksList.length > 0 || savedFormationsList.length > 0) && (
-        <section className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6">
+        <section className="bg-white border border-[var(--g-ligne)] rounded-[18px] p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-gray-900 text-xl font-bold flex items-center gap-2">
-              <Bookmark size={20} className="text-[#E8B800]" />
+            <h2 className="text-[var(--g-encre)] text-[22px] font-semibold tracking-[-0.02em] flex items-center gap-2">
+              <Bookmark size={20} className="text-[var(--g-vert)]" />
               Mes Favoris ({savedEbooksList.length + savedFormationsList.length})
             </h2>
             <Link href="/ebooks"
-              className="flex items-center gap-1 text-[#E8B800] text-sm hover:text-[#27A827] transition-colors">
+              className="g-lien flex-shrink-0 text-[14.5px]">
               Explorer <ArrowRight size={13} />
             </Link>
           </div>
@@ -1423,16 +1424,16 @@ export default function MonEspacePage() {
           <div className="space-y-6">
             {savedEbooksList.length > 0 && (
               <div>
-                <h3 className="text-gray-700 text-sm font-bold uppercase tracking-wide mb-3 flex items-center gap-2">
-                  <BookOpen size={14} className="text-[#E8B800]" /> Ebooks ({savedEbooksList.length})
+                <h3 className="text-[14px] font-semibold text-[var(--g-vert)] mb-3 flex items-center gap-2">
+                  <BookOpen size={14} className="text-[var(--g-vert)]" /> Ebooks ({savedEbooksList.length})
                 </h3>
                 <div className="space-y-2">
                   {savedEbooksList.map((ebook) => {
                     const ebookSlug = getEbookSlug(ebook.id);
                     return (
                       <div key={ebook.id} className="flex items-center gap-3 p-3 bg-gray-50 border border-gray-100 rounded-xl">
-                        <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center flex-shrink-0">
-                          <BookOpen size={16} className="text-[#E8B800]" />
+                        <div className="w-9 h-9 rounded-lg bg-[var(--g-vert-doux)] flex items-center justify-center flex-shrink-0">
+                          <BookOpen size={16} className="text-[var(--g-vert)]" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-gray-900 text-sm font-semibold line-clamp-1">{ebook.title}</p>
@@ -1440,7 +1441,7 @@ export default function MonEspacePage() {
                         </div>
                         <div className="flex items-center gap-2 flex-shrink-0">
                           <Link href={`/ebooks/${ebookSlug}`}
-                            className="px-3 py-1.5 bg-[#E8B800] hover:bg-[#27A827] text-black text-xs font-bold rounded-lg transition-colors">
+                            className="px-3 py-1.5 bg-[var(--g-jaune)] hover:bg-[var(--g-jaune-fonce)] text-[var(--g-encre)] text-xs font-semibold rounded-lg transition-colors">
                             Voir
                           </Link>
                           <button
@@ -1459,13 +1460,13 @@ export default function MonEspacePage() {
 
             {savedFormationsList.length > 0 && (
               <div>
-                <h3 className="text-gray-700 text-sm font-bold uppercase tracking-wide mb-3 flex items-center gap-2">
+                <h3 className="text-[14px] font-semibold text-[var(--g-vert)] mb-3 flex items-center gap-2">
                   <Play size={14} className="text-blue-600" /> Formations ({savedFormationsList.length})
                 </h3>
                 <div className="space-y-2">
                   {savedFormationsList.map((formation) => (
                     <div key={formation.id} className="flex items-center gap-3 p-3 bg-gray-50 border border-gray-100 rounded-xl">
-                      <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center flex-shrink-0">
+                      <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
                         <Play size={16} className="text-blue-600" />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -1494,21 +1495,21 @@ export default function MonEspacePage() {
       )}
 
       {/* ── Consultants disponibles ── */}
-      <section className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6">
+      <section className="bg-white border border-[var(--g-ligne)] rounded-[18px] p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-gray-900 text-xl font-bold flex items-center gap-2">
-            <Users size={20} className="text-[#E8B800]" />
+          <h2 className="text-[var(--g-encre)] text-[22px] font-semibold tracking-[-0.02em] flex items-center gap-2">
+            <Users size={20} className="text-[var(--g-vert)]" />
             Nos consultants disponibles ({consultants.length})
           </h2>
           <Link href="/accompagnement"
-            className="flex items-center gap-1 text-[#E8B800] text-sm hover:text-[#27A827] transition-colors">
+            className="g-lien flex-shrink-0 text-[14.5px]">
             Voir les programmes <ArrowRight size={13} />
           </Link>
         </div>
 
         {consultants.length === 0 ? (
-          <div className="text-center py-10 bg-gray-50 border border-gray-100 rounded-2xl">
-            <User size={32} className="text-gray-300 mx-auto mb-3" />
+          <div className="text-center py-10 bg-[var(--g-doux)] rounded-2xl">
+            <User size={32} className="text-[var(--g-gris)] mx-auto mb-3" />
             <p className="text-gray-500 text-sm">Aucun consultant disponible pour le moment.</p>
           </div>
         ) : (
@@ -1519,21 +1520,21 @@ export default function MonEspacePage() {
                 .map((e) => e.titre);
               return (
                 <div key={consultant.id}
-                  className="p-5 bg-white border border-gray-200 shadow-sm rounded-2xl hover:border-[#E8B800]/30 transition-colors">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#E8B800]/30 to-[#27A827]/20 border border-[#E8B800]/30 flex items-center justify-center mb-4 text-lg font-bold text-[#E8B800]">
+                  className="p-5 bg-white border border-[var(--g-ligne)] rounded-[16px] hover:border-[var(--g-gris-clair)] transition-colors">
+                  <div className="w-12 h-12 rounded-full bg-[var(--g-vert-doux)] flex items-center justify-center mb-4 text-lg font-semibold text-[var(--g-vert)]">
                     {consultant.prenom.charAt(0).toUpperCase()}
                   </div>
-                  <h3 className="text-gray-900 font-bold mb-1">{consultant.prenom}</h3>
+                  <h3 className="text-[var(--g-encre)] font-semibold mb-1">{consultant.prenom}</h3>
                   <p className="text-gray-500 text-xs mb-3">Consultant SMART LIFE</p>
 
                   <div className="flex gap-3 mb-3">
                     <div className="text-center">
-                      <p className="text-[#E8B800] font-bold text-lg">{consultant.clientsAccompa}</p>
+                      <p className="text-[var(--g-encre)] font-semibold text-lg tabular-nums">{consultant.clientsAccompa}</p>
                       <p className="text-gray-600 text-xs">Clients</p>
                     </div>
                     <div className="w-px bg-gray-200" />
                     <div className="text-center">
-                      <p className="text-[#E8B800] font-bold text-lg">{consultant.entreprisesAccompa}</p>
+                      <p className="text-[var(--g-encre)] font-semibold text-lg tabular-nums">{consultant.entreprisesAccompa}</p>
                       <p className="text-gray-600 text-xs">Entreprises</p>
                     </div>
                   </div>
@@ -1542,7 +1543,7 @@ export default function MonEspacePage() {
                     <div className="flex flex-wrap gap-1.5 mt-3">
                       {domainesConsultant.slice(0, 3).map((d) => (
                         <span key={d}
-                          className="px-2 py-0.5 bg-[#E8B800]/10 border border-[#E8B800]/20 text-[#E8B800] text-xs rounded-full truncate max-w-[120px]">
+                          className="px-2 py-0.5 bg-[var(--g-doux)] text-[var(--g-gris)] text-xs rounded-md truncate max-w-[120px]">
                           {d}
                         </span>
                       ))}
@@ -1553,8 +1554,8 @@ export default function MonEspacePage() {
                   )}
 
                   <div className="mt-4">
-                    <span className="flex items-center gap-1.5 text-xs text-emerald-400">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="flex items-center gap-1.5 text-xs font-medium text-[var(--g-vert)]">
+                      <span className="w-2 h-2 rounded-full bg-[var(--g-vert-vif)]" />
                       Disponible
                     </span>
                   </div>
@@ -1566,48 +1567,48 @@ export default function MonEspacePage() {
       </section>
 
       {/* ── Candidature Consultant ── */}
-      <section className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6">
+      <section className="bg-white border border-[var(--g-ligne)] rounded-[18px] p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-gray-900 text-xl font-bold flex items-center gap-2">
-            <Star size={20} className="text-[#E8B800]" />
+          <h2 className="text-[var(--g-encre)] text-[22px] font-semibold tracking-[-0.02em] flex items-center gap-2">
+            <Star size={20} className="text-[var(--g-vert)]" />
             Devenir Consultant
           </h2>
           {candidaturesConsultant.length === 0 && (
             <Link href="/devenir-consultant"
-              className="flex items-center gap-1 text-[#E8B800] text-sm hover:text-[#27A827] transition-colors">
+              className="g-lien flex-shrink-0 text-[14.5px]">
               Postuler <ArrowRight size={13} />
             </Link>
           )}
         </div>
 
         {candidaturesConsultant.length === 0 ? (
-          <div className="p-6 bg-gradient-to-br from-[#E8B800]/5 to-[#27A827]/5 border border-[#E8B800]/20 rounded-2xl flex flex-col sm:flex-row items-center gap-5">
-            <div className="w-14 h-14 rounded-2xl bg-[#E8B800]/10 border border-[#E8B800]/30 flex items-center justify-center flex-shrink-0 text-2xl">
-              ⭐
+          <div className="p-6 bg-[var(--g-jaune-doux)] rounded-[16px] flex flex-col sm:flex-row items-center gap-5">
+            <div className="w-14 h-14 rounded-[14px] bg-white flex items-center justify-center flex-shrink-0">
+              <Star size={24} className="text-[var(--g-vert)]" />
             </div>
             <div className="flex-1 text-center sm:text-left">
-              <h3 className="text-gray-900 font-bold mb-1">Rejoignez notre réseau de consultants</h3>
+              <h3 className="text-[var(--g-encre)] font-semibold tracking-[-0.01em] mb-1">Rejoignez notre réseau de consultants</h3>
               <p className="text-gray-600 text-sm">
                 Vous avez une expertise entrepreneuriale ? Postulez pour accompagner nos membres.
                 Votre profil sera validé par notre équipe avant publication.
               </p>
             </div>
             <Link href="/devenir-consultant"
-              className="flex-shrink-0 px-5 py-3 bg-[#E8B800] hover:bg-[#27A827] text-black font-bold rounded-xl text-sm transition-all">
+              className="g-btn g-btn-noir flex-shrink-0 !text-[14px]">
               Postuler maintenant
             </Link>
           </div>
         ) : (
           <div className="space-y-4">
             {candidaturesConsultant.map((cc) => (
-              <div key={cc.id} className="p-6 bg-white border border-gray-200 shadow-sm rounded-2xl">
+              <div key={cc.id} className="p-6 bg-white border border-[var(--g-ligne)] rounded-[16px]">
                 <div className="flex items-start justify-between gap-4 mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#E8B800]/20 to-[#27A827]/10 border border-[#E8B800]/20 flex items-center justify-center text-[#E8B800] font-black text-xl flex-shrink-0">
+                    <div className="w-12 h-12 rounded-[14px] bg-[var(--g-vert-doux)] flex items-center justify-center text-[var(--g-vert)] font-semibold text-xl flex-shrink-0">
                       {cc.prenom.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <h3 className="text-gray-900 font-bold">{cc.prenom} {cc.nom}</h3>
+                      <h3 className="text-[var(--g-encre)] font-semibold">{cc.prenom} {cc.nom}</h3>
                       <p className="text-gray-600 text-xs">
                         Candidature envoyée le{" "}
                         {new Date(cc.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}
@@ -1649,20 +1650,20 @@ export default function MonEspacePage() {
       </section>
 
       {/* ── Programmes disponibles ── */}
-      <section className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6">
+      <section className="bg-white border border-[var(--g-ligne)] rounded-[18px] p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-gray-900 text-xl font-bold flex items-center gap-2">
-            <ArrowRight size={20} className="text-[#E8B800]" />
+          <h2 className="text-[var(--g-encre)] text-[22px] font-semibold tracking-[-0.02em] flex items-center gap-2">
+            <ArrowRight size={20} className="text-[var(--g-vert)]" />
             Programmes d&apos;accompagnement ({espacesActifs.length})
           </h2>
           <Link href="/accompagnement"
-            className="flex items-center gap-1 text-[#E8B800] text-sm hover:text-[#27A827] transition-colors">
+            className="g-lien flex-shrink-0 text-[14.5px]">
             Tout voir <ArrowRight size={13} />
           </Link>
         </div>
 
         {espacesActifs.length === 0 ? (
-          <div className="text-center py-10 bg-gray-50 border border-gray-100 rounded-2xl">
+          <div className="text-center py-10 bg-[var(--g-doux)] rounded-2xl">
             <p className="text-gray-500 text-sm">Aucun programme disponible pour le moment.</p>
           </div>
         ) : (
@@ -1670,10 +1671,10 @@ export default function MonEspacePage() {
             {espacesActifs.map((espace) => {
               const dejaPostule = demandesFinales.some((d) => d.espaceId === espace.id);
               return (
-                <div key={espace.id} className="p-5 bg-gray-50 border border-gray-200 rounded-2xl hover:border-[#E8B800]/40 transition-colors flex flex-col gap-3">
+                <div key={espace.id} className="p-5 bg-[var(--g-doux)] border border-transparent rounded-[16px] hover:border-[var(--g-ligne)] transition-colors flex flex-col gap-3">
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="text-gray-900 font-bold text-sm leading-tight">{espace.titre}</h3>
-                    <span className="text-[10px] px-2 py-0.5 bg-gray-100 border border-gray-200 text-gray-500 rounded-full whitespace-nowrap flex-shrink-0">{espace.domaine}</span>
+                    <h3 className="text-[var(--g-encre)] font-semibold text-sm leading-tight">{espace.titre}</h3>
+                    <span className="text-[11px] px-2 py-0.5 bg-white text-[var(--g-gris)] rounded-md whitespace-nowrap flex-shrink-0">{espace.domaine}</span>
                   </div>
                   {espace.descriptionCourte && (
                     <p className="text-gray-500 text-xs line-clamp-2 flex-1">{espace.descriptionCourte}</p>
@@ -1681,13 +1682,13 @@ export default function MonEspacePage() {
                   <div className="flex items-center justify-between mt-auto pt-1">
                     <span className="text-xs text-gray-600">{espace.placesDisponibles} place{espace.placesDisponibles > 1 ? "s" : ""}</span>
                     {dejaPostule ? (
-                      <span className="flex items-center gap-1.5 text-emerald-400 text-xs font-medium">
+                      <span className="flex items-center gap-1.5 text-[var(--g-vert)] text-xs font-medium">
                         <CheckCircle size={12} /> Postulé
                       </span>
                     ) : (
                       <Link href={`/accompagnement/${espace.id}`}
-                        className="px-4 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs font-bold rounded-lg transition-all btn-postuler">
-                        Postuler →
+                        className="inline-flex items-center gap-1 px-4 py-1.5 bg-[var(--g-vert)] hover:bg-[var(--g-vert-profond)] text-white text-xs font-semibold rounded-lg transition-colors">
+                        Postuler <ArrowRight size={12} />
                       </Link>
                     )}
                   </div>
@@ -1699,36 +1700,36 @@ export default function MonEspacePage() {
       </section>
 
       {/* ── Mes candidatures ── */}
-      <section className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6">
+      <section className="bg-white border border-[var(--g-ligne)] rounded-[18px] p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-gray-900 text-xl font-bold">
+          <h2 className="text-[var(--g-encre)] text-[22px] font-semibold tracking-[-0.02em]">
             Mes candidatures ({demandes.length})
           </h2>
           <Link href="/accompagnement"
-            className="flex items-center gap-1 text-[#E8B800] text-sm hover:text-[#27A827] transition-colors">
+            className="g-lien flex-shrink-0 text-[14.5px]">
             Voir les espaces <ArrowRight size={14} />
           </Link>
         </div>
 
         {demandes.length === 0 ? (
-          <div className="text-center py-14 bg-gray-50 border border-gray-200 rounded-2xl">
-            <div className="text-5xl mb-4">📋</div>
-            <h3 className="text-gray-900 font-bold text-lg mb-2">Aucune candidature</h3>
+          <div className="text-center py-14 bg-[var(--g-doux)] rounded-2xl">
+            <ClipboardList size={36} className="text-[var(--g-vert)] mx-auto mb-4" />
+            <h3 className="text-[var(--g-encre)] font-semibold tracking-[-0.01em] text-lg mb-2">Aucune candidature</h3>
             <p className="text-gray-600 mb-5 text-sm">
               Postulez à un espace d&apos;accompagnement pour le voir ici.
             </p>
             <Link href="/accompagnement"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#E8B800] text-black font-bold rounded-xl text-sm">
+              className="g-btn !text-[14px]">
               Explorer les espaces <ArrowRight size={14} />
             </Link>
           </div>
         ) : (
           <div className="space-y-5">
             {demandes.map((d) => (
-              <div key={d.id} className="p-6 bg-white border border-gray-200 shadow-sm rounded-2xl">
+              <div key={d.id} className="p-6 bg-white border border-[var(--g-ligne)] rounded-[16px]">
                 <div className="flex items-start justify-between gap-4 mb-4">
                   <div>
-                    <h3 className="text-gray-900 font-bold text-lg mb-1">{d.espaceTitre}</h3>
+                    <h3 className="text-[var(--g-encre)] font-semibold tracking-[-0.01em] text-lg mb-1">{d.espaceTitre}</h3>
                     <p className="text-gray-600 text-xs">
                       Soumise le{" "}
                       {new Date(d.createdAt).toLocaleDateString("fr-FR", {
@@ -1763,7 +1764,7 @@ export default function MonEspacePage() {
 
                 {d.statut === "rejetee" && (
                   <Link href={`/accompagnement/${d.espaceSlug}`}
-                    className="inline-flex items-center gap-1 text-[#E8B800] text-xs hover:text-[#27A827] transition-colors">
+                    className="g-lien text-xs">
                     Repostuler <ArrowRight size={12} />
                   </Link>
                 )}
@@ -1774,7 +1775,7 @@ export default function MonEspacePage() {
                       <div className="space-y-2">
                         <div className="flex items-center gap-3">
                           <StarRating value={d.noteConsultant} readonly />
-                          <span className="text-[#E8B800] text-sm font-medium">{NOTE_LABELS[d.noteConsultant]}</span>
+                          <span className="text-[var(--g-gris)] text-sm font-medium">{NOTE_LABELS[d.noteConsultant]}</span>
                           <span className="text-gray-600 text-xs ml-auto">
                             {d.avisDate
                               ? new Date(d.avisDate).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })
@@ -1790,7 +1791,7 @@ export default function MonEspacePage() {
                     ) : (
                       <>
                         <button onClick={() => setAvisOuvert(avisOuvert === d.id ? null : d.id)}
-                          className="flex items-center gap-2 text-sm text-[#E8B800] hover:text-[#27A827] transition-colors font-medium">
+                          className="flex items-center gap-2 text-sm text-[var(--g-vert)] hover:underline underline-offset-4 font-semibold">
                           <Star size={15} />
                           {avisOuvert === d.id ? "Fermer ▲" : "Donner mon avis sur ce programme ▼"}
                         </button>
@@ -1808,9 +1809,8 @@ export default function MonEspacePage() {
       </section>
 
       {/* ── Footer CTA Accompagnement ── */}
-      <section className="p-6 sm:p-8 bg-gradient-to-br from-[#E8B800]/10 via-amber-50 to-[#27A827]/5 border border-[#E8B800]/30 rounded-2xl text-center">
-        <div className="text-3xl mb-3">🚀</div>
-        <h2 className="text-gray-900 text-xl font-bold mb-2">Prêt à aller plus loin ?</h2>
+      <section className="p-6 sm:p-8 bg-[var(--g-vert-doux)] rounded-[18px] text-center">
+        <h2 className="text-[var(--g-encre)] text-[24px] font-semibold tracking-[-0.02em] mb-2">Prêt à aller plus loin ?</h2>
         <p className="text-gray-600 text-sm mb-6 max-w-md mx-auto leading-relaxed">
           Nos experts en accompagnement entrepreneurial vous guident de la création à la mise en œuvre de votre projet.
           Découvrez nos 8 programmes personnalisés.
@@ -1823,12 +1823,12 @@ export default function MonEspacePage() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link href="/accompagnement"
             onClick={(e) => { if (!isOnline) { e.preventDefault(); } }}
-            className={`inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#E8B800] to-[#27A827] hover:from-[#27A827] hover:to-[#E8B800] text-black font-bold rounded-xl text-sm transition-all shadow-md ${!isOnline ? "opacity-50 cursor-not-allowed" : ""}`}>
+            className={`g-btn !text-[14px] ${!isOnline ? "opacity-50 cursor-not-allowed" : ""}`}>
             Postuler pour un accompagnement <ArrowRight size={14} />
           </Link>
           <Link href="/nos-consultants"
             onClick={(e) => { if (!isOnline) { e.preventDefault(); } }}
-            className={`inline-flex items-center justify-center gap-2 px-6 py-3 border border-[#E8B800]/40 hover:bg-[#E8B800]/5 text-gray-900 font-bold rounded-xl text-sm transition-all ${!isOnline ? "opacity-50 cursor-not-allowed" : ""}`}>
+            className={`g-btn-ghost bg-white !text-[14px] ${!isOnline ? "opacity-50 cursor-not-allowed" : ""}`}>
             Voir nos consultants
           </Link>
         </div>

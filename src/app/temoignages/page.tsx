@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { X, Play, ChevronLeft, ChevronRight, Star, ArrowRight, Quote, Search } from "lucide-react";
+import { X, Play, ChevronLeft, ChevronRight, Star, ArrowRight, Quote, Search, Mic } from "lucide-react";
 import AnimateOnScroll, { StaggerContainer, StaggerItem } from "@/components/AnimateOnScroll";
 
 type Temoignage = {
@@ -50,66 +50,66 @@ function TemoignageCard({ item, onClick }: { item: Temoignage; onClick: () => vo
   return (
     <div
       onClick={onClick}
-      className="group relative cursor-pointer rounded-2xl overflow-hidden bg-white border border-gray-200 hover:border-[#E8B800]/60 transition-all duration-300 hover:shadow-xl hover:shadow-[#E8B800]/10 hover:-translate-y-0.5"
+      className="group relative cursor-pointer rounded-[14px] overflow-hidden bg-white border border-[var(--g-ligne)] hover:border-[var(--g-encre)]/30 transition-colors duration-200"
     >
       {item.type === "image" && item.imageUrl ? (
         <div className="relative">
           <img
             src={item.imageUrl}
             alt={item.clientNom || "Témoignage"}
-            className="w-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
+            className="w-full object-cover"
             style={{ maxHeight: 420 }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <span className="bg-white/90 text-gray-900 text-xs font-bold px-3 py-1.5 rounded-full shadow">Agrandir</span>
+            <span className="bg-white text-[var(--g-encre)] text-xs font-semibold px-3 py-1.5 rounded-[8px]">Agrandir</span>
           </div>
         </div>
       ) : item.type === "video" && item.videoUrl ? (
-        <div className="relative bg-gray-100 aspect-video flex items-center justify-center overflow-hidden">
+        <div className="relative bg-[var(--g-doux)] aspect-video flex items-center justify-center overflow-hidden">
           {item.thumbnailUrl ? (
             <>
-              <img src={item.thumbnailUrl} alt="Miniature" className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" />
+              <img src={item.thumbnailUrl} alt="Miniature" className="absolute inset-0 w-full h-full object-cover" />
               <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors" />
-              <div className="relative z-10 w-16 h-16 rounded-full bg-white/90 flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
-                <Play size={24} className="text-gray-900 fill-gray-900 ml-1" />
+              <div className="relative z-10 w-16 h-16 rounded-full bg-white flex items-center justify-center">
+                <Play size={24} className="text-[var(--g-encre)] fill-[var(--g-encre)] ml-1" />
               </div>
             </>
           ) : embedUrl && !isDirectVideo(item.videoUrl!) ? (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-gradient-to-br from-gray-50 to-gray-100">
-              <div className="w-16 h-16 rounded-full bg-[#E8B800]/20 border-2 border-[#E8B800] flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
-                <Play size={24} className="text-[#E8B800] fill-[#E8B800] ml-1" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[var(--g-doux)]">
+              <div className="w-16 h-16 rounded-full bg-white border border-[var(--g-ligne)] flex items-center justify-center">
+                <Play size={24} className="text-[var(--g-vert)] fill-[var(--g-vert)] ml-1" />
               </div>
-              <span className="text-gray-600 text-xs font-medium">Lire la vidéo</span>
+              <span className="text-[var(--g-gris)] text-xs font-medium">Lire la vidéo</span>
             </div>
           ) : (
             <video src={item.videoUrl} className="w-full h-full object-cover" />
           )}
         </div>
       ) : item.type === "audio" ? (
-        <div className="relative bg-gradient-to-br from-[#E8B800]/10 to-[#27A827]/10 px-6 py-8 flex flex-col items-center gap-3">
-          <div className="w-16 h-16 rounded-full bg-[#E8B800]/20 border-2 border-[#E8B800] flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
-            <span className="text-2xl">🎙️</span>
+        <div className="relative bg-[var(--g-vert-doux)] px-6 py-8 flex flex-col items-center gap-3">
+          <div className="w-16 h-16 rounded-full bg-white border border-[var(--g-ligne)] flex items-center justify-center">
+            <Mic size={26} className="text-[var(--g-vert)]" />
           </div>
-          <span className="text-gray-600 text-xs font-medium">Écouter le témoignage audio</span>
+          <span className="text-[var(--g-gris)] text-xs font-medium">Écouter le témoignage audio</span>
         </div>
       ) : (
-        <div className="h-32 bg-gradient-to-br from-[#E8B800]/5 to-[#27A827]/5 flex items-center justify-center">
-          <Quote size={32} className="text-[#E8B800]/40" />
+        <div className="h-32 bg-[var(--g-doux)] flex items-center justify-center">
+          <Quote size={32} className="text-[var(--g-vert)]/40" />
         </div>
       )}
 
       {(item.clientNom || item.produitNom || item.caption) && (
-        <div className="p-3 bg-white border-t border-gray-100">
+        <div className="p-3 bg-white border-t border-[var(--g-ligne)]">
           {item.caption && (
-            <p className="text-gray-600 text-xs leading-relaxed mb-1.5 line-clamp-2">{item.caption}</p>
+            <p className="text-[var(--g-gris)] text-xs leading-relaxed mb-1.5 line-clamp-2">{item.caption}</p>
           )}
           <div className="flex items-center justify-between gap-2 flex-wrap">
             {item.clientNom && (
-              <p className="text-gray-900 text-xs font-bold">{item.clientNom}</p>
+              <p className="text-[var(--g-encre)] text-xs font-semibold">{item.clientNom}</p>
             )}
             {item.produitNom && (
-              <span className="px-2 py-0.5 bg-[#E8B800]/10 border border-[#E8B800]/30 text-[#D4A017] text-xs font-medium rounded-full">
+              <span className="text-xs font-semibold text-[var(--g-vert)]">
                 {item.produitNom}
               </span>
             )}
@@ -148,7 +148,7 @@ function Lightbox({ items, index, onClose, onPrev, onNext }: {
     >
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white/90 hover:bg-white text-gray-900 transition-colors z-10 shadow"
+        className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white/90 hover:bg-white text-[var(--g-encre)] transition-colors z-10"
       >
         <X size={20} />
       </button>
@@ -156,11 +156,11 @@ function Lightbox({ items, index, onClose, onPrev, onNext }: {
       {items.length > 1 && (
         <>
           <button onClick={onPrev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white/90 hover:bg-white text-gray-900 transition-colors z-10 shadow">
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white/90 hover:bg-white text-[var(--g-encre)] transition-colors z-10">
             <ChevronLeft size={22} />
           </button>
           <button onClick={onNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white/90 hover:bg-white text-gray-900 transition-colors z-10 shadow">
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white/90 hover:bg-white text-[var(--g-encre)] transition-colors z-10">
             <ChevronRight size={22} />
           </button>
         </>
@@ -171,10 +171,10 @@ function Lightbox({ items, index, onClose, onPrev, onNext }: {
           <img
             src={item.imageUrl}
             alt={item.clientNom || "Témoignage"}
-            className="max-w-full max-h-[75vh] object-contain rounded-xl shadow-2xl"
+            className="max-w-full max-h-[75vh] object-contain rounded-[12px]"
           />
         ) : item.type === "video" && item.videoUrl ? (
-          <div className="w-full rounded-xl overflow-hidden shadow-2xl" style={{ aspectRatio: "16/9" }}>
+          <div className="w-full rounded-[12px] overflow-hidden" style={{ aspectRatio: "16/9" }}>
             {isDirect ? (
               <video src={item.videoUrl} controls autoPlay playsInline className="w-full h-full" />
             ) : embedUrl ? (
@@ -182,34 +182,34 @@ function Lightbox({ items, index, onClose, onPrev, onNext }: {
                 allow="autoplay; fullscreen; picture-in-picture" allowFullScreen />
             ) : (
               <a href={item.videoUrl} target="_blank" rel="noopener noreferrer"
-                className="flex items-center justify-center h-full bg-gray-100 text-[#E8B800] font-bold gap-2">
+                className="flex items-center justify-center h-full bg-[var(--g-doux)] text-[var(--g-vert)] font-semibold gap-2">
                 <Play size={20} /> Ouvrir la vidéo ↗
               </a>
             )}
           </div>
         ) : item.type === "audio" && item.audioUrl ? (
-          <div className="w-full max-w-md bg-white rounded-2xl p-8 text-center shadow-2xl">
-            <div className="w-20 h-20 mx-auto mb-5 rounded-full bg-[#E8B800]/20 border-2 border-[#E8B800] flex items-center justify-center">
-              <span className="text-4xl">🎙️</span>
+          <div className="w-full max-w-md bg-white rounded-[16px] p-8 text-center">
+            <div className="w-20 h-20 mx-auto mb-5 rounded-full bg-[var(--g-vert-doux)] flex items-center justify-center">
+              <Mic size={32} className="text-[var(--g-vert)]" />
             </div>
-            {item.clientNom && <p className="text-gray-900 font-black text-lg mb-1">{item.clientNom}</p>}
+            {item.clientNom && <p className="text-[var(--g-encre)] font-semibold tracking-[-0.02em] text-lg mb-1">{item.clientNom}</p>}
             {item.produitNom && (
-              <span className="inline-block px-3 py-1 bg-[#E8B800]/10 border border-[#E8B800]/30 text-[#D4A017] text-xs font-semibold rounded-full mb-4">
+              <span className="inline-block text-[14px] font-semibold text-[var(--g-vert)] mb-4">
                 {item.produitNom}
               </span>
             )}
-            {item.caption && <p className="text-gray-600 text-sm leading-relaxed mb-4">{item.caption}</p>}
+            {item.caption && <p className="text-[var(--g-gris)] text-sm leading-relaxed mb-4">{item.caption}</p>}
             <audio src={item.audioUrl} controls autoPlay className="w-full rounded-lg" />
           </div>
         ) : null}
 
         {item.type !== "audio" && (item.clientNom || item.produitNom || item.caption) && (
-          <div className="text-center max-w-lg bg-white/90 backdrop-blur rounded-xl px-5 py-3 shadow">
-            {item.caption && <p className="text-gray-700 text-sm leading-relaxed mb-2">{item.caption}</p>}
+          <div className="text-center max-w-lg bg-white rounded-[12px] px-5 py-3">
+            {item.caption && <p className="text-[var(--g-gris)] text-sm leading-relaxed mb-2">{item.caption}</p>}
             <div className="flex items-center justify-center gap-3 flex-wrap">
-              {item.clientNom && <p className="text-gray-900 font-bold text-sm">{item.clientNom}</p>}
+              {item.clientNom && <p className="text-[var(--g-encre)] font-semibold text-sm">{item.clientNom}</p>}
               {item.produitNom && (
-                <span className="px-2.5 py-1 bg-[#E8B800]/20 border border-[#E8B800]/40 text-[#D4A017] text-xs font-semibold rounded-full">
+                <span className="text-xs font-semibold text-[var(--g-vert)]">
                   {item.produitNom}
                 </span>
               )}
@@ -260,23 +260,19 @@ export default function TemoignagesPage() {
   const audios = items.filter((i) => i.type === "audio").length;
 
   return (
-    <div className="min-h-screen bg-[#f9f8f5]">
+    <div className="min-h-screen bg-white">
       {/* Hero */}
-      <div className="relative overflow-hidden bg-white border-b border-gray-100">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#E8B800]/5 rounded-full blur-3xl" />
-          <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#27A827]/5 rounded-full blur-3xl" />
-        </div>
+      <div className="relative overflow-hidden bg-white border-b border-[var(--g-ligne)]">
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 py-12 text-center">
           <AnimateOnScroll variant="fadeUp">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#E8B800]/10 border border-[#E8B800]/30 rounded-full text-[#D4A017] text-sm font-bold mb-6">
-              <Star size={14} className="fill-[#E8B800] text-[#E8B800]" /> Preuves Sociales
-            </div>
-            <h1 className="text-4xl sm:text-5xl font-black text-gray-900 mb-4 leading-tight">
+            <p className="inline-flex items-center gap-2 text-[14px] font-semibold text-[var(--g-vert)] mb-5">
+              <Star size={14} className="fill-[var(--g-jaune)] text-[var(--g-jaune)]" /> Preuves Sociales
+            </p>
+            <h1 className="text-4xl sm:text-5xl font-semibold tracking-[-0.02em] text-[var(--g-encre)] mb-4 leading-tight">
               Ils ont transformé leur vie<br />
-              <span className="gradient-text">avec Smart Life</span>
+              <span className="g-surligne">avec Smart Life</span>
             </h1>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-8">
+            <p className="text-[var(--g-gris)] text-lg max-w-2xl mx-auto mb-8">
               Découvrez les retours authentiques de nos clients — captures WhatsApp, vidéos et messages vocaux témoignages.
             </p>
           </AnimateOnScroll>
@@ -285,25 +281,25 @@ export default function TemoignagesPage() {
             <AnimateOnScroll variant="blurUp" delay={0.2}>
             <div className="flex items-center justify-center gap-10 text-center mb-8">
               <div>
-                <p className="text-3xl font-black text-gray-900">{items.length}</p>
-                <p className="text-gray-500 text-xs font-medium mt-0.5">témoignages</p>
+                <p className="g-chiffre">{items.length}</p>
+                <p className="text-[var(--g-gris)] text-xs font-medium mt-1.5">témoignages</p>
               </div>
               {images > 0 && (
                 <div>
-                  <p className="text-3xl font-black text-gray-900">{images}</p>
-                  <p className="text-gray-500 text-xs font-medium mt-0.5">captures</p>
+                  <p className="g-chiffre">{images}</p>
+                  <p className="text-[var(--g-gris)] text-xs font-medium mt-1.5">captures</p>
                 </div>
               )}
               {videos > 0 && (
                 <div>
-                  <p className="text-3xl font-black text-gray-900">{videos}</p>
-                  <p className="text-gray-500 text-xs font-medium mt-0.5">vidéos</p>
+                  <p className="g-chiffre">{videos}</p>
+                  <p className="text-[var(--g-gris)] text-xs font-medium mt-1.5">vidéos</p>
                 </div>
               )}
               {audios > 0 && (
                 <div>
-                  <p className="text-3xl font-black text-gray-900">{audios}</p>
-                  <p className="text-gray-500 text-xs font-medium mt-0.5">audios</p>
+                  <p className="g-chiffre">{audios}</p>
+                  <p className="text-[var(--g-gris)] text-xs font-medium mt-1.5">audios</p>
                 </div>
               )}
             </div>
@@ -313,13 +309,13 @@ export default function TemoignagesPage() {
           {/* Barre de recherche */}
           {!loading && items.length > 0 && (
             <div className="relative max-w-sm mx-auto mb-5">
-              <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+              <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--g-gris)]" />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Rechercher un témoignage…"
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm bg-white/80 focus:outline-none focus:border-[#E8B800] focus:ring-1 focus:ring-[#E8B800]/30"
+                className="w-full pl-10 pr-4 py-2.5 border border-[var(--g-ligne)] rounded-[10px] text-sm bg-white focus:outline-none focus:border-[var(--g-encre)]"
               />
             </div>
           )}
@@ -329,17 +325,17 @@ export default function TemoignagesPage() {
             <div className="flex items-center justify-center gap-2 flex-wrap">
               {([
                 { key: "tous" as const, label: "Tous" },
-                ...(images > 0 ? [{ key: "image" as const, label: "📷 Captures" }] : []),
-                ...(videos > 0 ? [{ key: "video" as const, label: "▶️ Vidéos" }] : []),
-                ...(audios > 0 ? [{ key: "audio" as const, label: "🎙️ Audios" }] : []),
+                ...(images > 0 ? [{ key: "image" as const, label: "Captures" }] : []),
+                ...(videos > 0 ? [{ key: "video" as const, label: "Vidéos" }] : []),
+                ...(audios > 0 ? [{ key: "audio" as const, label: "Audios" }] : []),
               ]).map(({ key, label }) => {
                 const count = key === "tous" ? items.length : key === "image" ? images : key === "video" ? videos : audios;
                 return (
                   <button key={key} onClick={() => setFilter(key)}
-                    className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                    className={`px-4 py-2 rounded-[10px] text-sm font-semibold transition-colors ${
                       filter === key
-                        ? "bg-[#E8B800] text-black shadow-sm"
-                        : "bg-white border border-gray-200 text-gray-600 hover:border-[#E8B800]/50 hover:text-gray-900"
+                        ? "bg-[var(--g-encre)] text-white border border-[var(--g-encre)]"
+                        : "bg-white border border-[var(--g-ligne)] text-[var(--g-gris)] hover:border-[var(--g-encre)] hover:text-[var(--g-encre)]"
                     }`}>
                     {label} {key !== "tous" && `(${count})`}
                   </button>
@@ -355,17 +351,17 @@ export default function TemoignagesPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         {loading ? (
           <div className="flex items-center justify-center py-24">
-            <div className="w-10 h-10 border-2 border-[#E8B800] border-t-transparent rounded-full animate-spin" />
+            <div className="w-10 h-10 border-2 border-[var(--g-vert)] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-24">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-[#E8B800]/10 flex items-center justify-center">
-              <Quote size={32} className="text-[#E8B800]/60" />
+            <div className="w-16 h-16 mx-auto mb-4 rounded-[14px] bg-[var(--g-doux)] flex items-center justify-center">
+              <Quote size={32} className="text-[var(--g-vert)]" />
             </div>
-            <p className="text-gray-600 text-lg font-medium">
+            <p className="text-[var(--g-gris)] text-lg font-medium">
               {items.length === 0 ? "Aucun témoignage disponible pour l'instant." : "Aucun résultat pour cette recherche."}
             </p>
-            <p className="text-gray-400 text-sm mt-2">
+            <p className="text-[var(--g-gris)] text-sm mt-2">
               {items.length === 0 ? "Revenez bientôt — ils arrivent !" : "Essayez un autre mot-clé ou filtre."}
             </p>
           </div>
@@ -381,18 +377,18 @@ export default function TemoignagesPage() {
 
         {!loading && items.length > 0 && (
           <AnimateOnScroll variant="blurUp">
-          <div className="mt-10 text-center border border-[#E8B800]/20 rounded-2xl p-8 bg-gradient-to-br from-[#E8B800]/5 to-[#27A827]/5">
-            <h2 className="text-2xl font-black text-gray-900 mb-3">Prêt à rejoindre nos clients satisfaits ?</h2>
-            <p className="text-gray-600 text-sm mb-6 max-w-md mx-auto">
+          <div className="mt-10 text-center rounded-[18px] p-8 bg-[var(--g-jaune-doux)]">
+            <h2 className="text-2xl font-semibold tracking-[-0.02em] text-[var(--g-encre)] mb-3">Prêt à rejoindre nos clients satisfaits ?</h2>
+            <p className="text-[var(--g-gris)] text-sm mb-6 max-w-md mx-auto">
               Accédez à nos guides, à l&apos;accompagnement et à nos consultants, et commencez à transformer votre situation.
             </p>
             <div className="flex items-center justify-center gap-3 flex-wrap">
               <Link href="/ebooks"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#E8B800] hover:bg-[#27A827] text-black font-black rounded-xl transition-all">
+                className="g-btn g-btn-noir">
                 Voir les guides <ArrowRight size={16} />
               </Link>
               <Link href="/accompagnement"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-gray-50 text-gray-900 font-bold rounded-xl border border-gray-200 transition-colors">
+                className="g-btn-ghost bg-white">
                 Se faire accompagner <ArrowRight size={16} />
               </Link>
             </div>

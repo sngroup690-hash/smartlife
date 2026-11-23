@@ -27,14 +27,14 @@ export default function BandeGuides({
 
   return (
     <div
-      className="absolute bottom-2 left-3 right-3 flex items-center gap-2 rounded-lg px-2 py-1 shadow-sm"
+      className="absolute bottom-2 left-3 right-3 flex items-center gap-2 rounded-[8px] px-2 py-1"
       style={{ background: "rgba(255,255,255,0.94)", border: `1.5px solid ${couleur}` }}
     >
       <span
-        className="flex-shrink-0 rounded px-1.5 py-0.5 text-[9px] font-black"
+        className="flex-shrink-0 rounded px-1.5 py-0.5 text-[9px] font-semibold"
         style={{ background: couleur, color: "#fff" }}
       >
-        📘 {(rang % items.length) + 1}/{items.length}
+        {(rang % items.length) + 1}/{items.length}
       </span>
       <div key={item.id} className="min-w-0 flex-1 guide-entre">
         <TitreDefilant texte={item.title} lignes={1} className={`font-bold text-[#111827] ${taille}`} />
