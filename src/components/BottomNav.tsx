@@ -20,8 +20,8 @@ const DRAWER_LINKS = [
 
 const NAV_ITEMS = [
   { href: "/", label: "Accueil", icon: Home, color: "#E8B800", activeColor: "#E8B800" },
-  { href: "/ebooks", label: "Ebooks", icon: BookOpen, color: "#27A827", activeColor: "#27A827" },
-  { href: "/conseils", label: "Conseils gratuits", icon: Lightbulb, color: "#E8B800", activeColor: "#E8B800", center: true },
+  { href: "/ebooks", label: "Guides", icon: BookOpen, color: "#27A827", activeColor: "#27A827" },
+  { href: "/conseils", label: "Conseils\ngratuits", icon: Lightbulb, color: "#E8B800", activeColor: "#E8B800" },
   { href: "/nos-consultants", label: "Nos\nConsultants", icon: Users, color: "#27A827", activeColor: "#27A827" },
   { href: "/devenir-consultant", label: "Devenir\nConsultant", icon: UserPlus, color: "#E8B800", activeColor: "#E8B800" },
 ];
@@ -46,86 +46,42 @@ export default function BottomNav() {
 
   return (
     <>
-      {/* ── Barre fixe en bas — mobile/tablette uniquement ── */}
+      {/* ── Barre fixe en bas, mobile/tablette uniquement : style « Galerie » (blanche, plate, sobre) ── */}
       <nav
-        className="lg:hidden fixed left-2 right-2 z-50 rounded-[1.75rem] border border-white/70 shadow-[0_10px_35px_-8px_rgba(0,0,0,0.28)]"
-        style={{
-          bottom: "calc(8px + env(safe-area-inset-bottom, 0px))",
-          background: "linear-gradient(180deg, #ffffff 0%, #fafcf6 100%)",
-        }}
+        className="lg:hidden fixed left-0 right-0 bottom-0 z-50 bg-white border-t border-[var(--g-ligne)]"
+        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
       >
-        <div className="flex items-end h-[66px] px-1.5">
-
+        <div className="flex items-stretch h-[60px] px-1">
           {NAV_ITEMS.map((item) => {
             const active = isActive(item.href);
             const Icon = item.icon;
-            const lines = item.label.split("\n");
-
-            if (item.center) {
-              return (
-                <Link key={item.href} href={item.href} className="menu-touche flex-[1.25] flex flex-col items-center justify-center -mt-6 pb-1.5">
-                  <span className="relative flex items-center justify-center">
-                    {!active && <span className="menu-halo absolute inset-0 rounded-full" style={{ background: "#E8B800" }} />}
-                    <span
-                      className="relative w-[58px] h-[58px] rounded-full flex items-center justify-center border-4 border-white transition-transform duration-300"
-                      style={{
-                        background: active ? "linear-gradient(135deg, #27A827 0%, #1b7a1b 100%)" : "linear-gradient(135deg, #E8B800 0%, #27A827 100%)",
-                        boxShadow: "0 8px 20px -6px rgba(39,168,39,0.7)",
-                        transform: active ? "scale(1.06)" : "scale(1)",
-                      }}
-                    >
-                      <Icon size={24} style={{ color: "#fff" }} strokeWidth={2.3} />
-                    </span>
-                  </span>
-                  <span className="text-[9.5px] font-extrabold mt-1 leading-tight text-center" style={{ color: active ? "#1b7a1b" : "#374151" }}>
-                    {item.label}
-                  </span>
-                </Link>
-              );
-            }
-
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className="menu-touche flex-1 flex flex-col items-center justify-center gap-[2px] pb-1.5 pt-2"
+                className="menu-touche flex-1 flex flex-col items-center justify-center gap-[3px]"
+                aria-current={active ? "page" : undefined}
               >
+                <Icon size={21} strokeWidth={active ? 2.3 : 1.8} style={{ color: active ? "var(--g-encre)" : "var(--g-gris)" }} />
                 <span
-                  className="w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300"
-                  style={{
-                    background: active ? item.activeColor : `${item.color}1f`,
-                    boxShadow: active ? `0 6px 14px -6px ${item.activeColor}` : "none",
-                    transform: active ? "translateY(-3px)" : "none",
-                  }}
+                  className="leading-[1.1] text-center whitespace-pre-line"
+                  style={{ fontSize: "10.5px", fontWeight: active ? 700 : 500, color: active ? "var(--g-encre)" : "var(--g-gris)" }}
                 >
-                  <Icon size={18} strokeWidth={active ? 2.5 : 2.1} style={{ color: active ? "#fff" : item.color === "#E8B800" ? "#b38f00" : "#1e7a1e" }} />
+                  {item.label}
                 </span>
-                {lines.map((line, i) => (
-                  <span
-                    key={i}
-                    className="leading-[1.1] text-center transition-colors duration-200"
-                    style={{ fontSize: "9.5px", fontWeight: active ? 800 : 600, color: active ? "#111827" : "#4b5563" }}
-                  >
-                    {line}
-                  </span>
-                ))}
-                <span className="h-1 w-1 rounded-full transition-opacity duration-300" style={{ background: item.activeColor, opacity: active ? 1 : 0 }} />
+                <span className="h-[3px] w-4 rounded-full" style={{ background: "var(--g-vert)", opacity: active ? 1 : 0 }} />
               </Link>
             );
           })}
 
-          {/* Menu / Plus */}
           <button
             onClick={() => setDrawerOpen(true)}
-            className="menu-touche flex-1 flex flex-col items-center justify-center gap-[2px] pb-1.5 pt-2"
+            className="menu-touche flex-1 flex flex-col items-center justify-center gap-[3px]"
           >
-            <span className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: "#1118270f" }}>
-              <MoreHorizontal size={19} strokeWidth={2.3} style={{ color: "#374151" }} />
-            </span>
-            <span className="text-[9.5px] font-semibold" style={{ color: "#4b5563" }}>Plus</span>
-            <span className="h-1 w-1" />
+            <MoreHorizontal size={21} strokeWidth={1.8} style={{ color: "var(--g-gris)" }} />
+            <span style={{ fontSize: "10.5px", fontWeight: 500, color: "var(--g-gris)" }}>Plus</span>
+            <span className="h-[3px] w-4" />
           </button>
-
         </div>
       </nav>
 
@@ -139,7 +95,7 @@ export default function BottomNav() {
 
       {/* ── Drawer slide-up ── */}
       <div
-        className={`lg:hidden fixed left-0 right-0 bottom-0 z-[70] bg-white rounded-t-3xl shadow-2xl transition-transform duration-300 ease-out`}
+        className={`lg:hidden fixed left-0 right-0 bottom-0 z-[70] bg-white rounded-t-[18px] shadow-2xl transition-transform duration-300 ease-out`}
         style={{
           maxHeight: "88vh",
           transform: drawerOpen ? "translateY(0)" : "translateY(100%)",
@@ -193,9 +149,9 @@ export default function BottomNav() {
             <Link
               href="/mon-espace"
               onClick={() => setDrawerOpen(false)}
-              className="flex-1 py-2.5 bg-[#E8B800] hover:bg-[#D4A017] text-black font-bold text-sm text-center rounded-xl transition-colors"
+              className="flex-1 py-2.5 bg-[var(--g-encre)] text-white font-semibold text-sm text-center rounded-[10px] transition-colors"
             >
-              Mon Espace
+              Mon espace
             </Link>
           </div>
 
@@ -208,11 +164,10 @@ export default function BottomNav() {
                 onClick={() => setDrawerOpen(false)}
                 className={`flex items-center gap-3 px-3 py-3.5 rounded-xl mb-0.5 transition-colors ${
                   isActive(link.href)
-                    ? "bg-[#E8B800]/10 text-[#B8920A]"
+                    ? "bg-[var(--g-doux)] text-[var(--g-encre)]"
                     : "hover:bg-gray-50 text-gray-800"
                 }`}
               >
-                <span className="text-xl w-8 flex-shrink-0 text-center">{link.icon}</span>
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-sm">{link.label}</p>
                   <p className="text-gray-400 text-xs leading-tight">{link.desc}</p>
@@ -227,9 +182,9 @@ export default function BottomNav() {
             <Link
               href="/devenir-consultant"
               onClick={() => setDrawerOpen(false)}
-              className="flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-[#E8B800] to-[#27A827] text-black font-bold text-sm rounded-2xl shadow-md"
+              className="flex items-center justify-center gap-2 py-3.5 border border-[var(--g-ligne)] text-[var(--g-encre)] font-semibold text-sm rounded-[10px]"
             >
-              🚀 Devenir Consultant
+              Devenir consultant
             </Link>
           </div>
 

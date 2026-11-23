@@ -104,7 +104,9 @@ export default async function HomePage() {
           <figure className="relative overflow-hidden rounded-t-[18px] aspect-[4/3] sm:aspect-[21/9]">
             <Image src={grandePhoto.src} alt={grandePhoto.titre} fill priority sizes="(max-width: 1200px) 100vw, 1150px" className="object-cover" style={{ objectPosition: "50% 30%" }} />
             <figcaption className="absolute left-4 bottom-4 rounded-lg bg-white/95 px-3 py-1.5 text-[13.5px] font-medium">
-              Guide · {grandePhoto.titre}
+              Guide · {grandePhoto.titre === grandePhoto.titre.toUpperCase()
+                ? grandePhoto.titre.charAt(0) + grandePhoto.titre.slice(1).toLowerCase()
+                : grandePhoto.titre}
             </figcaption>
           </figure>
           <div className="bande-wax h-3 rounded-b-[18px]" aria-hidden="true" />
