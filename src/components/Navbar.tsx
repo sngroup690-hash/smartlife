@@ -92,7 +92,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
-        <div className="bande-wax h-[6px]" aria-hidden="true" />
+        <div className="bande-wax h-[12px]" aria-hidden="true" />
       </nav>
 
       <CartSidebar />

@@ -109,7 +109,7 @@ export default async function HomePage() {
                 : grandePhoto.titre}
             </figcaption>
           </figure>
-          <div className="bande-wax h-3 rounded-b-[18px]" aria-hidden="true" />
+          <div className="bande-wax h-[18px] rounded-b-[18px]" aria-hidden="true" />
         </div>
       )}
 
@@ -253,7 +253,7 @@ export default async function HomePage() {
                   legendes={photosConsultants.map((p) => p.domaine)}
                   alt="Un consultant Smart Life accompagne un entrepreneur sur le terrain" />
               </div>
-              <div className="bande-wax h-3 rounded-b-[18px]" aria-hidden="true" />
+              <div className="bande-wax h-[18px] rounded-b-[18px]" aria-hidden="true" />
             </div>
           )}
         </div>
@@ -323,7 +323,7 @@ export default async function HomePage() {
               <Link href="/devenir-consultant" className="g-btn-ghost bg-white shadow-none">Devenir consultant</Link>
             </div>
           </div>
-          <div className="bande-wax h-3" aria-hidden="true" />
+          <div className="bande-wax h-[18px]" aria-hidden="true" />
         </div>
       </section>
     </div>

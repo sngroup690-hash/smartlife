@@ -61,7 +61,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="bande-wax h-3" aria-hidden="true" />
+      <div className="bande-wax h-[18px]" aria-hidden="true" />
 
       <div className="bg-[var(--g-doux)]">
         {/* Communauté WhatsApp */}
