@@ -24,15 +24,16 @@ export default function Navbar() {
 
   // Défilement fluide : le menu (avec la recherche et le panier) ne se recalcule QUE quand l'ombre
   // doit apparaître ou disparaître, et non à chaque mouvement du doigt.
+  // Aucun calcul pendant le défilement : un repère invisible de 8 px est posé tout en haut de la page,
+  // et le navigateur prévient le menu quand ce repère sort de l'écran.
   useEffect(() => {
-    let ombre = window.scrollY > 8;
-    setScrolled(ombre);
-    const onScroll = () => {
-      const v = window.scrollY > 8;
-      if (v !== ombre) { ombre = v; setScrolled(v); }
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const repere = document.createElement("div");
+    repere.setAttribute("aria-hidden", "true");
+    repere.style.cssText = "position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none;visibility:hidden";
+    document.body.prepend(repere);
+    const obs = new IntersectionObserver(([e]) => setScrolled(!e.isIntersecting));
+    obs.observe(repere);
+    return () => { obs.disconnect(); repere.remove(); };
   }, []);
 
   return (
