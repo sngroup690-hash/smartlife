@@ -364,6 +364,12 @@ footer { content-visibility: auto; contain-intrinsic-size: auto 900px; }
 /* ── Animations de tout le site ─────────────────────────────────── */
 .anim-avant { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease-out, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
 .anim-avant.anim-visible { opacity: 1; transform: none; }
+/* Apparitions variées : les photos grandissent légèrement, les grands titres glissent depuis la gauche,
+   une carte sur deux arrive un peu de côté. Toujours opacité + déplacement : fluide sur téléphone. */
+.anim-avant:is(figure, img, [class*="aspect-"]) { transform: scale(0.93); }
+.anim-avant:is(h1, h2) { transform: translateX(-28px); }
+.grid > .anim-avant:nth-child(even) { transform: translate(14px, 22px); }
+.anim-avant.anim-visible:is(figure, img, [class*="aspect-"], h1, h2), .grid > .anim-avant.anim-visible { transform: none; }
 
 @keyframes titre-defile-v { 0%, 18% { transform: translateY(0); } 62%, 82% { transform: translateY(var(--decalage)); } 100% { transform: translateY(0); } }
 @keyframes titre-defile-h { 0%, 15% { transform: translateX(0); } 60%, 80% { transform: translateX(var(--decalage)); } 100% { transform: translateX(0); } }
@@ -544,7 +550,24 @@ main article:hover img, main a[class*="rounded-2xl"]:hover img { transform: scal
   height: 48px; padding: 0 22px; border-radius: 10px;
   background: var(--g-jaune); color: var(--g-encre); font-weight: 600; font-size: 16px;
   transition: background-color .2s ease, transform .2s ease;
+  position: relative; overflow: hidden; isolation: isolate;
 }
+/* Un reflet de lumière traverse les boutons principaux toutes les 4 secondes environ
+   (arrêté quand le bouton est hors de l'écran, voir AnimationsSite) */
+.g-btn::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.5) 50%, transparent 70%);
+  transform: translateX(-130%); animation: g-btn-reflet 4.2s ease-in-out infinite;
+}
+@keyframes g-btn-reflet { 0%, 70% { transform: translateX(-130%); } 100% { transform: translateX(130%); } }
+@media (prefers-reduced-motion: reduce) { .g-btn::after { animation: none; } }
+
+/* Réactions sur tout le site : les cartes cliquables s'enfoncent au toucher,
+   les icônes des liens et boutons bougent légèrement au survol */
+main a[class*="rounded"] { transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1); }
+main a[class*="rounded"]:active { transform: scale(0.98); }
+main a:hover > svg, main button:hover > svg { transform: translateX(3px); }
+main a > svg, main button > svg { transition: transform 0.25s ease; }
 .g-btn:hover { background: var(--g-jaune-fonce); }
 /* Bouton noir : pour les blocs déjà jaunes */
 .g-btn.g-btn-noir { background: var(--g-encre); color: #fff; }

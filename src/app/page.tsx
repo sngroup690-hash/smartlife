@@ -136,7 +136,7 @@ export default async function HomePage() {
             Des guides pratiques, une communauté de visionnaires et des consultants du terrain pour vous accompagner pas à pas.
           </p>
           <div className="hero-apparait flex flex-wrap gap-2.5" style={{ ["--d" as string]: "380ms" }}>
-            <Link href="/ebooks" className="g-btn bouton-reflet relative overflow-hidden">Voir les guides <ArrowRight size={17} className="fleche-cta" /></Link>
+            <Link href="/ebooks" className="g-btn">Voir les guides <ArrowRight size={17} className="fleche-cta" /></Link>
             <Link href="/accompagnement" className="g-btn g-btn-vert">Être accompagné <ArrowRight size={17} /></Link>
           </div>
         </div>
