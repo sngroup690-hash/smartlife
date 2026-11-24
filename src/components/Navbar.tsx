@@ -22,8 +22,15 @@ export default function Navbar() {
   const cartCount = items.filter((i) => i.type !== "formation").length;
   const chemin = useCheminVise();
 
+  // Défilement fluide : le menu (avec la recherche et le panier) ne se recalcule QUE quand l'ombre
+  // doit apparaître ou disparaître, et non à chaque mouvement du doigt.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    let ombre = window.scrollY > 8;
+    setScrolled(ombre);
+    const onScroll = () => {
+      const v = window.scrollY > 8;
+      if (v !== ombre) { ombre = v; setScrolled(v); }
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);

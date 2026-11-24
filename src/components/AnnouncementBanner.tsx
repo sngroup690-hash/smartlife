@@ -64,7 +64,9 @@ function TexteDefilant({ texte }: { texte: string }) {
     return () => ro.disconnect();
   }, [texte]);
   return (
-    <span ref={cadre} className="relative min-w-0 flex-1 sm:flex-none overflow-hidden whitespace-nowrap">
+    <span ref={cadre} className="relative min-w-0 flex-1 sm:flex-none overflow-hidden whitespace-nowrap"
+      // Fondu sur les bords : le texte qui défile n'est plus coupé net
+      style={deborde ? { WebkitMaskImage: "linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%)", maskImage: "linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%)" } : undefined}>
       {deborde ? (
         <span className="ann-defile inline-block" style={{ animationDuration: `${Math.max(12, texte.length * 0.22)}s` }}>
           {texte}<span className="px-6" aria-hidden="true">•</span>{texte}<span className="px-6" aria-hidden="true">•</span>
@@ -157,7 +159,7 @@ export default function AnnouncementBanner() {
       style={{ backgroundColor: bg, color: txt }}
     >
       <HauteurAnnonce visible />
-      <div key={animKey} className="animate-ann-slide flex items-center gap-2 h-[30px] pl-3 pr-8 sm:justify-center text-[12px] sm:text-[12.5px] font-medium">
+      <div key={animKey} className="animate-ann-slide flex items-center gap-2 h-[30px] pl-3 pr-8 sm:justify-center text-[13px] font-semibold tracking-[-0.01em]">
         {active.length > 1 && (
           <button onClick={() => advance(-1, active.length)} className="hidden sm:inline-flex p-0.5 rounded-full hover:bg-black/10" aria-label="Annonce précédente">
             <ChevronLeft size={12} />

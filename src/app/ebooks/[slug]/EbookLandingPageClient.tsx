@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -290,7 +290,7 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
   const [apercuVerifie, setApercuVerifie] = useState(false);
   const [commentAcheter, setCommentAcheter] = useState(false);
 
-  const [progression, setProgression] = useState(0);
+  const barreLecture = useRef<HTMLDivElement>(null);
   const [packs, setPacks] = useState<{ slug?: string; nom: string; prix: number; originalValeur: number; items?: { id: string }[] }[]>([]);
 
   useEffect(() => {
@@ -306,13 +306,16 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
   }, [checkoutModalOpen]);
 
   // Repère de lecture : la ligne verte avance au fur et à mesure qu'on descend.
+  // On fait glisser la ligne directement (sans recalculer toute la page à chaque image : défilement fluide).
   useEffect(() => {
     let attente = 0;
     const maj = () => {
       attente = 0;
       const max = document.documentElement.scrollHeight - window.innerHeight;
-      setProgression(max > 0 ? Math.min(1, window.scrollY / max) : 0);
+      const p = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+      if (barreLecture.current) barreLecture.current.style.transform = `scaleX(${p})`;
     };
+    maj();
     const surDefilement = () => { if (!attente) attente = requestAnimationFrame(maj); };
     window.addEventListener("scroll", surDefilement, { passive: true });
     return () => { window.removeEventListener("scroll", surDefilement); cancelAnimationFrame(attente); };
@@ -708,7 +711,7 @@ export default function EbookLandingPage({ initial = null, conseil = null }: { i
         <div className="lg:hidden fixed left-3 right-3 z-40 bg-white rounded-[14px] border border-[var(--g-ligne)] overflow-hidden shadow-[0_12px_32px_-8px_rgba(0,0,0,0.35)]"
           style={{ bottom: "calc(22px + env(safe-area-inset-bottom, 0px))" }}>
           <div className="h-[3px] bg-[#f2f3f5]">
-            <div className="h-full transition-[width] duration-150" style={{ width: `${Math.round(progression * 100)}%`, backgroundColor: couleurs.bouton }} />
+            <div ref={barreLecture} className="h-full w-full origin-left" style={{ transform: "scaleX(0)", backgroundColor: couleurs.bouton }} />
           </div>
           <div className="px-4 py-2.5 flex items-center gap-3">
             <div className="flex flex-col leading-tight flex-shrink-0">

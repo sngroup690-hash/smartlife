@@ -178,7 +178,12 @@ export default function DevenirConsultantPage() {
   const [showFloatingCTA, setShowFloatingCTA] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setShowFloatingCTA(window.scrollY > 500 && !showForm && !done);
+    // Ne recalcule la page que lorsque le bouton flottant doit apparaître ou disparaître (défilement fluide)
+    let visible: boolean | null = null;
+    const onScroll = () => {
+      const v = window.scrollY > 500 && !showForm && !done;
+      if (v !== visible) { visible = v; setShowFloatingCTA(v); }
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, [showForm, done]);

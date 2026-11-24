@@ -149,7 +149,7 @@ export default function AnimationsSite() {
           el.classList.add("anim-visible");
           setTimeout(() => el.classList.remove("anim-avant", "anim-visible"), 1200);
         });
-      }, 120);
+      }, 300); // vérification espacée : moins de calcul pendant le défilement
     };
     window.addEventListener("scroll", verifierDefilement, { passive: true });
     window.addEventListener("hashchange", verifierDefilement);
