@@ -40,19 +40,13 @@ export async function POST(req: NextRequest) {
     const device = detectDevice(ua);
     const { source, channel } = detectSource(referrer, utm_source, utm_medium);
 
-    let geo: { country: string; countryCode: string; city: string };
-
-    // Priorité 1 : données géo fournies par le navigateur (si résolues)
-    if (clientCountry && clientCountry !== "Inconnu" && clientCountry !== "Local" && clientCountry !== "unknown") {
-      geo = {
-        country: clientCountry,
-        countryCode: clientCountryCode || "??",
-        city: clientCity || clientCountry,
-      };
-    } else {
-      // Priorité 2 : fallback serveur (req.ip ou headers)
-      const ip = (req as unknown as { ip?: string }).ip || extractClientIp(req.headers);
-      geo = await geoLookup(ip);
+    // Pays ET ville du visiteur : on les retrouve à partir de son adresse (transmise par le serveur web).
+    // Repli : le pays trouvé par le navigateur, seulement s'il est réel (jamais « ?? »).
+    const ip = (req as unknown as { ip?: string }).ip || extractClientIp(req.headers);
+    let geo: { country: string; countryCode: string; city: string } = await geoLookup(ip);
+    const inconnu = (v?: string) => !v || ["??", "Inconnu", "Local", "unknown", "LO"].includes(v);
+    if (inconnu(geo.countryCode) && !inconnu(clientCountryCode)) {
+      geo = { country: clientCountry || clientCountryCode, countryCode: clientCountryCode, city: inconnu(clientCity) ? "Inconnue" : clientCity };
     }
 
     await trackVisit({

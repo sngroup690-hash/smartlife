@@ -58,7 +58,8 @@ async function fetchClientGeo(): Promise<GeoData> {
       .then((countryCode) => {
         const d = { countryCode };
         if (d.countryCode) {
-          const geo: GeoData = { country: d.countryCode, countryCode: d.countryCode, city: d.countryCode, ts: Date.now() };
+          // La ville est retrouvée par le serveur : le navigateur ne connaît que le pays
+          const geo: GeoData = { country: d.countryCode, countryCode: d.countryCode, city: "", ts: Date.now() };
           setCachedGeo(geo);
           return geo;
         }
@@ -82,6 +83,16 @@ export default function AnalyticsTracker() {
   }, []);
 
   useEffect(() => {
+    // Les visites de Frank et de l'équipe ne comptent pas : un appareil passé par l'administration
+    // (ou ouvert une fois avec ?moi=1) est retenu et ses visites ne sont plus enregistrées.
+    try {
+      const p0 = new URLSearchParams(window.location.search);
+      if (pathname.startsWith("/admin") || p0.get("moi") === "1") localStorage.setItem("_sl_moi", "1");
+      if (p0.get("moi") === "0") localStorage.removeItem("_sl_moi");
+      if (localStorage.getItem("_sl_moi") === "1") return;
+    } catch { /* stockage indisponible : on compte normalement */ }
+    if (["localhost", "127.0.0.1"].includes(window.location.hostname)) return;
+
     const p = new URLSearchParams(window.location.search);
     const { productId, productType } = getProductInfo(pathname);
 
