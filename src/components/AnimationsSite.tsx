@@ -27,7 +27,7 @@ const DECORATIVES = [
   ".cta-clignote", ".cta-respire", ".bouton-reflet", ".texte-brillant", ".fleche-cta", ".accueil-flotte",
   ".garantie-boutique", ".btn-postuler", ".defile-gauche", ".defile-droite", ".animate-marquee-left",
   ".animate-marquee-right", ".animate-defilement-garanties", ".accueil-bulle", ".animate-pulse",
-  ".hero-tache", ".photo-lente", ".point-vivant", ".hero-avenir",
+  ".hero-tache", ".photo-lente", ".point-vivant", ".hero-avenir", ".bande-wax",
 ].join(",");
 
 function animerCompteur(el: HTMLElement) {

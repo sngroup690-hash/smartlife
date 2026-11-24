@@ -40,6 +40,16 @@ const PRESET_BTN_BG: Record<string, string> = {
 // Temps laissé à chaque annonce avant que la suivante monte (le texte qui défile a le temps d'être lu)
 const ROTATE_INTERVAL = 8000;
 
+// L'annonce reste collée tout en haut pendant le défilement ; le menu se colle juste en dessous.
+// On publie sa hauteur dans --annonce-h (0 quand il n'y a pas d'annonce ou qu'elle est fermée).
+function HauteurAnnonce({ visible }: { visible: boolean }) {
+  useEffect(() => {
+    document.documentElement.style.setProperty("--annonce-h", visible ? "31px" : "0px");
+    return () => { document.documentElement.style.setProperty("--annonce-h", "0px"); };
+  }, [visible]);
+  return null;
+}
+
 // Texte sur une ligne : s'il ne tient pas, il défile lentement de droite à gauche.
 function TexteDefilant({ texte }: { texte: string }) {
   const cadre = useRef<HTMLSpanElement>(null);
@@ -127,7 +137,7 @@ export default function AnnouncementBanner() {
     return () => clearInterval(id);
   }, [active.length, advance]);
 
-  if (active.length === 0) return null;
+  if (active.length === 0) return <HauteurAnnonce visible={false} />;
 
   const safeIndex = Math.min(currentIndex, active.length - 1);
   const ann = active[safeIndex];
@@ -143,9 +153,10 @@ export default function AnnouncementBanner() {
   // Bannière fine, sur une seule ligne : un texte trop long défile doucement au lieu de passer à la ligne.
   return (
     <div
-      className="relative overflow-hidden border-b border-black/5"
+      className="sticky top-0 z-[51] overflow-hidden border-b border-black/5"
       style={{ backgroundColor: bg, color: txt }}
     >
+      <HauteurAnnonce visible />
       <div key={animKey} className="animate-ann-slide flex items-center gap-2 h-[30px] pl-3 pr-8 sm:justify-center text-[12px] sm:text-[12.5px] font-medium">
         {active.length > 1 && (
           <button onClick={() => advance(-1, active.length)} className="hidden sm:inline-flex p-0.5 rounded-full hover:bg-black/10" aria-label="Annonce précédente">

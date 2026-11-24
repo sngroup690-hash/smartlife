@@ -31,7 +31,8 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${
+        // Collé juste sous la bannière d'annonce (sa hauteur est publiée dans --annonce-h)
+        className={`sticky top-[var(--annonce-h,0px)] z-50 bg-white transition-shadow duration-300 ${
           scrolled ? "shadow-[0_1px_12px_rgba(16,20,16,0.07)]" : ""
         }`}
         style={{ viewTransitionName: "entete-site" }}

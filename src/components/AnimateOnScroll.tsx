@@ -12,7 +12,8 @@ const VARIANTS: Record<Variant, { hidden: Record<string, number | string>; visib
   slideRight: { hidden: { opacity: 0, x: 50 }, visible: { opacity: 1, x: 0 } },
   scaleUp: { hidden: { opacity: 0, scale: 0.85 }, visible: { opacity: 1, scale: 1 } },
   stagger: { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } },
-  blurUp: { hidden: { opacity: 0, y: 30, filter: "blur(10px)" }, visible: { opacity: 1, y: 0, filter: "blur(0px)" } },
+  // Sans flou : un flou animé fait ramer le défilement sur téléphone
+  blurUp: { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } },
   rotateIn: { hidden: { opacity: 0, rotate: -5, scale: 0.95 }, visible: { opacity: 1, rotate: 0, scale: 1 } },
   flipUp: { hidden: { opacity: 0, rotateX: 15, y: 40 }, visible: { opacity: 1, rotateX: 0, y: 0 } },
 };
