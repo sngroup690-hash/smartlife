@@ -13,7 +13,7 @@ import AnimationsSite from "@/components/AnimationsSite";
 import { DESCRIPTION_SITE } from "@/lib/seo";
 import ReferralTracker from "@/components/ReferralTracker";
 import BottomNav from "@/components/BottomNav";
-import { Suspense, ViewTransition } from "react";
+import { Suspense } from "react";
 import BarreChargement from "@/components/BarreChargement";
 import MasquerSurPageProduit from "@/components/MasquerSurPageProduit";
 import ElementsDifferes from "@/components/ElementsDifferes";
@@ -89,7 +89,9 @@ export default function RootLayout({
         <CurrencyProvider />
         <Suspense fallback={null}><BarreChargement /></Suspense>
         <main className="flex-1 pb-24 lg:pb-0">
-          <ViewTransition default="fondu-page">{children}</ViewTransition>
+          {/* Pas de fondu entre les pages : sur téléphone, il s'interrompait dès que la barre d'adresse
+              se repliait (« Transition was aborted ») et pouvait casser l'affichage pendant la navigation. */}
+          {children}
         </main>
         <MasquerSurPageProduit>
           <Footer />
