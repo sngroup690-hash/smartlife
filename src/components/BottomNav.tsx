@@ -43,7 +43,7 @@ export default function BottomNav() {
     <>
       {/* ── Menu fixe en bas, téléphone et tablette : blanc, plat, une pastille jaune glisse sous la rubrique choisie ── */}
       <nav
-        className="lg:hidden fixed left-0 right-0 bottom-0 z-50 bg-white/95 border-t border-[var(--g-ligne)]"
+        className="lg:hidden fixed left-0 right-0 bottom-0 z-50 bg-white border-t border-[var(--g-ligne)]"
         style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)", viewTransitionName: "menu-bas" }}
         aria-label="Menu principal"
       >

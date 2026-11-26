@@ -303,11 +303,37 @@ h1, h2, h3, h4, h5, h6, b, strong { font-weight: 600; }
    sur les téléphones d'entrée de gamme : on les simplifie sous 1024 px. */
 @media (max-width: 1023px) {
   [class*="backdrop-blur"] { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
-  .accueil-bulle { animation: none !important; filter: blur(50px); }
-  /* Effets qui obligent le téléphone à redessiner sans arrêt : figés sur petit écran. */
   .texte-brillant { animation: none !important; background-position: 30% 50%; }
   .btn-postuler { animation: none !important; }
-  .accueil-flotte { animation-duration: 9s; }
+  .accueil-flotte { animation: none !important; }
+  /* Bulles floues : cachées (blur(90px) + animation = trop lourd pour le GPU mobile) */
+  .accueil-bulle { display: none !important; }
+  /* Hero : halos fixes, photo fixe, pas de will-change permanent */
+  .hero-tache { animation: none !important; will-change: auto !important; }
+  .photo-lente { animation: none !important; will-change: auto !important; }
+  /* Boutons CTA : pas d'animation infinie */
+  .cta-pulse, .cta-bounce, .cta-shimmer, .cta-glow, .cta-wiggle, .cta-clignote, .cta-respire { animation: none !important; }
+  .g-btn-reflet { animation: none !important; }
+  .bouton-reflet::before { animation: none !important; }
+  .pulse-glow { animation: none !important; }
+  .animate-float { animation: none !important; }
+  /* Menu : halo et garantie-flotte */
+  .menu-halo { animation: none !important; }
+  .garantie-boutique { animation: none !important; }
+  /* Marquee des témoignages : ralenti (moins de repaints) */
+  .animate-marquee-left, .animate-marquee-right { animation-duration: 80s; }
+  /* Annonce défilante : pas de will-change permanent */
+  .ann-defile { will-change: auto !important; }
+  /* Cartes : will-change uniquement au survol, pas en permanence */
+  .card-hover { will-change: auto !important; }
+  /* Bande wax : motif fixe au lieu de défiler */
+  .bande-wax::before { animation: none !important; will-change: auto !important; }
+  /* Boutons : reflet lumineux figé */
+  .g-btn::after { animation: none !important; }
+  /* SVG du hero (soleil + barres) : toutes les animations coupées */
+  .hero-avenir *, .hero-avenir { animation: none !important; }
+  /* Point vert qui respire */
+  .point-vivant::after { animation: none !important; }
 }
 
 /* ── Lecture animée de la page produit ──────────────────────────────
