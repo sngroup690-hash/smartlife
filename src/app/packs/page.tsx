@@ -11,7 +11,7 @@ import BandeGuides from "@/components/BandeGuides";
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
-type PackItem = { type: "ebook" | "formation"; id: string; title: string; prix?: number };
+type PackItem = { type: "ebook" | "formation"; id: string; title: string; prix?: number; cover?: string };
 type Pack = {
   id: string; slug?: string; nom: string; description: string; prix: number;
   originalValeur?: number;
@@ -88,6 +88,7 @@ function PackCard({ pack }: { pack: Pack }) {
   const ebookItems     = pack.items.filter((i) => i.type === "ebook");
   const formationItems = pack.items.filter((i) => i.type === "formation");
   const totalItems     = pack.items.length;
+  const couvertures    = ebookItems.map((i) => i.cover).filter(Boolean) as string[];
 
   const hasOriginal = (pack.originalValeur || 0) > pack.prix;
   const economy = hasOriginal ? pack.originalValeur! - pack.prix : 0;
@@ -95,46 +96,37 @@ function PackCard({ pack }: { pack: Pack }) {
 
   return (
     <article className="bg-white border border-[var(--g-ligne)] rounded-[16px] overflow-hidden transition-colors hover:border-[var(--g-gris-clair)] flex flex-col">
-      {/* Image / bannière */}
-      {pack.image ? (
-        <div className="relative w-full overflow-hidden bg-[var(--g-doux)]" style={{ aspectRatio: "4/3" }}>
-          <img
-            src={pack.image}
-            alt={pack.nom}
-            className="w-full h-full object-contain pt-9 pb-9"
-          />
-          {/* Badges superposés */}
-          <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
-            <span className="px-2 py-0.5 rounded-md bg-white text-[12px] font-semibold text-[var(--g-encre)] flex items-center gap-1">
-              <Package size={11} /> {totalItems} contenu{totalItems > 1 ? "s" : ""}
-            </span>
-            {discountPct > 0 && (
-              <span className="px-2 py-0.5 rounded-md bg-white text-[12px] font-semibold text-[var(--g-vert)]">
-                -{discountPct}%
-              </span>
+      {/* Montage des couvertures des ebooks du pack */}
+      <div className="relative w-full overflow-hidden bg-[var(--g-doux)]" style={{ aspectRatio: "4/3" }}>
+        {couvertures.length >= 2 ? (
+          <div className={`grid h-full w-full ${couvertures.length === 2 ? "grid-cols-2" : couvertures.length === 3 ? "grid-cols-3" : "grid-cols-2 grid-rows-2"} gap-1 p-3`}>
+            {couvertures.slice(0, 4).map((src, i) => (
+              <img key={i} src={src} alt="" className="w-full h-full object-contain rounded-lg bg-white" loading="lazy" />
+            ))}
+            {couvertures.length > 4 && (
+              <div className="absolute bottom-3 right-3 px-2 py-0.5 rounded-md bg-black/70 text-[12px] font-semibold text-white">
+                +{couvertures.length - 4}
+              </div>
             )}
           </div>
-          {/* Noms des guides — bande fine en bas */}
-          <BandeGuides items={ebookItems} taille="text-[9px]" />
-        </div>
-      ) : (
-        <div className="h-32 bg-[var(--g-doux)] flex items-center justify-center relative">
-          <Package size={40} className="text-[var(--g-vert)]" />
-          <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
-            <span className="px-2 py-0.5 rounded-md bg-white text-[12px] font-semibold text-[var(--g-encre)] flex items-center gap-1">
-              <Package size={11} /> {totalItems} contenu{totalItems > 1 ? "s" : ""}
-            </span>
-            {discountPct > 0 && (
-              <span className="px-2 py-0.5 rounded-md bg-white text-[12px] font-semibold text-[var(--g-vert)]">
-                -{discountPct}%
-              </span>
-            )}
+        ) : pack.image ? (
+          <img src={pack.image} alt={pack.nom} className="w-full h-full object-contain pt-6 pb-6" loading="lazy" />
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <Package size={40} className="text-[var(--g-vert)]" />
           </div>
-          <span className="absolute bottom-3 right-3 px-2 py-0.5 rounded-md bg-white text-[12px] font-semibold text-[var(--g-encre)]">
-            Pack
+        )}
+        <div className="absolute top-3 left-3 right-3 flex items-start justify-between gap-2">
+          <span className="px-2 py-0.5 rounded-md bg-white/90 text-[12px] font-semibold text-[var(--g-encre)] flex items-center gap-1">
+            <Package size={11} /> {totalItems} contenu{totalItems > 1 ? "s" : ""}
           </span>
+          {discountPct > 0 && (
+            <span className="px-2 py-0.5 rounded-md bg-white/90 text-[12px] font-semibold text-[var(--g-vert)]">
+              -{discountPct}%
+            </span>
+          )}
         </div>
-      )}
+      </div>
 
       <div className="p-6 flex flex-col flex-1 gap-5">
         {/* Titre + description */}

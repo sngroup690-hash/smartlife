@@ -11,31 +11,31 @@ const EBOOKS_FILE = path.join(process.cwd(), "private", "ebooks-data.json");
 const FORMATIONS_FILE = path.join(process.cwd(), "private", "formations-data.json");
 const NO_STORE = { headers: { "Cache-Control": "no-store" } };
 
-async function buildPriceMap(): Promise<Map<string, number>> {
-  const map = new Map<string, number>();
+async function buildMaps(): Promise<{ prix: Map<string, number>; covers: Map<string, string> }> {
+  const prix = new Map<string, number>();
+  const covers = new Map<string, string>();
 
-  // Static ebooks
   for (const e of staticEbooks) {
-    map.set(e.id, e.price);
+    prix.set(e.id, e.price);
+    if ((e as { cover?: string }).cover) covers.set(e.id, (e as { cover?: string }).cover!);
   }
 
-  // Dynamic ebooks (admin-created)
   try {
     const data = JSON.parse(await readFile(EBOOKS_FILE, "utf-8"));
     for (const e of data.ebooks || []) {
-      if (e.id && e.price) map.set(e.id, Number(e.price));
+      if (e.id && e.price) prix.set(e.id, Number(e.price));
+      if (e.id && e.cover) covers.set(e.id, e.cover);
     }
   } catch {}
 
-  // Formations
   try {
     const data = JSON.parse(await readFile(FORMATIONS_FILE, "utf-8"));
     for (const f of data.formations || []) {
-      if (f.id && f.prix) map.set(f.id, Number(f.prix));
+      if (f.id && f.prix) prix.set(f.id, Number(f.prix));
     }
   } catch {}
 
-  return map;
+  return { prix, covers };
 }
 
 export async function GET(req: NextRequest) {
@@ -48,12 +48,13 @@ export async function GET(req: NextRequest) {
       items?: Array<{ type: string; id: string; title: string }>;
     }> = data.packs || [];
 
-    const priceMap = await buildPriceMap();
+    const { prix: priceMap, covers: coverMap } = await buildMaps();
 
     const enriched = packs.map((pack) => {
       const items = (pack.items || []).map((item) => ({
         ...item,
         prix: priceMap.get(item.id) || 0,
+        cover: coverMap.get(item.id) || "",
       }));
       const originalValeur = items.reduce((sum, item) => sum + item.prix, 0);
       return { ...pack, items, originalValeur };
