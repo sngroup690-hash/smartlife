@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { readFile, access } from "fs/promises";
+import { readFile } from "fs/promises";
 import path from "path";
 import { ebooks as staticEbooks } from "@/lib/data";
 import { assurerPacksProposes } from "@/lib/packs-proposes";
-
-const PACKS_DIR = path.join(process.cwd(), "public", "packs");
 
 export const dynamic = "force-dynamic";
 
@@ -52,7 +50,7 @@ export async function GET(req: NextRequest) {
 
     const { prix: priceMap, covers: coverMap } = await buildMaps();
 
-    const enriched = await Promise.all(packs.map(async (pack) => {
+    const enriched = packs.map((pack) => {
       const items = (pack.items || []).map((item) => ({
         ...item,
         prix: priceMap.get(item.id) || 0,
@@ -60,13 +58,9 @@ export async function GET(req: NextRequest) {
       }));
       const originalValeur = items.reduce((sum, item) => sum + item.prix, 0);
       const slug = (pack as { slug?: string }).slug;
-      let image = (pack as { image?: string }).image;
-      if (slug) {
-        const fichierPack = path.join(PACKS_DIR, `${slug}.webp`);
-        try { await access(fichierPack); image = `/packs/${slug}.webp`; } catch {}
-      }
+      const image = slug ? `/packs/${slug}.webp` : (pack as { image?: string }).image;
       return { ...pack, image, items, originalValeur };
-    }));
+    });
 
     const id = req.nextUrl.searchParams.get("id");
     const slug = req.nextUrl.searchParams.get("slug");
