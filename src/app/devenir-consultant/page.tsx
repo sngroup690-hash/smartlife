@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   CheckCircle, User, Mail, Phone, MapPin, Camera, X,
@@ -106,6 +107,7 @@ const anim = {
 };
 
 export default function DevenirConsultantPage() {
+  const router = useRouter();
   const photoInputRef = useRef<HTMLInputElement>(null);
   const [photoPreview, setPhotoPreview] = useState("");
   const [photoUploading, setPhotoUploading] = useState(false);
@@ -115,7 +117,6 @@ export default function DevenirConsultantPage() {
   const [form, setForm] = useState<FormData>(VIDE);
   const [etape, setEtape] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [soumis, setSoumis] = useState(false);
   const [erreurs, setErreurs] = useState<Record<string, string>>({});
 
   function set<K extends keyof FormData>(k: K, v: FormData[K]) {
@@ -205,43 +206,12 @@ export default function DevenirConsultantPage() {
         setErreurs({ convention: data.error || "Erreur. Réessayez." });
         return;
       }
-      setSoumis(true);
-      formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      router.push(`/evaluation?email=${encodeURIComponent(form.email.trim().toLowerCase())}&nom=${encodeURIComponent(form.prenom.trim() + " " + form.nom.trim())}&tel=${encodeURIComponent(form.telephone.trim())}`);
     } catch {
       setErreurs({ convention: "Erreur réseau. Réessayez." });
     } finally {
       setLoading(false);
     }
-  }
-
-  if (soumis) {
-    return (
-      <div className="min-h-screen bg-[var(--g-doux)] text-[var(--g-encre)] flex items-center justify-center px-5">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="max-w-md w-full text-center bg-white rounded-[20px] p-8 sm:p-10 shadow-sm border border-[var(--g-ligne)]"
-        >
-          <div className="w-16 h-16 bg-[var(--g-vert-doux)] rounded-full flex items-center justify-center mx-auto mb-5">
-            <CheckCircle size={32} className="text-[var(--g-vert)]" />
-          </div>
-          <h2 className="text-[22px] sm:text-[26px] font-semibold mb-3">
-            Candidature envoyée
-          </h2>
-          <p className="text-[var(--g-gris)] text-[15px] leading-relaxed mb-6">
-            Merci <strong>{form.prenom}</strong> ! Nous allons étudier votre profil et vous contacter sur <strong>WhatsApp</strong> au <strong>{form.telephone}</strong> pour la suite du processus.
-          </p>
-          <div className="bg-[var(--g-doux)] rounded-[12px] p-4 text-left space-y-2 text-sm text-[var(--g-encre)]">
-            <p className="flex items-start gap-2"><CheckCircle size={14} className="text-[var(--g-vert)] mt-0.5 shrink-0" /> Votre dossier est en cours d&apos;examen</p>
-            <p className="flex items-start gap-2"><Phone size={14} className="text-[var(--g-vert)] mt-0.5 shrink-0" /> Nous vous contacterons sur WhatsApp</p>
-            <p className="flex items-start gap-2"><FileCheck size={14} className="text-[var(--g-vert)] mt-0.5 shrink-0" /> Un test d&apos;évaluation vous sera envoyé</p>
-          </div>
-          <a href="/" className="inline-block mt-6 g-btn text-sm">
-            Retour à l&apos;accueil
-          </a>
-        </motion.div>
-      </div>
-    );
   }
 
   return (
@@ -256,7 +226,7 @@ export default function DevenirConsultantPage() {
             Devenez consultant <span className="g-surligne">Smart Life</span>
           </h1>
           <p className="text-[var(--g-gris)] text-[15px] max-w-sm mx-auto leading-relaxed">
-            Remplissez ce formulaire en quelques étapes pour rejoindre notre réseau de consultants.
+            Remplissez ce formulaire en quelques étapes, puis passez l&apos;évaluation pour rejoindre notre réseau.
           </p>
         </div>
       </section>
@@ -456,7 +426,7 @@ export default function DevenirConsultantPage() {
                 className="g-btn text-sm disabled:opacity-60">
                 {loading
                   ? <><span className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" /> Envoi…</>
-                  : <>Envoyer ma candidature <ArrowRight size={15} /></>}
+                  : <>Valider et passer l&apos;évaluation <ArrowRight size={15} /></>}
               </button>
             )}
           </div>

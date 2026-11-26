@@ -9,146 +9,146 @@ import Link from "next/link";
 type Question = { section: string; text: string; options: string[] };
 
 const QUESTIONS: Question[] = [
-  // Section 1 : Raisonnement professionnel (0-6)
+  // Section 1 : Accompagnement entrepreneurial digital (0-6)
   {
-    section: "Raisonnement professionnel",
-    text: "Un client demande un service que vous n'avez jamais réalisé. Quelle est votre première réaction ?",
+    section: "Accompagnement entrepreneurial",
+    text: "Un entrepreneur vous dit : « Je veux gagner de l'argent sur internet mais je ne sais pas par où commencer. » Que faites-vous ?",
     options: [
-      "Vous refusez poliment en expliquant que ce n'est pas votre domaine",
-      "Vous acceptez et cherchez à comprendre le besoin avant de proposer une solution",
-      "Vous demandez à un collègue de s'en charger",
-      "Vous acceptez sans poser de questions, vous verrez bien",
+      "Vous lui proposez directement de vendre des ebooks sans chercher à comprendre son profil",
+      "Vous identifiez d'abord ses compétences, sa situation et son budget pour lui proposer un chemin adapté",
+      "Vous lui dites que ce n'est pas pour tout le monde et qu'il devrait d'abord se former pendant des mois",
+      "Vous lui envoyez des liens vers des formations gratuites sur YouTube",
     ],
   },
   {
-    section: "Raisonnement professionnel",
-    text: "Lors d'une mission, vous constatez que les objectifs du client ne sont pas réalistes. Que faites-vous ?",
+    section: "Accompagnement entrepreneurial",
+    text: "Votre client a créé un produit digital (ebook) mais ne fait aucune vente après 2 semaines. Comment réagissez-vous ?",
     options: [
-      "Vous ne dites rien pour ne pas le froisser",
-      "Vous proposez des objectifs intermédiaires réalistes tout en gardant la vision finale",
-      "Vous abandonnez la mission",
-      "Vous acceptez et espérez que ça ira",
+      "Vous lui dites que son produit n'est pas bon et qu'il faut tout recommencer",
+      "Vous analysez sa page de vente, son audience cible et sa stratégie de promotion pour trouver ce qui bloque",
+      "Vous lui conseillez de baisser le prix",
+      "Vous ne faites rien, c'est à lui de trouver la solution",
     ],
   },
   {
-    section: "Raisonnement professionnel",
-    text: "Un collègue consultant fait une erreur devant un client. Comment réagissez-vous ?",
+    section: "Accompagnement entrepreneurial",
+    text: "Un client veut lancer une publicité Meta Ads avec un budget de 5 000 FCFA par jour. Quel conseil lui donnez-vous ?",
     options: [
-      "Vous le corrigez devant le client pour montrer votre expertise",
-      "Vous complétez discrètement l'information et en discutez avec lui en privé après",
-      "Vous ne dites rien, ce n'est pas votre problème",
-      "Vous signalez l'erreur à votre hiérarchie",
+      "Vous lui dites que c'est trop peu et qu'il ne devrait pas faire de pub",
+      "Vous l'aidez à cibler précisément son audience et à tester 2-3 créatives pour maximiser ce petit budget",
+      "Vous lui demandez d'augmenter son budget à au moins 50 000 FCFA par jour",
+      "Vous lancez la pub sans réfléchir à la stratégie",
     ],
   },
   {
-    section: "Raisonnement professionnel",
-    text: "Un client exprime son mécontentement sur votre travail. Quelle approche adoptez-vous ?",
+    section: "Accompagnement entrepreneurial",
+    text: "Un client vous dit qu'il n'a pas d'ordinateur, seulement un téléphone. Peut-il quand même créer un business digital ?",
     options: [
-      "Vous vous justifiez immédiatement",
-      "Vous écoutez, reformulez ses attentes et proposez un plan de correction",
-      "Vous considérez que le client a tort",
-      "Vous passez le dossier à quelqu'un d'autre",
+      "Non, il faut absolument un ordinateur pour faire du business en ligne",
+      "Oui, vous lui montrez les outils et méthodes adaptés au téléphone pour commencer",
+      "Vous lui dites de d'abord économiser pour acheter un PC",
+      "Vous refusez de l'accompagner tant qu'il n'a pas le bon matériel",
     ],
   },
   {
-    section: "Raisonnement professionnel",
-    text: "Vous devez présenter un projet complexe à un public non technique. Que privilégiez-vous ?",
+    section: "Accompagnement entrepreneurial",
+    text: "Un client vous demande de l'aider à utiliser l'IA pour son business. Comment abordez-vous le sujet ?",
     options: [
-      "Un vocabulaire technique pour montrer votre maîtrise",
-      "Des analogies simples, des visuels et un langage accessible",
-      "Une présentation courte sans détails",
-      "Vous lisez vos slides sans interaction",
+      "Vous lui expliquez que l'IA est trop compliquée pour quelqu'un qui débute",
+      "Vous lui montrez concrètement comment l'IA peut l'aider dans ses tâches quotidiennes avec des exemples pratiques",
+      "Vous lui donnez une liste d'outils IA sans explication",
+      "Vous lui dites que l'IA va remplacer les humains et qu'il devrait s'inquiéter",
     ],
   },
   {
-    section: "Raisonnement professionnel",
-    text: "On vous confie la responsabilité d'un projet avec un délai très court. Que faites-vous ?",
+    section: "Accompagnement entrepreneurial",
+    text: "Un client vous confie qu'il est découragé parce que ses proches ne croient pas en son projet digital. Que lui dites-vous ?",
     options: [
-      "Vous travaillez seul jour et nuit pour tout finir",
-      "Vous identifiez les priorités, déléguez si possible et communiquez sur l'avancement",
-      "Vous demandez un report de délai avant d'avoir commencé",
-      "Vous faites le minimum et rendez un travail bâclé",
+      "Vous êtes d'accord que c'est risqué et qu'il devrait peut-être arrêter",
+      "Vous le remotivez avec des exemples concrets de réussite, l'aidez à se fixer des objectifs à court terme et restez disponible",
+      "Vous ignorez sa frustration et passez directement au travail",
+      "Vous lui dites de couper les ponts avec les personnes négatives",
     ],
   },
   {
-    section: "Raisonnement professionnel",
-    text: "Un partenaire stratégique propose une collaboration qui ne correspond pas à l'éthique de votre entreprise. Que faites-vous ?",
+    section: "Accompagnement entrepreneurial",
+    text: "Un client vous propose de mentir sur les résultats de son produit pour vendre plus. Quelle est votre position ?",
     options: [
-      "Vous acceptez pour le bénéfice financier",
-      "Vous expliquez vos valeurs et proposez un cadre éthique commun ou déclinez respectueusement",
-      "Vous ignorez la proposition sans répondre",
-      "Vous acceptez en vous disant que personne ne le saura",
+      "Vous acceptez si ça aide à faire plus de ventes",
+      "Vous refusez fermement et lui montrez comment vendre en mettant en avant les vrais bénéfices de son produit",
+      "Vous ne dites rien et le laissez faire",
+      "Vous coupez la relation immédiatement sans explication",
     ],
   },
-  // Section 2 : Compétences pédagogiques (7-13)
+  // Section 2 : Compétences relationnelles et pédagogiques (7-13)
   {
-    section: "Compétences pédagogiques",
-    text: "Un apprenant ne comprend pas votre explication malgré plusieurs tentatives. Que faites-vous ?",
+    section: "Compétences relationnelles",
+    text: "Vous accompagnez un client qui a du mal à créer du contenu pour ses réseaux sociaux. Comment l'aidez-vous ?",
     options: [
-      "Vous répétez la même explication plus fort",
-      "Vous changez de méthode : illustration, cas pratique, support visuel",
-      "Vous passez au point suivant",
-      "Vous lui dites de relire le support",
-    ],
-  },
-  {
-    section: "Compétences pédagogiques",
-    text: "Pendant une formation, un participant pose une question hors sujet mais intéressante. Votre réaction ?",
-    options: [
-      "Vous ignorez la question pour rester dans le programme",
-      "Vous la valorisez, répondez brièvement et proposez d'en parler après la session",
-      "Vous déviez complètement vers ce sujet",
-      "Vous dites que ce n'est pas pertinent",
+      "Vous créez le contenu à sa place, c'est plus rapide",
+      "Vous lui apprenez une méthode simple, créez les premiers ensemble, puis il continue seul avec votre suivi",
+      "Vous lui donnez une liste de comptes à copier",
+      "Vous lui dites que s'il ne sait pas créer du contenu, le business digital n'est pas pour lui",
     ],
   },
   {
-    section: "Compétences pédagogiques",
-    text: "Comment évaluez-vous la compréhension d'un groupe en cours de formation ?",
+    section: "Compétences relationnelles",
+    text: "Pendant un appel avec un client, il reçoit un message WhatsApp d'un « formateur » qui lui promet 500 000 FCFA en 7 jours. Que faites-vous ?",
     options: [
-      "Vous posez la question : « Vous avez compris ? »",
-      "Vous utilisez des quiz, des mises en situation et observez les réactions",
-      "Vous ne vérifiez pas, le contenu est suffisant",
-      "Vous attendez les retours après la formation",
+      "Vous ne dites rien, chacun ses choix",
+      "Vous lui expliquez calmement les signaux d'arnaque, sans critiquer, et l'aidez à évaluer les promesses de manière critique",
+      "Vous vous moquez de lui pour y avoir cru",
+      "Vous lui dites de suivre les deux formations en même temps",
     ],
   },
   {
-    section: "Compétences pédagogiques",
-    text: "Un apprenant est démotivé et ne participe plus. Comment le remotivez-vous ?",
+    section: "Compétences relationnelles",
+    text: "Un client ne répond plus à vos messages depuis 10 jours alors que vous êtes en plein accompagnement. Comment réagissez-vous ?",
     options: [
-      "Vous l'ignorez, il reviendra quand il voudra",
-      "Vous lui donnez un rôle actif (exercice à animer, cas à résoudre)",
-      "Vous le rappelez à l'ordre devant tout le monde",
-      "Vous lui demandez de quitter la session",
+      "Vous l'oubliez et passez à un autre client",
+      "Vous le relancez avec bienveillance, lui demandez s'il a des difficultés et proposez d'adapter le rythme",
+      "Vous lui envoyez un message agressif pour lui rappeler son engagement",
+      "Vous le supprimez de votre liste de clients",
     ],
   },
   {
-    section: "Compétences pédagogiques",
-    text: "Comment structurez-vous une session de formation d'une heure ?",
+    section: "Compétences relationnelles",
+    text: "Un client vous dit : « J'ai tout essayé, rien ne marche pour moi. » Comment le gérez-vous ?",
     options: [
-      "Vous improvisez en fonction de l'humeur du groupe",
-      "Introduction (5 min), contenu + exercices (45 min), synthèse + questions (10 min)",
-      "Vous parlez pendant 50 minutes puis demandez s'il y a des questions",
-      "Vous donnez le support et demandez de lire",
+      "Vous lui dites qu'il n'a probablement pas assez travaillé",
+      "Vous reprenez son parcours point par point, identifiez ce qui a bloqué et proposez un plan d'action concret",
+      "Vous lui proposez d'abandonner le digital et de faire autre chose",
+      "Vous lui envoyez des vidéos de motivation",
     ],
   },
   {
-    section: "Compétences pédagogiques",
-    text: "Après une formation, un participant vous dit qu'il n'a rien retenu. Que faites-vous ?",
+    section: "Compétences relationnelles",
+    text: "Vous devez expliquer le concept de tunnel de vente à quelqu'un qui n'a jamais fait de marketing. Comment procédez-vous ?",
     options: [
-      "Vous pensez que c'est de sa faute",
-      "Vous proposez un suivi individuel et adaptez vos méthodes pour la prochaine session",
-      "Vous lui renvoyez le support de formation",
-      "Vous ne faites rien, ce n'est pas votre problème",
+      "Vous utilisez les termes techniques : « landing page, upsell, lead magnet »",
+      "Vous comparez avec un marché local : l'appel, la dégustation gratuite, la vente, puis le client qui revient",
+      "Vous lui dites de regarder une vidéo YouTube",
+      "Vous sautez l'explication et passez directement à la pratique",
     ],
   },
   {
-    section: "Compétences pédagogiques",
-    text: "On vous demande de former des personnes avec des niveaux très différents. Quelle stratégie adoptez-vous ?",
+    section: "Compétences relationnelles",
+    text: "Un client a réussi sa première vente grâce à votre accompagnement. Comment capitalisez-vous sur ce succès ?",
     options: [
-      "Vous enseignez au niveau le plus bas pour ne perdre personne",
-      "Vous créez des sous-groupes par niveau avec des activités adaptées",
-      "Vous enseignez au niveau le plus élevé, les autres rattraperont",
-      "Vous demandez à ne former que des personnes du même niveau",
+      "Rien de spécial, c'est normal",
+      "Vous célébrez avec lui, analysez ce qui a fonctionné, et l'aidez à répliquer et améliorer sa stratégie",
+      "Vous lui demandez immédiatement de vous recommander à d'autres",
+      "Vous considérez que votre travail est terminé",
+    ],
+  },
+  {
+    section: "Compétences relationnelles",
+    text: "Deux de vos clients se retrouvent dans le même marché et vendent des produits similaires. Comment gérez-vous cette situation ?",
+    options: [
+      "Vous donnez les mêmes conseils aux deux sans rien changer",
+      "Vous aidez chacun à trouver son angle unique et sa différenciation, en toute transparence",
+      "Vous arrêtez d'accompagner l'un des deux",
+      "Vous créez de la concurrence entre eux pour les motiver",
     ],
   },
 ];
@@ -157,22 +157,22 @@ const BAREME = [0, 3, 1, 0];
 const LETTRES = ["A", "B", "C", "D"];
 
 const SUJETS_TECH = [
-  "Gestion de situations nouvelles",
-  "Cadrage d'objectifs réalistes",
-  "Travail d'équipe et diplomatie",
-  "Gestion des conflits clients",
-  "Communication non technique",
-  "Gestion des priorités et délais",
-  "Éthique professionnelle",
+  "Diagnostic de situation client",
+  "Analyse et résolution de problèmes",
+  "Gestion de budget publicitaire",
+  "Adaptation aux contraintes du client",
+  "Maîtrise des outils IA",
+  "Motivation et persévérance",
+  "Éthique et honnêteté",
 ];
 const SUJETS_PEDA = [
-  "Adaptation pédagogique",
-  "Gestion des questions hors sujet",
-  "Évaluation continue",
-  "Remotivation des apprenants",
-  "Structuration des sessions",
-  "Suivi post-formation",
-  "Différenciation pédagogique",
+  "Autonomisation du client",
+  "Protection contre les arnaques",
+  "Suivi et relance bienveillante",
+  "Gestion du découragement",
+  "Vulgarisation et pédagogie",
+  "Capitalisation sur les succès",
+  "Gestion de la concurrence entre clients",
 ];
 
 function getNiveau(pct: number) {
@@ -185,12 +185,12 @@ function getNiveau(pct: number) {
 
 function getVerdict(pctTech: number, pctPeda: number) {
   if (pctTech >= 75 && pctPeda >= 75)
-    return { titre: "Validé", desc: "Vous remplissez les critères requis pour intégrer l'équipe des consultants Smart Life.", icone: "succes" as const };
+    return { titre: "Validé", desc: "Félicitations ! Vous avez le profil pour accompagner des entrepreneurs digitaux chez Smart Life. Nous vous contacterons très bientôt.", icone: "succes" as const };
   if ((pctTech >= 60 && pctTech < 75) || (pctPeda >= 60 && pctPeda < 75))
-    return { titre: "Validation conditionnelle", desc: "Vous avez le potentiel. Un plan de renforcement sera proposé sur les points à améliorer avant la validation finale.", icone: "attention" as const };
+    return { titre: "Validation conditionnelle", desc: "Vous avez du potentiel ! Quelques points sont à renforcer. Nous vous proposerons un plan de mise à niveau avant de vous intégrer.", icone: "attention" as const };
   if (pctTech >= 40 || pctPeda >= 40)
-    return { titre: "Formation complémentaire requise", desc: "Certaines compétences nécessitent un renforcement significatif. Un parcours de formation vous sera proposé.", icone: "attention" as const };
-  return { titre: "Non validé", desc: "Les résultats ne permettent pas de valider votre candidature pour le moment. Vous pourrez repasser l'évaluation après un parcours de mise à niveau.", icone: "echec" as const };
+    return { titre: "Formation complémentaire requise", desc: "Certaines compétences essentielles pour l'accompagnement digital nécessitent un renforcement. Un parcours de formation vous sera proposé.", icone: "attention" as const };
+  return { titre: "Non validé", desc: "Les résultats ne correspondent pas encore au profil recherché. Vous pourrez repasser l'évaluation après vous être préparé.", icone: "echec" as const };
 }
 
 // ── Composant ────────────────────────────────────────────────────────────────
@@ -485,7 +485,7 @@ export default function EvaluationPage() {
             {/* Scores */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
               <div className="bg-white border border-[var(--g-ligne,#E5E7EB)] rounded-2xl p-5 text-center">
-                <p className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[var(--g-gris,#6B7280)] mb-2">Raisonnement professionnel</p>
+                <p className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[var(--g-gris,#6B7280)] mb-2">Accompagnement entrepreneurial</p>
                 <p className="text-[36px] font-bold tracking-[-0.02em] text-[var(--g-vert,#0D6B3F)]" style={{ fontVariantNumeric: "tabular-nums" }}>
                   {resultats.pctTech.toFixed(1)}<span className="text-[18px] font-medium text-[var(--g-gris,#6B7280)]"> /100</span>
                 </p>
@@ -494,7 +494,7 @@ export default function EvaluationPage() {
                 </p>
               </div>
               <div className="bg-white border border-[var(--g-ligne,#E5E7EB)] rounded-2xl p-5 text-center">
-                <p className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[var(--g-gris,#6B7280)] mb-2">Compétences pédagogiques</p>
+                <p className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[var(--g-gris,#6B7280)] mb-2">Compétences relationnelles</p>
                 <p className="text-[36px] font-bold tracking-[-0.02em] text-[var(--g-vert,#0D6B3F)]" style={{ fontVariantNumeric: "tabular-nums" }}>
                   {resultats.pctPeda.toFixed(1)}<span className="text-[18px] font-medium text-[var(--g-gris,#6B7280)]"> /100</span>
                 </p>
@@ -521,7 +521,7 @@ export default function EvaluationPage() {
                 <h3 className="text-[16px] font-bold mb-4 text-[var(--g-encre,#1A1A1A)]">Points à renforcer</h3>
                 {resultats.faiblesses.filter(f => f.section === "tech").length > 0 && (
                   <div className="mb-4">
-                    <p className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[var(--g-gris,#6B7280)] mb-2">Raisonnement professionnel</p>
+                    <p className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[var(--g-gris,#6B7280)] mb-2">Accompagnement entrepreneurial</p>
                     <ul className="space-y-1.5">
                       {resultats.faiblesses.filter(f => f.section === "tech").map((f, i) => (
                         <li key={i} className="text-[14px] text-[var(--g-gris,#6B7280)] flex items-start gap-2">
@@ -534,7 +534,7 @@ export default function EvaluationPage() {
                 )}
                 {resultats.faiblesses.filter(f => f.section === "peda").length > 0 && (
                   <div>
-                    <p className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[var(--g-gris,#6B7280)] mb-2">Compétences pédagogiques</p>
+                    <p className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[var(--g-gris,#6B7280)] mb-2">Compétences relationnelles</p>
                     <ul className="space-y-1.5">
                       {resultats.faiblesses.filter(f => f.section === "peda").map((f, i) => (
                         <li key={i} className="text-[14px] text-[var(--g-gris,#6B7280)] flex items-start gap-2">
