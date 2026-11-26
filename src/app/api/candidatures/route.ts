@@ -35,11 +35,40 @@ async function writeAll(data: unknown[]) {
   await writeFile(FILE, JSON.stringify(data, null, 2), "utf-8");
 }
 
+async function notifierAdmin(entry: Record<string, unknown>) {
+  const cle = process.env.RESEND_API_KEY;
+  const dest = process.env.ADMIN_EMAIL || "sngroup690@gmail.com";
+  const from = process.env.EMAIL_FROM || "noreply@smartlifecm.com";
+  if (!cle) { console.log("ℹ️  RESEND_API_KEY absent — notification candidature non envoyée"); return; }
+  try {
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${cle}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from,
+        to: dest,
+        subject: `🆕 Nouveau consultant : ${entry.prenom} ${entry.nom}`,
+        html: `<h2>Nouvelle candidature consultant</h2>
+<p><strong>Nom :</strong> ${entry.prenom} ${entry.nom}</p>
+<p><strong>Email :</strong> ${entry.email}</p>
+<p><strong>Téléphone :</strong> ${entry.telephone}</p>
+<p><strong>Ville :</strong> ${entry.ville}</p>
+<p><strong>Date de naissance :</strong> ${entry.dateNaissance || "—"}</p>
+${entry.photoUrl ? `<p><img src="${entry.photoUrl}" width="120" style="border-radius:50%" /></p>` : ""}
+<p style="margin-top:16px"><a href="https://smartlifecm.com/admin/consultants">Voir dans l'admin →</a></p>`,
+      }),
+    });
+    console.log(`✅ Notification candidature envoyée à ${dest}`);
+  } catch (err) {
+    console.error("Erreur notification candidature:", err);
+  }
+}
+
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { prenom, nom, email, telephone, ville, anneesExperience, domainesIds, motivation, portfolioUrl, photoUrl, codeParrainage } = body;
+  const { prenom, nom, email, telephone, ville, dateNaissance, photoUrl, convention } = body;
 
-  if (!prenom || !nom || !email || !telephone || !ville || !anneesExperience || !motivation) {
+  if (!prenom || !nom || !email || !telephone || !ville) {
     return NextResponse.json({ error: "Champs requis manquants." }, { status: 400 });
   }
   if (!photoUrl) {
@@ -55,12 +84,9 @@ export async function POST(req: NextRequest) {
     email: email.trim().toLowerCase(),
     telephone: telephone.trim(),
     ville: ville.trim(),
-    anneesExperience,
-    domainesIds: domainesIds ?? [],
-    motivation: motivation.trim(),
-    portfolioUrl: portfolioUrl?.trim() || undefined,
+    dateNaissance: dateNaissance || undefined,
     photoUrl: photoUrl?.trim() || undefined,
-    codeParrainage: codeParrainage?.trim() || undefined,
+    convention: convention ?? false,
     lu: false,
     statut: "en_attente",
     noteAdmin: "",
@@ -71,13 +97,13 @@ export async function POST(req: NextRequest) {
   all.push(entry);
   await writeAll(all);
 
-  // Smart CRM — fiche contact + contact du téléphone
   enregistrerCandidature({
     email: email.trim().toLowerCase(),
     nom: `${prenom.trim()} ${nom.trim()}`,
     telephone: telephone.trim(),
-    domaines: (domainesIds ?? []).join(", ") || undefined,
   }).catch(() => {});
+
+  notifierAdmin(entry).catch(() => {});
 
   return NextResponse.json({ success: true });
 }
