@@ -98,19 +98,14 @@ function PackCard({ pack }: { pack: Pack }) {
     <article className="bg-white border border-[var(--g-ligne)] rounded-[16px] overflow-hidden transition-colors hover:border-[var(--g-gris-clair)] flex flex-col">
       {/* Montage des couvertures des ebooks du pack */}
       <div className="relative w-full overflow-hidden bg-[var(--g-doux)]" style={{ aspectRatio: "4/3" }}>
-        {couvertures.length >= 2 ? (
+        {pack.image ? (
+          <img src={pack.image} alt={pack.nom} className="w-full h-full object-contain" loading="lazy" />
+        ) : couvertures.length >= 2 ? (
           <div className={`grid h-full w-full ${couvertures.length === 2 ? "grid-cols-2" : couvertures.length === 3 ? "grid-cols-3" : "grid-cols-2 grid-rows-2"} gap-1 p-3`}>
             {couvertures.slice(0, 4).map((src, i) => (
               <img key={i} src={src} alt="" className="w-full h-full object-contain rounded-lg bg-white" loading="lazy" />
             ))}
-            {couvertures.length > 4 && (
-              <div className="absolute bottom-3 right-3 px-2 py-0.5 rounded-md bg-black/70 text-[12px] font-semibold text-white">
-                +{couvertures.length - 4}
-              </div>
-            )}
           </div>
-        ) : pack.image ? (
-          <img src={pack.image} alt={pack.nom} className="w-full h-full object-contain pt-6 pb-6" loading="lazy" />
         ) : (
           <div className="flex items-center justify-center h-full">
             <Package size={40} className="text-[var(--g-vert)]" />
