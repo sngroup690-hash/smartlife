@@ -169,7 +169,7 @@ export default function DevenirConsultantPage() {
   const espaces = (serverEspaces ?? store.espaces).filter((e) => e.actif);
 
   const formRef = useRef<HTMLDivElement>(null);
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(true);
   const [form, setForm] = useState<FormDataType>(FORM_VIDE);
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -178,15 +178,8 @@ export default function DevenirConsultantPage() {
   const [showFloatingCTA, setShowFloatingCTA] = useState(false);
 
   useEffect(() => {
-    // Ne recalcule la page que lorsque le bouton flottant doit apparaître ou disparaître (défilement fluide)
-    let visible: boolean | null = null;
-    const onScroll = () => {
-      const v = window.scrollY > 500 && !showForm && !done;
-      if (v !== visible) { visible = v; setShowFloatingCTA(v); }
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [showForm, done]);
+    setTimeout(() => formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 500);
+  }, []);
 
   function setField<K extends keyof FormDataType>(k: K, v: FormDataType[K]) {
     setForm((f) => ({ ...f, [k]: v }));
@@ -360,92 +353,19 @@ export default function DevenirConsultantPage() {
   return (
     <div className="overflow-hidden bg-white text-[var(--g-encre)]">
 
-      {/* ════════ HERO ════════ */}
-      <section ref={heroRef} className="relative min-h-[80vh] sm:min-h-[85vh] flex items-center justify-center overflow-hidden bg-white">
-        <motion.div
-          style={{ y: heroY, opacity: heroOpacity }}
-          className="relative z-10 max-w-4xl mx-auto px-5 text-center"
-        >
-          {/* Étiquette */}
-          <motion.p
-            initial={false}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-[14px] font-semibold text-[var(--g-vert)] mb-6"
-          >
+      {/* ════════ HERO COMPACT ════════ */}
+      <section ref={heroRef} className="pt-10 pb-6 sm:pt-14 sm:pb-8 bg-white">
+        <div className="max-w-2xl mx-auto px-5 text-center">
+          <p className="text-[14px] font-semibold text-[var(--g-vert)] mb-4">
             L&apos;écosystème des visionnaires africains
-          </motion.p>
-
-          {/* Titre avec révélation mot par mot */}
-          <h1 className="text-[2.4rem] sm:text-[3.2rem] md:text-[4rem] lg:text-[4.6rem] font-semibold leading-[1.04] tracking-[-0.035em] mb-6 text-[var(--g-encre)]">
-            <WordReveal text="Partagez votre" delay={0.3} />
-            <WordReveal text="savoir" delay={0.5} className="g-surligne" />
-            <WordReveal text=" et contribuez" delay={0.65} />
-            <br className="hidden sm:block" />
-            <WordReveal text=" à un " delay={0.85} />
-            <WordReveal text="monde meilleur" delay={0.95} className="g-surligne" />
+          </p>
+          <h1 className="text-[28px] sm:text-[36px] font-semibold leading-[1.1] tracking-[-0.03em] mb-3 text-[var(--g-encre)]">
+            Partagez votre <span className="g-surligne">savoir</span> et contribuez à un <span className="g-surligne">monde meilleur</span>
           </h1>
-
-          {/* Sous-titre */}
-          <motion.p
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2, duration: 0.5 }}
-            className="text-[var(--g-gris)] text-[18px] sm:text-[20px] max-w-xl mx-auto mb-10 leading-[1.45]"
-          >
-            Rejoignez le réseau de consultants Smart Life et accompagnez
-            les entrepreneurs africains dans leur parcours.
-          </motion.p>
-
-          {/* CTA hero */}
-          <motion.div
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.35, duration: 0.5 }}
-            className="flex flex-col sm:flex-row gap-3 justify-center items-center"
-          >
-            <button onClick={openForm} className="g-btn">
-              Devenir Consultant
-              <ArrowRight size={18} />
-            </button>
-            <a href="#avantages" className="g-btn-ghost">
-              Découvrir les avantages
-              <ChevronDown size={17} />
-            </a>
-          </motion.div>
-
-          {/* Preuve sociale */}
-          <motion.div
-            initial={false}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.6, duration: 0.5 }}
-            className="flex items-center justify-center gap-3 mt-10"
-          >
-            <div className="flex -space-x-2.5">
-              {["AM", "JD", "FK", "NB", "SO"].map((initials, i) => (
-                <div
-                  key={initials}
-                  className="w-9 h-9 rounded-full border-2 border-white flex items-center justify-center text-[10px] font-semibold"
-                  style={{
-                    background: i % 2 === 0 ? "var(--g-jaune)" : "var(--g-vert)",
-                    color: i % 2 === 0 ? "var(--g-encre)" : "#fff",
-                  }}
-                >
-                  {initials}
-                </div>
-              ))}
-            </div>
-            <div className="text-left">
-              <p className="text-[var(--g-encre)] text-xs font-semibold">7 consultants actifs</p>
-              <div className="flex items-center gap-1">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={10} className="fill-[var(--g-jaune)] text-[var(--g-jaune)]" />
-                ))}
-                <span className="text-[var(--g-gris)] text-[10px] ml-0.5">5.0</span>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
+          <p className="text-[var(--g-gris)] text-[16px] sm:text-[18px] max-w-lg mx-auto leading-relaxed">
+            Rejoignez le réseau de consultants Smart Life et accompagnez les entrepreneurs africains dans leur parcours.
+          </p>
+        </div>
       </section>
 
       {/* ════════ CHIFFRES ════════ */}
@@ -765,13 +685,7 @@ export default function DevenirConsultantPage() {
       </AnimatePresence>
 
       {/* ════════ FORMULAIRE PROGRESSIF ════════ */}
-      <AnimatePresence>
-        {showForm && (
-          <motion.section
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 24 }}
-            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          <section
             className="py-10 sm:py-16 px-5 bg-[var(--g-doux)]"
           >
             <div className="max-w-2xl mx-auto" ref={formRef}>
@@ -1027,30 +941,8 @@ export default function DevenirConsultantPage() {
                 <span className="flex items-center gap-1.5"><Zap size={13} className="text-[var(--g-vert)]" /> Réponse sous 48h</span>
               </motion.div>
             </div>
-          </motion.section>
-        )}
-      </AnimatePresence>
+          </section>
 
-      {/* ════════ CTA FLOTTANT MOBILE ════════ */}
-      <AnimatePresence>
-        {showFloatingCTA && (
-          <motion.div
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 100, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="fixed bottom-20 left-4 right-4 z-40 lg:hidden"
-          >
-            <button
-              onClick={openForm}
-              className="g-btn w-full text-sm shadow-[0_2px_10px_rgba(16,20,16,0.12)]"
-            >
-              Devenir Consultant — Gratuit
-              <ArrowRight size={15} />
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
     </div>
   );
