@@ -10,96 +10,96 @@ import Link from "next/link";
 type Question = { section: string; text: string; options: string[] };
 
 const QUESTIONS: Question[] = [
-  // Section 1 : Accompagnement entrepreneurial digital (0-6)
+  // Section 1 : Sens des affaires et réalités du terrain (0-6)
   {
-    section: "Accompagnement entrepreneurial",
-    text: "Un entrepreneur vous dit : « Je veux gagner de l'argent sur internet mais je ne sais pas par où commencer. » Que faites-vous ?",
+    section: "Sens des affaires",
+    text: "Une commerçante du marché vend du poisson frais mais perd beaucoup de marchandise chaque jour. Elle vous demande conseil. Que faites-vous ?",
     options: [
-      "Vous lui proposez directement de vendre des ebooks sans chercher à comprendre son profil",
-      "Vous identifiez d'abord ses compétences, sa situation et son budget pour lui proposer un chemin adapté",
-      "Vous lui dites que ce n'est pas pour tout le monde et qu'il devrait d'abord se former pendant des mois",
-      "Vous lui envoyez des liens vers des formations gratuites sur YouTube",
+      "Vous lui dites de vendre autre chose, le poisson c'est trop risqué",
+      "Vous analysez avec elle ses heures d'achat, ses quantités, sa conservation et ses clients réguliers pour réduire les pertes",
+      "Vous lui conseillez d'augmenter ses prix pour compenser les pertes",
+      "Vous lui dites que c'est normal et qu'il faut juste accepter les pertes",
     ],
   },
   {
-    section: "Accompagnement entrepreneurial",
-    text: "Votre client a créé un produit digital (ebook) mais ne fait aucune vente après 2 semaines. Comment réagissez-vous ?",
+    section: "Sens des affaires",
+    text: "Un jeune veut se lancer dans l'élevage de poulets mais n'a que 50 000 FCFA. Comment l'accompagnez-vous ?",
     options: [
-      "Vous lui dites que son produit n'est pas bon et qu'il faut tout recommencer",
-      "Vous analysez sa page de vente, son audience cible et sa stratégie de promotion pour trouver ce qui bloque",
-      "Vous lui conseillez de baisser le prix",
-      "Vous ne faites rien, c'est à lui de trouver la solution",
+      "Vous lui dites que c'est insuffisant et qu'il doit d'abord trouver plus d'argent",
+      "Vous l'aidez à commencer petit (10-15 poulets), à bien calculer ses coûts (aliments, vaccins, abri) et à réinvestir ses premiers bénéfices",
+      "Vous lui proposez de plutôt chercher un emploi salarié",
+      "Vous lui faites un plan pour 500 poulets sans tenir compte de son budget réel",
     ],
   },
   {
-    section: "Accompagnement entrepreneurial",
-    text: "Un client veut lancer une publicité Meta Ads avec un budget de 5 000 FCFA par jour. Quel conseil lui donnez-vous ?",
+    section: "Sens des affaires",
+    text: "Une couturière a beaucoup de commandes mais n'arrive pas à livrer à temps. Les clients commencent à partir. Quel est votre diagnostic ?",
     options: [
-      "Vous lui dites que c'est trop peu et qu'il ne devrait pas faire de pub",
-      "Vous l'aidez à cibler précisément son audience et à tester 2-3 créatives pour maximiser ce petit budget",
-      "Vous lui demandez d'augmenter son budget à au moins 50 000 FCFA par jour",
-      "Vous lancez la pub sans réfléchir à la stratégie",
+      "Elle doit refuser des commandes jusqu'à ce qu'elle rattrape son retard",
+      "Vous regardez avec elle son organisation : planning des commandes, délais annoncés, temps par pièce, et vous l'aidez à structurer son travail",
+      "Vous lui conseillez d'embaucher quelqu'un tout de suite même si elle n'en a pas les moyens",
+      "Vous lui dites que c'est un bon problème puisque ça veut dire qu'elle a du succès",
     ],
   },
   {
-    section: "Accompagnement entrepreneurial",
-    text: "Un client vous dit qu'il n'a pas d'ordinateur, seulement un téléphone. Peut-il quand même créer un business digital ?",
+    section: "Sens des affaires",
+    text: "Un restaurateur veut ouvrir un deuxième point de vente alors que le premier n'est pas encore rentable. Que lui conseillez-vous ?",
     options: [
-      "Non, il faut absolument un ordinateur pour faire du business en ligne",
-      "Oui, vous lui montrez les outils et méthodes adaptés au téléphone pour commencer",
-      "Vous lui dites de d'abord économiser pour acheter un PC",
-      "Vous refusez de l'accompagner tant qu'il n'a pas le bon matériel",
+      "Vous l'encouragez à foncer, plus de points de vente c'est plus de revenus",
+      "Vous l'aidez d'abord à comprendre pourquoi le premier n'est pas rentable, à corriger les problèmes, puis à envisager l'expansion quand la base est solide",
+      "Vous lui dites d'abandonner le premier et d'ouvrir ailleurs",
+      "Vous ne donnez pas d'avis, c'est son argent après tout",
     ],
   },
   {
-    section: "Accompagnement entrepreneurial",
-    text: "Un client vous demande de l'aider à utiliser l'IA pour son business. Comment abordez-vous le sujet ?",
+    section: "Sens des affaires",
+    text: "Un agriculteur produit de bons légumes mais les vend toujours au même revendeur qui lui impose un prix très bas. Comment l'aidez-vous ?",
     options: [
-      "Vous lui expliquez que l'IA est trop compliquée pour quelqu'un qui débute",
-      "Vous lui montrez concrètement comment l'IA peut l'aider dans ses tâches quotidiennes avec des exemples pratiques",
-      "Vous lui donnez une liste d'outils IA sans explication",
-      "Vous lui dites que l'IA va remplacer les humains et qu'il devrait s'inquiéter",
+      "Vous lui dites de continuer comme ça, au moins il a un acheteur régulier",
+      "Vous explorez avec lui d'autres canaux : vente directe aux restaurants, aux particuliers, au marché, et vous l'aidez à négocier de meilleurs prix",
+      "Vous lui conseillez d'arrêter de vendre à ce revendeur immédiatement",
+      "Vous lui dites de produire en plus grande quantité pour compenser le prix bas",
     ],
   },
   {
-    section: "Accompagnement entrepreneurial",
-    text: "Un client vous confie qu'il est découragé parce que ses proches ne croient pas en son projet digital. Que lui dites-vous ?",
+    section: "Sens des affaires",
+    text: "Une vendeuse de produits cosmétiques veut se différencier de ses concurrentes au quartier qui vendent les mêmes produits. Que proposez-vous ?",
     options: [
-      "Vous êtes d'accord que c'est risqué et qu'il devrait peut-être arrêter",
-      "Vous le remotivez avec des exemples concrets de réussite, l'aidez à se fixer des objectifs à court terme et restez disponible",
-      "Vous ignorez sa frustration et passez directement au travail",
-      "Vous lui dites de couper les ponts avec les personnes négatives",
+      "Vous lui dites de baisser ses prix pour attirer les clients",
+      "Vous l'aidez à trouver ce qui la rend unique : conseils beauté personnalisés, fidélisation des clientes, gamme complémentaire, ou livraison à domicile",
+      "Vous lui dites de changer de quartier",
+      "Vous lui proposez de vendre exactement les mêmes produits mais de crier plus fort",
     ],
   },
   {
-    section: "Accompagnement entrepreneurial",
-    text: "Un client vous propose de mentir sur les résultats de son produit pour vendre plus. Quelle est votre position ?",
+    section: "Sens des affaires",
+    text: "Un client vous demande de gonfler les chiffres de son activité pour impressionner un investisseur potentiel. Quelle est votre position ?",
     options: [
-      "Vous acceptez si ça aide à faire plus de ventes",
-      "Vous refusez fermement et lui montrez comment vendre en mettant en avant les vrais bénéfices de son produit",
-      "Vous ne dites rien et le laissez faire",
-      "Vous coupez la relation immédiatement sans explication",
+      "Vous acceptez, c'est pour une bonne cause",
+      "Vous refusez et vous l'aidez plutôt à mettre en valeur ses vrais résultats, son potentiel et son plan de croissance de manière honnête",
+      "Vous ne dites rien et le laissez se débrouiller",
+      "Vous coupez la relation immédiatement",
     ],
   },
-  // Section 2 : Compétences relationnelles et pédagogiques (7-13)
+  // Section 2 : Compétences relationnelles et accompagnement (7-13)
   {
     section: "Compétences relationnelles",
-    text: "Vous accompagnez un client qui a du mal à créer du contenu pour ses réseaux sociaux. Comment l'aidez-vous ?",
+    text: "Un entrepreneur que vous accompagnez ne sait ni lire ni écrire couramment. Comment adaptez-vous votre accompagnement ?",
     options: [
-      "Vous créez le contenu à sa place, c'est plus rapide",
-      "Vous lui apprenez une méthode simple, créez les premiers ensemble, puis il continue seul avec votre suivi",
-      "Vous lui donnez une liste de comptes à copier",
-      "Vous lui dites que s'il ne sait pas créer du contenu, le business digital n'est pas pour lui",
+      "Vous lui dites que sans savoir lire, il ne peut pas réussir en affaires",
+      "Vous utilisez des méthodes visuelles, des appels vocaux, des exemples concrets et vous l'aidez à s'entourer de personnes complémentaires",
+      "Vous lui donnez des documents écrits et lui dites de trouver quelqu'un pour les lire",
+      "Vous refusez de l'accompagner, c'est trop compliqué",
     ],
   },
   {
     section: "Compétences relationnelles",
-    text: "Pendant un appel avec un client, il reçoit un message WhatsApp d'un « formateur » qui lui promet 500 000 FCFA en 7 jours. Que faites-vous ?",
+    text: "Un client a emprunté de l'argent à sa famille pour lancer son business et il est sous pression. Comment gérez-vous cette situation ?",
     options: [
-      "Vous ne dites rien, chacun ses choix",
-      "Vous lui expliquez calmement les signaux d'arnaque, sans critiquer, et l'aidez à évaluer les promesses de manière critique",
-      "Vous vous moquez de lui pour y avoir cru",
-      "Vous lui dites de suivre les deux formations en même temps",
+      "Vous lui dites de rembourser d'abord et de lancer le business plus tard",
+      "Vous l'aidez à établir un plan réaliste avec des étapes courtes pour générer rapidement ses premiers revenus et honorer ses engagements",
+      "Vous ignorez la pression familiale, ce n'est pas votre problème",
+      "Vous lui dites de ne pas mélanger famille et affaires la prochaine fois",
     ],
   },
   {
@@ -114,40 +114,40 @@ const QUESTIONS: Question[] = [
   },
   {
     section: "Compétences relationnelles",
-    text: "Un client vous dit : « J'ai tout essayé, rien ne marche pour moi. » Comment le gérez-vous ?",
+    text: "Pendant une réunion, un client vous dit devant d'autres personnes que vos conseils ne marchent pas. Comment réagissez-vous ?",
     options: [
-      "Vous lui dites qu'il n'a probablement pas assez travaillé",
-      "Vous reprenez son parcours point par point, identifiez ce qui a bloqué et proposez un plan d'action concret",
-      "Vous lui proposez d'abandonner le digital et de faire autre chose",
-      "Vous lui envoyez des vidéos de motivation",
+      "Vous vous défendez en montrant que c'est lui qui n'applique pas correctement",
+      "Vous écoutez calmement, lui demandez des précisions en privé, puis vous revoyez ensemble ce qui n'a pas fonctionné",
+      "Vous vous excusez publiquement et changez toute votre approche",
+      "Vous ne dites rien et vous partez",
     ],
   },
   {
     section: "Compétences relationnelles",
-    text: "Vous devez expliquer le concept de tunnel de vente à quelqu'un qui n'a jamais fait de marketing. Comment procédez-vous ?",
+    text: "Une cliente veut copier exactement ce que fait sa voisine qui a réussi, sans chercher à comprendre pourquoi ça marche. Que faites-vous ?",
     options: [
-      "Vous utilisez les termes techniques : « landing page, upsell, lead magnet »",
-      "Vous comparez avec un marché local : l'appel, la dégustation gratuite, la vente, puis le client qui revient",
-      "Vous lui dites de regarder une vidéo YouTube",
-      "Vous sautez l'explication et passez directement à la pratique",
+      "Vous la laissez copier, au moins elle a un modèle",
+      "Vous lui expliquez ce qui fait le succès de sa voisine (le travail, la régularité, la connaissance des clients) et vous l'aidez à construire SA propre version adaptée à ses forces",
+      "Vous lui dites que copier c'est mal et qu'elle doit tout inventer",
+      "Vous lui donnez la recette exacte de ce que fait sa voisine",
     ],
   },
   {
     section: "Compétences relationnelles",
-    text: "Un client a réussi sa première vente grâce à votre accompagnement. Comment capitalisez-vous sur ce succès ?",
+    text: "Un client a réussi à doubler son chiffre d'affaires en 3 mois grâce à votre accompagnement. Comment capitalisez-vous sur ce succès ?",
     options: [
-      "Rien de spécial, c'est normal",
-      "Vous célébrez avec lui, analysez ce qui a fonctionné, et l'aidez à répliquer et améliorer sa stratégie",
-      "Vous lui demandez immédiatement de vous recommander à d'autres",
+      "Rien de spécial, c'est votre travail",
+      "Vous célébrez avec lui, analysez ensemble les actions qui ont marché, et vous construisez la prochaine étape pour aller encore plus loin",
+      "Vous lui demandez immédiatement de vous payer plus cher",
       "Vous considérez que votre travail est terminé",
     ],
   },
   {
     section: "Compétences relationnelles",
-    text: "Deux de vos clients se retrouvent dans le même marché et vendent des produits similaires. Comment gérez-vous cette situation ?",
+    text: "Deux de vos clients ont des commerces similaires dans le même quartier. Comment gérez-vous cette situation ?",
     options: [
       "Vous donnez les mêmes conseils aux deux sans rien changer",
-      "Vous aidez chacun à trouver son angle unique et sa différenciation, en toute transparence",
+      "Vous aidez chacun à trouver son positionnement unique : clientèle cible, spécialité, service, horaires, et vous êtes transparent avec les deux",
       "Vous arrêtez d'accompagner l'un des deux",
       "Vous créez de la concurrence entre eux pour les motiver",
     ],
@@ -158,20 +158,20 @@ const BAREME = [0, 3, 1, 0];
 const LETTRES = ["A", "B", "C", "D"];
 
 const SUJETS_TECH = [
-  "Diagnostic de situation client",
-  "Analyse et résolution de problèmes",
-  "Gestion de budget publicitaire",
-  "Adaptation aux contraintes du client",
-  "Maîtrise des outils IA",
-  "Motivation et persévérance",
+  "Réduction des pertes et gestion de stock",
+  "Lancement d'activité avec petit budget",
+  "Organisation et productivité",
+  "Diagnostic de rentabilité",
+  "Diversification des canaux de vente",
+  "Différenciation et positionnement",
   "Éthique et honnêteté",
 ];
 const SUJETS_PEDA = [
-  "Autonomisation du client",
-  "Protection contre les arnaques",
+  "Adaptation aux profils variés",
+  "Gestion de la pression financière",
   "Suivi et relance bienveillante",
-  "Gestion du découragement",
-  "Vulgarisation et pédagogie",
+  "Gestion des critiques",
+  "Originalité et construction personnelle",
   "Capitalisation sur les succès",
   "Gestion de la concurrence entre clients",
 ];
@@ -186,11 +186,11 @@ function getNiveau(pct: number) {
 
 function getVerdict(pctTech: number, pctPeda: number) {
   if (pctTech >= 75 && pctPeda >= 75)
-    return { titre: "Validé", desc: "Félicitations ! Vous avez le profil pour accompagner des entrepreneurs digitaux chez Smart Life. Nous vous contacterons très bientôt.", icone: "succes" as const };
+    return { titre: "Validé", desc: "Félicitations ! Vous avez le profil pour accompagner des entrepreneurs chez Smart Life. Nous vous contacterons très bientôt.", icone: "succes" as const };
   if ((pctTech >= 60 && pctTech < 75) || (pctPeda >= 60 && pctPeda < 75))
     return { titre: "Validation conditionnelle", desc: "Vous avez du potentiel ! Quelques points sont à renforcer. Nous vous proposerons un plan de mise à niveau avant de vous intégrer.", icone: "attention" as const };
   if (pctTech >= 40 || pctPeda >= 40)
-    return { titre: "Formation complémentaire requise", desc: "Certaines compétences essentielles pour l'accompagnement digital nécessitent un renforcement. Un parcours de formation vous sera proposé.", icone: "attention" as const };
+    return { titre: "Formation complémentaire requise", desc: "Certaines compétences essentielles pour l'accompagnement nécessitent un renforcement. Un parcours de formation vous sera proposé.", icone: "attention" as const };
   return { titre: "Non validé", desc: "Les résultats ne correspondent pas encore au profil recherché. Vous pourrez repasser l'évaluation après vous être préparé.", icone: "echec" as const };
 }
 
@@ -542,7 +542,7 @@ function EvaluationPage() {
                 <h3 className="text-[16px] font-bold mb-4 text-[var(--g-encre,#1A1A1A)]">Points à renforcer</h3>
                 {resultats.faiblesses.filter(f => f.section === "tech").length > 0 && (
                   <div className="mb-4">
-                    <p className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[var(--g-gris,#6B7280)] mb-2">Accompagnement entrepreneurial</p>
+                    <p className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[var(--g-gris,#6B7280)] mb-2">Sens des affaires</p>
                     <ul className="space-y-1.5">
                       {resultats.faiblesses.filter(f => f.section === "tech").map((f, i) => (
                         <li key={i} className="text-[14px] text-[var(--g-gris,#6B7280)] flex items-start gap-2">
