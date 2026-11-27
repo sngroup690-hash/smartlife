@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   CheckCircle, User, Mail, Phone, MapPin, Camera, X,
@@ -42,7 +42,7 @@ const MESSAGES = [
   "Comment vous appelez-vous ?",
   "Comment vous joindre ?",
   "Quelques détails sur vous",
-  "Dernière étape avant l'évaluation",
+  "Dernière étape pour finaliser votre candidature",
 ];
 
 function BarreProgression({ etape }: { etape: number }) {
@@ -106,8 +106,17 @@ const anim = {
   transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] },
 };
 
-export default function DevenirConsultantPage() {
+export default function DevenirConsultantPageWrapper() {
+  return (
+    <Suspense>
+      <DevenirConsultantPage />
+    </Suspense>
+  );
+}
+
+function DevenirConsultantPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const photoInputRef = useRef<HTMLInputElement>(null);
   const [photoPreview, setPhotoPreview] = useState("");
   const [photoUploading, setPhotoUploading] = useState(false);
@@ -118,6 +127,20 @@ export default function DevenirConsultantPage() {
   const [etape, setEtape] = useState(1);
   const [loading, setLoading] = useState(false);
   const [erreurs, setErreurs] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const e = searchParams.get("email");
+    const n = searchParams.get("nom");
+    const t = searchParams.get("tel");
+    if (e || n || t) {
+      setForm(f => ({
+        ...f,
+        ...(e ? { email: e } : {}),
+        ...(n ? { prenom: n.split(" ")[0] || "", nom: n.split(" ").slice(1).join(" ") || "" } : {}),
+        ...(t ? { telephone: t } : {}),
+      }));
+    }
+  }, [searchParams]);
 
   function set<K extends keyof FormData>(k: K, v: FormData[K]) {
     setForm((f) => ({ ...f, [k]: v }));

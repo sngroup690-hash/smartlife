@@ -506,7 +506,7 @@ function EvaluationPage() {
             {/* Scores */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
               <div className="bg-white border border-[var(--g-ligne,#E5E7EB)] rounded-2xl p-5 text-center">
-                <p className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[var(--g-gris,#6B7280)] mb-2">Accompagnement entrepreneurial</p>
+                <p className="text-[12px] font-semibold uppercase tracking-[0.06em] text-[var(--g-gris,#6B7280)] mb-2">Sens des affaires</p>
                 <p className="text-[36px] font-bold tracking-[-0.02em] text-[var(--g-vert,#0D6B3F)]" style={{ fontVariantNumeric: "tabular-nums" }}>
                   {resultats.pctTech.toFixed(1)}<span className="text-[18px] font-medium text-[var(--g-gris,#6B7280)]"> /100</span>
                 </p>
@@ -569,7 +569,16 @@ function EvaluationPage() {
               </div>
             )}
 
-            {/* Actions */}
+            {/* Message et action */}
+            <div className="bg-white border border-[var(--g-vert,#0D6B3F)]/20 rounded-2xl p-5 mb-5">
+              <p className="text-[15px] font-semibold text-[var(--g-encre,#1A1A1A)] mb-2">
+                Dernière étape : terminez votre inscription
+              </p>
+              <p className="text-[14px] text-[var(--g-gris,#6B7280)] leading-relaxed">
+                Pour que nous puissions valider votre candidature, remplissez le formulaire d&apos;inscription avec vos informations complètes (photo, identité, contact).
+              </p>
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={() => {
@@ -583,10 +592,10 @@ function EvaluationPage() {
                 Refaire l&apos;évaluation
               </button>
               <Link
-                href="/devenir-consultant"
+                href={`/devenir-consultant?email=${encodeURIComponent(email)}&nom=${encodeURIComponent(nom)}&tel=${encodeURIComponent(telephone)}`}
                 className="flex-1 py-3 bg-[var(--g-vert,#0D6B3F)] hover:bg-[var(--g-vert-fonce,#0A5632)] text-white font-semibold rounded-xl transition flex items-center justify-center gap-2"
               >
-                Postuler comme consultant <ArrowRight size={18} />
+                Terminer mon inscription <ArrowRight size={18} />
               </Link>
             </div>
 
