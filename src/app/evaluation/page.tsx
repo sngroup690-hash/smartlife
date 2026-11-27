@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { CheckCircle, ChevronLeft, ChevronRight, Loader2, AlertTriangle, Award, XCircle, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -197,11 +198,31 @@ function getVerdict(pctTech: number, pctPeda: number) {
 
 type Ecran = "intro" | "question" | "resultats";
 
-export default function EvaluationPage() {
+import { Suspense } from "react";
+
+export default function EvaluationPageWrapper() {
+  return (
+    <Suspense>
+      <EvaluationPage />
+    </Suspense>
+  );
+}
+
+function EvaluationPage() {
+  const params = useSearchParams();
   const [ecran, setEcran] = useState<Ecran>("intro");
   const [nom, setNom] = useState("");
   const [email, setEmail] = useState("");
   const [telephone, setTelephone] = useState("");
+
+  useEffect(() => {
+    const n = params.get("nom");
+    const e = params.get("email");
+    const t = params.get("tel");
+    if (n) setNom(n);
+    if (e) setEmail(e);
+    if (t) setTelephone(t);
+  }, [params]);
   const [erreurs, setErreurs] = useState<Record<string, string>>({});
   const [questionCourante, setQuestionCourante] = useState(0);
   const [reponses, setReponses] = useState<number[]>(new Array(14).fill(-1));
