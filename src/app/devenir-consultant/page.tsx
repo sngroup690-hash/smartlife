@@ -126,6 +126,7 @@ function DevenirConsultantPage() {
   const [form, setForm] = useState<FormData>(VIDE);
   const [etape, setEtape] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [soumis, setSoumis] = useState(false);
   const [erreurs, setErreurs] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -229,12 +230,42 @@ function DevenirConsultantPage() {
         setErreurs({ convention: data.error || "Erreur. Réessayez." });
         return;
       }
-      router.push(`/evaluation?email=${encodeURIComponent(form.email.trim().toLowerCase())}&nom=${encodeURIComponent(form.prenom.trim() + " " + form.nom.trim())}&tel=${encodeURIComponent(form.telephone.trim())}`);
+      setSoumis(true);
     } catch {
       setErreurs({ convention: "Erreur réseau. Réessayez." });
     } finally {
       setLoading(false);
     }
+  }
+
+  if (soumis) {
+    return (
+      <div className="min-h-screen bg-[var(--g-doux)] text-[var(--g-encre)] flex items-center justify-center px-5">
+        <div className="max-w-lg w-full text-center py-16">
+          <div className="w-16 h-16 bg-[var(--g-vert)] rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle size={32} className="text-white" />
+          </div>
+          <h1 className="text-[26px] sm:text-[32px] font-semibold leading-[1.15] tracking-[-0.03em] mb-4">
+            Candidature envoyée
+          </h1>
+          <p className="text-[var(--g-gris)] text-[16px] leading-relaxed mb-3 max-w-sm mx-auto">
+            Merci <strong>{form.prenom}</strong> ! Votre dossier est en cours d&apos;étude par notre équipe.
+          </p>
+          <p className="text-[var(--g-gris)] text-[15px] leading-relaxed max-w-sm mx-auto mb-8">
+            Nous vous contacterons sur <strong>WhatsApp</strong> au <strong>{form.telephone}</strong> pour la suite du processus.
+          </p>
+          <div className="bg-white border border-[var(--g-ligne)] rounded-[16px] p-5 max-w-sm mx-auto text-left">
+            <p className="text-[13px] font-semibold text-[var(--g-vert)] uppercase tracking-wider mb-3">Prochaines étapes</p>
+            <ol className="space-y-2 text-[14px] text-[var(--g-gris)]">
+              <li className="flex gap-2"><span className="font-bold text-[var(--g-vert)]">1.</span> Notre équipe étudie votre profil</li>
+              <li className="flex gap-2"><span className="font-bold text-[var(--g-vert)]">2.</span> On vous contacte sur WhatsApp</li>
+              <li className="flex gap-2"><span className="font-bold text-[var(--g-vert)]">3.</span> Vous passez l&apos;évaluation des compétences</li>
+              <li className="flex gap-2"><span className="font-bold text-[var(--g-vert)]">4.</span> Validation et intégration au réseau</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -249,7 +280,7 @@ function DevenirConsultantPage() {
             Devenez consultant <span className="g-surligne">Smart Life</span>
           </h1>
           <p className="text-[var(--g-gris)] text-[15px] max-w-sm mx-auto leading-relaxed">
-            Remplissez ce formulaire en quelques étapes, puis passez l&apos;évaluation pour rejoindre notre réseau.
+            Remplissez ce formulaire en quelques étapes. Notre équipe étudiera votre dossier et vous contactera sur WhatsApp.
           </p>
         </div>
       </section>

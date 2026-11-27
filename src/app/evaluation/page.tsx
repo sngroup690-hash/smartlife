@@ -214,14 +214,11 @@ function EvaluationPage() {
   const [nom, setNom] = useState("");
   const [email, setEmail] = useState("");
   const [telephone, setTelephone] = useState("");
+  const [chargement, setChargement] = useState(false);
 
   useEffect(() => {
-    const n = params.get("nom");
     const e = params.get("email");
-    const t = params.get("tel");
-    if (n) setNom(n);
     if (e) setEmail(e);
-    if (t) setTelephone(t);
   }, [params]);
   const [erreurs, setErreurs] = useState<Record<string, string>>({});
   const [questionCourante, setQuestionCourante] = useState(0);
@@ -234,14 +231,29 @@ function EvaluationPage() {
     faiblesses: { section: string; sujet: string }[];
   } | null>(null);
 
-  const demarrer = useCallback(() => {
+  const demarrer = useCallback(async () => {
     const err: Record<string, string> = {};
-    if (!nom.trim()) err.nom = "Votre nom est requis";
     if (!email.trim() || !email.includes("@")) err.email = "Une adresse email valide est requise";
     if (Object.keys(err).length > 0) { setErreurs(err); return; }
     setErreurs({});
-    setEcran("question");
-  }, [nom, email]);
+    setChargement(true);
+    try {
+      const res = await fetch(`/api/candidatures/me?email=${encodeURIComponent(email.trim().toLowerCase())}`);
+      const data = await res.json();
+      if (!data.candidatures || data.candidatures.length === 0) {
+        setErreurs({ email: "Aucune candidature trouvée pour cet email. Vous devez d'abord remplir votre candidature." });
+        setChargement(false);
+        return;
+      }
+      const c = data.candidatures[data.candidatures.length - 1];
+      setNom(`${c.prenom || ""} ${c.nom || ""}`.trim());
+      setTelephone(c.telephone || "");
+      setEcran("question");
+    } catch {
+      setErreurs({ email: "Erreur de connexion. Réessayez." });
+    }
+    setChargement(false);
+  }, [email]);
 
   const choisir = useCallback((index: number) => {
     setReponses(prev => {
@@ -319,23 +331,8 @@ function EvaluationPage() {
             <div className="bg-white border border-[var(--g-ligne,#E5E7EB)] rounded-2xl p-6 shadow-sm">
               <div className="space-y-5">
                 <div>
-                  <label htmlFor="eval-nom" className="block text-[14px] font-semibold mb-1.5 text-[var(--g-encre,#1A1A1A)]">
-                    Nom complet
-                  </label>
-                  <input
-                    id="eval-nom"
-                    type="text"
-                    value={nom}
-                    onChange={e => setNom(e.target.value)}
-                    placeholder="Votre nom et prénom"
-                    className={`w-full px-4 py-2.5 rounded-xl border ${erreurs.nom ? "border-red-400" : "border-[var(--g-ligne,#E5E7EB)]"} bg-[var(--g-fond,#FAFAF8)] text-[15px] focus:outline-none focus:ring-2 focus:ring-[var(--g-vert,#0D6B3F)]/20 focus:border-[var(--g-vert,#0D6B3F)] transition`}
-                  />
-                  {erreurs.nom && <p className="text-red-500 text-[13px] mt-1">{erreurs.nom}</p>}
-                </div>
-
-                <div>
                   <label htmlFor="eval-email" className="block text-[14px] font-semibold mb-1.5 text-[var(--g-encre,#1A1A1A)]">
-                    Adresse email
+                    Entrez l&apos;email utilisé lors de votre candidature
                   </label>
                   <input
                     id="eval-email"
@@ -345,29 +342,28 @@ function EvaluationPage() {
                     placeholder="votre@email.com"
                     className={`w-full px-4 py-2.5 rounded-xl border ${erreurs.email ? "border-red-400" : "border-[var(--g-ligne,#E5E7EB)]"} bg-[var(--g-fond,#FAFAF8)] text-[15px] focus:outline-none focus:ring-2 focus:ring-[var(--g-vert,#0D6B3F)]/20 focus:border-[var(--g-vert,#0D6B3F)] transition`}
                   />
-                  {erreurs.email && <p className="text-red-500 text-[13px] mt-1">{erreurs.email}</p>}
-                </div>
-
-                <div>
-                  <label htmlFor="eval-tel" className="block text-[14px] font-semibold mb-1.5 text-[var(--g-encre,#1A1A1A)]">
-                    Numéro de téléphone
-                  </label>
-                  <input
-                    id="eval-tel"
-                    type="tel"
-                    value={telephone}
-                    onChange={e => setTelephone(e.target.value)}
-                    placeholder="+237 6XX XX XX XX"
-                    className="w-full px-4 py-2.5 rounded-xl border border-[var(--g-ligne,#E5E7EB)] bg-[var(--g-fond,#FAFAF8)] text-[15px] focus:outline-none focus:ring-2 focus:ring-[var(--g-vert,#0D6B3F)]/20 focus:border-[var(--g-vert,#0D6B3F)] transition"
-                  />
+                  {erreurs.email && (
+                    <div className="mt-2">
+                      <p className="text-red-500 text-[13px]">{erreurs.email}</p>
+                      {erreurs.email.includes("Aucune candidature") && (
+                        <Link href="/devenir-consultant" className="inline-flex items-center gap-1 text-[13px] text-[var(--g-vert,#0D6B3F)] font-semibold mt-1 hover:underline">
+                          Remplir ma candidature <ArrowRight size={14} />
+                        </Link>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <button
                   onClick={demarrer}
-                  className="w-full py-3 bg-[var(--g-vert,#0D6B3F)] hover:bg-[var(--g-vert-fonce,#0A5632)] text-white font-semibold rounded-xl transition flex items-center justify-center gap-2"
+                  disabled={chargement}
+                  className="w-full py-3 bg-[var(--g-vert,#0D6B3F)] hover:bg-[var(--g-vert-fonce,#0A5632)] disabled:opacity-60 text-white font-semibold rounded-xl transition flex items-center justify-center gap-2"
                 >
-                  Commencer l&apos;évaluation
-                  <ArrowRight size={18} />
+                  {chargement ? (
+                    <><Loader2 size={18} className="animate-spin" /> Vérification...</>
+                  ) : (
+                    <>Commencer l&apos;évaluation <ArrowRight size={18} /></>
+                  )}
                 </button>
               </div>
 
@@ -569,13 +565,13 @@ function EvaluationPage() {
               </div>
             )}
 
-            {/* Message et action */}
+            {/* Message de confirmation */}
             <div className="bg-white border border-[var(--g-vert,#0D6B3F)]/20 rounded-2xl p-5 mb-5">
               <p className="text-[15px] font-semibold text-[var(--g-encre,#1A1A1A)] mb-2">
-                Dernière étape : terminez votre inscription
+                Évaluation terminée
               </p>
               <p className="text-[14px] text-[var(--g-gris,#6B7280)] leading-relaxed">
-                Pour que nous puissions valider votre candidature, remplissez le formulaire d&apos;inscription avec vos informations complètes (photo, identité, contact).
+                Vos résultats ont été enregistrés. Notre équipe va étudier votre évaluation et vous contactera sur WhatsApp pour la suite.
               </p>
             </div>
 
@@ -591,12 +587,6 @@ function EvaluationPage() {
               >
                 Refaire l&apos;évaluation
               </button>
-              <Link
-                href={`/devenir-consultant?email=${encodeURIComponent(email)}&nom=${encodeURIComponent(nom)}&tel=${encodeURIComponent(telephone)}`}
-                className="flex-1 py-3 bg-[var(--g-vert,#0D6B3F)] hover:bg-[var(--g-vert-fonce,#0A5632)] text-white font-semibold rounded-xl transition flex items-center justify-center gap-2"
-              >
-                Terminer mon inscription <ArrowRight size={18} />
-              </Link>
             </div>
 
             {envoi && (
